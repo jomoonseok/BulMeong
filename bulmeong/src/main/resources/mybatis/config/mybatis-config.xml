@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.gdu.bulmeong.ex.domain.BulMeongDTO" alias="BulMeongDTO" />
+		<typeAlias type="com.gdu.bulmeong.ex2.domain.BulMeong2DTO" alias="BulMeong2DTO" />
+	</typeAliases>
+
+</configuration>
