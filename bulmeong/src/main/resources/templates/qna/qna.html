@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('QNA목록')}"></head>
+<style>
+	.blind {
+		display: none;
+	}
+</style>
+<body>
+<div>
+	
+	<div th:replace="~{layout/header::body_title}"></div>
+	
+	<h1 th:text="|블로그 목록(전체 ${totalRecord}개)|"></h1>
+	
+	<div>
+		<input type="button" value="문의하기" id="btn_write">
+		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
+		<script>
+		
+			$('#btn_write').click(function(){
+				location.href = '/qna/write';
+			});
+			
+			$('#my_qnaList').click(function(){
+				location.href = '/mypage/write';
+			});
+			
+		</script>
+	</div>
+	
+	<div>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>답변상태</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="qna:${qnaList}">
+					<td th:if="${qna.depth} lt 1" th:text="답변완료" th>
+						<span th:case="${qna.depth} lt 1"></span>
+						<span th:case="${qna.depth} eq 1">답변완료</span>
+					</td>
+					<td><label th:text="${qna.qnaTitle}" class="blind">▼</label></td>
+					<td th:text="${qna.id}"></td>
+					<td th:text="${qna.qnaCreateDate}"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<!-- th:utext="HTML구성요소포함한텍스트" -->
+					<td colspan="4" th:utext="${paging}"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+</div>
+
+</body>
+</html>
