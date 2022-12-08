@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('목록')}"></head>
+<body>
+   <div>
+   		
+   		<!-- <h1 th:text="|블로그 목록(전체 ${totalRecord}개)|"></h1> -->
+   		
+<!--    		<div>
+   			
+   			검색카테고리, 검색 기능 나중에 추가하기
+			
+   			href가 없을때의 경로변경 방법 :
+   				input에 id를 주고, script 태그 안에 작성.
+   			
+   			<label for="targetDt">조회날짜</label>
+			<input type="text" id="targetDt">
+			<input type="button" value="검색" id="btn">
+			
+			<script th:inline="javascript">
+   			
+			$(document).ready(function(){
+				
+				$('#targetDt').datepicker({
+					dateFormat: 'yymmdd'  // 실제로는 yyyymmdd로 적용
+				});
+				
+				$('#btn').click(function(){
+					$.ajax({
+						type: 'get',
+						url: '${contextPath}/movie/boxOfficeList',
+						data: 'targetDt=' + $('#targetDt').val(),
+						dataType: 'json',
+						success: function(resData){
+							// 기존 목록 초기화
+							$('#boxOfficeList').empty();
+							// 가져온 목록 나타내기
+							$.each(resData.boxOfficeResult.dailyBoxOfficeList, function(i, movie){
+								$('<tr>')
+								.append($('<td>').text(movie.rank))
+								.append($('<td>').text(movie.movieNm))
+								.append($('<td>').text(movie.openDt))
+								.append($('<td>').text(movie.audiCnt))
+								.append($('<td>').text(movie.audiAcc))
+								.appendTo('#boxOfficeList')
+
+							});
+						}
+					});
+				});
+				
+			});
+   				
+   			</script>
+   		</div> -->
+   		
+   		<div>
+   			<table border="1">
+   				<thead>
+	   				<tr>
+	   					<td>대표이미지</td>  <!-- firstImageUrl -->
+	   					<td>캠핑장명</td>  <!-- facltNm -->
+	   					<td>한줄소개</td>  <!-- lineIntro -->
+	   					<td>시군구</td>  <!-- sigunguNm -->
+	   					<td>전화</td>  <!-- tel -->
+	   					<td>부대시설</td>  <!-- sbrsCl -->
+	   				</tr>
+   				</thead>
+   				<tbody>
+   					
+   					<!-- Variable Expression : ${} -->
+   					<!-- c:forEach대신 th:each 사용 -->
+   					<!-- varStatus대신 rowStat을 사용 -->
+   					<!-- 
+   						<c:forEach items="${blogList}" var="blog" varStatus="vs">
+   					-->
+   					
+   					<!-- 파라미터가 있는 링크 -->
+   					<!-- ?대신 ()을 사용 -->
+   					<!-- 
+   						<td><a href="${contextPath}/blog/increse/hit?blogNo=${blog.blogNo}">${blog.title}</a></td>
+   					-->
+   					<!-- 
+   						방법2:
+   						<td><a th:href="@{/blog/increse/hit(blogNo=${blog.blogNo})}">${blog.title}</a></td>
+   					-->
+   					<!--  
+   						파라미터가 2개일때 ,를 사용
+   						((blogNo=${blog.blogNo})),((blogName=${blog.blogName}))
+   					-->
+   					
+					<tr th:each="camp.vs:${CampList}">
+						<td th:text="${camp.firstImageUrl}"></td>
+						<td><a href="${contextPath}/camp/detail?CampNo=${camp.CampNo}">${camp.facltNm}</a></td>
+						<td th:text="${camp.lineIntro}"></td>
+						<td th:text="${camp.sigunguNm}"></td>
+						<td th:text="${camp.tel}"></td>
+						<td th:text="${camp.sbrsCl}"></td>
+					</tr>
+   						
+   				</tbody>
+   				<tfoot>
+   					<tr>
+   						<!-- th:utext="HTML구성요소포함텍스트 ex)tag 등" -->
+   						<td colspan="4" th:utext="${paging}"></td>
+   					</tr>
+   				</tfoot>
+   			</table>
+   		</div>
+   		
+   </div>
+   
+</body>
+</html>
