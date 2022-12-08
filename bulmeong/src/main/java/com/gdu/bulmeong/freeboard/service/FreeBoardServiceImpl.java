@@ -66,9 +66,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		// UserDTO loginUser = (UserDTO)session.getAttribute("loginUser"); 
 		
 		// String nickname = loginUser.getNickname();
-		String nickname = "nickname!";
-		String freeTitle = request.getParameter("title");
-		String freeContent = request.getParameter("content");
+		String nickname = "u03";
+		String freeTitle = request.getParameter("freeTitle");
+		String freeContent = request.getParameter("freeContent");
 		String freeIp = request.getRemoteAddr();
 		
 		FreeBoardDTO freeBoard = FreeBoardDTO.builder()
@@ -81,6 +81,8 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		
 		int result = freeBoardMapper.insertFreeBoard(freeBoard);
+		
+		System.out.println(result);
 			
 		try {
 			
@@ -89,8 +91,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			
 			out.println("<script>");
 			if(result > 0) {
-				out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='" + request.getContextPath() + "/freeboard/detail?freeNo=" + freeBoard.getFreeNo() + "'}");
-				out.println("else { location.href='" + request.getContextPath() + "/freeboard/list'}");
+				out.println("alert('게시글 등록에 성공하였습니다.');");
+				
+				// out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='" + request.getContextPath() + "/freeboard/detail?freeNo=" + freeBoard.getFreeNo() + "'}");
+				// out.println("else { location.href='" + request.getContextPath() + "/freeboard/list'}");
 			} else {
 				out.println("alert('게시글 등록에 실패하였습니다.');");
 				out.println("history.back();");

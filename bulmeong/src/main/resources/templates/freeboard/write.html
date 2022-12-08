@@ -6,6 +6,7 @@
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
 	<script>
+	
 		$(document).ready(function(){
 			
 			$('#content').summernote({
@@ -21,10 +22,47 @@
 					['height', ['height']]
 				]
 			});
+			
+			// 목록
+			$('#btn_list').click(function(){
+				location.href = '/freeboard/list';
+			});
+			
+			// 서브밋
+			$('#frm_write').submit(function(event){
+				if($('#title').val() == ''){
+					alert('제목은 필수입니다.');
+					event.preventDefault();
+					return;
+				}
+			});
+			
+		});
 	</script>
 	
 	
-	<h3>글쓰기!</h3>
+
+	
+	<div>
+	
+	<h3>작성 화면</h3>
+	
+	<form id="frm_write" action="@{/freeboard/add}" method="post">
+	
+		<div>
+			<label for="title">제목</label>
+			<input type="text" name="freeTitle" id="title">
+		</div>
+		<div>
+			<label for="content">내용</label>
+			<textarea name="freeContent" id="content" ></textarea>
+		</div>
+		<div>
+			<button class="button">완료</button>
+			<input type="button" value="목록" id="btn_list">
+		</div>
+	</form>
+</div>
 
 
 </body>
