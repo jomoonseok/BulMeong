@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link th:href='@{fullcalendar-5.11.3/lib/main.css}' rel='stylesheet' />
+    <script th:src='@{fullcalendar-5.11.3/lib/main.js}'></script>
+    <script th:src='@{fullcalendar/core/locales/ko.js}'></script>
+    
+    <style>
+    	#calendar {
+    		width: 600px;
+    	}
+    </style>
+    
+    <!-- 캘린더 스크립트 -->
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',  
+          locale: 'ko',  // 언어
+          timeZone: 'Asia/Seoul',  // 서울시간기준
+          selectable: true, // 선택가능하도록
+          // height: 650,  // 높이
+          firstDay: 1,  // 월화수목금토일순으로
+          titleFormat: function (date) {  // 월화수목금토일순으로
+            year = date.date.year;
+            month = date.date.month + 1;
+
+            return year + "년 " + month + "월";
+          }
+        });
+        calendar.render();
+      });
+      
+      document.getElementById('my-button').addEventListener('click', function() {
+      	var date = calendar.getDate();
+    	alert("The current date of the calendar is " + date.toISOString());
+      });
+		
+    </script>
+</head>
+<body>
+	
+	<div id='calendar'></div>
+	
+</body>
+</html>
