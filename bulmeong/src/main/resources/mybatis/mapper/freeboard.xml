@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper">
+
+	<!-- 1. 게시글 카운트 -->
+	<select id="selectFreeListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_BRD
+	</select>
+	
+	<!-- 2. 게시글 조회 -->
+	<select id="selectFreeListByMap" parameterType="Map" resultType="FreeBoardDTO">
+		SELECT A.FREE_NO, A.NICKNAME, A.FREE_TITLE, A.FREE_CREATE_DATE, A.FREE_HIT
+ 		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_NO DESC) AS ROW_NUM, FREE_NO, NICKNAME, FREE_TITLE, FREE_CREATE_DATE, FREE_HIT
+         		  FROM FREE_BRD) A
+         WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<!-- 3. 조회수 -->
+	<update id="updateHit" parameterType="int">
+		UPDATE FREE_BRD
+		   SET FREE_HIT = FREE_HIT + 1
+		 WHERE FREE_NO = #{freeNo}
+	</update>
+	
+	<!-- 4. 게시글 추가 -->
+	<insert id="insertFreeBoard" parameterType="FreeBoardDTO"  useGeneratedKeys="true" keyProperty="freeNo">
+
+		<selectKey keyProperty="freeNo" resultType="int" order="BEFORE">			   
+			SELECT FREE_BRD_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+
+      INSERT INTO FREE_BRD
+         (FREE_NO, NICKNAME, FREE_TITLE, FREE_CONTENT, FREE_CREATE_DATE, FREE_MODIFY_DATE, FREE_IP, FREE_HIT)
+      VALUES
+         (${freeNo}, #{nickname}, #{freeTitle}, #{freeContent}, TO_CHAR(SYSDATE, 'YY/MM/DD'), TO_CHAR(SYSDATE, 'YY/MM/DD'), #{freeIp}, 0)
+   </insert>
+   
+   <!-- 5. 특정 게시글 선택 -->
+   
+   <!-- 6. 게시글 수정 -->
+   
+   <!-- 7. 게시글 삭제 -->
+	
+
+	
+	
+</mapper>

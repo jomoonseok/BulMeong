@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<body>
+
+	<header th:replace="~{layout/header::header_layout}"></header>
+	
+	<script>
+		$(document).ready(function(){
+			
+			$('#content').summernote({
+				width: 800,
+				height: 400,
+				lang: 'ko-KR',
+				toolbar: [
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']]
+				]
+			});
+	</script>
+	
+	
+	<h3>글쓰기!</h3>
+
+
+</body>
+</html>
