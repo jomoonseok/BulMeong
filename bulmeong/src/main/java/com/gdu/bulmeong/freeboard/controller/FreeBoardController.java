@@ -18,6 +18,8 @@ public class FreeBoardController {
 	@Autowired
 	private FreeBoardService freeBoardService;
 	
+	
+	// 1. CRUD 기능
 	@GetMapping("/freeboard/list")
 	public String list(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
@@ -43,6 +45,37 @@ public class FreeBoardController {
 	@PostMapping("/freeboard/add")
 	public void add(HttpServletRequest request, HttpServletResponse response) {
 		freeBoardService.addFreeBoard(request, response);
+	}
+	
+	@GetMapping("/freeboard/detail")
+	public String detail(@RequestParam(value="freeNo", required=false, defaultValue="0") int freeNo, Model model) {
+		model.addAttribute("free", freeBoardService.getFreeBoardByNo(freeNo));
+		return "freeboard/detail";
+	}
+	
+	@PostMapping("/freeboard/edit")
+	public String edit(int freeNo, Model model) {
+		model.addAttribute("free", freeBoardService.getFreeBoardByNo(freeNo));
+		return "freeboard/edit";
+	}
+	
+	@PostMapping("/freeboard/modify")
+	public void modify(HttpServletRequest request, HttpServletResponse response) {
+		freeBoardService.modifyFreeBoard(request, response);
+	}
+	
+	
+	@PostMapping("/freeboard/remove")
+	public void remove(HttpServletRequest request, HttpServletResponse response) {
+		freeBoardService.removeFreeBoard(request, response);
+	}
+	
+	
+	// 2. 검색 기능
+	@GetMapping("/freeboard/search")
+	public String search(HttpServletRequest request, Model model) {
+		freeBoardService.findFreeobard(request, model);
+		return "freeboard/list";
 	}
 	 
 	

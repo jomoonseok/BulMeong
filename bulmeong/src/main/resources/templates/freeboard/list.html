@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head th:replace="~{layout/header::head('[BulMeong] 자유게시판')}"></head>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
@@ -15,6 +15,31 @@
 	
 	
 	<h3>자유게시판</h3>
+	<div>
+		<form id="frm_search" th:action="@{/freeboard/search}">
+			<select>
+				<option value="">전체기간</option>
+				<option value="">1일</option>
+				<option value="">1주일</option>
+				<option value="">1개월</option>
+				<option value="">1년</option>
+			</select>
+			<select id="column" name="column">
+				<option value="FREE_TITLE">제목</option>
+				<option value="FREE_CONTENT_FREE_CMT_CONTENT">게시글 + 댓글</option>
+				<option value="FREE_CONTENT">게시글</option>
+				<option value="FREE_BRD_NICKNAME">게시글 작성자</option>
+				<option value="FREE_CMT_CONTENT">댓글</option>
+				<option value="FREE_CMT_NICKNAME">댓글 작성자</option>
+			</select>
+			<input type="text" id="query" name="query">
+			<input type="submit" value="검색">
+		</form>
+	</div>
+	
+	
+	
+	
 	<div>
 		<input type="button" value="글쓰기" id="write">
 	</div>
@@ -40,12 +65,13 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="6">
-					<span class="paging" th:utext="${paging}"></span>
-				</td>
+				<td colspan="6" th:utext="${paging}"></td>
 			</tr>
 		</tfoot>
 	</table>
+	
+	
+	
 	
 
 

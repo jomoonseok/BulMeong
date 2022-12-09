@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<body>
+
+	<header th:replace="~{layout/header::header_layout}"></header>
+	
+	<script>
+	
+		$(document).ready(function(){
+			
+			// 1. 게시글 작성
+			$('#btn_write').click(function(){
+				location.href = '/freeboard/write';				
+			});
+			
+			// 2. 게시글 목록
+			$('#btn_list').click(function(){
+				location.href = '/freeboard/list';				
+			});
+			
+			// 3. 게시글 수정
+			$('#btn_edit').click(function(){
+				$('#frm_btn').attr('action', '/freeboard/edit');
+				$('#frm_btn').submit();
+			});
+			
+			// 4. 게시글 삭제
+			$('#btn_remove').click(function(){
+				if(confirm('게시글을 삭제하시겠습니까?')){
+					$('#frm_btn').attr('action', '/freeboard/remove');
+					$('#frm_btn').submit();
+				} else {
+					alert('취소되었습니다.');
+				}
+				
+			});
+			
+			
+		});
+	</script>
+
+	<div>
+		<input type="button" value="이전글" >
+		<input type="button" value="다음글" >
+		<input type="button" value="목록" id="btn_list">
+	</div>
+	
+	<a th:href="@{/freeboard/list}" >자유게시판</a>
+	<h3 th:text="${free.freeTitle}"></h3>
+	
+	<div>
+		<div>
+			<span th:text="${free.nickname}"></span>
+			<span>댓글</span><br>
+			<span>URL 복사</span>
+		</div>
+	</div>
+	
+	<hr>
+	
+	<div th:utext="${free.freeContent}"></div>
+	
+	<hr>
+	
+	
+	
+	<div>
+		<form id="frm_btn" method="post">
+			<input type="hidden" name="freeNo" th:value="${free.freeNo}">
+			<input type="button" value="글쓰기" id="btn_write">
+			<input type="button" value="목록" th:onclick="|location.href='@{/freeboard/list}'|">
+			<input type="button" value="수정" id="btn_edit">
+			<input type="button" value="삭제" id="btn_remove">
+			<input type="button" value="TOP">
+		</form>	
+	</div>
+	
+	
+	
+	
+	
+	
+	 
+
+
+</body>
+</html>
