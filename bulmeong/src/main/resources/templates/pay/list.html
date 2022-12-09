@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('목록')}"></head>
+<body>
+   <div>
+   		
+   		<h1>전체 캠핑장 목록</h1> 
+   		
+   		<form action="/camp/list" method="post">
+   		
+   		</form>
+   		
+   		<div>
+   			<table border="1">
+   				<thead>
+	   				<tr>
+	   					<td>대표이미지</td>
+	   					<td>캠핑장명</td> 
+	   					<td>한줄소개</td> 
+	   					<td>시군구</td>  
+	   					<td>전화</td> 
+	   					<td>부대시설</td> 
+	   				</tr>
+   				</thead>
+   				<tbody>
+   					
+   					
+					<tr th:each="camp.vs:${CampList}">
+						<td th:text="${camp.firstImageUrl}"></td>
+						<td><a th:href="@{/camp/detail(CampNo=${camp.CampNo})}" th:text="${camp.facltNm}"></a></td>
+						<td th:text="${camp.lineIntro}"></td>
+						<td th:text="${camp.sigunguNm}"></td>
+						<td th:text="${camp.tel}"></td>
+						<td th:text="${camp.sbrsCl}"></td>
+					</tr>
+   						
+   				</tbody>
+   				<tfoot>
+   					<tr>
+   						<td colspan="7" th:utext="${paging}"></td>
+   					</tr>
+   				</tfoot>
+   			</table>
+   		</div>
+   		
+   </div>
+   
+</body>
+</html>
