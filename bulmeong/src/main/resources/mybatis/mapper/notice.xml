@@ -6,6 +6,39 @@
 
 <mapper namespace="com.gdu.bulmeong.notice.NoticeMapper">
 
+	<select id="selectNoticeListCount" parameterType="Map" resultType="NoticeDTO">
+		SELECT COUNT(*)
+		  FROM NOTICE
+	</select>
 	
+	<select id="selectNoticeListByMap" parameterType="Map" resultType="NoticeDTO">
+		SELECT A.RN, A.NOTICE_NO, A.NOTICE_TITLE, A.NOTICE_CONTENT, A.NOTICE_HIT, A.NOTICE_CREATE_DATE, A.NOTICE_MODIFY_DATE, A.ID
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY NOTICE_NO DESC) AS RN, NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID
+		  		  FROM NOTICE) A
+		 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<insert id="insertNotice" parameterType="NoticeDTO">
+		<selectKey keyProperty="noticeNo" resultType="int" order="BEFORE">
+			SELECT NOTICE_NO_SEQ.NEXTVAL
+			  FROM DUAL
+		</selectKey>
+		INSERT INTO NOTICE
+			(NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID)
+		VLAUES
+			(#{noticeNo}, #{noticeTitle}, #{noticeContent}, 0, SYSDATE, SYSDATE, #{id})
+	</insert>
+	
+	<update id="updateNoticeHit" parameterType="int">
+		UPDATE NOTICE
+		   SET NOTICE_HIT = NOTICE_HIT + 1
+		 WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	
+	<select id="selectNoticeByNo" parameterType="int" resultType="NoticeDTO">
+		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID
+		  FROM NOTICE
+		 WHERE NOTICE_NO = #{noticeNo}
+	</select>
 	
 </mapper>

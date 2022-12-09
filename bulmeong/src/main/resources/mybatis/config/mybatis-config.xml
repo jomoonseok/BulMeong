@@ -11,8 +11,8 @@
 	</settings>
 	
 	<typeAliases>
-		<typeAlias type="com.gdu.bulmeong.qna.domain.QNADTO" alias="QNADTO" />
-		<typeAlias type="com.gdu.bulmeong.faq.domain.FAQDTO" alias="FAQDTO" />
+		<typeAlias type="com.gdu.bulmeong.qna.domain.QnaDTO" alias="QnaDTO" />
+		<typeAlias type="com.gdu.bulmeong.faq.domain.FaqDTO" alias="FaqDTO" />
 		<typeAlias type="com.gdu.bulmeong.notice.domain.NoticeDTO" alias="NoticeDTO" />
 	</typeAliases>
 

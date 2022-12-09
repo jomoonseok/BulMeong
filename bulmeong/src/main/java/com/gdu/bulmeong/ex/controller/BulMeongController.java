@@ -11,13 +11,11 @@ public class BulMeongController {
 
 	@Autowired 
 	private BulMeongService bulMeongService;
-	 
-	
+
 	@GetMapping("/")
 	public String index() {
 		return "index";
 	}
-	
 	
 	
 }

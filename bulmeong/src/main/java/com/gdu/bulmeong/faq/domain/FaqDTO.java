@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class FAQDTO {
+public class FaqDTO {
 	private int faqNo;
 	private String faqTitle;
 	private String faqContent;

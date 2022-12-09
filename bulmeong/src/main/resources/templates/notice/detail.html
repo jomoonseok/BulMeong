@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('공지사항')}"></head>
+<style>
+	.blind {
+		display: none;
+	}
+	
+	.dislike {
+		height: 30px;
+		width: 30px;
+	}
+	
+	
+	
+</style>
+<body>
+
+	<div>
+		
+		<div th:replace="~{layout/header::body_title}"></div>
+		
+		<h3>${notice.niticeTitle}</h3>
+		
+		<div>
+			<span th:text="|작성일 ${#dates.format(notice.noticeCreateDate, 'yyyy-MM-dd')}|"></span>
+			&nbsp;&nbsp;&nbsp;
+			<span th:text="|수정일 ${#dates.format(notice.noticeModifyDate, 'yyyy-MM-dd')}|"></span>
+		</div>
+		
+		<div>
+			<span th:text="|조회수 ${#numbers.formatInteger(notice.noticeHit,1,'COMMA')}|"></span>
+		</div>
+		
+		<hr>
+		
+		<div th:text="${notice.noticeContent}"></div>
+		
+		
+		<div id="only_admin">
+			<form id="frm_btn" method="post">
+				<input type="hidden" name="noticeNo" value="${notice.noticeNo}">
+				<input type="button" value="수정" id="btn_edit_notice" class="btn_edit_notice"> 
+				<input type="button" value="삭제" id="btn_remove_notice" class="btn_remove_notice">
+				<input type="button" value="목록" onclick="location.href='/notice/list'">
+			</form>
+		</div>
+		<script th:inline="javascript">
+			if([[$(loginUser.id != 'admin')]]) {
+				$('#only_admin').hide();
+			} else {
+				$('#btn_edit_notice').click(function(){
+					$('#frm_btn').attr('action', '/notice/edit');
+					$('#frm_btn').submit();
+				});
+				$('#btn_remove_notice').click(function(){
+					if(confirm('삭제?')){
+						$('#frm_btn').attr('action', '/notice/remove');
+						$('#frm_btn').submit();
+					}
+				});
+			}
+			
+		</script>
+		
+		<span></span>
+		
+		<script>
+		
+		fn_gallCommentCount();
+		fn_switchGallCommentList();
+		fn_addGallComment();
+		fn_gallCommentList();
+		fn_changeGallCommentPage();
+		fn_removeGallComment();
+		fn_switchGallReplyArea();
+		
+		
+		function fn_gallCommentCount() {
+			$.ajax({
+				type: 'get',
+				url: '${contextPath}/gall/comment/getCount',
+				data: 'gallNo=${gall.gallNo}',
+				dataType: 'json',
+				success: function(resData) {
+					$('#gallComment_count').text(resData.gallCommentCount);
+				}  // success
+			});  // ajax
+		}  // fn_gallCommentCount
+		
+		function fn_switchGallCommentList() {
+			$('#btn_gallComment_list').click(function(){
+				$('#gallComment_area').toggleClass('blind');
+			});
+		}  // fn_switchGallCommentList
+		
+		function fn_addGallComment() {
+			$('#btn_add_gallComment').click(function() {
+				if($('#gallComment').val() == '') {
+					alert('댓글 내용을 입력하세요.');
+					return;
+				}
+				$.ajax({
+					type: 'post',
+					url: '${contextPath}/gall/comment/add',
+					data: $('#frm_add_gallComment').serialize(),
+					dataType: 'json',
+					success: function(resData){ 
+						if(resData.isGallCommentAdd) {
+							alert('댓글이 등록되었습니다.');
+							$('#gallCmtContent').val('');
+							fn_gallCommentList();
+							fn_gallCommentCount();
+						}
+					}  // success
+				});  // ajax
+			});  // click
+		}  // fn_addGallComment
+		
+		function fn_gallCommentList() {
+			$.ajax({
+				type: 'get',
+				url:'${contextPath}/gall/comment/list',
+				data: 'gallNo=${gall.gallNo}&page=' + $('#page').val(),
+				dataType: 'json',
+				success: function(resData) {
+					$('#gallComment_list').empty();
+					$.each(resData.gallCommentList, function(i, gallComment){
+						var div = '';
+						if(gallComment.depth == 0) {
+							div += '<div>';
+						} else {
+							div += '<div style="margin-left: 40px;">';
+						}
+						if(gallComment.state == 1) {
+							div += '<div>';
+							div += gallComment.gallCmtContent
+							div += '<input type="button" value="삭제" class="btn_gallComment_remove" data-gallCmtNo="' + gallComment.gallCmtNo + '">';
+							if(gallComment.depth == 0) {
+								div += '<input type="button" value="답글" class="btn_gallReply_area">';
+							}
+							div += '</div>';
+						} else {
+							if(gallComment.depth == 0) {
+								div += '<div>삭제된 댓글입니다.</div>';
+							} else {
+								div += '<div>삭제된 답글입니다.</div>';
+							}
+						}
+						div += '<div>';
+						moment.locale('ko-KR');
+						div += '<span style="font-size: 12px; color: silver;">' + moment(gallComment.gallCmtCreateDate).format('YYYY. MM. DD hh:mm') + '</span>';
+						div += '</div>';
+						div += '<div style="margin-left:40px;" class="gallReply_area blind">';
+						div += '<form class="frm_gallReply">';
+						div += '<input type="hidden" name="gallNo" value="' + gallComment.gallNo + '">';
+						div += '<input type="hidden" name="groupNo" value="' + gallComment.gallCmtNo + '">';
+						div += '<input typt="text" name="gallCmtContent" placeholder="답글을 작성하려면 로그인을 해주세요.">';
+						
+						div += '<input type="button" value="답글작성완료" class="btn_gallReply_add">';
+						div += '</form>';
+						div += '</div>';
+						div += '</div>';
+						$('#gallComment_list').append(div);
+						$('#gallComment_list').append('<div style="border-bottom: 1px dotted gray;"></div>');
+					});  // $.each
+					$('#paging').empty();
+					var pageUtil = resData.pageUtil;
+					var paging = '';
+					if(pageUtil.beginPage != 1) {
+						paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+					}
+					for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+						if(p == $('#page').val()){
+							paging += '<strong>' + p + '</strong>';
+						} else {
+							paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
+						}
+					}
+					if(pageUtil.endPage != pageUtil.totalPage){
+						paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+					}
+					$('#paging').append(paging);
+				}  // success
+			}); // ajax
+		}  // fn_gallCommentList
+		
+		function fn_changeGallCommentPage() {
+			$(document).on('click', '.enable_link', function() {
+				$('#page').val( $(this).data('page') );
+				fn_gallCommentList();
+			});
+		}  //fn_changeGallCommentPage
+		
+		function fn_removeGallComment(){
+			$(document).on('click', '.btn_gallComment_remove', function(){
+				if(confirm('삭제된 댓글은 복구할 수 없습니다. 댓글을 삭제할까요?'));
+				$.ajax({
+					type: 'post',
+					url: '${contextPath}/gall/comment/remove',
+					data: 'gallCmtNo=' + $(this).data('gallCmtNo'),
+					dataType: 'json',
+					success: function(resData){ 
+						if(resData.isGallCommentRemove){
+							alert('댓글이 삭제되었습니다.');
+							fn_gallCommentList();
+							fn_gallCommentCount();
+						}
+					}
+				});
+			});
+		}  // fn_removeGallComment
+		
+		function fn_switchGallReplyArea() {
+			$(document).on('click', '.btn_gallReply_area', function() {
+				$(this).parent().next().next().toggleClass('blind');
+			});
+		}  // fn_switchGallReplyArea
+		
+		function fn_addGallCommentReply() {
+			$(document).on('click', '.btn_gallReply_add', function (){
+				if($(this).prev().val() == ''){
+					alert('답글 내용을 입력하세요.');
+					return;
+				}
+				$.ajax({
+					type: 'post',
+					url: '${contextPath}/gall/comment/reply/add',
+					data: $(this).closest('.frm_gallReply').serialize(),
+					dataType: 'json',
+					success: function(resData) {
+						if(resData.isGallCommentAdd) {
+							alert('답글이 등록되었습니다.');
+							fn_gallCommentList();
+							fn_gallCommentCount();
+						}
+					}
+				});
+			});
+		}  // fn_addGallCommentReply
+		
+		</script>
+		
+		
+	</div>
+
+</body>
+</html>

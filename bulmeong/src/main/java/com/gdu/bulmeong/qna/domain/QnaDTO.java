@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class QNADTO {
+public class QnaDTO {
 	private int qnaNo;
 	private String id;
 	private String qnaTitle;

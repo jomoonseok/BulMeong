@@ -3,13 +3,13 @@ package com.gdu.bulmeong.faq.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gdu.bulmeong.faq.mapper.FAQMapper;
+import com.gdu.bulmeong.faq.mapper.FaqMapper;
 
 @Service
-public class FAQServiceImpl implements FAQService {
+public class FaqServiceImpl implements FaqService {
 	
 	@Autowired 
-	private FAQMapper faqMapper;
+	private FaqMapper faqMapper;
 	 
 	
 }

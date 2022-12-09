@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('공지사항')}"></head>
+<body>
+
+	<div>
+	
+	<div th:replace="~{layout/header::body_title}"></div>
+	
+	<h3>불멍 공지사항</h3>
+	
+	<div th:if="${loginUser != 'admin'}">
+		<input type="button" value="게시글 작성하기" id="btn_gallWrite">
+	</div>
+	
+	<div>
+		<table border="1">
+			<thead>
+				<tr>
+					<td>글번호</td>
+					<td>제목</td>
+					<td>조회수</td>
+					<td>작성일</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="notice,vs:${noticeList}">
+					<td th:text="${beginNo - vs.index}"></td>
+					<td><a th:href="@{/notice/increase/hit(noticeNo=${notice.noticeNo})}" th:text="${notice.noticeTitle}"></a></td>				
+					<td th:text="${notice.noticeHit}"></td>
+					<td th:text="${notice.noticeCreateDate}"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4" th:utext="${paging}"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	
+	<div id="picture"></div>
+	
+</div>
+
+
+</body>
+</html>
