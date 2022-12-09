@@ -13,6 +13,9 @@
 	<typeAliases>
 		<typeAlias type="com.gdu.bulmeong.ex.domain.BulMeongDTO" alias="BulMeongDTO" />
 		<typeAlias type="com.gdu.bulmeong.ex2.domain.BulMeong2DTO" alias="BulMeong2DTO" />
+		<typeAlias type="com.gdu.bulmeong.users.domain.UsersDTO" alias="UsersDTO" />
+		<typeAlias type="com.gdu.bulmeong.users.domain.UsersRetireDTO" alias="UsersRetireDTO" />
+		<typeAlias type="com.gdu.bulmeong.users.domain.UsersSleepDTO" alias="UsersSleepDTO" />
 	</typeAliases>
 
 </configuration>
