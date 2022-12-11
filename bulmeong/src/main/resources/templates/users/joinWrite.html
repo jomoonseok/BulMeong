@@ -4,8 +4,110 @@
 <head>
 	<script>
 	$(function(){
+		//fn_idCheck();
+		//fn_pwCheck();
+		//fn_pwCheckAgain();
+		//fn_nameCheck();
+		//fn_mobileCheck();
 		fn_birthmonth();
+		//fn_emailCheck();
+		//fn_join();
 	});
+	
+	// 전역변수 (각종 검사를 통과하였는지 점검하는 플래그 변수)
+	var idPass = false;
+	var pwPass = false;
+	var rePwPass = false;
+	var namePass = false;
+	var mobilePass = false;
+	var authCodePass = false;
+	
+	// 1. 아이디 중복체크 & 정규식
+	function fn_idCheck(){
+		
+		$('#id').keyup(function(){
+			
+			// 입력한 아이디
+			let idValue = $(this).val();
+			
+			// 정규식(4~20자, 소문자+숫자+특수문자(-,_)조합, 첫 글자는 특수문자 제외(-,_))
+			let regId = /^[0-9a-z-_]{6,19}$/;
+			
+			// 정규식 검사
+			if(regId.test(idValue) == false){
+				$('#msg_id').text('6~20자의 소문자, 숫자, 특수문자(-,_)를 조합해야 합니다.');
+				idPass = false;
+				return;  // 코드 진행 방지(이후에 나오는 ajax 실행을 막음)
+			}
+			
+			// 아이디 중복체크
+			$.ajax({
+				/* 요청 */
+				type: 'get',
+				url: '@{/user/checkReduceId}',
+				data: 'id=' + idValue,
+				/* 응답 */
+				dataType: 'json',
+				success: function(resData){  // resData = {"isUser": true, "isRetireUser": false}
+					if(resData.isUser || resData.isRetireUser){
+						$('#msg_id').text('이미 사용중이거나 탈퇴한 아이디입니다.');
+						idPass = false;
+					} else {
+						$('#msg_id').text('사용 가능한 아이디입니다.');
+						idPass = true;
+					}
+				}
+			});  // ajax
+			
+		});  // keyup
+		
+	}  // fn_idCheck
+	
+	// 2. 비밀번호
+	function fn_pwCheck(){
+		
+		$('#pw').keyup(function(){
+			
+			// 입력한 비밀번호
+			let pwValue = $(this).val();
+			
+			// 정규식(8~20자, 소문자+대문자+숫자+특수문자8종(!@#$%^&*) 3개 이상 조합)
+			let regPw = /^[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+			
+			// 3개 이상 조합 확인
+			let validatePw = /[0-9]/.test(pwValue)        // 숫자가 있으면 true, 없으면 false
+			               + /[a-z]/.test(pwValue)        // 소문자가 있으면 true, 없으면 false
+			               + /[A-Z]/.test(pwValue)        // 대문자가 있으면 true, 없으면 false
+			               + /[!@#$%^&*]/.test(pwValue);  // 특수문자8종이 있으면 true, 없으면 false
+			
+			// 정규식 및 3개 이상 조합 검사
+			if(regPw.test(pwValue) == false || validatePw < 3){
+				$('#msg_pw').text('8~20자의 소문자, 대문자, 숫자, 특수문자(!@#$%^&*)를 3개 이상 조합해야 합니다.');
+				pwPass = false;
+			} else {
+				$('#msg_pw').text('사용 가능한 비밀번호입니다.');
+				pwPass = true;
+			}
+			               
+		});  // keyup
+		
+	}  // fn_pwCheck
+	
+	// 3. 비밀번호 확인
+	function fn_pwCheckAgain(){
+		$('#re_pw').keyup(function(){
+			
+			let rePwValue = $(this).val();
+			
+			if(rePwValue != '' && rePwValue != $('#pw').val()){
+				$('#msg_re_pw').text('비밀번호를 확인하세요.');
+				rePwPass = false;
+			} else {
+				$('#msg_re_pw').text('');
+				rePwPass = true;
+			}
+		});
+	} // fn_pwCheckAgain
 	
 	function fn_birthmonth(){
 		var month = '<option value="">월</option>';
@@ -24,64 +126,167 @@
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
-
-	<!-- 약관 동의 여부 -->
-	<input type="hidden" name="location" th:value="${location}">
-	<input type="hidden" name="promotion" th:value="${promotion}">
-
-	<!-- 아이디 -->
-	<div>
-		<label for="id">아이디*</label>
-		<input type="text" name="id" id="id">
-		<span id="msg_id"></span>
-	</div>
 	
-	<!-- 비밀번호 -->
-	<div>
-		<label for="pw">비밀번호*</label>
-		<input type="password" name="pw" id="pw">
-		<span id="msg_pw"></span>
-	</div>
+	<h1>회원 가입</h1>
 	
-	<!-- 비밀번호 재확인 -->
-	<div>
-		<label for="re_pw">비밀번호 확인*</label>
-		<input type="password" id="re_pw">
-		<span id="msg_re_pw"></span>
-	</div>
+	<div>* 표시는 필수 입력사항입니다.</div>
 	
-	<!-- 닉네임 -->
-	<div>
-		<label for="nickname">닉네임*</label>
-		<input type="text" name="nickname" id="nickname">
-		<span id="msg_nickname"></span>
-	</div>
+	<hr>
 	
-	<!-- 휴대전화 -->
-	<div>
-		<label for="mobile">휴대전화*</label>
-		<input type="text" name="mobile" id="mobile">
-		<span id="msg_mobile"></span>
-	</div>
+	<form id="frm_join" action="@{/user/join}" method="post">
 	
-	<!-- 성별 -->
-	<div>
-		<span>성별*</span>
-		<input type="radio" name="gender" id="none" value="NO" checked="checked">
-		<label for="none">선택 안함</label>
-		<input type="radio" name="gender" id="male" value="M">
-		<label for="male">남자</label>
-		<input type="radio" name="gender" id="female" value="F">
-		<label for="female">여자</label>
-	</div>
+		<!-- 약관 동의 여부 -->
+		<input type="hidden" name="location" th:value="${location}">
+		<input type="hidden" name="promotion" th:value="${promotion}">
 	
-	<!-- 생년월일 -->
-	<div>
-		<label for="birthyear">생년월일*</label>
-		<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" >
-		<select name="birthmonth" id="birthmonth"></select>
-		<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일" >
-	</div>
+		<!-- 아이디 -->
+		<div>
+			<label for="id">아이디*</label>
+			<input type="text" name="id" id="id">
+			<span id="msg_id"></span>
+		</div>
+		
+		<!-- 비밀번호 -->
+		<div>
+			<label for="pw">비밀번호*</label>
+			<input type="password" name="pw" id="pw">
+			<span id="msg_pw"></span>
+		</div>
+		
+		<!-- 비밀번호 재확인 -->
+		<div>
+			<label for="re_pw">비밀번호 확인*</label>
+			<input type="password" id="re_pw">
+			<span id="msg_re_pw"></span>
+		</div>
+		
+		<!-- 이름 -->
+		<div>
+			<label for="nickname">이름*</label>
+			<input type="text" name="nickname" id="nickname">
+			<span id="msg_nickname"></span>
+		</div>
+		
+		<!-- 닉네임 -->
+		<div>
+			<label for="nickname">닉네임*</label>
+			<input type="text" name="nickname" id="nickname">
+			<span id="msg_nickname"></span>
+		</div>
+		
+		<!-- 휴대전화 -->
+		<div>
+			<label for="mobile">휴대전화*</label>
+			<input type="text" name="mobile" id="mobile">
+			<span id="msg_mobile"></span>
+		</div>
+		
+		<!-- 성별 -->
+		<div>
+			<span>성별*</span>
+			<input type="radio" name="gender" id="none" value="NO" checked="checked">
+			<label for="none">선택 안함</label>
+			<input type="radio" name="gender" id="male" value="M">
+			<label for="male">남자</label>
+			<input type="radio" name="gender" id="female" value="F">
+			<label for="female">여자</label>
+		</div>
+		
+		<!-- 생년월일 -->
+		<div>
+			<label for="birthyear">생년월일</label>
+			<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" >
+			<select name="birthmonth" id="birthmonth"></select>
+			<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일" >
+		</div>
+		
+		<div>
+			<input type="text" onclick="fn_execDaumPostcode()" name="postcode" id="postcode" placeholder="우편번호" readonly="readonly">
+			<input type="button" onclick="fn_execDaumPostcode()" value="우편번호 찾기"><br>
+			<input type="text" name="roadAddress" id="roadAddress" placeholder="도로명주소"  readonly="readonly">
+			<input type="text" name="jibunAddress" id="jibunAddress" placeholder="지번주소"  readonly="readonly"><br>
+			<span id="guide" style="color:#999;display:none"></span>
+			<input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소">
+			<input type="text" name="extraAddress" id="extraAddress" placeholder="참고항목" readonly="readonly">
+			<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+			<script>
+			    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+			    function fn_execDaumPostcode() {
+			        new daum.Postcode({
+			            oncomplete: function(data) {
+			                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+			
+			                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+			                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+			                var roadAddr = data.roadAddress; // 도로명 주소 변수
+			                var extraRoadAddr = ''; // 참고 항목 변수
+			
+			                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+			                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+			                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+			                    extraRoadAddr += data.bname;
+			                }
+			                // 건물명이 있고, 공동주택일 경우 추가한다.
+			                if(data.buildingName !== '' && data.apartment === 'Y'){
+			                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+			                }
+			                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+			                if(extraRoadAddr !== ''){
+			                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+			                }
+			
+			                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+			                document.getElementById('postcode').value = data.zonecode;
+			                document.getElementById("roadAddress").value = roadAddr;
+			                document.getElementById("jibunAddress").value = data.jibunAddress;
+			                
+			                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+			                if(roadAddr !== ''){
+			                    document.getElementById("extraAddress").value = extraRoadAddr;
+			                } else {
+			                    document.getElementById("extraAddress").value = '';
+			                }
+			
+			                var guideTextBox = document.getElementById("guide");
+			                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+			                if(data.autoRoadAddress) {
+			                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+			                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+			                    guideTextBox.style.display = 'block';
+			
+			                } else if(data.autoJibunAddress) {
+			                    var expJibunAddr = data.autoJibunAddress;
+			                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+			                    guideTextBox.style.display = 'block';
+			                } else {
+			                    guideTextBox.innerHTML = '';
+			                    guideTextBox.style.display = 'none';
+			                }
+			            }
+			        }).open();
+			    }
+			</script>
+		</div>
+		
+		<!-- 이메일 -->
+		<div>
+			<label for="email">이메일*</label>
+			<input type="text" name="email" id="email">
+			<input type="button" value="인증번호받기" id="btn_getAuthCode">
+			<span id="msg_email"></span><br>
+			<input type="text" id="authCode" placeholder="인증코드 입력">
+			<input type="button" value="인증하기" id="btn_verifyAuthCode">
+		</div>
+		
+		<hr>
+		
+		<!-- 버튼 -->
+		<div>
+			<button>가입하기</button>
+			<input type="button" value="취소하기" onclick="location.href='${contextPath}'">
+		</div>
+	
+	</form>
 	
 </body>
 </html>
