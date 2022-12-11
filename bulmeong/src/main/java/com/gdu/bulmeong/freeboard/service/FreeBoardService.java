@@ -20,4 +20,6 @@ public interface FreeBoardService {
 	// 2. 검색 기능
 	public void findFreeobard(HttpServletRequest request, Model model);
 	
+	// 3. 이전글 다음글
+	public FreeBoardDTO findPrevNextBoard(HttpServletRequest request, HttpServletResponse response);
 }

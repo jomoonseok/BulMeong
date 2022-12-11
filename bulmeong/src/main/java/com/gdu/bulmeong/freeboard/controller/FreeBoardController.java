@@ -77,7 +77,17 @@ public class FreeBoardController {
 		freeBoardService.findFreeobard(request, model);
 		return "freeboard/list";
 	}
-	 
+	
+	// 3. 이전글 다음글
+	@GetMapping("freeboard/preview")
+	public void preview(HttpServletRequest request, HttpServletResponse response) {
+		freeBoardService.findPrevNextBoard(request, response);
+	}
+	
+	@GetMapping("freeboard/nextview")
+	public void nextview(HttpServletRequest request, HttpServletResponse response) {
+		freeBoardService.findPrevNextBoard(request, response);
+	}
 	
 	
 	

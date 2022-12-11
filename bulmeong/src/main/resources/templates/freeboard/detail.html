@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
+
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
@@ -37,12 +38,31 @@
 			});
 			
 			
+			$('#btn_preview').click(function(){
+				location.href = '/freeboard/preview';
+			});
+			
+			$('#btn_nextview').click(function(){
+				location.href = '/freeboard/nextview';
+			});
+			
+			$('#btn_top').click(function(){
+				window.scrollTo({ top: 0, behavior: "smooth" });
+			});
+			
+			
+			
+			
+			
+			
+			
 		});
 	</script>
+	
 
 	<div>
-		<input type="button" value="이전글" >
-		<input type="button" value="다음글" >
+		<input type="button" value="이전글" id="btn_preview">
+		<input type="button" value="다음글" id="btn_nextview">
 		<input type="button" value="목록" id="btn_list">
 	</div>
 	
@@ -72,7 +92,7 @@
 			<input type="button" value="목록" th:onclick="|location.href='@{/freeboard/list}'|">
 			<input type="button" value="수정" id="btn_edit">
 			<input type="button" value="삭제" id="btn_remove">
-			<input type="button" value="TOP">
+			<input type="button" value="TOP" id="btn_top">
 		</form>	
 	</div>
 	

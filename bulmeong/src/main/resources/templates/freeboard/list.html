@@ -55,8 +55,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="free, vs : ${freeBoardList}">
-				<td th:text="${beginNo - vs.index}"></td>
+			<tr th:each="free : ${freeBoardList}">
+				<td th:text="${free.freeNo}"></td>
 				<td><a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="${free.freeTitle}"></a></td>
 				<td th:text="${free.nickname}"></td>
 				<td th:text="${free.freeCreateDate}"></td>

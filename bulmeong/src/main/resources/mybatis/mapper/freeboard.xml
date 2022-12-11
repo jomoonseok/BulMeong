@@ -82,9 +82,9 @@
          		  FROM FREE_BRD
 		<where>
 			<if test="column == 'FREE_TITLE'">${column} LIKE '%' || #{query} || '%') A</if>
+			<if test="column == 'FREE_CONTENT'">${column} LIKE '%' || #{query} || '%') A</if>
 			<!--
 			<if test="column == 'FREE_CONTENT or column == 'FREE_CMT_CONTENT'">${column} LIKE '%' || #{query} || '%') A</if>
-			<if test="column == 'FREE_CONTENT'">${column} LIKE '%' || #{query} || '%') A</if>
 			<if test="column == 'A.NICKNAME'">${column} LIKE '%' || #{query} || '%') A</if>
 			<if test="column == 'FREE_CMT_CONTENT'">${column} LIKE '%' || #{query} || '%') A</if>
 			<if test="column == 'FREE_CMT_NICKNAME'">${column} LIKE '%' || #{query} || '%') A</if>
@@ -95,9 +95,33 @@
 	
 	
 	<!-- # 이전글, 다음글 기능 구현 -->
-	<select id="prevNextBoard">
-		
+	
+	<!-- 
+	SELECT *
+	  FROM FREE_BRD
+	 WHERE NICKNAME = (SELECT PREV_NO
+	                     FROM (SELECT NICKNAME, NICKNAME(ID, 1, -1) OVER(ORDER BY NICKNAME) AS PREV_NO 
+	                             FROM FREE_BRD) B
+	                    WHERE NICKNAME = :NICKNAME)
+
+	SELECT * FROM BOARD
+	WHERE ID = (SELECT PREV_NO FROM (SELECT ID, LEAD(ID, 1, -1) OVER(ORDER BY ID) AS PREV_NO FROM BOARD) B
+	WHERE ID = :ID)
+	-->
+	
+	
+	<!--
+	<select id="prevNextBoard" parameterType="int" resultType="int">
+		SELECT A.*
+		  FROM (SELECT FREE_NO, FREE_TITLE,
+			      LEAD(FREE_NO, 1) OVER (ORDER BY FREE_NO DESC) AS NEXT_NO,
+			      LEAD(FREE_TITLE, 1, '다음글이 없습니다') OVER (ORDER BY FREE_NO DESC) AS NEXT_TITLE,
+			      LAG(FREE_NO, 1) OVER (ORDER BY FREE_NO DESC) AS PRE_NO,
+			      LAG(FREE_TITLE, 1, '이전글이 없습니다') OVER (ORDER BY FREE_NO DESC) AS PRE_TITLE
+			      FROM FREE_BRD) A
+		 WHERE A.FREE_NO = #{freeNo};	
 	</select>
+	-->
 	
 
 	

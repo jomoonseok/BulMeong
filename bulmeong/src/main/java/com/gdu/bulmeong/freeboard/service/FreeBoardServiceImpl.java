@@ -242,5 +242,38 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	}
 	
 	
+	@Override
+	public FreeBoardDTO findPrevNextBoard(HttpServletRequest request, HttpServletResponse response) {
+		
+		int freeNo = Integer.parseInt(request.getParameter("freeNo"));
+		int result = freeBoardMapper.prevNextBoard(freeNo);
+		
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			out.println("<script>");
+			if(result > 0) {
+				out.println("alert('게시글이 삭제되었습니다.');");
+			} else {
+				out.println("alert('게시글이 삭제되지 않았습니다.");
+			}
+			out.println("</script>");
+			out.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return freeBoardMapper.selectFreeBoardByNo(freeNo);
+		
+		
+				
+		
+	}
+	
+	
+	
 
 }
