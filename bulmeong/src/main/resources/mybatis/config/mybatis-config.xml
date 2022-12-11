@@ -11,8 +11,7 @@
 	</settings>
 	
 	<typeAliases>
-		<typeAlias type="com.gdu.bulmeong.ex.domain.BulMeongDTO" alias="BulMeongDTO" />
-		<typeAlias type="com.gdu.bulmeong.ex2.domain.BulMeong2DTO" alias="BulMeong2DTO" />
+		<typeAlias type="com.gdu.bulmeong.camp.domain.CampDTO" alias="CampDTO" />
 	</typeAliases>
 
 </configuration>
