@@ -2,13 +2,17 @@ package com.gdu.bulmeong.freeboard.service;
 
 import java.util.Map;
 
-import org.springframework.ui.Model;
+import javax.servlet.http.HttpServletRequest;
+
+import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
 
 public interface FreeBoardCmtService {
 	
-	public Map<String, Object> getCommentCount(int freeNo);
-	public void getFreeCmtList(Model model);
-
+	
+	public Map<String, Object> getCmtCount(int freeNo);
+	public Map<String, Object> getCmtList(HttpServletRequest request);
+	public Map<String, Object> addCmt(FreeBoardCmtDTO freeCmt);
+	
 
 	
 }

@@ -10,7 +10,9 @@ import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
 @Mapper
 public interface FreeBoardCmtMapper {
 	
-	public int selectCommentCount(int freeNo);
-	public List<FreeBoardCmtDTO> selectCommentList(Map<String, Object> map);
+	public int selectCmtCount(int freeNo);
+	public List<FreeBoardCmtDTO> selectCmtList(Map<String, Object> map);
+	public int insertCmt(FreeBoardCmtDTO freeCmt);
+
 
 }
