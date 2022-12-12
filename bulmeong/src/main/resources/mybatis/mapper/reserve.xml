@@ -7,7 +7,7 @@
 <mapper namespace="com.gdu.bulmeong.reserve.mapper.ReserveMapper">
 	
 	<select id="selectTentByCampNo" parameterType="int" resultType="TentDTO">
-		SELECT TENT_NO, CAMP_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_RESERVE_DAY, TENT_SUM, TENT_STATE
+		SELECT TENT_NO, CAMP_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_RESERVE_DAY, TENT_SUM, TENT_STATE, TENT_IMAGE
 		  FROM CAMP_TENT
 		 WHERE CAMP_NO = #{campNo} 
 	</select>

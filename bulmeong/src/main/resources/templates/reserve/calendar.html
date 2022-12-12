@@ -3,7 +3,9 @@
 <head th:insert="~{layout/header::head('BulMeong')}"></head>
 
 	<link th:href='@{fullcalendar-5.11.3/lib/main.css}' rel='stylesheet' />
+	<link th:href='@{fakeLoader.js-master/dist/fakeLoader.min.css}' rel='stylesheet' />
     <script th:src='@{fullcalendar-5.11.3/lib/main.js}'></script>
+    <script th:src='@{fakeLoader.js-master/dist/fakeLoader.min.js}'></script>
     
    <style>
     	
@@ -29,6 +31,11 @@
     		margin: 0 10px;
     	}
     	
+    	.left_side > input[type=text] {
+    		width: 80px;
+    		text-align: center;
+    	}
+    	
     	.rigth_side {
     		float: right;
     		width: 60%;
@@ -42,10 +49,13 @@
     <script>
     
     	$(function() {
-    		
-    		
+    		// 화면 이동 시 효과주기
+    		$.fakeLoader({
+  				timeToHide:600, // 로딩중에 걸리는 시간, 1000은 1초
+  				bgColor:"#f8f8f8", // 배경색
+  				spinner:"spinner2" // 로딩중으로 원하는 로딩이미지타입
+    		});
     	});
-    
 		
       	document.addEventListener('DOMContentLoaded', function() {
 	        var calendarEl = document.getElementById('calendar');
@@ -86,45 +96,44 @@
 		       	    $('#RESERVE_END_DATE').val(info.endStr);
 		      	    var reserveDate = (info.end.getTime() - info.start.getTime()) / (1000*60*60*24);
 		      	    $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
-	      			
+		      	    
 		      	    // URL 파라미터(campNo) 가져오기
 		      	    let query = window.location.search;  
 		      	    let param = new URLSearchParams(query);
 		      	    let campNo = param.get('campNo');
 
-		      	  
+		      	    // 날짜 드래그하면 tent 예약 리스트 띄우기
 		      	  	$.ajax({
 		      	    	type: 'get',
 		      	    	url: 'reserve/list?campNo=' + campNo,
 		      	    	dataType: 'json',
+		      	    	async: false,
 		      	    	success: function(resData) {
 		      	    		
 		      	    		$('.right_side').empty();
 		      	    		
 		      	    		$.each(resData.tentList, function(i, tent) {
-		      	    			
-			      	    		var tent_div = '<class="tent_div"><div>';
-			      	    		tent_div += '<span>텐트이름 : ' + tent.tentName + ' / </span>'; 
-			      	    		tent_div += '<span>텐트구분 : ' + tent.tentCategory + ' / </span>'; 
-			      	    		tent_div += '<span>최대인원 : ' + tent.tentMaxCount + ' / </span>'; 
-			      	    		tent_div += '<span>예약상태 : ' + tent.tentState + ' / </span>'; 
-			      	    		tent_div += '<span>텐트금액 : ' + tent.tentSum + ' / </span></div>'; 
-		      	    			$('.right_side').append(tent_div);
+		      	    			if(tent.tentState == 0) {
+		      	    				
+			      	    			var tent_div = '<class="tent_div"><div>';
+	
+				      	    		tent_div += '<span><img src="' + tent.tentImage + '" width="200px" height="133px"></img></span>';
+				      	    		tent_div += '<span>텐트이름 : ' + tent.tentName + ' / </span>'; 
+				      	    		tent_div += '<span>텐트구분 : ' + tent.tentCategory + ' / </span>'; 
+				      	    		tent_div += '<span>최대인원 : ' + tent.tentMaxCount + ' / </span>'; 
+				      	    		tent_div += '<span>예약상태 : ' + tent.tentState + ' / </span>'; 
+				      	    		tent_div += '<span>이용금액 : ' + tent.tentSum + ' / </span></div>'; 
+								
+			      	    			$('.right_side').append(tent_div);
+		      	    			}
 		      	    		});
 		      	    		
-		      	    	}
-		      	    		
-		      	    }); 
-		      	    
-		      	    
-	      		}
+		      	    	},
+		      	    	
+		      	    }); // ajax
+	      		} // else
 	      			
-	      		
-	      		
-	      	    
-	      	    
-	      	    
-	      	},
+	      	}, // select(function)
      	  
        	});
 	        
@@ -134,9 +143,13 @@
       
       
       	
-      	function fn_tentList() {
+      	function fn_fakeLoader() {
       		
-      		
+      		$.fakeLoader({
+  				timeToHide:800, // 로딩중에 걸리는 시간, 1000은 1초
+  				bgColor:"#f8f8f8", // 배경색
+  				spinner:"spinner2" // 로딩중으로 원하는 로딩이미지타입
+    		});
       		
       	}
       	
@@ -144,17 +157,19 @@
     
 </head>
 <body>
-
+	
 	<header th:replace="~{layout/header::header_layout}"></header>
-
+	
 	<div id="reserve_container">
 		<div class="left_side">
-			시작일 <input type="text"  id="RESERVE_BEGIN_DATE">
+			시작일 <input type="text"  readonly="readonly" id="RESERVE_BEGIN_DATE">
 			종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE">
 			숙박일정 <input type="text" readonly="readonly" id="RESERVE_DATE">
+			<hr>
 			<span id='calendar' ></span>
 		</div>
 		<div class="right_side">
+			<div class="fakeLoader"></div>
 			
 		</div>
 	</div>

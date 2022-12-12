@@ -20,5 +20,6 @@ public class TentDTO {
 	private String tentReserveDay;
 	private int tentSum;
 	private int tentState;
+	private String tentImage;
 	
 }
