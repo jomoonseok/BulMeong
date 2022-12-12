@@ -14,6 +14,7 @@
 		<typeAlias type="com.gdu.bulmeong.qna.domain.QnaDTO" alias="QnaDTO" />
 		<typeAlias type="com.gdu.bulmeong.faq.domain.FaqDTO" alias="FaqDTO" />
 		<typeAlias type="com.gdu.bulmeong.notice.domain.NoticeDTO" alias="NoticeDTO" />
+		<typeAlias type="com.gdu.bulmeong.notice.domain.SummernoteImageDTO" alias="SummernoteImageDTO" />		
 	</typeAliases>
 
 </configuration>

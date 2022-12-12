@@ -4,9 +4,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gdu.bulmeong.notice.NoticeMapper">
+<mapper namespace="com.gdu.bulmeong.notice.mapper.NoticeMapper">
 
-	<select id="selectNoticeListCount" parameterType="Map" resultType="NoticeDTO">
+	<select id="selectNoticeListCount" resultType="int">
 		SELECT COUNT(*)
 		  FROM NOTICE
 	</select>
@@ -18,6 +18,13 @@
 		 WHERE A.RN BETWEEN #{begin} AND #{end}
 	</select>
 	
+	<insert id="insertSummernoteImage" parameterType="SummernoteImageDTO">
+		INSERT INTO SUMMERNOTE_IMAGE
+			(NOTICE_NO, FILESYSTEM)
+		VALUES
+			(#{noticeNo}, #{filesystem})
+	</insert>
+	
 	<insert id="insertNotice" parameterType="NoticeDTO">
 		<selectKey keyProperty="noticeNo" resultType="int" order="BEFORE">
 			SELECT NOTICE_NO_SEQ.NEXTVAL
@@ -25,7 +32,7 @@
 		</selectKey>
 		INSERT INTO NOTICE
 			(NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID)
-		VLAUES
+		VALUES
 			(#{noticeNo}, #{noticeTitle}, #{noticeContent}, 0, SYSDATE, SYSDATE, #{id})
 	</insert>
 	
@@ -40,5 +47,36 @@
 		  FROM NOTICE
 		 WHERE NOTICE_NO = #{noticeNo}
 	</select>
+	
+	<update id="updateNotice" parameterType="NoticeDTO">
+		UPDATE NOTICE
+		   SET NOTICE_TITLE = #{noticeTitle}
+		     , NOTICE_CONTENT = #{noticeContent}
+		     , NOTICE_MODIFY_DATE = SYSDATE
+		 WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="int">
+		DELETE
+		  FROM NOTICE
+		 WHERE NOTICE_NO = #{noticeNo}
+	</delete>
+	
+	<select id="selectSummernoteImageListInNotice" parameterType="int" resultType="SummernoteImageDTO">
+		SELECT NOTICE_NO, FILESYSTEM
+		  FROM SUMMERNOTE_IMAGE
+		 WHERE NOTICE_NO = #{noticeNo}
+	</select>
+	
+	<select id="selectAllSummernoteImageList" resultType="SummernoteImageDTO">
+		SELECT NOTICE_NO, FILESYSTEM
+		  FROM SUMMERNOTE_IMAGE
+	</select>
+	
+	<delete id="deleteSummernoteImage" parameterType="String">
+		DELETE
+		  FROM SUMMERNOTE_IMAGE
+		 WHERE FILESYSTEM = #{filesystem}
+	</delete>
 	
 </mapper>
