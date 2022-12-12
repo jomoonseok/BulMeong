@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{layout/header::head('BulMeong')}"></head>
+
+	<link th:href='@{fullcalendar-5.11.3/lib/main.css}' rel='stylesheet' />
+    <script th:src='@{fullcalendar-5.11.3/lib/main.js}'></script>
+    
+   <style>
+    	
+    	#fc-dom-1 {
+    		font-size: 23px;
+    	}
+    	
+    	.fc-daygrid-day-number {
+    		font-size: 12px;
+    	}
+    	
+    	#reserve_container {
+    		width: 100%;
+    		height: 800px;
+    		margin: 0 10px;
+    		
+    	}
+    	
+    	.left_side {
+    		float: left;
+    		width: 35%;
+    		height: 500px;
+    		margin: 0 10px;
+    	}
+    	
+    	.rigth_side {
+    		float: right;
+    		width: 65%;
+    		height: 800px;
+    		margin: 0 10px;
+    	}
+    	
+    </style>
+    
+    <!-- 캘린더 스크립트 -->
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',  
+          locale: 'ko',  // 언어
+          timeZone: 'Asia/Seoul',  // 서울시간기준
+          selectable: true, // 선택가능하도록
+          firstDay: 1,  // 월화수목금토일순으로
+          
+          titleFormat: function (date) {  // 월화수목금토일순으로
+            year = date.date.year;
+            month = date.date.month + 1;
+
+            return year + "년 " + month + "월";
+          },
+          
+          selectable: true,
+          editable : true,
+          droppable: true,
+          /* dateClick: function(info) {
+              alert('Clicked on: ' + info.dateStr);
+      	  }, */
+      	  select: function(info) {
+      		  $('#RESERVE_BEGIN_DATE').val(info.startStr);
+      		  $('#RESERVE_END_DATE').val(info.endStr);
+      		  var reserveDate = (info.end.getTime() - info.start.getTime()) / (1000*60*60*24);
+      		  $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
+      	  }
+        	
+        });
+        calendar.render();
+        
+      });
+      
+    </script>
+    
+</head>
+<body>
+
+	<header th:replace="~{layout/header::header_layout}"></header>
+
+	<div id="reserve_container">
+		<div class="left_side">
+			<span id='calendar' ></span>
+		</div>
+		<div class="right_side">
+			<span>
+				시작일 <input type="text" readonly="readonly" id="RESERVE_BEGIN_DATE">
+				종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE">
+				숙박일정 <input type="text" readonly="readonly" id="RESERVE_DATE">
+			</span>
+		</div>
+	</div>
+	
+</body>
+</html>
