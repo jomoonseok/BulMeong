@@ -40,7 +40,10 @@ public class CampServiceImpl implements CampService {
 	public String getCampInfo() {
 		
 		// 한국관광공사_고캠핑 정보 조회서비스_GW
-		String serviceKey = "tuKJQnWosgochz4Xdrz/EnE0fod1HOfyo0ZK7gAZMn7bUHdBQNpbTN6zksDAGe2KOWYJLpKMYuvDJWjBI5aAvQ==";
+//		String serviceKey = "tuKJQnWosgochz4Xdrz/EnE0fod1HOfyo0ZK7gAZMn7bUHdBQNpbTN6zksDAGe2KOWYJLpKMYuvDJWjBI5aAvQ==";
+		String serviceKey = "0+KGdm6YrHSXA95CGIey5Sk0Sahzg8aiIbzdSRfUSCSABUGREXTJKtUr3IO+48dPKEQEZudz2n78Q/tx5pHIBQ==";
+		
+		
 		
 		/*
 			numOfRows(한페이지결과수) : 10

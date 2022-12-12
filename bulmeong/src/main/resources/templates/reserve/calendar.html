@@ -24,14 +24,14 @@
     	
     	.left_side {
     		float: left;
-    		width: 35%;
+    		width: 40%;
     		height: 500px;
     		margin: 0 10px;
     	}
     	
     	.rigth_side {
     		float: right;
-    		width: 65%;
+    		width: 60%;
     		height: 800px;
     		margin: 0 10px;
     	}
@@ -40,41 +40,106 @@
     
     <!-- 캘린더 스크립트 -->
     <script>
-
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',  
-          locale: 'ko',  // 언어
-          timeZone: 'Asia/Seoul',  // 서울시간기준
-          selectable: true, // 선택가능하도록
-          firstDay: 1,  // 월화수목금토일순으로
-          
-          titleFormat: function (date) {  // 월화수목금토일순으로
-            year = date.date.year;
-            month = date.date.month + 1;
-
-            return year + "년 " + month + "월";
-          },
-          
-          selectable: true,
-          editable : true,
-          droppable: true,
-          /* dateClick: function(info) {
-              alert('Clicked on: ' + info.dateStr);
-      	  }, */
-      	  select: function(info) {
-      		  $('#RESERVE_BEGIN_DATE').val(info.startStr);
-      		  $('#RESERVE_END_DATE').val(info.endStr);
-      		  var reserveDate = (info.end.getTime() - info.start.getTime()) / (1000*60*60*24);
-      		  $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
-      	  }
+    
+    	$(function() {
+    		
+    		
+    	});
+    
+		
+      	document.addEventListener('DOMContentLoaded', function() {
+	        var calendarEl = document.getElementById('calendar');
+	        var calendar = new FullCalendar.Calendar(calendarEl, {
         	
-        });
+		       	initialView: 'dayGridMonth',  
+		        locale: 'ko',  // 언어
+		        timeZone: 'Asia/Seoul',  // 서울시간기준
+		        selectable: true, // 선택가능하도록
+		        firstDay: 1,  // 월화수목금토일순으로
+		          
+		        titleFormat: function (date) {  // 월화수목금토일순으로
+		            year = date.date.year;
+		            month = date.date.month + 1;
+		
+		            return year + "년 " + month + "월";
+		        },
+	          
+	        selectable: true,
+	        editable : true,
+	        droppable: true,
+	        
+	        /* dateClick: function(info) {
+	           alert('Clicked on: ' + info.dateStr);
+	      	}, */
+	      	select: function(info) {
+	      		
+	      		if(!confirm('희망 날짜가 ' + info.startStr + ' ~ ' + info.endStr + ' 맞습니까?')) {
+	      			$('.right_side').empty();
+	      			$('#RESERVE_BEGIN_DATE').val('');
+		       	    $('#RESERVE_END_DATE').val('');
+		      	    $('#RESERVE_DATE').val('');
+	      			return;
+	      			
+	      		} else {
+	      			
+	      			$('#RESERVE_BEGIN_DATE').val(info.startStr);
+		       	    $('#RESERVE_END_DATE').val(info.endStr);
+		      	    var reserveDate = (info.end.getTime() - info.start.getTime()) / (1000*60*60*24);
+		      	    $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
+	      			
+		      	    // URL 파라미터(campNo) 가져오기
+		      	    let query = window.location.search;  
+		      	    let param = new URLSearchParams(query);
+		      	    let campNo = param.get('campNo');
+
+		      	  
+		      	  	$.ajax({
+		      	    	type: 'get',
+		      	    	url: 'reserve/list?campNo=' + campNo,
+		      	    	dataType: 'json',
+		      	    	success: function(resData) {
+		      	    		
+		      	    		$('.right_side').empty();
+		      	    		
+		      	    		$.each(resData.tentList, function(i, tent) {
+		      	    			
+			      	    		var tent_div = '<class="tent_div"><div>';
+			      	    		tent_div += '<span>텐트이름 : ' + tent.tentName + ' / </span>'; 
+			      	    		tent_div += '<span>텐트구분 : ' + tent.tentCategory + ' / </span>'; 
+			      	    		tent_div += '<span>최대인원 : ' + tent.tentMaxCount + ' / </span>'; 
+			      	    		tent_div += '<span>예약상태 : ' + tent.tentState + ' / </span>'; 
+			      	    		tent_div += '<span>텐트금액 : ' + tent.tentSum + ' / </span></div>'; 
+		      	    			$('.right_side').append(tent_div);
+		      	    		});
+		      	    		
+		      	    	}
+		      	    		
+		      	    }); 
+		      	    
+		      	    
+	      		}
+	      			
+	      		
+	      		
+	      	    
+	      	    
+	      	    
+	      	},
+     	  
+       	});
+	        
         calendar.render();
         
-      });
+        });
       
+      
+      	
+      	function fn_tentList() {
+      		
+      		
+      		
+      	}
+      	
     </script>
     
 </head>
@@ -84,14 +149,13 @@
 
 	<div id="reserve_container">
 		<div class="left_side">
+			시작일 <input type="text"  id="RESERVE_BEGIN_DATE">
+			종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE">
+			숙박일정 <input type="text" readonly="readonly" id="RESERVE_DATE">
 			<span id='calendar' ></span>
 		</div>
 		<div class="right_side">
-			<span>
-				시작일 <input type="text" readonly="readonly" id="RESERVE_BEGIN_DATE">
-				종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE">
-				숙박일정 <input type="text" readonly="readonly" id="RESERVE_DATE">
-			</span>
+			
 		</div>
 	</div>
 	
