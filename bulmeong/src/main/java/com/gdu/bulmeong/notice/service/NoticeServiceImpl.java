@@ -107,7 +107,7 @@ public class NoticeServiceImpl implements NoticeService {
 	public void saveNotice(HttpServletRequest request, HttpServletResponse response) {
 		
 		// 세션
-		HttpSession session = request.getSession();
+		//HttpSession session = request.getSession();
 		//UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
 		
 		// 파라미터
@@ -129,15 +129,29 @@ public class NoticeServiceImpl implements NoticeService {
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			
-			out.println("<script>");
 			if(result > 0) {
+				String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
+
+				if(summernoteImageNames !=  null) {
+					for(String filesystem : summernoteImageNames) {
+						SummernoteImageDTO summernoteImage = SummernoteImageDTO.builder()
+								.noticeNo(notice.getNoticeNo())
+								.filesystem(filesystem)
+								.build();
+						noticeMapper.insertSummernoteImage(summernoteImage);
+					}
+					System.out.println(notice.getNoticeNo());
+				}
+				out.println("<script>");
 				out.println("alert('공지사항이 등록되었습니다.')");
 				out.println("location.href='" + request.getContextPath() + "/notice/list';");
+				out.println("</script>");
 			} else {
+				out.println("<script>");
 				out.println("alert('공지사항 등록에 실패했습니다.')");
 				out.println("history.back();");
+				out.println("</script>");
 			}
-			out.println("</script>");
 			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -184,14 +198,14 @@ public class NoticeServiceImpl implements NoticeService {
 		String noticeTitle = request.getParameter("noticeTitle");
 		String noticeContent = request.getParameter("noticeContent");
 		//String id = request.getParameter(loginUser.getId());
-		String id = "admin";
+		String id = "ADMIN";
 		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 		
 		NoticeDTO notice = NoticeDTO.builder()
 				.noticeTitle(noticeTitle)
 				.noticeContent(noticeContent)
-				.noticeNo(noticeNo)
 				.id(id)
+				.noticeNo(noticeNo)
 				.build();
 		
 		int result = noticeMapper.updateNotice(notice);
@@ -211,17 +225,17 @@ public class NoticeServiceImpl implements NoticeService {
 				if(summernoteImageNames != null) {
 					for(String filesystem : summernoteImageNames) {
 						SummernoteImageDTO summernoteImage = SummernoteImageDTO.builder()
-								.noticeNo(noticeNo)
+								.noticeNo(notice.getNoticeNo())
 								.filesystem(filesystem)
 								.build();
 						noticeMapper.insertSummernoteImage(summernoteImage);
 					}
 				}
 				
-				out.println("alert('" + noticeNo + "번 공지사항이 수정되었습니다.')");
+				out.println("alert('" + noticeNo + "번 공지사항이 수정되었습니다.');");
 				out.println("location.href='" + request.getContextPath() + "/notice/detail?notciNo=" + noticeNo + "';");
 			} else {
-				out.println("alert('공지사항 수정이 불가능합니다.')");
+				out.println("alert('공지사항 수정이 불가능합니다.');");
 				out.println("history.back();");
 			}
 			out.println("</script>");
@@ -237,6 +251,7 @@ public class NoticeServiceImpl implements NoticeService {
 	public void removeNotice(HttpServletRequest request, HttpServletResponse response) {
 		
 		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+		List<SummernoteImageDTO> summernoteImageList = noticeMapper.selectSummernoteImageListInNotice(noticeNo);
 		int result = noticeMapper.deleteNotice(noticeNo);
 		
 		try {
@@ -245,7 +260,17 @@ public class NoticeServiceImpl implements NoticeService {
 			
 			out.println("<script>");
 			if(result > 0) {
-				out.println("alert('" + noticeNo + "번공지사항이 삭제되었습니다.');");
+				
+				if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
+					for(SummernoteImageDTO summernoteImage : summernoteImageList) {
+						File file = new File("C:" + File.separator + "noticeImage", summernoteImage.getFilesystem());
+						if(file.exists()) {
+							file.delete();
+						}
+					}
+				}
+				
+				out.println("alert('" + noticeNo + "번 공지사항이 삭제되었습니다.');");
 				out.println("location.href='" + request.getContextPath() + "/notice/list';");
 			} else {
 				out.println("alert('공지사항 삭제가 불가능합니다.');");

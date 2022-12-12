@@ -67,7 +67,7 @@
 		
 		<h3>공지작성</h3>
 		
-		<form id="frm_write" th:action="@{/notice/add}" method="post">
+		<form id="frm_write" th:object="${notice}" th:action="@{/notice/add}" method="post">
 		
 			<div>
 				<label for="noticeTitle">제목</label>
