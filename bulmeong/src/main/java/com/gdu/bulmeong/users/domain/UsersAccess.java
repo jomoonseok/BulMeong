@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
-public class UsersRetireDTO {
-	private int retireNo;
+@Data
+public class UsersAccess {
 	private String id;
-	private String retireDate;
-	private String joinDate;
+	private String lastLoginDate;
 }

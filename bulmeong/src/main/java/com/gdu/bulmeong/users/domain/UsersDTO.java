@@ -19,7 +19,7 @@ public class UsersDTO {
 	private String gender;
 	private String birthYear;
 	private String birthDay;
-	private String postcode;
+	private String postCode;
 	private String roadAddress;
 	private String jibunAddress;
 	private String detailAddress;
@@ -29,8 +29,9 @@ public class UsersDTO {
 	private String snsType;
 	private String sessionId;
 	private String sessionLimitDate;
-	private int point;
 	private String email;
 	private int age;
-	private String profileImage; 
+	private String profileImage;
+	private String pwModifyDate; 
+	private String infoModifyDate;
 }

@@ -6,6 +6,76 @@
 
 <mapper namespace="com.gdu.bulmeong.users.mapper.UsersMapper">
 
+	<!-- 아이디 중복체크1, 이메일 중복체크, 로그인, 로그인 유지를 이용한 로그인, 마이페이지 가기 전 비번 확인, 네이버로그인으로 가입한 회원인지 확인, 아이디 찾기, 비밀번호 찾기 -->
+	<select id="selectUserByMap" parameterType="Map" resultType="UsersDTO">
+		SELECT USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE
+		  FROM USERS
+		 <where>
+			 <if test="id != null">
+			 	ID = #{id}
+			 </if>
+			 <if test="pw != null">
+			 	AND PW = #{pw}
+			 </if>
+			 <if test="nickname != null">
+			 	AND NICKNAME = #{nickname}
+			 </if>
+			 <if test="email != null">
+			 	AND EMAIL = #{email}
+			 </if>
+			 <if test="sessionId != null">
+			 	AND SESSION_ID = #{sessionId}
+			 	AND SESSION_LIMIT_DATE > SYSDATE
+			 </if>
+			 <if test="name != null">
+			 	AND NAME = #{name}
+			 </if>
+		 </where>
+	</select>
 	
+	<!-- 아이디 중복체크2 휴면유저 -->
+	<select id="selectSleepUserByMap" parameterType="Map" resultType="SleepUsersDTO">
+		SELECT USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, SLEEP_DATE, AGE, PROFILE_IMAGE, LAST_LOGIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE
+		  FROM USERS_SLEEP
+		 <where>
+			 <if test="id != null">
+			 	ID = #{id}
+			 </if>
+			 <if test="nickname != null">
+			 	AND NICKNAME = #{nickname}
+			 </if>
+			 <if test="email != null">
+			 	AND EMAIL = #{email}
+			 </if>
+		 </where>
+	</select>
+	
+	<!-- 아이디 중복체크3 탈퇴유저 -->
+	<select id="selectRetireUserById" parameterType="String" resultType="RetireUsersDTO">
+		SELECT ID
+		  FROM USERS_RETIRE
+		 WHERE ID = #{id}
+	</select>
+	
+	<!-- 일반회원가입 -->
+	<insert id="insertUser" parameterType="UsersDTO">
+		INSERT INTO USERS
+			(USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
+		VALUES
+			(USERS_SEQ.NEXTVAL, #{id}, ,#{nickname}, #{pw}, #{name}, #{mobile}, #{gender}, #{birthyear}, #{birthday}, #{postcode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, TO_CHAR(SYSDATE, 'YY/MM/DD'), #{agreeCode}, NULL, NULL, NULL, #{email}, (TO_CHAR(SYSDATE, 'YYYY') - #{birthyear} + 1), NULL, TO_CHAR(SYSDATE, 'YY/MM/DD'), TO_CHAR(SYSDATE, 'YY/MM/DD'))
+	</insert>
+	
+	<!-- 로그인 기록(ACCESS_LOG) 남기기 -->
+	<update id="updateAccessLog" parameterType="String">
+		UPDATE USERS_ACCESS
+		   SET LAST_LOGIN_DATE = SYSDATE
+		 WHERE ID = #{id}
+	</update>
+	<insert id="insertAccessLog" parameterType="String">
+		INSERT INTO USERS_ACCESS
+			(ID, LAST_LOGIN_DATE)
+		VALUES
+			(#{id}, SYSDATE)
+	</insert>
 	
 </mapper>

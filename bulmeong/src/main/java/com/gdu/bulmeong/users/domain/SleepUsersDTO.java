@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class UsersSleepDTO {
+public class SleepUsersDTO {
 	private int usersNo;
 	private String id;
 	private String nickname;
@@ -19,7 +19,7 @@ public class UsersSleepDTO {
 	private String gender;
 	private String birthYear;
 	private String birthDay;
-	private String postcode;
+	private String postCode;
 	private String roadAddress;
 	private String jibunAddress;
 	private String detailAddress;
@@ -29,10 +29,11 @@ public class UsersSleepDTO {
 	private String snsType;
 	private String sessionId;
 	private String sessionLimitDate;
-	private int point;
 	private String email;
 	private String sleepDate;
 	private int age;
 	private String profileImage; 
 	private String lastLoginDate;
+	private String pwModifyDate; 
+	private String infoModifyDate;
 }

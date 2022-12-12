@@ -4,14 +4,15 @@
 <head>
 	<script>
 	$(function(){
-		//fn_idCheck();
-		//fn_pwCheck();
-		//fn_pwCheckAgain();
-		//fn_nameCheck();
-		//fn_mobileCheck();
+		fn_idCheck();
+		fn_pwCheck();
+		fn_pwCheckAgain();
+		fn_nameCheck();
+		fn_nicknameCheck();
+		fn_mobileCheck();
 		fn_birthmonth();
-		//fn_emailCheck();
-		//fn_join();
+		fn_emailCheck();
+		fn_join();
 	});
 	
 	// 전역변수 (각종 검사를 통과하였는지 점검하는 플래그 변수)
@@ -19,6 +20,7 @@
 	var pwPass = false;
 	var rePwPass = false;
 	var namePass = false;
+	var nicknamePass = false;
 	var mobilePass = false;
 	var authCodePass = false;
 	
@@ -30,12 +32,20 @@
 			// 입력한 아이디
 			let idValue = $(this).val();
 			
-			// 정규식(4~20자, 소문자+숫자+특수문자(-,_)조합, 첫 글자는 특수문자 제외(-,_))
-			let regId = /^[0-9a-z-_]{6,19}$/;
+			// 정규식(6~20자, 소문자+대문자+숫자+특수문자8종(!@#$%^&*) 3개 이상 조합)
+			let regId = /^[0-9a-zA-Z!@#$%^&*]{6,20}$/;
+			
+			
+			// 2개 이상 조합 확인
+			let validateId = /[0-9]/.test(idValue)        // 숫자가 있으면 true, 없으면 false
+			               + /[a-z]/.test(idValue)        // 소문자가 있으면 true, 없으면 false
+			               + /[A-Z]/.test(idValue)        // 대문자가 있으면 true, 없으면 false
+			               + /[!@#$%^&*]/.test(idValue);  // 특수문자8종이 있으면 true, 없으면 false
+			
 			
 			// 정규식 검사
-			if(regId.test(idValue) == false){
-				$('#msg_id').text('6~20자의 소문자, 숫자, 특수문자(-,_)를 조합해야 합니다.');
+			if(regId.test(idValue) == false || validateId < 3){
+				$('#msg_id').text('6~20자의 소문자, 대문자, 숫자, 특수문자(!@#$%^&*)를 3개 이상 조합해야 합니다.');
 				idPass = false;
 				return;  // 코드 진행 방지(이후에 나오는 ajax 실행을 막음)
 			}
@@ -44,12 +54,12 @@
 			$.ajax({
 				/* 요청 */
 				type: 'get',
-				url: '@{/user/checkReduceId}',
+				url: '/users/checkReduceId',
 				data: 'id=' + idValue,
 				/* 응답 */
 				dataType: 'json',
 				success: function(resData){  // resData = {"isUser": true, "isRetireUser": false}
-					if(resData.isUser || resData.isRetireUser){
+					if(resData.isUser || resData.isSleepUser || resData.isRetireUser){
 						$('#msg_id').text('이미 사용중이거나 탈퇴한 아이디입니다.');
 						idPass = false;
 					} else {
@@ -74,7 +84,7 @@
 			// 정규식(8~20자, 소문자+대문자+숫자+특수문자8종(!@#$%^&*) 3개 이상 조합)
 			let regPw = /^[0-9a-zA-Z!@#$%^&*]{8,20}$/;
 			
-			// 3개 이상 조합 확인
+			// 2개 이상 조합 확인
 			let validatePw = /[0-9]/.test(pwValue)        // 숫자가 있으면 true, 없으면 false
 			               + /[a-z]/.test(pwValue)        // 소문자가 있으면 true, 없으면 false
 			               + /[A-Z]/.test(pwValue)        // 대문자가 있으면 true, 없으면 false
@@ -99,16 +109,107 @@
 			
 			let rePwValue = $(this).val();
 			
-			if(rePwValue != '' && rePwValue != $('#pw').val()){
-				$('#msg_re_pw').text('비밀번호를 확인하세요.');
-				rePwPass = false;
-			} else {
+			if(rePwValue != '' && rePwValue == $('#pw').val()){
 				$('#msg_re_pw').text('');
 				rePwPass = true;
+			} else {
+				$('#msg_re_pw').text('비밀번호를 확인하세요.');
+				rePwPass = false;
 			}
 		});
 	} // fn_pwCheckAgain
 	
+	// 4. 이름
+	function fn_nameCheck(){
+		
+		$('#name').keyup(function(){
+			
+			// 입력한 이름
+			let nameValue = $(this).val();
+			
+			// 정규식(2~17자, 한글)
+			let regName = /^[가-힣]{2,17}$/;
+			
+			if(nameValue != '' && regName.test(nameValue) == true){
+				$('#msg_name').text('');
+				namePass = true;
+			} else {
+				$('#msg_name').text('이름을 확인하세요.');
+				namePass = false;
+			}
+			
+		});  // keyup
+		
+	}  // fn_nameCheck
+	
+	// 5. 닉네임
+	function fn_nicknameCheck(){
+		
+		$('#nickname').keyup(function(){
+			
+			// 입력한 닉네임
+			let nicknameValue = $(this).val();
+			
+			// 정규식(2~20자, 한글+영어+숫자)
+			let regNickname = /^[가-힣0-9a-zA-Z]{2,20}$/;
+			
+			if(nicknameValue != '' && regNickname.test(nicknameValue) == true){
+				$('#msg_nickname').text('');
+			} else {
+				$('#msg_nickname').text('닉네임을 확인하세요.');
+				nicknamePass = false;
+				return;
+			}
+			
+			// 닉네임 중복체크
+			$.ajax({
+				/* 요청 */
+				type: 'get',
+				url: '/users/checkReduceNickname',
+				data: 'nickname=' + nicknameValue,
+				/* 응답 */
+				dataType: 'json',
+				success: function(resData){  
+					if(resData.isUser || resData.isSleepUser){
+						$('#msg_nickname').text('이미 사용중인 닉네임입니다.');
+						nicknamePass = false;
+					} else {
+						$('#msg_nickname').text('사용 가능한 닉네임입니다.');
+						nicknamePass = true;
+					}
+				}
+			});  // ajax
+			
+		});  // keyup
+		
+	}  // fn_nicknameCheck
+	
+	// 6. 휴대전화
+	function fn_mobileCheck(){
+		
+		$('#mobile').keyup(function(){
+			
+			// 입력한 휴대전화
+			let mobileValue = $(this).val();
+			
+			// 휴대전화 정규식(010으로 시작, 하이픈 없이 전체 10~11자)
+			let regMobile = /^010[0-9]{7,8}$/;
+			
+			// 정규식 검사
+			if(regMobile.test(mobileValue) == false){
+				$('#msg_mobile').text('휴대전화를 확인하세요.');
+				mobilePass = false;
+			} else {
+				$('#msg_mobile').text('');
+				mobilePass = true;
+			}
+			
+		});  // keyup
+		
+	}  // fn_mobileCheck
+	
+	
+	// 7. 생년월일(월)
 	function fn_birthmonth(){
 		var month = '<option value="">월</option>';
 		for(let m = 1; m<=12; m++){
@@ -120,6 +221,140 @@
 		}
 		$('#birthmonth').append(month);
 	}
+	
+	// 8. 이메일
+	//    1) 입력된 이메일이 회원 정보에 있는지 체크하는 ajax
+	//    2) 입력된 이메일로 인증번호를 보내는 ajax
+	function fn_emailCheck(){
+		
+		$('#btn_getAuthCode').click(function(){
+			
+			// 인증코드를 입력할 수 있는 상태로 변경함
+			$('#authCode').prop('readonly', false);
+			
+			// resolve : 성공하면 수행할 function
+			// reject  : 실패하면 수행할 function
+			new Promise(function(resolve, reject) {
+		
+				// 정규식 
+				let regEmail = /^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+(\.[a-zA-Z]{2,}){1,2}$/;
+				
+				// 입력한 이메일
+				let emailValue = $('#email').val();
+				
+				// 정규식 검사
+				if(regEmail.test(emailValue) == false){
+					reject(1);  // catch의 function으로 넘기는 인수 : 1(이메일 형식이 잘못된 경우)
+					authCodePass = false;
+					return;     // 아래 ajax 코드 진행을 막음
+				}
+				
+				// 이메일 중복 체크
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '/users/checkReduceEmail',
+					data: 'email=' + emailValue,
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						// 기존 회원 정보에 등록된 이메일이라면 실패 처리
+						if(resData.isUser){
+							reject(2);   // catch의 function으로 넘기는 인수 : 2(다른 회원이 사용중인 이메일이라서 등록이 불가능한 경우)
+						} else {
+							resolve();   // Promise 객체의 then 메소드에 바인딩되는 함수
+						}
+					}
+				});  // ajax
+				
+			}).then(function(){
+				
+				// 인증번호 보내는 ajax
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '/users/sendAuthCode',
+					data: 'email=' + $('#email').val(),
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						alert('인증코드를 발송했습니다. 이메일을 확인하세요.');
+						// 발송한 인증코드와 사용자가 입력한 인증코드 비교
+						$('#btn_verifyAuthCode').click(function(){
+							if(resData.authCode == $('#authCode').val()){
+								alert('인증되었습니다.');
+								authCodePass = true;
+							} else {
+								alert('인증에 실패했습니다.');
+								authCodePass = false;
+							}
+						});
+					},
+					error: function(jqXHR){
+						alert('인증번호 발송이 실패했습니다.');
+						authCodePass = false;
+					}
+				});  // ajax
+				
+			}).catch(function(code){  // 인수 1 또는 2를 전달받기 위한 파라미터 code 선언
+				switch(code){
+				case 1:
+					$('#msg_email').text('이메일 형식이 올바르지 않습니다.');
+					break;
+				case 2:
+					$('#msg_email').text('이미 사용중인 이메일입니다.');
+					break;
+				}
+			
+				authCodePass = false;
+			
+				// 입력된 이메일에 문제가 있는 경우 인증코드 입력을 막음
+				$('#authCode').prop('readonly', true);
+				
+			});  // new Promise
+			
+		});  // click
+		
+	}  // fn_emailCheck
+	
+	// 9. 서브밋 (회원가입)
+	function fn_join(){
+		
+		$('#frm_join').submit(function(event){
+			
+			if(idPass == false){
+				alert('아이디를 확인하세요.');
+				event.preventDefault();
+				return;
+			} else if(pwPass == false || rePwPass == false){
+				alert('비밀번호를 확인하세요.');
+				event.preventDefault();
+				return;
+			} else if(namePass == false){
+				alert('이름을 확인하세요.');
+				event.preventDefault();
+				return;
+			} else if(nicknamePass == false){
+				alert('닉네임을 확인하세요.');
+				event.preventDefault();
+				return;
+			}else if(mobilePass == false){
+				alert('휴대전화번호를 확인하세요.');
+				event.preventDefault();
+				return;
+			} else if($('#birthyear').val() == '' || $('#birthmonth').val() == '' || $('#birthdate').val() == ''){
+				alert('생년월일을 확인하세요.');
+				event.preventDefault();
+				return;
+			} else if(authCodePass == false){
+				alert('이메일 인증을 받으세요.');
+				event.preventDefault();
+				return;
+			}
+			
+		});  // submit
+		
+	}  // fn_join
 	
 	</script>
 </head>
@@ -133,7 +368,7 @@
 	
 	<hr>
 	
-	<form id="frm_join" action="@{/user/join}" method="post">
+	<form id="frm_join" th:action="@{/user/join}" method="post">
 	
 		<!-- 약관 동의 여부 -->
 		<input type="hidden" name="location" th:value="${location}">
@@ -162,9 +397,9 @@
 		
 		<!-- 이름 -->
 		<div>
-			<label for="nickname">이름*</label>
-			<input type="text" name="nickname" id="nickname">
-			<span id="msg_nickname"></span>
+			<label for="name">이름*</label>
+			<input type="text" name="name" id="name">
+			<span id="msg_name"></span>
 		</div>
 		
 		<!-- 닉네임 -->
@@ -177,7 +412,7 @@
 		<!-- 휴대전화 -->
 		<div>
 			<label for="mobile">휴대전화*</label>
-			<input type="text" name="mobile" id="mobile">
+			<input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요." maxlength="11" >
 			<span id="msg_mobile"></span>
 		</div>
 		

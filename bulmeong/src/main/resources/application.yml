@@ -3,24 +3,37 @@
 # session(1800 seconds = 30 minutes)
 server:
   port: 9090
-  servlet:
-    encoding:
+  servlet: 
+    encoding: 
       charset: UTF-8
       enabled: true
       force: true
-    session:
+    session: 
       timeout: 1800
 
 # database connection
-spring:
-  datasource:
-    hikari:
+# mail
+spring: 
+  datasource: 
+    hikari: 
       driver-class-name: oracle.jdbc.OracleDriver
       jdbc-url: jdbc:oracle:thin:@localhost:1521:xe
       username: bulmeong
       password: 55555
+  mail: 
+    host: smtp.gmail.com
+    port: 587
+    username: moon97102002@gmail.com
+    password: whlhxpaugzvysjvl
+    properties:
+      mail: 
+        smtp: 
+          auth: true
+          starttls: 
+            enable: true
 
 # mybatis
 mybatis:
   config-location: mybatis/config/mybatis-config.xml
   mapper-locations: mybatis/mapper/*.xml
+  
