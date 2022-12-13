@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('목록')}"></head>
+<body>
+	
+
+	<script>
+		$("#btn_addCart").click(function(){
+			var campNo = $("#campNo").val();  
+			var count = $("#count").val(); 
+			
+			var data = {
+				campNo : campNo,
+				count : count
+			};
+			
+			$.ajax({
+				url : "/cart/addCart",
+				type : "post",
+				data : data,
+				success : function(result) {
+					if(result == 1) {
+						alert("카트 담기 성공");
+						$("#count").val("1");
+					} else {
+						alert("회원만 사용할 수 있습니다.")
+						$("#count").val("1");
+					}
+				},
+				error : function(){
+					alert("카트 담기 실패");
+				}
+			});
+		});
+	</script>
+	
+	<div>
+		<form id="camp">
+			<div th:text="|이미지 : ${camp.firstImageUrl}|"></div>
+			<div th:text="|상품명 : ${camp.facltNm}|"></div>
+			<div th:text="|가격 : ${camp.price}|"></div>
+			<div th:text="|인원수 : ${camp.count}|"></div>
+			<div th:text="|한줄 소개 : ${camp.lineIntro}|"></div>
+		</form>
+	</div>
+	
+	<section id="campContent">
+	
+	<form method="post">
+		<input type="hidden" id="campNo" th:value="{camp.campNo}" />
+	</form>
+	
+	<div class="campImg">
+		<div class="campsImg" th:text="|이미지 : ${camp.firstImageUrl}|"></div>
+	</div>
+	
+	<div class="campInfo">
+		<div class="facltNm" th:text="|상품명 : ${camp.facltNm}|"></div>
+		<div class="induty" th:text="|업종명 : ${camp.induty}|"></div>
+		<div class="price" th:text="|가격 : ${camp.price}|"></div>
+		<div class="mod" th:text="|남은 자리 : ${camp.mod}|"></div>
+		<div class="count" th:text="인원수">
+			<button id="plus">+</button>
+			<input type="number" id="count" min="1" max="${camp.mod}" value="1" readonly="readonly" />
+			<button id="minus">-</button>
+			
+			<script>
+				$("#plus").click(function(){
+					var num = $("#count").val();
+					var plusNum = Number(num) + 1;
+					
+					if(plusNum >= "${camp.mod}") {
+						$("#count").val(num);
+					} else {
+						$("#count").val(plusNum);
+					}
+				});
+				
+				$("#minus").click(function(){
+					var num = $("#count").val();
+					var minusNum = Number(num) - 1;
+					
+					if(minusNum <= 0) {
+						$("#count").val(num);
+					} else {
+						$("#count").val(minusNum);
+					}
+				});
+			</script>
+		</div>
+		<div class="price" th:text="|가격 : ${camp.price}|"></div>
+	</div>
+	
+	</section>
+	
+	
+	
+	<button id="btn_addCart">카트에 담기</button>
+	
+</body>
+</html>

@@ -14,6 +14,7 @@
 		<typeAlias type="com.gdu.bulmeong.camp.domain.CampDTO" alias="CampDTO" />
 		<typeAlias type="com.gdu.bulmeong.pay.domain.PayDTO" alias="PayDTO" />
 		<typeAlias type="com.gdu.bulmeong.pay.domain.TentDTO" alias="TentDTO" />
+		<typeAlias type="com.gdu.bulmeong.cart.domain.CartDTO" alias="CartDTO" />
 
 	</typeAliases>
 
