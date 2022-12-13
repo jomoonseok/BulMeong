@@ -17,12 +17,13 @@ public class ReserveServiceImpl implements ReserveService {
 	 
 	@Override
 	public Map<String, Object> getTentByCampNo(int campNo) {
-		
+		System.out.println(campNo);
 		Map<String, Object> result = new HashMap<>();
 		result.put("tentList", reserveMapper.selectTentByCampNo(campNo));
-		
+		result.put("camp", reserveMapper.selectCampByCampNo(campNo));
 		return result;
 	}
+	
 	
 	
 }

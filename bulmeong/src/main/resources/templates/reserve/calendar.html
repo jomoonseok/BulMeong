@@ -29,6 +29,12 @@
     		height: 500px;
     	}
     	
+    	.right_side {
+    		float: right;
+    		width: 59%;
+    		height: 500px;
+    	}
+    	
     	.left_side > input[type=text] {
     		width: 80px;
     		text-align: center;
@@ -45,17 +51,17 @@
     
     	$(function() {
     		
-    		fn_css();
+    		/* fn_css(); */
     		
     		// 화면 이동 시 효과주기
     		$.fakeLoader({
-  				timeToHide:800, // 로딩중에 걸리는 시간, 1000은 1초
+  				timeToHide:700, // 로딩중에 걸리는 시간, 1000은 1초
   				bgColor:"#f8f8f8", // 배경색
   				spinner:"spinner2" // 로딩중으로 원하는 로딩이미지타입
     		});
     		
     		fn_reserve();
-    		
+    		fn_list();
     	});
 		
       	document.addEventListener('DOMContentLoaded', function() {
@@ -79,87 +85,22 @@
 	        editable : true,
 	        droppable: true,
 	        
-	        /* dateClick: function(info) {
-	           alert('Clicked on: ' + info.dateStr);
-	      	}, */
 	      	select: function(info) {
 	      		
 	      		var reserveDate = (info.end.getTime() - info.start.getTime()) / (1000*60*60*24);
 	      		
 	      		if(!confirm('선택하신 일정은 ' + info.startStr + ' ~ ' + info.endStr + '까지 ' + reserveDate + '박 ' + (reserveDate + 1) + '일 일정입니다.' + ' 맞습니까?')) {
-	      			$('.right_side').empty();
 	      			$('#RESERVE_BEGIN_DATE').val('');
 		       	    $('#RESERVE_END_DATE').val('');
 		      	    $('#RESERVE_DATE').val('');
 	      			return;
 	      			
 	      		} else {
-	      			
 	      			$('#RESERVE_BEGIN_DATE').val(info.startStr);
 		       	    $('#RESERVE_END_DATE').val(info.endStr);
 		      	    $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
-		      	    
-		      	    // URL 파라미터(campNo) 가져오기
-		      	    let query = window.location.search;  
-		      	    let param = new URLSearchParams(query);
-		      	    let campNo = param.get('campNo');
-
-		      	    // 날짜 드래그하면 tent 예약 리스트 띄우기
-		      	  	$.ajax({
-		      	    	type: 'get',
-		      	    	url: 'reserve/list?campNo=' + campNo,
-		      	    	dataType: 'json',
-		      	    	async: false,
-		      	    	success: function(resData) {
-		      	    		
-		      	    		$('.right_side').empty();
-		      	    		
-		      	    		$.each(resData.tentList, function(i, tent) {
-		      	    			var tent_div = '<div class="tent_div" height="133px">';
-		      	    			
-		      	    			// 텐트의 상태가 0이면 		      
-		      	    			if(tent.tentState == 0) {
-		      	    				
-		      	    				tent_div += '<div style="float:left;">';
-				      	    		tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
-				      	    		tent_div += '</div>';
-				      	    		
-				      	    		tent_div += '<div style="float:left;">';
-				      	    		tent_div += '<div>텐트이름 : ' + tent.tentName + ' / </div>'; 
-				      	    		switch(tent.tentCategory) {
-					      	    		case 0: tent.tentCategory = '글램핑'; break;
-					      	    		case 1: tent.tentCategory = '카라반'; break;
-					      	    		case 2: tent.tentCategory = '일반야영장'; break;
-					      	    		case 3: tent.tentCategory = '자동차야영장';
-				      	    		}
-				      	    		tent_div += '<div>텐트구분 : ' + tent.tentCategory + ' / </div>'; 
-				      	    		tent_div += '<div>최대인원 : ' + tent.tentMaxCount + ' / </div>'; 
-				      	    		tent_div += '<div>이용금액 : ' + tent.tentSum + ' / </div>';
-				      	    		tent_div += '<div><input type="button" class="btn_reserve" value="예약하기"></div></div>'; 
-				      	    		tent_div += '</div>';
-				      	    		
-								
-				      	    	// 텐트의 상태가 1이면 
-		      	    			} else {
-		      	    				tent_div += '<div style="float:left;">';
-		      	    				tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
-		      	    				switch(tent.tentCategory) {
-					      	    		case 0: tent.tentCategory = '글램핑'; break;
-					      	    		case 1: tent.tentCategory = '카라반'; break;
-					      	    		case 2: tent.tentCategory = '일반야영장'; break;
-					      	    		case 3: tent.tentCategory = '자동차야영장'; 
-				      	    		}
-	      	    					tent_div += '<div>' + tent.tentCategory + '은 운영하지 않습니다.</div></div>';
-	      	    					tent_div += '</div>';
-		      	    			}
-		      	    			tent_div += '<div style="clear:both;"></div>';
-	      	    				$('.right_side').append(tent_div);
-		      	    		});
-		      	    		
-		      	    	},
-		      	    	
-		      	    }); // ajax
-	      		} // else
+		      	  	
+	      		}
 	      			
 	      	}, // select(function)
      	  
@@ -174,20 +115,69 @@
       		$(document).on('click', '.btn_reserve', function() {
     			window.open("/reserve/pay", "예약결제", "width=800, height=1200");
       		});
-      			
-      		
       		
       	}
       	
-      	function fn_css(){
+      	function fn_list() {
+      		// URL 파라미터(campNo) 가져오기
+      		let query = window.location.search;  
+      	    let param = new URLSearchParams(query);
+      	    let campNo = param.get('campNo');
       		
-      		$('.right_side').css('float','right');
-      		$('.right_side').css('width','59%');
-      		$('.tent_div').css({'height':'100%', 'width':'100%'});
+      		$.ajax({
+      	    	type: 'get',
+      	    	url: 'reserve/list?campNo=' + campNo,
+      	    	dataType: 'json',
+      	    	success: function(resData) {
+      	    		
+      	    		// 캠프장 정보 출력
+      	    		var campInfo = '<div>';
+      	    		campInfo += '캠핑장 : ' + resData.camp[0].facltNm + '<br>';
+      	    		campInfo += '주소 : ' + resData.camp[0].addr1 + '<br>';
+      	    		campInfo += '특징 : ' + resData.camp[0].featureNm + '<br>';
+      	    		campInfo += '부대시설 : ' + resData.camp[0].sbrsCl + '<br>';
+      	    		campInfo += '글램핑 내부시설 : ' + resData.camp[0].glampInnerFclty + '<br>';
+      	    		campInfo += '카라반 내부시설 : ' + resData.camp[0].caravInnerFclty + '<br>';
+      	    		campInfo += '전화번호 : ' + resData.camp[0].tel + '<br>';
+      	    		campInfo += '홈페이지 : ' + resData.camp[0].homepage + '<br>';
+      	    		campInfo += '</div><hr>';
+      	    		$('#camp_info').append(campInfo);
+      	    		
+      	    		// 캠프장의 텐트현황 출력
+      	    		$.each(resData.tentList, function(i, tent) {
+      	    			var tent_div = '<div class="tent_div" height="133px">';
+      	    			
+      	    			// 텐트의 상태가 0이면 		      
+      	    			if(tent.tentState == 0) {
+      	    				
+      	    				tent_div += '<div style="float:left;">';
+		      	    		tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
+		      	    		tent_div += '</div>';
+		      	    		
+		      	    		tent_div += '<div style="float:left;">';
+		      	    		tent_div += '<div>텐트이름 : ' + tent.tentName + ' / </div>'; 
+		      	    		switch(tent.tentCategory) {
+			      	    		case 0: tent.tentCategory = '글램핑'; break;
+			      	    		case 1: tent.tentCategory = '카라반'; break;
+			      	    		case 2: tent.tentCategory = '일반야영장'; break;
+			      	    		case 3: tent.tentCategory = '자동차야영장';
+		      	    		}
+		      	    		tent_div += '<div>텐트구분 : ' + tent.tentCategory + ' / </div>'; 
+		      	    		tent_div += '<div>최대인원 : ' + tent.tentMaxCount + ' / </div>'; 
+		      	    		tent_div += '<div>이용금액 : ' + tent.tentSum + ' / </div>';
+		      	    		tent_div += '<div><input type="button" class="btn_reserve" value="예약하기"></div></div>'; 
+		      	    		tent_div += '</div>';
+		      	    		tent_div += '<div style="clear:both;"></div>';
+		      	    		$('#tent_info').append(tent_div);
+      	    			} 
+      	    				
+      	    		});
+      	    		
+      	    	},
+      	    	
+      	    }); // ajax
+      		
       	}
-      	
-      	
-      	
       	
     </script>
     
@@ -202,13 +192,14 @@
 		<div class="left_side">
 			시작일 <input type="text"  readonly="readonly" id="RESERVE_BEGIN_DATE">
 			종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE">
-			숙박일정 <input type="text" readonly="readonly" id="RESERVE_DATE">
+			일정 <input type="text" readonly="readonly" id="RESERVE_DATE">
+			인원수 <input type="text" id="RESERVE_COUNT">
 			<hr>
 			<span id='calendar' ></span>
 		</div>
 		<div class="right_side">
-			
-			
+			<div id="camp_info"></div>
+			<div id="tent_info"></div>
 		</div>
 	</div>
 	

@@ -12,5 +12,11 @@
 		 WHERE CAMP_NO = #{campNo} 
 	</select>
 	
+	<select id="selectCampByCampNo" parameterType="int" resultType="CampDTO">
+		SELECT CAMP_NO, "facltNm", "intro", "lineIntro", "featureNm", "sbrsCl", "firstImageUrl", "themaEnvrnCl", "eqpmnLendCl", "tourEraCl", "induty", "allar", "operPdCl", "hvofBgnde", "hvofEnddle", "prmisnDe", "operDeCl", "toiletCo", "extshrCo", "brazierCl", "glampInnerFclty", "caravInnerFclty", "lctCl", "addr1", "doNm", "sigunguNm", "addr2", "zipcode", "mapX", "mapY", "homepage", "tel", "createdtime", "modifiedtime"
+		  FROM CAMP
+		 WHERE CAMP_NO = #{campNo}
+	</select>
+	
 	
 </mapper>

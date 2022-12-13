@@ -28,6 +28,15 @@ public class ReserveController {
 		return reserveService.getTentByCampNo(campNo);
 	}
 	
+	/*
+	 * @ResponseBody
+	 * 
+	 * @GetMapping("/reserve/camp_info") public Map<String, Object>
+	 * campInfo(@RequestParam(value="campNo") int campNo) { return
+	 * reserveService.getCampByCampNo(campNo); }
+	 */
+	
+	
 	@GetMapping("/reserve/pay")
 	public String reserve_pay() {
 		return "reserve/pay";
