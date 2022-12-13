@@ -37,7 +37,7 @@
       INSERT INTO FREE_BRD
          (FREE_NO, NICKNAME, FREE_TITLE, FREE_CONTENT, FREE_CREATE_DATE, FREE_MODIFY_DATE, FREE_IP, FREE_HIT)
       VALUES
-         (${freeNo}, #{nickname}, #{freeTitle}, #{freeContent}, TO_CHAR(SYSDATE, 'YY/MM/DD'), TO_CHAR(SYSDATE, 'YY/MM/DD'), #{freeIp}, 0)
+         (${freeNo}, #{nickname}, #{freeTitle}, #{freeContent}, TO_CHAR(SYSDATE, 'YY/MM/DD HH24:MI'), TO_CHAR(SYSDATE, 'YY/MM/DD HH24:MI'), #{freeIp}, 0)
 	</insert>
    
 	<!-- 5. 특정 게시글 선택 -->

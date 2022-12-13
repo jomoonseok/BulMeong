@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
-
+<link th:href="@{/css/freeboard.css}" rel="stylesheet" />
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
@@ -43,6 +43,11 @@
 			fn_commentCount();
 			fn_commentList();
 			fn_changePage();
+			fn_showReplyArea();
+			fn_hideReplyArea()
+			fn_removeComment()
+
+			
 			
 			// # 댓글 관련 # //
 			// 1. 댓글 갯수
@@ -58,7 +63,9 @@
 				});
 			}
 			
-			// 2. 댓글 리스트
+
+			
+			// 3. 댓글 리스트
 			function fn_commentList(){
 				$.ajax({
 					type: 'get',
@@ -69,39 +76,57 @@
 						$('#comment_list').empty();
 						$.each(resData.commentList, function(i, comment){
 							var div = '';
-							if(comment.depth == 0){
+							if(comment.freeCmtDepth == 0){
 								div += '<div>';
 							} else {
 								div += '<div style="margin-left: 40px;">';
 							}
-							if(comment.state == 1) {
+							
+							// 일반 댓글
+							if(comment.freeCmtState == 1) {
 								div += '<div>';
-								div += '<span><strong>&nbsp;' + comment.nickname + '</strong></span>';
+								div += '<span><strong>' + comment.nickname + '</strong></span>';
 								div += '&nbsp;';
-								div += '<span class="cmt_Content_Area">' + comment.freeCmtContent + '</span>';
+								div += '<span class="cmt_Create_Date">' + comment.freeCmtCreateDate + '</span>';
 								div += '&nbsp;';
+								div += '<div class="cmt_Content_Area">' + comment.freeCmtContent + '</div>';
 								div += '</div>'
-							}
+							}	
 							div += '<div>';
 							moment.locale('ko-KR');
-							
-							//////
-							div += '<span style="font-size: 12px; color: silver; th:text="${#temporals.createDate(' + comment.freeCmtCreateDate + ', \'yyyy-MM-dd HH:mm:ss\')}"></span>';							
-							div += '<span th:text="${#temporals.createDate(' + comment.freeCmtCreateDate + ', \"yyyy-MM-dd HH:mm:ss\')}"></span>';							
-				
-							div += '<span>' + comment.freeCmtCreateDate + '</span>';
-							//////
-							
 							div += '</div>';
-							div += '<div style="margin-left: 40px;" class="reply_area blind">';
+
+							
+							// 로그인한 유저만 수정/삭제
+							div += '<input type="button" value="수정" class="btn_cmt_modify">';
+							div += '<input type="button" value="삭제" class="btn_cmt_remove">';
+							
+							
+							
+							// 답글 버튼
+							div += '<input type="button" value="답글" class="btn_reply_area">';
+							div += '<div style="margin-left: 40px;" class="blind">';
+							
+							
+							
+							
+							
+							// 답글 폼
 							div += '<form class="frm_reply">';
-							div += '<input type="hidden" name="freeNo" value="' + comment.freeNo + '">';
 							///////
-
-
+							div += '<input type="hidden" name="freeNo" value="' + comment.freeNo + '">';
+							div += '<input type="hidden" name="depth" value="' + comment.freeCmtDepth + '">';
+							div += '<input type="hidden" name="groupOrder" value="' + comment.freeGroupOrder + '">';
+							div += '<input type="hidden" name="groupNo" value="' + comment.freeCmtNo + '">';
+							///////
+							div += '<input type="text" class="show" name="freeCmtContent" placeholder="답글 추가...">';
+							div += '<input type="button" value="답글" class="button_reply btn_reply_add">';		
+							div += '<input type="button" value="취소" class="btn_cancel">';		
 							div += '</form>';
 							div += '</div>';
 							div += '</div>';
+							
+							
 							$('#comment_list').append(div);
 							$('#comment_list').append('<div style="border-bottom: 1px dotted gray;"></div>');
 
@@ -126,6 +151,20 @@
 						$('#paging').append(paging);
 					}
 						
+				});
+			}
+			
+			// 답글 보이는 버튼
+			function fn_showReplyArea(){
+				$(document).on('click', '.btn_reply_area', function(){
+					$(".blind").show();
+				});
+			}
+			
+			// 답글 숨기기 버튼(취소)
+			function fn_hideReplyArea(){
+				$(document).on('click', '.btn_cancel', function(){
+					$(".blind").hide();
 				});
 			}
 			
@@ -158,6 +197,33 @@
 					}
 				});
 			});
+			
+			// 댓글 수정
+			
+			
+			// 댓글 삭제
+			function fn_removeComment(){
+				$(document).on('click', '.btn_cmt_remove', function(){
+					if(confirm('삭제된 댓글은 복구할 수 없습니다. 댓글을 삭제할까요?')){
+						$.ajax({
+							type: 'post',
+							url: '/freecomment/remove',
+							data: 'freeCmtNo=' + $(this).data('free_cmt_no'),
+							dataType: 'json',
+							success: function(resData){
+								if(resData.isRemove){
+									alert('댓글이 삭제되었습니다.');
+									fn_commentList();
+									fn_commentCount();
+								}
+								
+							}
+						});
+					} else {
+						alert('취소되었습니다.')
+					}
+				});
+			}
 			
 
 			// # 게시글 버튼 관련 # //
@@ -196,9 +262,14 @@
 	
 	<div th:utext="${free.freeContent}"></div>
 	
-	<hr>
 	
-	<div th:text="${#temporals.format(free.freeCreateDate, 'yyyy. MM. dd HH:mm')}"></div>	
+	
+	<hr>
+
+	
+	
+	
+	
 	
 	
 	<!-- 3. 댓글 추가 -->

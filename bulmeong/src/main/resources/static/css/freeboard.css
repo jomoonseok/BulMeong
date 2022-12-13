@@ -1,0 +1,10 @@
+@charset "EUC-KR";
+
+.blind {
+	display: none;
+}
+
+.cmt_Create_Date {
+	color: rgb(127, 127, 127);
+	font-size: 12px;
+}

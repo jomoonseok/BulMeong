@@ -84,4 +84,12 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	}
 	
 	
+	@Override
+	public Map<String, Object> removeComment(int freeCmtNo) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("isRemove", freeBoardCmtMapper.deleteComment(freeCmtNo) == 1);
+		return result;
+	}
+	
+	
 }

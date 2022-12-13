@@ -13,6 +13,5 @@ public class FreeBoardDTO {
 	private int freeNo;
 	private String nickname, freeTitle, freeContent, freeCreateDate, freeModifiyDate, freeIp;
 	private int freeHit;
-	
-	private String prevId, prevSub, nextId, nextSub;
+
 }

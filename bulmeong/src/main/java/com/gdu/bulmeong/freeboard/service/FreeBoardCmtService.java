@@ -12,6 +12,7 @@ public interface FreeBoardCmtService {
 	public Map<String, Object> getCmtCount(int freeNo);
 	public Map<String, Object> getCmtList(HttpServletRequest request);
 	public Map<String, Object> addCmt(FreeBoardCmtDTO freeCmt);
+	public Map<String, Object> removeComment(int freeCmtNo);
 	
 
 	
