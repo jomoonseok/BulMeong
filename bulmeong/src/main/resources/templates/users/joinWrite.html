@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
 <head>
-	<script>
+	<script th:inline="javascript">
 	$(function(){
 		fn_idCheck();
 		fn_pwCheck();
@@ -13,6 +13,7 @@
 		fn_birthmonth();
 		fn_emailCheck();
 		fn_join();
+		fn_home();
 	});
 	
 	// 전역변수 (각종 검사를 통과하였는지 점검하는 플래그 변수)
@@ -259,7 +260,7 @@
 					dataType: 'json',
 					success: function(resData){
 						// 기존 회원 정보에 등록된 이메일이라면 실패 처리
-						if(resData.isUser){
+						if(resData.isUser || resData.isSleepUser){
 							reject(2);   // catch의 function으로 넘기는 인수 : 2(다른 회원이 사용중인 이메일이라서 등록이 불가능한 경우)
 						} else {
 							resolve();   // Promise 객체의 then 메소드에 바인딩되는 함수
@@ -356,6 +357,12 @@
 		
 	}  // fn_join
 	
+	function fn_home(){
+		$('#btn_home').click(function(){
+			location.href = '/';
+		})
+	}
+	
 	</script>
 </head>
 <body>
@@ -368,7 +375,7 @@
 	
 	<hr>
 	
-	<form id="frm_join" th:action="@{/user/join}" method="post">
+	<form id="frm_join" th:action="@{/users/join}" method="post">
 	
 		<!-- 약관 동의 여부 -->
 		<input type="hidden" name="location" th:value="${location}">
@@ -518,7 +525,7 @@
 		<!-- 버튼 -->
 		<div>
 			<button>가입하기</button>
-			<input type="button" value="취소하기" onclick="location.href='${contextPath}'">
+			<input type="button" id="btn_home" value="취소하기">
 		</div>
 	
 	</form>

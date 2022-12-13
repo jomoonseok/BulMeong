@@ -1,14 +1,18 @@
 package com.gdu.bulmeong.users.service;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.users.mapper.UsersMapper;
@@ -44,6 +48,7 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Override
 	public Map<String, Object> isReduceNickname(String nickname) {
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("nickname", nickname);
 		
@@ -58,6 +63,7 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Override
 	public Map<String, Object> isReduceEmail(String email) {
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("email", email);
 		
@@ -90,7 +96,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	
-	
+	@Transactional
 	@Override
 	public void join(HttpServletRequest request, HttpServletResponse response) {
 		
@@ -158,7 +164,7 @@ try {
 				
 				// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
 				request.getSession().setAttribute("loginUser", usersMapper.selectUserByMap(map));
-				
+				System.out.println(request.getSession().getId());
 				// 로그인 기록 남기기
 				int updateResult = usersMapper.updateAccessLog(id);
 				if(updateResult == 0) {
@@ -187,6 +193,117 @@ try {
 		
 	}
 	
+	
+	
+	@Override
+	public void login(HttpServletRequest request, HttpServletResponse response) {
+		// 파라미터
+		String url = request.getParameter("url");
+		String id = request.getParameter("id");
+		String pw = request.getParameter("pw");
+		
+		id = securityUtil.preventXSS(id);
+		
+		// pw는 DB에 저장된 데이터와 동일한 형태로 가공
+		pw = securityUtil.sha256(pw);
+
+		// 조회 조건으로 사용할 Map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("pw", pw);
+		
+		// id, pw가 일치하는 회원을 DB에서 조회하기
+		UsersDTO loginUser = usersMapper.selectUserByMap(map);
+		
+		// id, pw가 일치하는 회원이 있다 : session에 loginUser 저장하기 + 로그인 기록 남기기 
+		if(loginUser != null) {
+			
+			// 로그인 유지 처리는 keepLogin 메소드가 따로 처리함
+			//keepLogin(request, response);
+			
+			// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
+			request.getSession().setAttribute("loginUser", loginUser);
+
+			// 로그인 기록 남기기
+			int updateResult = usersMapper.updateAccessLog(id);
+			if(updateResult == 0) {
+				usersMapper.insertAccessLog(id);
+			}
+			
+			// 이동 (로그인페이지 이전 페이지로 되돌아가기)
+			try {
+				response.sendRedirect(url);
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		// id, pw가 일치하는 회원이 없다 : 로그인 페이지로 돌려 보내기
+		else {
+			
+			// 응답
+			try {
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				out.println("alert('일치하는 회원 정보가 없습니다.');");
+				out.println("location.href='/';");
+				out.println("</script>");
+				out.close();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
+	
+	/*
+	@Override
+	public void keepLogin(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 파라미터
+		String id = request.getParameter("id");
+		String keepLogin = request.getParameter("keepLogin");
+		
+		// 로그인 유지를 체크한 경우
+		if(keepLogin != null) {
+			
+			// session_id
+			String sessionId = request.getSession().getId();
+			
+			// session_id를 쿠키에 저장하기
+			Cookie cookie = new Cookie("keepLogin", sessionId);
+			cookie.setMaxAge(60 * 60 * 24 * 15);  // 15일
+			cookie.setPath(request.getContextPath());
+			response.addCookie(cookie);
+			
+			// session_id를 DB에 저장하기
+			UsersDTO user = UsersDTO.builder()
+					.id(id)
+					.sessionId(sessionId)
+					.sessionLimitDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15).toString())  // 현재타임스탬프 + 15일에 해당하는 타임스탬프
+					.build();
+
+			usersMapper.updateSessionInfo(user);
+			
+		}
+		// 로그인 유지를 체크하지 않은 경우
+		else {
+			
+			// keepLogin 쿠키 제거하기
+			Cookie cookie = new Cookie("keepLogin", "");
+			cookie.setMaxAge(0);  // 쿠키 유지 시간이 0이면 삭제를 의미함
+			cookie.setPath(request.getContextPath());
+			response.addCookie(cookie);
+			
+		}
+		
+	}
+	*/
 	 
 	
 }
