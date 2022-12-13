@@ -130,21 +130,21 @@ public class NoticeServiceImpl implements NoticeService {
 			PrintWriter out = response.getWriter();
 			
 			if(result > 0) {
-				String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
-
-				if(summernoteImageNames !=  null) {
-					for(String filesystem : summernoteImageNames) {
-						SummernoteImageDTO summernoteImage = SummernoteImageDTO.builder()
-								.noticeNo(notice.getNoticeNo())
-								.filesystem(filesystem)
-								.build();
-						noticeMapper.insertSummernoteImage(summernoteImage);
-					}
-					System.out.println(notice.getNoticeNo());
-				}
+//				String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
+//
+//				if(summernoteImageNames !=  null) {
+//					for(String filesystem : summernoteImageNames) {
+//						SummernoteImageDTO summernoteImage = SummernoteImageDTO.builder()
+//								.noticeNo(notice.getNoticeNo())
+//								.filesystem(filesystem)
+//								.build();
+//						noticeMapper.insertSummernoteImage(summernoteImage);
+//					}
+//					System.out.println(notice.getNoticeNo());
+//				}
 				out.println("<script>");
 				out.println("alert('공지사항이 등록되었습니다.')");
-				out.println("location.href='" + request.getContextPath() + "/notice/list';");
+				out.println("location.href='/notice/list';");
 				out.println("</script>");
 			} else {
 				out.println("<script>");
@@ -215,7 +215,6 @@ public class NoticeServiceImpl implements NoticeService {
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			
-			out.println("<script>");
 			if(result > 0) {
 				
 				// 파라미터 summernoteImageNames
@@ -232,13 +231,16 @@ public class NoticeServiceImpl implements NoticeService {
 					}
 				}
 				
+				out.println("<script>");
 				out.println("alert('" + noticeNo + "번 공지사항이 수정되었습니다.');");
-				out.println("location.href='" + request.getContextPath() + "/notice/detail?notciNo=" + noticeNo + "';");
+				out.println("location.href='/notice/detail?noticeNo=" + noticeNo + "';");
+				out.println("</script>");
 			} else {
+				out.println("<script>");
 				out.println("alert('공지사항 수정이 불가능합니다.');");
 				out.println("history.back();");
+				out.println("</script>");
 			}
-			out.println("</script>");
 			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -271,7 +273,7 @@ public class NoticeServiceImpl implements NoticeService {
 				}
 				
 				out.println("alert('" + noticeNo + "번 공지사항이 삭제되었습니다.');");
-				out.println("location.href='" + request.getContextPath() + "/notice/list';");
+				out.println("location.href='/notice/list';");
 			} else {
 				out.println("alert('공지사항 삭제가 불가능합니다.');");
 				out.println("history.back();");

@@ -5,30 +5,21 @@
 	.blind {
 		display: none;
 	}
-	#lnk_good:hover span {
-		cursor: pointer;
-		color: #f83030;
-	}
-	#heart {
-		width: 16px;
-		margin-right: 5px;
-	}
 </style>
 <body>
 	<div>
 		<header th:replace="~{layout/header::header_layout}"></header>
 		
-		<h3 th:utext="${notice.noticeTitle}"></h3>
-		
-<!-- 		<div> -->
-<!-- 			<span th:text="|작성일 ${#temporals.format(notice.noticeCreateDate, 'yyyy-MM-dd HH:mm:ss')}|"></span> -->
-<!-- 			<span th:text="|작성일 ${#temporals.format(notice.noticeCreateDate, 'yyyy-MM-dd HH:mm:ss')}|"></span> -->
-<!-- 			&nbsp;&nbsp;&nbsp; -->
-<!-- 			<span th:text="|수정일 ${#temporals.format(notice.noticeModifyDate, 'yyyy-MM-dd HH:mm:ss')}|"></span> -->
-<!-- 		</div> -->
+		<h3 th:text="|[공지] ${notice.noticeTitle}|"></h3>
 		
 		<div>
-			<span th:text="|조회수 ${#numbers.formatInteger(notice.noticeHit,1,'COMMA')}|"></span>
+			<span th:text="|작성일▷ ${notice.noticeCreateDate}|"></span>
+<!-- 			&nbsp;&nbsp;&nbsp; -->
+<!-- 			<span th:text="|수정일 ${notice.noticeModifyDate}|"></span> -->
+		</div>
+		
+		<div>
+			<span th:text="|조회수▷ ${#numbers.formatInteger(notice.noticeHit,1,'COMMA')}|"></span>
 		</div>
 		
 		<hr>
@@ -38,17 +29,13 @@
 		<div id="only_admin">
 			<form id="frm_btn" method="post">
 				<input type="hidden" name="noticeNo" th:value="${notice.noticeNo}">
-<!-- 				<th:block th:if="${loginUser.id == 'ADMIN'}"> -->
 					<input type="button" value="수정" id="btn_edit_notice"> 
 					<input type="button" value="삭제" id="btn_remove_notice">
-<!-- 				</th:block> -->
 				<input type="button" value="목록" onclick="location.href='/notice/list'">
 			</form>
 		</div>
 		<script th:inline="javascript">
-// 			if([[$(loginUser.id != 'ADMIN')]]) {
-// 				$('#only_admin').hide();
-// 			} else {
+
 				$('#btn_edit_notice').click(function(){
 					$('#frm_btn').attr('action', '/notice/edit');
 					$('#frm_btn').submit();
@@ -59,8 +46,7 @@
 						$('#frm_btn').submit();
 					}
 				});
-// 			}
-			
+
 		</script>
 	</div>
 </body>

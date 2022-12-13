@@ -6,9 +6,9 @@
 	
  	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	<!-- <h3 th:text="불멍 공지사항"></h3>
+		<h3>🔥🔥🔥공지사항🔥🔥🔥</h3>
 	
-	<th:block th:if="${loginUser.id == 'admin'}"> -->
+<!--/* 	<th:block th:if="${loginUser.id == 'ADMIN'}"> */-->
 		<input type="button" value="공지사항 작성하기" id="btn_noticeWrite">
 		<script th:inline="javascript">
 			$('#btn_noticeWrite').click(function(){
@@ -32,7 +32,7 @@
 			<tbody>
 				<tr th:each="notice,vs:${noticeList}">
 					<td th:text="${beginNo - vs.index}"></td>
-					<td><a th:href="@{/notice/increase/hit(noticeNo=${notice.noticeNo})}" th:utext="${notice.noticeTitle}"></a></td>				
+					<td><a th:href="@{/notice/increase/hit(noticeNo=${notice.noticeNo})}" th:utext="|[공지] ${notice.noticeTitle}|"></a></td>				
 					<td th:text="${notice.noticeHit}"></td>
 					<td th:text="${notice.noticeCreateDate}"></td>
 				</tr>

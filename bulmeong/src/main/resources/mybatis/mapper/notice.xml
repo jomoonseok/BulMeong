@@ -33,7 +33,7 @@
 		INSERT INTO NOTICE
 			(NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID)
 		VALUES
-			(#{noticeNo}, #{noticeTitle}, #{noticeContent}, 0, SYSDATE, SYSDATE, #{id})
+			(#{noticeNo}, #{noticeTitle}, #{noticeContent}, 0, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI'), TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI'), #{id})
 	</insert>
 	
 	<update id="updateNoticeHit" parameterType="int">
@@ -52,7 +52,7 @@
 		UPDATE NOTICE
 		   SET NOTICE_TITLE = #{noticeTitle}
 		     , NOTICE_CONTENT = #{noticeContent}
-		     , NOTICE_MODIFY_DATE = SYSDATE
+		     , NOTICE_MODIFY_DATE = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI')
 		 WHERE NOTICE_NO = #{noticeNo}
 	</update>
 	
