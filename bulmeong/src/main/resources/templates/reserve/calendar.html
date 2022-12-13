@@ -18,7 +18,6 @@
     	}
     	
     	#reserve_container {
-    		width: 100%;
     		height: 800px;
     		margin: 0 10px;
     		
@@ -26,9 +25,8 @@
     	
     	.left_side {
     		float: left;
-    		width: 40%;
+    		width: 39%;
     		height: 500px;
-    		margin: 0 10px;
     	}
     	
     	.left_side > input[type=text] {
@@ -36,12 +34,9 @@
     		text-align: center;
     	}
     	
-    	.rigth_side {
-    		float: right;
-    		width: 60%;
-    		height: 800px;
-    		margin: 0 10px;
-    	}
+    	
+    	
+    	
     	
     </style>
     
@@ -49,12 +44,18 @@
     <script>
     
     	$(function() {
+    		
+    		fn_css();
+    		
     		// 화면 이동 시 효과주기
     		$.fakeLoader({
-  				timeToHide:600, // 로딩중에 걸리는 시간, 1000은 1초
+  				timeToHide:800, // 로딩중에 걸리는 시간, 1000은 1초
   				bgColor:"#f8f8f8", // 배경색
   				spinner:"spinner2" // 로딩중으로 원하는 로딩이미지타입
     		});
+    		
+    		fn_reserve();
+    		
     	});
 		
       	document.addEventListener('DOMContentLoaded', function() {
@@ -83,7 +84,9 @@
 	      	}, */
 	      	select: function(info) {
 	      		
-	      		if(!confirm('희망 날짜가 ' + info.startStr + ' ~ ' + info.endStr + ' 맞습니까?')) {
+	      		var reserveDate = (info.end.getTime() - info.start.getTime()) / (1000*60*60*24);
+	      		
+	      		if(!confirm('선택하신 일정은 ' + info.startStr + ' ~ ' + info.endStr + '까지 ' + reserveDate + '박 ' + (reserveDate + 1) + '일 일정입니다.' + ' 맞습니까?')) {
 	      			$('.right_side').empty();
 	      			$('#RESERVE_BEGIN_DATE').val('');
 		       	    $('#RESERVE_END_DATE').val('');
@@ -94,7 +97,6 @@
 	      			
 	      			$('#RESERVE_BEGIN_DATE').val(info.startStr);
 		       	    $('#RESERVE_END_DATE').val(info.endStr);
-		      	    var reserveDate = (info.end.getTime() - info.start.getTime()) / (1000*60*60*24);
 		      	    $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
 		      	    
 		      	    // URL 파라미터(campNo) 가져오기
@@ -113,19 +115,45 @@
 		      	    		$('.right_side').empty();
 		      	    		
 		      	    		$.each(resData.tentList, function(i, tent) {
+		      	    			var tent_div = '<div class="tent_div" height="133px">';
+		      	    			
+		      	    			// 텐트의 상태가 0이면 		      
 		      	    			if(tent.tentState == 0) {
 		      	    				
-			      	    			var tent_div = '<class="tent_div"><div>';
-	
-				      	    		tent_div += '<span><img src="' + tent.tentImage + '" width="200px" height="133px"></img></span>';
-				      	    		tent_div += '<span>텐트이름 : ' + tent.tentName + ' / </span>'; 
-				      	    		tent_div += '<span>텐트구분 : ' + tent.tentCategory + ' / </span>'; 
-				      	    		tent_div += '<span>최대인원 : ' + tent.tentMaxCount + ' / </span>'; 
-				      	    		tent_div += '<span>예약상태 : ' + tent.tentState + ' / </span>'; 
-				      	    		tent_div += '<span>이용금액 : ' + tent.tentSum + ' / </span></div>'; 
+		      	    				tent_div += '<div style="float:left;">';
+				      	    		tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
+				      	    		tent_div += '</div>';
+				      	    		
+				      	    		tent_div += '<div style="float:left;">';
+				      	    		tent_div += '<div>텐트이름 : ' + tent.tentName + ' / </div>'; 
+				      	    		switch(tent.tentCategory) {
+					      	    		case 0: tent.tentCategory = '글램핑'; break;
+					      	    		case 1: tent.tentCategory = '카라반'; break;
+					      	    		case 2: tent.tentCategory = '일반야영장'; break;
+					      	    		case 3: tent.tentCategory = '자동차야영장';
+				      	    		}
+				      	    		tent_div += '<div>텐트구분 : ' + tent.tentCategory + ' / </div>'; 
+				      	    		tent_div += '<div>최대인원 : ' + tent.tentMaxCount + ' / </div>'; 
+				      	    		tent_div += '<div>이용금액 : ' + tent.tentSum + ' / </div>';
+				      	    		tent_div += '<div><input type="button" class="btn_reserve" value="예약하기"></div></div>'; 
+				      	    		tent_div += '</div>';
+				      	    		
 								
-			      	    			$('.right_side').append(tent_div);
+				      	    	// 텐트의 상태가 1이면 
+		      	    			} else {
+		      	    				tent_div += '<div style="float:left;">';
+		      	    				tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
+		      	    				switch(tent.tentCategory) {
+					      	    		case 0: tent.tentCategory = '글램핑'; break;
+					      	    		case 1: tent.tentCategory = '카라반'; break;
+					      	    		case 2: tent.tentCategory = '일반야영장'; break;
+					      	    		case 3: tent.tentCategory = '자동차야영장'; 
+				      	    		}
+	      	    					tent_div += '<div>' + tent.tentCategory + '은 운영하지 않습니다.</div></div>';
+	      	    					tent_div += '</div>';
 		      	    			}
+		      	    			tent_div += '<div style="clear:both;"></div>';
+	      	    				$('.right_side').append(tent_div);
 		      	    		});
 		      	    		
 		      	    	},
@@ -140,25 +168,35 @@
         calendar.render();
         
         });
-      
-      
       	
-      	function fn_fakeLoader() {
+      	function fn_reserve() {
       		
-      		$.fakeLoader({
-  				timeToHide:800, // 로딩중에 걸리는 시간, 1000은 1초
-  				bgColor:"#f8f8f8", // 배경색
-  				spinner:"spinner2" // 로딩중으로 원하는 로딩이미지타입
-    		});
+      		$(document).on('click', '.btn_reserve', function() {
+    			window.open("/reserve/pay", "예약결제", "width=800, height=1200");
+      		});
+      			
+      		
       		
       	}
+      	
+      	function fn_css(){
+      		
+      		$('.right_side').css('float','right');
+      		$('.right_side').css('width','59%');
+      		$('.tent_div').css({'height':'100%', 'width':'100%'});
+      	}
+      	
+      	
+      	
       	
     </script>
     
 </head>
 <body>
-	
+
 	<header th:replace="~{layout/header::header_layout}"></header>
+	
+	<div class="fakeLoader"></div>
 	
 	<div id="reserve_container">
 		<div class="left_side">
@@ -169,10 +207,21 @@
 			<span id='calendar' ></span>
 		</div>
 		<div class="right_side">
-			<div class="fakeLoader"></div>
+			
 			
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </body>
 </html>
