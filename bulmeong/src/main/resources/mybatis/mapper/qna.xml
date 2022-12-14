@@ -29,10 +29,5 @@
 			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{ip}, (SELECT MAX(QNA_NO)+1 FROM QNA) 0)
 		</if>
 	</insert>
-	<insert id="insertBoard" parameterType="BoardDto">    
-        INSERT INTO QNA
-        	(QNA_NO,ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
-        SELECT CASE count(*) when 0 then 1 else max(QNA_NO) + 1 end,#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{ip}from tbl_board
-    </insert><!--end -->
 	
 </mapper>

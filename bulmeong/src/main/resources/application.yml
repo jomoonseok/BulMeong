@@ -12,22 +12,14 @@ server:
       timeout: 1800
 
 # database connection
-<<<<<<< HEAD
-spring:
-  datasource:
-    hikari:
-=======
 # mail
 spring: 
   datasource: 
     hikari: 
->>>>>>> main
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       username: root
       password: 1111
-<<<<<<< HEAD
-=======
   mail: 
     host: smtp.gmail.com
     port: 587
@@ -39,7 +31,7 @@ spring:
           auth: true
           starttls: 
             enable: true
->>>>>>> main
+
 
 # mybatis
 mybatis:
