@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('목록')}"></head>
+<body>
+	
+	<script>
+		$(document).ready(function () {
+			$("#buy").on("click", function (event) {
+				var fm = $("#orderCheck")[0];
+				if (loginUser == null) {  
+					alert('로그인 해주세요.');
+					location.href="/user/login/form";
+					return false;
+				}
+				fm.method = "POST";
+				fm.action = "/pay/choice";
+				fm.submit();
+			});
+		});
+	</script>
+
+	<form id="orderCheck" name="orderCheck">
+		<h1 id="first" th:text="결제"></h1>
+		<table id="checkout" border="1">
+			<thead>
+				<tr>
+					<td>상품 정보</td>
+					<td th:text="${camp.facltNm}"></td>
+					<td th:text="|${camp.count}명|"></td>  <!-- 인원 수 -->
+					<td th:text="|${camp.amount}원|"></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>주문자 정보</td>
+					<td><input type="text" name="name" id="name" th:text="${user.name}"></td>
+					<td><input type="text" name="tel" id="tel" th:text="${user.tel}"></td>
+					<td><input type="text" name="email" id="email" th:text="${user.email}"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>결제수단</td>
+					<td>
+						<select id="choicePay" name="choicePay">
+							<option value="transfer">계좌이체</option>
+							<option value="card">신용카드</option>
+							<option value="kakaoPay">카카오페이</option>
+							<option value="payco">페이코</option>
+						</select>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+		<button id="buy">상품구매</button>
+		<input type="button" value="취소하기" onclick="history.back(-2)">
+	</form>
+	   
+</body>
+</html>

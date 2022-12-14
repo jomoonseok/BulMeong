@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('목록')}"></head>
+<body>
+ 
+	<h1>결제</h1>
+	
+	<div>
+		<li><button id="pay" type="button">일반 결제</button></li>
+		<li><button id="kakaoPay" type="button">카카오페이 결제</button></li>
+		<li><button id="payco" type="button">페이코 결제</button></li>
+	</div>
+	
+	<script>
+	
+		$(document).ready(function(){
+			$('#pay').click(function(){
+				pay();  // 버튼 클릭하면 호출
+			});
+		});  // 버튼 클릭하면 실행
+		
+		$(document).ready(function(){
+			$('#kakaoPay').click(function(){
+				kakaoPay();  // 버튼 클릭하면 호출
+			});
+		});  // 버튼 클릭하면 실행
+		
+		
+		$(document).ready(function(){
+			$('#payco').click(function(){
+				payco();
+			});
+		});  // 버튼 클릭하면 실행
+		
+		function pay() {  // (data)
+			IMP.init('imp72345478');  // '가맹점 식별코드' 입력  // 초기화
+			IMP.request_pay({  // param   // 결제창 호출
+				pg: "html5_inicis", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐, 아임포트 홈페이지에서 추가한 pg만 가능하다.)  // "html5_inicis"  // "kakaopay.TC0ONETIME"
+				pay_method: "card",
+				merchant_uid: "testpaysera",  // DB에 주문 레코드를 생성하여 해당 레코드의 주문번호를 param.merchant_uid 에 지정하기
+				name: "상품3",  // 결제창에 노출될 상품명 
+				amount: 100,  // 네이버페이 최소 주문금액 100원
+				buyer_email : "testiamport03@naver.com", 
+				buyer_name : "크롱", 
+				buyer_tel: "01012341234",
+				buyer_addr: "서울특별시 강남구 신사동",
+		        buyer_postcode: "01181"
+			}, function (rsp) {  // callback  // 결제 완료
+				if (rsp.success) {
+					alert("[완료] imp_uid : "+ rsp.imp_uid +" / merchant_uid : " + rsp.merchant_uid);  // alert('결제가 완료되었습니다.');  // location.href="결제 완료 후 이동할 페이지 url"
+				} else {
+					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");  // alert('결제에 실패하였습니다. 에러 : ' + rsp.error_msg); 
+				}
+
+			});
+		}
+		
+		function kakaoPay() {  // (data)
+			IMP.init('imp72345478');  // '가맹점 식별코드' 입력  // 초기화
+			IMP.request_pay({  // param   // 결제창 호출
+				pg: "kakaopay.TC0ONETIME", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐, 아임포트 홈페이지에서 추가한 pg만 가능하다.)  // "html5_inicis"  // "kakaopay.TC0ONETIME"
+				pay_method: "card",  // 지불 방법 
+				merchant_uid: "test_sera",  // 가맹점 주문번호 (아임포트를 사용하는 가맹점에서 중복되지 않은 임의의 문자열을 입력) 
+				name: "상품1",  // 결제창에 노출될 상품명 
+				amount: 10, // 금액 
+				buyer_email : "testiamport01@naver.com", 
+				buyer_name : "뽀로로", 
+				buyer_tel: "01012341234"
+				
+			}, function (rsp) {  // callback  // 결제 완료
+				if (rsp.success) {
+					alert("[완료] imp_uid : "+ rsp.imp_uid +" / merchant_uid : " + rsp.merchant_uid);
+				} else {
+					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")"); 
+				}
+
+			});
+		}
+		
+		
+		function payco() {
+			IMP.init('imp72345478');  // '가맹점 식별코드' 입력
+			IMP.request_pay({
+				pg: "payco",
+				pay_method: "card",
+				merchant_uid: "payco_sera",
+				name: "상품2",
+				amount: 30,
+				buyer_email : "testiamport02@naver.com", 
+				buyer_name : "루피", 
+				buyer_tel: "01012345678",
+				buyer_addr : '서울특별시 강남구 삼성동',
+				buyer_postcode : '123-456'
+				
+			}, function (rsp) {  // callback  // 결제 완료
+				if (rsp.success) {
+					alert("[완료] imp_uid : "+ rsp.imp_uid +" / merchant_uid : " + rsp.merchant_uid);
+				} else {
+					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")"); 
+				}
+			
+			});
+		}
+		
+
+	
+	</script>
+	
+	   
+</body>
+</html>
