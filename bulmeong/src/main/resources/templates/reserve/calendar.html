@@ -99,7 +99,8 @@
 	      			$('#RESERVE_BEGIN_DATE').val(info.startStr);
 		       	    $('#RESERVE_END_DATE').val(info.endStr);
 		      	    $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
-		      	  	
+		      	  	alert('인원수를 입력하세요');
+		      	  	$('#RESERVE_COUNT').focus();
 	      		}
 	      			
 	      	}, // select(function)
@@ -108,7 +109,11 @@
 	        
         calendar.render();
         
-        });
+        }); // 윈도우 function
+      	
+      	
+      	
+      	
       	
       	function fn_reserve() {
       		
@@ -178,6 +183,9 @@
       	    }); // ajax
       		
       	}
+      	
+      	function 
+      	
       	
     </script>
     
