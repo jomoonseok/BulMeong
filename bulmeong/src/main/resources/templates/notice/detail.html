@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('공지사항')}"></head>
+<style>
+	.blind {
+		display: none;
+	}
+</style>
+<body>
+	<div>
+		<header th:replace="~{layout/header::header_layout}"></header>
+		
+		<h3 th:text="|[공지] ${notice.noticeTitle}|"></h3>
+		
+		<div>
+			<span th:text="|작성일▷ ${notice.noticeCreateDate}|"></span>
+<!-- 			&nbsp;&nbsp;&nbsp; -->
+<!-- 			<span th:text="|수정일 ${notice.noticeModifyDate}|"></span> -->
+		</div>
+		
+		<div>
+			<span th:text="|조회수▷ ${#numbers.formatInteger(notice.noticeHit,1,'COMMA')}|"></span>
+		</div>
+		
+		<hr>
+		
+		<div th:utext="${notice.noticeContent}"></div>
+		
+		<div id="only_admin">
+			<form id="frm_btn" method="post">
+				<input type="hidden" name="noticeNo" th:value="${notice.noticeNo}">
+					<input type="button" value="수정" id="btn_edit_notice"> 
+					<input type="button" value="삭제" id="btn_remove_notice">
+				<input type="button" value="목록" onclick="location.href='/notice/list'">
+			</form>
+		</div>
+		<script th:inline="javascript">
+
+				$('#btn_edit_notice').click(function(){
+					$('#frm_btn').attr('action', '/notice/edit');
+					$('#frm_btn').submit();
+				});
+				$('#btn_remove_notice').click(function(){
+					if(confirm('삭제하시겠습니까?')){
+						$('#frm_btn').attr('action', '/notice/remove');
+						$('#frm_btn').submit();
+					}
+				});
+
+		</script>
+	</div>
+</body>
+</html>

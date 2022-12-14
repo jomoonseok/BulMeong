@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('공지사항')}"></head>
+<body>
+<div>
+	
+ 	<header th:replace="~{layout/header::header_layout}"></header>
+	
+		<h3>🔥🔥🔥공지사항🔥🔥🔥</h3>
+	
+<!--/* 	<th:block th:if="${loginUser.id == 'ADMIN'}"> */-->
+		<input type="button" value="공지사항 작성하기" id="btn_noticeWrite">
+		<script th:inline="javascript">
+			$('#btn_noticeWrite').click(function(){
+				location.href= '/notice/write';
+			});
+		</script>
+	</th:block>
+	
+	
+	
+	<div>
+		<table border="1">
+			<thead>
+				<tr>
+					<td>글번호</td>
+					<td>제목</td>
+					<td>조회수</td>
+					<td>작성일</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="notice,vs:${noticeList}">
+					<td th:text="${beginNo - vs.index}"></td>
+					<td><a th:href="@{/notice/increase/hit(noticeNo=${notice.noticeNo})}" th:utext="|[공지] ${notice.noticeTitle}|"></a></td>				
+					<td th:text="${notice.noticeHit}"></td>
+					<td th:text="${notice.noticeCreateDate}"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4" th:utext="${paging}"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	
+	<div id="picture"></div>
+	
+</div>
+</body>
+</html>

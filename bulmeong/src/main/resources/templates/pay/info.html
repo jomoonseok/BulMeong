@@ -144,6 +144,7 @@
 			try {
 				const { imp_uid, merchant_uid } = req.body; // req의 body에서 imp_uid, merchant_uid 추출
 				
+				// 결제 정보 조회하기
 				// 액세스 토큰(access token) 발급 받기
 				const getToken = await axios({
 					url: "https://api.iamport.kr/users/getToken",
@@ -163,12 +164,13 @@
 					headers: { "Authorization": access_token } // 인증 토큰 Authorization header에 추가
 				});
 				const paymentData = getPaymentData.data.response; // 조회한 결제 정보
+				
+				// DB에서 결제되어야 하는 금액 조회
+				
 			} catch (e) {
 				res.status(400).send(e);
 			}
 		});
-		
-		// 결제 정보 조회하기
 		
 	</script>
 	
