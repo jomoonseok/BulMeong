@@ -9,6 +9,7 @@
 	<select id="selectQnaCount" resultType="int">
 		SELECT COUNT(*)
 		  FROM QNA
+		 WHERE QNA_NO = #{QNA_NO}
 	</select>
 	
 	<select id="selectQnaList" parameterType="Map" resultType="QnaDTO">

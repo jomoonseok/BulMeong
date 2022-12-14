@@ -30,7 +30,7 @@
 					type: 'get',
 					url: '/qna/write',
 					data: 
-				})
+				});
 				
 				
 			});
@@ -55,7 +55,7 @@
 			</thead>
 			<tbody>
 				<th:block th:each="qna:${qnaList}">
-					<tr>
+					<tr class="blind">
 						<td th:switch>
 							<span th:case="${qna.depth} eq 0">미답변</span>
 							<span th:case="${qna.depth} eq 1">답변완료</span>
