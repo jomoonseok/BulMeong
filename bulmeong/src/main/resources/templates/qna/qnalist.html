@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('QNA목록')}"></head>
+<style>
+	.blind {
+		display: none;
+	}
+	
+	
+</style>
+<body>
+<div>
+	
+	<div th:replace="~{layout/header::header_layout}"></div>
+	
+	<div>
+		<input type="button" value="문의하기" id="btn_write">
+		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
+		<script th:inline="javascript">
+		
+			$('#btn_write').click(function(){
+				if($(loginUser.id != null)) {
+					location.href = '/qna/write';
+				} else {
+					alert('로그인 해주셈');
+					location.href = '/users/login/form';
+				}
+				
+				$.ajax({
+					type: 'get',
+					url: '/qna/write',
+					data: 
+				})
+				
+				
+			});
+			
+			$('#my_qnaList').click(function(){
+				location.href = '/mypage/write';
+			});
+			
+		</script>
+	</div>
+	
+	<div>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>답변상태</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="qna:${qnaList}">
+					<tr>
+						<td th:switch>
+							<span th:case="${qna.depth} eq 0">미답변</span>
+							<span th:case="${qna.depth} eq 1">답변완료</span>
+						</td>
+						
+						<td class="toggle_area">
+							<th:block th:if="${qna.qnaState == 0}">
+								<div id="btn_qna_datail">${qna.qnaTitle}
+									<div class="qna_content">${qna.qnaContent}</div>
+									<div th:if="${loginUser.id=='admin'">
+									<input type="button" value="답변하기">
+									</div>
+								</div>
+							</th:block>
+							<th:block th:if="${qna.qnaState == 1}" th:text="비밀글입니다."></th:block>	
+						</td>
+						<td th:text="${qna.id}"></td>
+						<!--/*<td th:text="$(#dates.fomat(qna.qnaCreateDate,'yyyy/M/d))" ></td>*/-->
+						<td th:text="${qna.qnaCreateDate}"></td>
+						
+						<th:block th:if="${loginUser == 'admin'}">
+							<td><input type="button" value="답변달기" id="btn_reply_qna"> </td>
+						</th:block>
+					</tr>
+					<th:block th:if="${qna.qnaState == 1}">
+						
+					</th:block>
+				</th:block>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5" th:utext="${paging}"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+	<script th:inline="javascript">
+		
+		// 함수 호출//
+		fn_switchQnaDetail();
+	
+	
+		function fn_switchQnaDetail() {
+			$('#btn_qna_datail').click(function(){
+				$('#toggle_area').toggleClass('blind');
+			});
+		}
+		
+		function fn_writeQna(){
+			
+			$('#btn1').click(function(){
+				
+				$('#result').empty();
+				
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '/qna/write',
+					data: $('#frm_board').serialize(),
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						
+						$('#')
+						$('<div>')
+						.append( $('<li>').text(resData.title) )
+						.append( $('<li>').text(resData.content) )
+						.appendTo('#result');
+					},
+					error: function(jqXHR){
+						$('#result').text(jqXHR.status);
+					}
+				});  // ajax
+				
+			});  // click
+			
+		}  // function
+		
+		function fn_qnaList() {
+			$.ajax({
+				type: 'get',
+				url:'/qna/list',
+				data: 'qnaNo=[[${qna.qnaNo}]]&page=' + $('#page').val(),  // page도 넘겨줘야함
+				dataType: 'json',
+				success: function(resData) {
+					
+					$('#qna_list').empty();
+					$.each(resData.qnaList, function(i, qna){
+						var div = '';
+						if(qna.depth == 0) {
+							
+							// depth 0이면 ?
+						
+							div += '<div>';
+						} else {
+							// 아니면(1) 답글
+							div += '<div style="margin-left: 40px;">';
+						}
+						if(qna.state == 1) {
+							// 1 이면 정상
+							div += '<div>';
+							div += qna.qnaContent;
+							//////////////// 작성자만 삭제할 수 있도록 if 처리 필요 ///////////////////
+							div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">';
+							if(qna.depth == 0) {
+								// 댓글에만 답글을 달 수 있도록 if 처리 필요 (depth가 0이면 댓글 1이면 답글)
+								div += '<input type="button" value="답글" class="btn_reply_area">'; // 클릭히면 reply_area에 blind 토글
+							}
+							div += '</div>';
+						} else {
+							if(comment.depth == 0) {
+								div += '<div>삭제된 문의입니다.</div>';
+							} else {
+								div += '<div>삭제된 답변입니다.</div>';
+							}
+						}
+						div += '<div>';
+						moment.locale('ko-KR');
+						div += '<span style="font-size: 12px; color: silver;">' + moment(comment.createDate).format('YYYY. MM. DD hh:mm') + '</span>';
+						div += '</div>';
+						div += '<div style="margin-left:40px;" class="reply_area blind">';
+						div += '<form class="frm_reply">'; // 반복문 내부기때문에 class (id 안됨)
+						div += '<input type="hidden" name="blogNo" value="' + comment.blogNo + '">';
+						div += '<input type="hidden" name="groupNo" value="' + comment.commentNo + '">';   // comment.groupNo 사용가능
+						div += '<input typt="text" name="content" placeholder="답글을 작성하려면 로그인을 해주세요.">';
+						// 로그인한 사용자만 볼 수 있도록 if 처리
+						div += '<input type="button" value="답글작성완료" class="btn_reply_add">'; // 서브밋안하고 ajax해야함(input type="submit" 금지)
+						div += '</form>';
+						div += '</div>';
+						div += '</div>';
+						$('#comment_list').append(div);
+						$('#comment_list').append('<div style="border-bottom: 1px dotted gray;"></div>');
+					});
+					// 페이징
+					$('#paging').empty();
+					var pageUtil = resData.pageUtil;
+					var paging = '';
+					// 이전 블록
+					if(pageUtil.beginPage != 1) {
+						paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+					}
+					// 페이지 번호
+					for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+						if(p == $('#page').val()){
+							paging += '<strong>' + p + '</strong>';
+						} else {
+							paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
+						}
+					}
+					// 다음 블록
+					if(pageUtil.endPage != pageUtil.totalPage){
+						paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+					}
+					$('#paging').append(paging);
+				}
+			});
+		}  // fn_commentList
+		
+	</script>
+
+</div>
+
+</body>
+</html>
