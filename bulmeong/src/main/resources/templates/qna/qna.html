@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('QNA목록')}"></head>
+<style>
+	.blind {
+		display: none;
+	}
+</style>
+<body>
+<div>
+	
+	<div th:replace="~{layout/header::header_layout}"></div>
+	
+	<div>
+		<input type="button" value="문의하기" id="btn_write">
+		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
+		<script th:>
+		
+			$('#btn_write').click(function(){
+				if($(loginUser.id != null)) {
+					location.href = '/qna/';
+				} else {
+					alert('로그인 해주셈');
+					location.href = '/login' // 로그인 페이지로 이동
+				}
+			});
+			
+			$('#my_qnaList').click(function(){
+				location.href = '/mypage/write';
+			});
+			
+		</script>
+	</div>
+	
+	<div>
+		<table border="1">
+			<thead>
+				<tr>
+					<th>답변상태</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="qna:${qnaList}">
+					<tr>
+						<td th:switch>
+							<span th:case="${qna.depth} lt 1">미답변</span>
+							<span th:case="${qna.depth} eq 1">답변완료</span>
+						</td>
+						
+						<td>
+							<th:block th:if="${qna.qnaState == 0}" th:text="${qna.qnaTitle}">
+								<a></a>
+							</th:block>
+							<th:block th:if="${qna.qnaState == 1}" th:text="비밀글입니다."></th:block>	
+						</td>
+						<td th:text="${qna.id}"></td>
+						<!--/*<td th:text="$(#dates.fomat(qna.qnaCreateDate,'yyyy/M/d))" ></td>*/-->
+						<td th:text="${qna.qnaCreateDate}"></td>
+						
+						<th:block th:if="${loginUser == 'admin'}">
+							<td><input type="button" value="답변달기" id="btn_reply_qna"> </td>
+						</th:block>
+					</tr>
+					<th:block th:if="${qna.qnaState == 1}">
+						
+					</th:block>
+				</th:block>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5" th:utext="${paging}"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+
+</div>
+
+</body>
+</html>

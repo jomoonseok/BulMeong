@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.bulmeong.notice.mapper.NoticeMapper">
+
+	<select id="selectNoticeListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM NOTICE
+	</select>
+	
+	<select id="selectNoticeListByMap" parameterType="Map" resultType="NoticeDTO">
+		SELECT A.RN, A.NOTICE_NO, A.NOTICE_TITLE, A.NOTICE_CONTENT, A.NOTICE_HIT, A.NOTICE_CREATE_DATE, A.NOTICE_MODIFY_DATE, A.ID
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY NOTICE_NO DESC) AS RN, NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID
+		  		  FROM NOTICE) A
+		 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<insert id="insertSummernoteImage" parameterType="SummernoteImageDTO">
+		INSERT INTO SUMMERNOTE_IMAGE
+			(NOTICE_NO, FILESYSTEM)
+		VALUES
+			(#{noticeNo}, #{filesystem})
+	</insert>
+	
+	<insert id="insertNotice" parameterType="NoticeDTO" useGeneratedKeys="true" keyProperty="noticeNo">
+		INSERT INTO NOTICE
+			(NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID)
+		VALUES
+			(#{noticeTitle}, #{noticeContent}, 0, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), #{id})
+	</insert>
+	
+	<update id="updateNoticeHit" parameterType="int">
+		UPDATE NOTICE
+		   SET NOTICE_HIT = NOTICE_HIT + 1
+		 WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	
+	<select id="selectNoticeByNo" parameterType="int" resultType="NoticeDTO">
+		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID
+		  FROM NOTICE
+		 WHERE NOTICE_NO = #{noticeNo}
+	</select>
+	
+	<update id="updateNotice" parameterType="NoticeDTO">
+		UPDATE NOTICE
+		   SET NOTICE_TITLE = #{noticeTitle}
+		     , NOTICE_CONTENT = #{noticeContent}
+		     , NOTICE_MODIFY_DATE = DATE_FORMAT(NOW(), '%y/%m/%d')
+		 WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="int">
+		DELETE
+		  FROM NOTICE
+		 WHERE NOTICE_NO = #{noticeNo}
+	</delete>
+	
+	<select id="selectSummernoteImageListInNotice" parameterType="int" resultType="SummernoteImageDTO">
+		SELECT NOTICE_NO, FILESYSTEM
+		  FROM SUMMERNOTE_IMAGE
+		 WHERE NOTICE_NO = #{noticeNo}
+	</select>
+	
+	<select id="selectAllSummernoteImageList" resultType="SummernoteImageDTO">
+		SELECT NOTICE_NO, FILESYSTEM
+		  FROM SUMMERNOTE_IMAGE
+	</select>
+	
+	<delete id="deleteSummernoteImage" parameterType="String">
+		DELETE
+		  FROM SUMMERNOTE_IMAGE
+		 WHERE FILESYSTEM = #{filesystem}
+	</delete>
+	
+</mapper>

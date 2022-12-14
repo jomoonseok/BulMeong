@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.bulmeong.pay.mapper">
+
+	<!-- 텐트 리스트 -->
+	<select id="selectTentByNo" parameterType="int" resultType="TentDTO">
+		SELECT TENT_NO, CAMP_NO, TENT_NAME, TENT_MAX_COUNT, TENT_COUNT, TENT_PERIOD, TENT_SUM
+		  FROM TENT
+		 WHERE TENT_NO = #{tentNo}
+	</select>
+
+	<!-- 결제 리스트 -->
+	<insert id="insertPay" parameterType="PayDTO">
+		INSERT INTO PAY
+			(PAY_NO, PAY_NAME, PAY_DATE)
+		VALUES
+			(PAY_SEQ.NEXTVAL, #{payName}, #{payDate})
+	</insert>
+	
+	
+</mapper>

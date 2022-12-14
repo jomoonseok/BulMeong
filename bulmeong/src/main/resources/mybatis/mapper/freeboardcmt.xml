@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper">
+
+	<!-- 1. 댓글 갯수 -->
+	<select id="selectCmtCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_CMT
+		 WHERE FREE_NO = #{freeNo}
+	</select>
+	
+	
+	<!-- 2. 댓글 리스트 -->
+	<select id="selectCmtList" parameterType="int" resultType="FreeBoardCmtDTO">
+		SELECT A.ROW_NUM, A.FREE_CMT_NO, A.FREE_NO, A.NICKNAME, A.FREE_CMT_CONTENT, A.FREE_CMT_CREATE_DATE, A.FREE_CMT_MODIFY_DATE, A.FREE_CMT_IP, A.FREE_CMT_STATE, A.FREE_CMT_DEPTH, A.FREE_GROUP_NO, A.FREE_GROUP_ORDER
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_GROUP_NO ASC, FREE_GROUP_ORDER ASC) AS ROW_NUM, FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER
+		 		  FROM FREE_CMT
+		 		 WHERE FREE_NO = #{freeNo}) A
+		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
+	<!-- 3. 댓글 추가 -->
+	<insert id="insertCmt" parameterType="FreeBoardCmtDTO">
+		INSERT INTO FREE_CMT
+			(FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
+		VALUES
+			(FREE_CMT_NO_SEQ.NEXTVAL, #{freeNo}, #{nickname}, #{freeCmtContent}, DATE_FORMAT(NOW(),  '%y-%m-%d %h:%i'), TO_CHAR(SYSDATE, 'YY/MM/DD HH24:MI'), #{freeCmtIp}, 1, 0, FREE_CMT_NO_SEQ.CURRVAL, 0)
+	</insert>
+	
+	
+
+	
+	<!-- 4. 댓글 삭제 -->
+	<update id="deleteCmt" parameterType="int">
+		UPDATE FREE_CMT
+		   SET FREE_CMT_STATE = -1
+		 WHERE FREE_CMT_NO = #{freeCmtNo}
+	</update>
+
+	
+	<!-- 5. 다단계층 댓글(groupOrder 1 증가시키는 쿼리) -->
+	<!--
+	<update id="updatePreviousReply" parameterType="FreeBoardCmtDTO">
+		UPDATE FREE_CMT
+		   SET FREE_GROUP_ORDER = FREE_GROUP_ORDER + 1
+		 WHERE FREE_GROUP_NO = #{freeGroupNo}
+		   AND FREE_GROUP_ORDER > #{freeGroupOrder}
+	</update>
+	-->
+	
+	<!-- 6. 대댓글 추가 -->
+	<!--
+	<insert id="insertCommentReply" parameterType="FreeBoardCmtDTO">
+		INSERT INTO FREE_CMT
+			(FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
+		VALUES
+			(FREE_CMT_NO_SEQ.NEXTVAL, #{freeNo}, #{nickname}, #{freeCmtContent}, TO_CHAR(SYSDATE, 'YY/MM/DD', TO_CHAR(SYSDATE, 'YY/MM/DD', #{freeCmtIp}, 1, 1, #{freeGroupNo}, 0)
+	</insert>
+	-->
+
+
+	
+	
+</mapper>

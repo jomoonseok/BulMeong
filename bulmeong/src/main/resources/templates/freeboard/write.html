@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<script>
+
+	$(document).ready(function(){
+		
+		$('#content').summernote({
+			width: 800,
+			height: 400,
+			lang: 'ko-KR',
+			toolbar: [
+				['style', ['bold', 'italic', 'underline', 'clear']],
+				['font', ['strikethrough', 'superscript', 'subscript']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['height', ['height']]
+			]
+		});
+		
+		// 목록
+		$('#btn_list').click(function(){
+			if(confirm('게시글이 저장되지 않았습니다. 정말 돌아가시겠습니까?')){
+				location.href = '/freeboard/list';
+			}			
+		});
+		
+		// 서브밋
+		$('#frm_write').submit(function(event){
+			if($('#title').val() == ''){
+				alert('제목은 필수입니다.');
+				event.preventDefault();
+				return;
+			}
+		});
+		
+	});
+</script>
+	
+<body>
+	<header th:replace="~{layout/header::header_layout}"></header>
+	
+	
+	<h3>작성 화면</h3>
+	
+	<div>	
+		<form id="frm_write" th:action="@{/freeboard/add}" method="post">
+		
+			<div>
+				<label for="title">제목</label>
+				<input type="text" name="freeTitle" id="title">
+			</div>
+			<div>
+				<label for="content">내용</label>
+				<textarea name="freeContent" id="content" ></textarea>
+			</div>
+			<div>
+				<button class="button">완료</button>
+				<input type="button" value="목록" id="btn_list">
+			</div>
+		</form>
+	</div>
+
+
+</body>
+</html>
