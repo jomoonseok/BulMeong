@@ -35,11 +35,22 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	public void getFreeList(Model model) {
 		Map<String, Object> modelMap = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+		// 원하는 파라미터 가져오는 방법이 이거자나
+		String dateColumn = request.getParameter("dateColumn");
+		String column = request.getParameter("column");
+		String query = request.getParameter("query");
+		
+	
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("dateColumn", dateColumn);
+		map.put("column", column);
+		map.put("query", query);
+		 
 		
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
 		
-		int totalRecord = freeBoardMapper.selectFreeListCount();
+		int totalRecord = freeBoardMapper.selectFindFreeboardsCount(map);
 
 		
 		/**************************************************************************************/
@@ -51,9 +62,8 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		/**************************************************************************************/
 		
 		
-		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
+		pageUtil.setPageUtil2(page, totalRecord, recordPerPage);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
@@ -61,9 +71,11 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("freeBoardList", freeBoardMapper.selectFreeListByMap(map));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/freeboard/list"));
+		model.addAttribute("paging", pageUtil.getPaging2(request.getContextPath() + "/freeboard/list"));
 
-		
+		model.addAttribute("dateColumn", dateColumn);
+		model.addAttribute("column", column);
+		model.addAttribute("query", query);
 	}
 	
 	@Override
