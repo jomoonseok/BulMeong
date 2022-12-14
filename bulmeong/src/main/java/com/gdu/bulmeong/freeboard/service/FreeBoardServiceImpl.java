@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import com.gdu.bulmeong.freeboard.domain.FreeBoardDTO;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper;
 import com.gdu.bulmeong.util.PageUtil;
+import com.gdu.bulmeong.util.SearchPageUtil;
 
 @Service
 public class FreeBoardServiceImpl implements FreeBoardService {
@@ -25,6 +26,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	
 	@Autowired
 	private PageUtil pageUtil;
+	
+	@Autowired
+	private SearchPageUtil searchPageUtil;
+	
 	
 	@Override
 	public void getFreeList(Model model) {
@@ -203,6 +208,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		String column = request.getParameter("column");
 		String query = request.getParameter("query");
 		
+		System.out.println("dateColumn : "  + dateColumn);
+		System.out.println("column : "  + column);
+		System.out.println("query : "  + query);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("dateColumn", dateColumn);
 		map.put("column", column);
@@ -218,16 +227,17 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
 		
-		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
+		searchPageUtil.setPageUtil(page, totalRecord, recordPerPage);
 		
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("recordPerPage", searchPageUtil.getRecordPerPage());
+		map.put("begin", searchPageUtil.getBegin());
+		map.put("end", searchPageUtil.getEnd());
 		
 		
 		List<FreeBoardDTO> freeBoards = freeBoardMapper.selectFindFreeboard(map);
 	
 		model.addAttribute("freeBoardList", freeBoards);
-		model.addAttribute("beginNo", totalRecord - (page - 1) + pageUtil.getRecordPerPage());
+		model.addAttribute("beginNo", totalRecord - (page - 1) + searchPageUtil.getRecordPerPage());
 
 		String path = null;
 
@@ -239,7 +249,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			case "NICKNAME":
 			case "FREE_CMT_CONTENT":
 			case "FREE_CMT_NICKNAME":
-				path = request.getContextPath() + "/freeboard/search?&column=" + column + "&query=" + query;
+				path = request.getContextPath() + "/freeboard/search?&dateColumn=&column=" + column + "&query=" + query;
 				break;
 			}
 		} else {
@@ -260,7 +270,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			}
 		}
 		
-		model.addAttribute("paging", pageUtil.getPaging(path));
+		model.addAttribute("paging", searchPageUtil.getPaging(path));
 	}
 	
 	

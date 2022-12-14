@@ -84,26 +84,37 @@
 	<select id="selectFindFreeboard" parameterType="Map" resultType="FreeBoardDTO">
 		SELECT A.FREE_NO, A.NICKNAME, A.FREE_TITLE, A.FREE_CREATE_DATE, A.FREE_HIT
  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_NO DESC) AS ROW_NUM, FREE_NO, NICKNAME, FREE_TITLE, FREE_CREATE_DATE, FREE_HIT
-         		  FROM FREE_BRD
-
-
-		<if test="dateColumn=='ADAY'">
-			
-		</if>
-
-		<if test="column=='FREE_TITLE'">
-			WHERE FREE_TITLE
-			LIKE CONCAT('%',#{query},'%')) A
-		</if>
-		<if test="column=='FREE_CONTENT'">
-			WHERE FREE_CONTENT
-			LIKE CONCAT('%',#{query},'%')) A
-		</if>
-		<if test="column=='NICKNAME'">
-			WHERE NICKNAME
-			LIKE CONCAT('%',#{query},'%')) A
-		</if>
-		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+         		  FROM FREE_BRD		
+		<choose>
+			<when test="dateColumn=='ADAY'">
+				WHERE (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()) AND
+			</when>
+			<when test="dateColumn=='AWEEK'">
+				WHERE (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW()) AND
+			</when>
+			<when test="dateColumn=='AMONTH'">
+				WHERE (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()) AND
+			</when>
+			<when test="dateColumn=='AYEAR'">
+				WHERE (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -4 YEAR) AND NOW()) AND
+			</when>
+				<otherwise>WHERE</otherwise>
+		</choose>
+		<choose>
+			<when test="column=='FREE_TITLE'">
+				FREE_TITLE
+				LIKE CONCAT('%',#{query},'%')) A
+			</when>
+			<when test="column=='FREE_CONTENT'">
+				FREE_CONTENT
+				LIKE CONCAT('%',#{query},'%')) A
+			</when>
+			<when test="column=='NICKNAME'">
+				NICKNAME
+				LIKE CONCAT('%',#{query},'%')) A
+			</when>
+		</choose>
+			 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	
 	

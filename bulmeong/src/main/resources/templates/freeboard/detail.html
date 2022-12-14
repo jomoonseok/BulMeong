@@ -226,6 +226,7 @@
 			
 
 			// # 게시글 버튼 관련 # //
+
 			$('#btn_top').click(function(){
 				window.scrollTo({ top: 0, behavior: "smooth" });
 			});
@@ -252,7 +253,7 @@
 	<div>
 		<div>
 			<span th:text="${free.nickname}"></span>
-			<span>댓글</span><br>
+			<span id="move_cmt">댓글</span><br>
 			<span>URL 복사</span>
 		</div>
 	</div>
