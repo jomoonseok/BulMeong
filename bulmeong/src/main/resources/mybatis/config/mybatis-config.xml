@@ -11,11 +11,18 @@
 	</settings>
 	
 	<typeAliases>
+
 		<typeAlias type="com.gdu.bulmeong.camp.domain.CampDTO" alias="CampDTO" />
 		<typeAlias type="com.gdu.bulmeong.pay.domain.PayDTO" alias="PayDTO" />
 		<typeAlias type="com.gdu.bulmeong.reserve.domain.TentDTO" alias="TentDTO" />
 		<typeAlias type="com.gdu.bulmeong.reserve.domain.ReserveDTO" alias="ReserveDTO" />
 		<typeAlias type="com.gdu.bulmeong.cart.domain.CartDTO" alias="CartDTO" />
+
+		<typeAlias type="com.gdu.bulmeong.ex.domain.BulMeongDTO" alias="BulMeongDTO" />
+		<typeAlias type="com.gdu.bulmeong.ex2.domain.BulMeong2DTO" alias="BulMeong2DTO" />
+		<typeAlias type="com.gdu.bulmeong.users.domain.UsersDTO" alias="UsersDTO" />
+		<typeAlias type="com.gdu.bulmeong.users.domain.RetireUsersDTO" alias="RetireUsersDTO" />
+		<typeAlias type="com.gdu.bulmeong.users.domain.SleepUsersDTO" alias="SleepUsersDTO" />
 
 	</typeAliases>
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class UsersDTO {
+public class SleepUsersDTO {
 	private int usersNo;
 	private String id;
 	private String nickname;
@@ -30,8 +30,10 @@ public class UsersDTO {
 	private String sessionId;
 	private String sessionLimitDate;
 	private String email;
+	private String sleepDate;
 	private int age;
-	private String profileImage;
+	private String profileImage; 
+	private String lastLoginDate;
 	private String pwModifyDate; 
 	private String infoModifyDate;
 }

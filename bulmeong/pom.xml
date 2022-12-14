@@ -43,13 +43,6 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
-		
-		<!-- MySQL  -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 	
 		<!-- 썸네일 처리 -->
 		<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
