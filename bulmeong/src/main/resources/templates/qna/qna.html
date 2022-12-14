@@ -9,16 +9,19 @@
 <body>
 <div>
 	
-	<div th:replace="~{layout/header::body_title}"></div>
+	<div th:replace="~{layout/header::header_layout}"></div>
 	
 	<div>
 		<input type="button" value="문의하기" id="btn_write">
 		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
-		<script>
+		<script th:>
 		
 			$('#btn_write').click(function(){
-				if($(loginUser) == QnaDTO.getId()) {
-					
+				if($(loginUser.id != null)) {
+					location.href = '/qna/';
+				} else {
+					alert('로그인 해주셈');
+					location.href = '/login' // 로그인 페이지로 이동
 				}
 			});
 			

@@ -10,6 +10,7 @@ public class FaqServiceImpl implements FaqService {
 	
 	@Autowired 
 	private FaqMapper faqMapper;
-	 
+	
+	
 	
 }

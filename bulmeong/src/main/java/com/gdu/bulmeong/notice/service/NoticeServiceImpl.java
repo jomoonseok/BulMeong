@@ -43,7 +43,7 @@ public class NoticeServiceImpl implements NoticeService {
 		// 페이지 파라미터
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
-		int recordPerPage = 10;
+		int recordPerPage = 5;
 				
 		// 전체 공지 개수
 		int totalRecord = noticeMapper.selectNoticeListCount();
@@ -55,6 +55,7 @@ public class NoticeServiceImpl implements NoticeService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
+		map.put("recordPerPage",pageUtil.getRecordPerPage());
 
 		// 뷰로 전달할 데이터
 		model.addAttribute("totalRecord", totalRecord);
@@ -114,7 +115,7 @@ public class NoticeServiceImpl implements NoticeService {
 		String noticeTitle = request.getParameter("noticeTitle");
 		String noticeContent = request.getParameter("noticeContent");
 		// String id = request.getParameter(loginUser.getId());
-		String id = "ADMIN";
+		String id = "admin";
 
 		
 		NoticeDTO notice = NoticeDTO.builder()

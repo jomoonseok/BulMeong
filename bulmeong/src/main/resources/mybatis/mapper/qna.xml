@@ -4,18 +4,35 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gdu.bulmeong.qna.QNAMapper">
+<mapper namespace="com.gdu.bulmeong.qna.mepper.QnaMapper">
 
 	<select id="selectQnaCount" resultType="int">
 		SELECT COUNT(*)
 		  FROM QNA
 	</select>
 	
-	<select id="selectQnaList" parameterType="Map" resultType="QNADTO">
+	<select id="selectQnaList" parameterType="Map" resultType="QnaDTO">
 		SELECT A.QNA_RN, A.QNA_NO, A.ID, A.QNA_TITLE, A.QNA_CONTENT, A.QNA_CREATE_DATE, A.QNA_MODIFY_DATE, A.QNA_STATE, A.QNA_IP, A.QNA_GROUP_NO, A.DEPTH
 		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY QNA_GROUP_NO DESC) AS QNA_RN, QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH
 		  	      FROM QNA) A
 		 WHERE A.QNA_RN BETWEEN #{begin} AND #{end}
 	</select>
+	
+	<insert id="insertNotice" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="qnaNo">
+		INSERT INTO QNA
+			(QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
+		VALUES
+ 		<if test="QNA_GROUP_NO == 0">
+			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{ip}, 1, 0)
+ 		</if>
+ 		<if test="QNA_GROUP_NO ！= 0">
+			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{ip}, (SELECT MAX(QNA_NO)+1 FROM QNA) 0)
+		</if>
+	</insert>
+	<insert id="insertBoard" parameterType="BoardDto">    
+        INSERT INTO QNA
+        	(QNA_NO,ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
+        SELECT CASE count(*) when 0 then 1 else max(QNA_NO) + 1 end,#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{ip}from tbl_board
+    </insert><!--end -->
 	
 </mapper>
