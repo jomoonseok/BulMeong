@@ -197,8 +197,9 @@ public class CampServiceImpl implements CampService {
 		pageUtil.setPageUtil(page, campCount, 5);
 		
 		Map<String, Object> map = new HashMap<>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("begin", pageUtil.getBegin() - 1);
+//		map.put("end", pageUtil.getEnd());
+		map.put("end", pageUtil.getRecordPerPage());
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("campList", campMapper.selectAllCamp(map));

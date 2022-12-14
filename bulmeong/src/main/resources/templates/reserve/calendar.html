@@ -62,6 +62,7 @@
     		
     		fn_reserve();
     		fn_list();
+    		
     	});
 		
       	document.addEventListener('DOMContentLoaded', function() {
@@ -99,8 +100,6 @@
 	      			$('#RESERVE_BEGIN_DATE').val(info.startStr);
 		       	    $('#RESERVE_END_DATE').val(info.endStr);
 		      	    $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
-		      	  	alert('인원수를 입력하세요');
-		      	  	$('#RESERVE_COUNT').focus();
 	      		}
 	      			
 	      	}, // select(function)
@@ -117,7 +116,20 @@
       	
       	function fn_reserve() {
       		
-      		$(document).on('click', '.btn_reserve', function() {
+      		$(document).on('click', '.btn_reserve', function(event) {
+      			
+      			if($('.DATE').val() == '') {
+      				alert('날짜선택은 필수입니다.');
+      				$('#RESERVE_BEGIN_DATE').focus();
+		      	  	return;
+      			}
+      			
+      			if($('#RESERVE_COUNT').val() == '') {
+      				alert('인원수를 입력하세요');
+		      	  	$('#RESERVE_COUNT').focus();
+		      	  	return;
+      			}
+      			
     			window.open("/reserve/pay", "예약결제", "width=800, height=1200");
       		});
       		
@@ -184,9 +196,6 @@
       		
       	}
       	
-      	function fn_asdf() {
-      		
-      	}
       	
       	
     </script>
@@ -200,15 +209,17 @@
 	
 	<div id="reserve_container">
 		<div class="left_side">
-			시작일 <input type="text"  readonly="readonly" id="RESERVE_BEGIN_DATE">
-			종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE">
-			일정 <input type="text" readonly="readonly" id="RESERVE_DATE">
-			인원수 <input type="text" id="RESERVE_COUNT">
-			<hr>
 			<span id='calendar' ></span>
 		</div>
 		<div class="right_side">
 			<div id="camp_info"></div>
+			<div id="reserve_info">
+				시작일 <input type="text"  readonly="readonly" id="RESERVE_BEGIN_DATE" class="DATE">
+				종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE" class="DATE">
+				일정 <input type="text" readonly="readonly" id="RESERVE_DATE" class="DATE">
+				인원수 <input type="text" id="RESERVE_COUNT">
+			</div>
+			<hr>
 			<div id="tent_info"></div>
 		</div>
 	</div>

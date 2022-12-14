@@ -8,9 +8,9 @@
 
 	<insert id="insertCampApi" parameterType="CampDTO">
 		INSERT INTO CAMP
-			<!-- (CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime) -->
+			(facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime)
 		VALUES
-			(CAMP_NO_SEQ.NEXTVAL, #{facltNm}, #{intro}, #{lineIntro}, #{featureNm}, #{sbrsCl}, #{firstImageUrl}, #{themaEnvrnCl}, #{eqpmnLendCl}, #{tourEraCl}, #{induty}, #{allar}, #{operPdCl}, #{hvofBgnde}, #{hvofEnddle}, #{prmisnDe}, #{operDeCl}, #{toiletCo}, #{extshrCo}, #{brazierCl}, #{glampInnerFclty}, #{caravInnerFclty}, #{lctCl}, #{addr1}, #{doNm}, #{sigunguNm}, #{addr2}, #{zipcode}, #{mapX}, #{mapY}, #{homepage}, #{tel}, #{createdtime}, #{modifiedtime})
+			(#{facltNm}, #{intro}, #{lineIntro}, #{featureNm}, #{sbrsCl}, #{firstImageUrl}, #{themaEnvrnCl}, #{eqpmnLendCl}, #{tourEraCl}, #{induty}, #{allar}, #{operPdCl}, #{hvofBgnde}, #{hvofEnddle}, #{prmisnDe}, #{operDeCl}, #{toiletCo}, #{extshrCo}, #{brazierCl}, #{glampInnerFclty}, #{caravInnerFclty}, #{lctCl}, #{addr1}, #{doNm}, #{sigunguNm}, #{addr2}, #{zipcode}, #{mapX}, #{mapY}, #{homepage}, #{tel}, #{createdtime}, #{modifiedtime})
 	</insert>
 	
 	 <delete id="deleteCampApi">
@@ -25,27 +25,27 @@
 	 </select>
 	 
 	 <select id="selectAllCamp" parameterType="Map" resultType="CampDTO">
-	 	SELECT A.ROW_NUM, A.CAMP_NO, A."facltNm", A."intro", A."lineIntro", A."featureNm", A."sbrsCl", A."firstImageUrl", A."themaEnvrnCl", A."eqpmnLendCl", A."tourEraCl", A."induty", A."allar", A."operPdCl", A."hvofBgnde", A."hvofEnddle", A."prmisnDe", A."operDeCl", A."toiletCo", A."extshrCo", A."brazierCl", A."glampInnerFclty", A."caravInnerFclty", A."lctCl", A."addr1", A."doNm", A."sigunguNm", A."addr2", A."zipcode", A."mapX", A."mapY", A."homepage", A."tel", A."createdtime", A."modifiedtime"
-	 	  FROM (SELECT ROW_NUMBER() OVER(ORDER BY "CAMP_NO" <!-- ORDER BY "modifiedtime" DESC -->) AS ROW_NUM, CAMP_NO, "facltNm", "intro", "lineIntro", "featureNm", "sbrsCl", "firstImageUrl", "themaEnvrnCl", "eqpmnLendCl", "tourEraCl", "induty", "allar", "operPdCl", "hvofBgnde", "hvofEnddle", "prmisnDe", "operDeCl", "toiletCo", "extshrCo", "brazierCl", "glampInnerFclty", "caravInnerFclty", "lctCl", "addr1", "doNm", "sigunguNm", "addr2", "zipcode", "mapX", "mapY", "homepage", "tel", "createdtime", "modifiedtime"
+	 	SELECT A.ROW_NUM, A.CAMP_NO, A.facltNm, A.intro, A.lineIntro, A.featureNm, A.sbrsCl, A.firstImageUrl, A.themaEnvrnCl, A.eqpmnLendCl, A.tourEraCl, A.induty, A.allar, A.operPdCl, A.hvofBgnde, A.hvofEnddle, A.prmisnDe, A.operDeCl, A.toiletCo, A.extshrCo, A.brazierCl, A.glampInnerFclty, A.caravInnerFclty, A.lctCl, A.addr1, A.doNm, A.sigunguNm, A.addr2, A.zipcode, A.mapX, A.mapY, A.homepage, A.tel, A.createdtime, A.modifiedtime
+	 	  FROM (SELECT ROW_NUMBER() OVER(ORDER BY CAMP_NO <!-- ORDER BY "modifiedtime" DESC -->) AS ROW_NUM, CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime
 	 	          FROM CAMP) A
-	 	 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	 	 LIMIT #{begin}, #{end}
 	 </select>
 	 
 	 <select id="selectCampByOption" parameterType="Map" resultType="CampDTO">
-		SELECT CAMP_NO, "facltNm", "intro", "lineIntro", "featureNm", "sbrsCl", "firstImageUrl", "themaEnvrnCl", "eqpmnLendCl", "tourEraCl", "induty", "allar", "operPdCl", "hvofBgnde", "hvofEnddle", "prmisnDe", "operDeCl", "toiletCo", "extshrCo", "brazierCl", "glampInnerFclty", "caravInnerFclty", "lctCl", "addr1", "doNm", "sigunguNm", "addr2", "zipcode", "mapX", "mapY", "homepage", "tel", "createdtime", "modifiedtime"
+		SELECT CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime
 		  FROM CAMP
 		<where>
 		    <if test="query != null">
-		        "facltNm" LIKE '%' || #{query} || '%'
+		        facltNm LIKE CONCAT('%', #{query}, '%') 
 		    </if>
 	 	    <if test="doNm != null">
-		        AND "doNm" LIKE '%' || #{doNm} || '%'
+		        AND doNm LIKE CONCAT('%', #{doNm}, '%')
 		    </if>
 		    <if test="induty != null">
-		        AND "induty" LIKE '%' || #{induty} || '%'
+		        AND induty LIKE CONCAT('%', #{induty}, '%')
 		    </if>
 		    <if test="themaEnvrnCl != null">
-		        AND "themaEnvrnCl" LIKE '%' || #{themaEnvrnCl} || '%'
+		        AND themaEnvrnCl LIKE CONCAT('%', #{themaEnvrnCl}, '%')
 		    </if>
 	    </where>
 	 </select>
