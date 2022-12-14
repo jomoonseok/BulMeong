@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<body>
+
+	<header th:replace="~{layout/header::header_layout}"></header>
+	
+	<h1 th:text="|${session.loginUser.nickname}님의 마이페이지|"></h1>
+	
+</body>
+</html>
