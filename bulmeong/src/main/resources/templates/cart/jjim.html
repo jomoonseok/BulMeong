@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('목록')}"></head>
+<body>
+	
+	<form method="post" action="$/cart/jjim">
+	<input type="hidden" name="campNo" value="${camp.campNo}">
+	<input type="hidden" name=id value="${id}"> 
+    <input type="hidden" name="price" value="${camp.price}">
+	<th:if test="${id != null}">
+		<div>
+			<label id="count">구매수량</label> 
+            <input type="text" name="count" id="count" placeholder="인원수를 입력하세요" />
+		</div>
+        <button type="submit" id="addCart">장바구담기</button>
+	</th:if>
+</form>
+
+	
+	
+	
+</body>
+</html>
