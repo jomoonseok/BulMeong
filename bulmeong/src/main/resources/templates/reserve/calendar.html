@@ -40,6 +40,10 @@
     		text-align: center;
     	}
     	
+    	#calendar_div {
+    		color: red;
+    		text-align: center;
+    	}
     	
     	
     	
@@ -48,10 +52,10 @@
     
     <!-- 캘린더 스크립트 -->
     <script>
-    
+    	
+   		var tentMaxCount = [];  // tentMaxCount를 입력받을 배열
+   		
     	$(function() {
-    		
-    		/* fn_css(); */
     		
     		// 화면 이동 시 효과주기
     		$.fakeLoader({
@@ -63,7 +67,6 @@
     		fn_reserve();
     		fn_list();
     		fn_change();
-    		
     		
     	});
 		
@@ -102,6 +105,7 @@
 	      			$('#RESERVE_BEGIN_DATE').val(info.startStr);
 		       	    $('#RESERVE_END_DATE').val(info.endStr);
 		      	    $('#RESERVE_DATE').val(reserveDate + '박 ' + (reserveDate + 1) + '일');
+		      	  	$('#RESERVE_COUNT').focus();
 	      		}
 	      			
 	      	}, // select(function)
@@ -120,19 +124,39 @@
       		
       		$(document).on('click', '.btn_reserve', function(event) {
       			
+      			
       			if($('.DATE').val() == '') {
       				alert('날짜선택은 필수입니다.');
-      				$('#RESERVE_BEGIN_DATE').focus();
+      				$('#calendar').focus();
+      				event.preventDefault();
 		      	  	return;
       			}
       			
       			if($('#RESERVE_COUNT').val() == '') {
       				alert('인원수를 입력하세요');
 		      	  	$('#RESERVE_COUNT').focus();
+		      	 	event.preventDefault();
 		      	  	return;
       			}
       			
-    			window.open("/reserve/pay", "예약결제", "width=800, height=1200");
+      			if($(this).data('count') < $('#RESERVE_COUNT').val()) {
+      				alert('수용가능 인원을 초과하여 해당 텐트는 예약이 불가합니다.');
+      				event.preventDefault();
+      				return;
+      			}
+      			
+      			
+      			// 팝업창 POST로 띄우기(https://fruitdev.tistory.com/154)
+        		var pop_title = "예약결제창";
+        		window.open("", pop_title, "width=800, height=1200");
+        		
+        		var frmData = document.frm_reserve;
+        		frmData.target = pop_title;
+        		frmData.title = pop_title;
+        		frmData.action = "/reserve/pay";
+        		
+        		frmData.submit();
+      			
       		});
       		
       	}
@@ -169,48 +193,65 @@
       	    			// 텐트의 상태가 0이면 		      
       	    			if(tent.tentState == 0) {
       	    				
+      	    				tentMaxCount[i] = tent.tentMaxCount;
+      	    				
       	    				tent_div += '<div style="float:left;">';
 		      	    		tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
 		      	    		tent_div += '</div>';
 		      	    		
 		      	    		tent_div += '<div style="float:left;">';
-		      	    		tent_div += '<div>텐트이름 : ' + tent.tentName + ' / </div>'; 
+		      	    		tent_div += '<div>텐트 이름 : ' + tent.tentName + ' / </div>'; 
 		      	    		switch(tent.tentCategory) {
 			      	    		case 0: tent.tentCategory = '글램핑'; break;
 			      	    		case 1: tent.tentCategory = '카라반'; break;
 			      	    		case 2: tent.tentCategory = '일반야영장'; break;
 			      	    		case 3: tent.tentCategory = '자동차야영장';
 		      	    		}
-		      	    		tent_div += '<div>텐트구분 : ' + tent.tentCategory + ' / </div>'; 
-		      	    		tent_div += '<div>최대인원 : ' + tent.tentMaxCount + ' / </div>'; 
-		      	    		tent_div += '<div>이용금액 : ' + tent.tentSum + ' / </div>';
-		      	    		tent_div += '<div id="div_reserve"><input type="button" class="btn_reserve" value="예약하기"></div></div>'; 
+		      	    		tent_div += '<div>텐트 구분 : ' + tent.tentCategory + ' / </div>'; 
+		      	    		tent_div += '<div>최대 인원 : ' + tent.tentMaxCount + ' / </div>'; 
+		      	    		tent_div += '<div>이용 금액 : ' + tent.tentSum + ' / </div>';
+		      	    		tent_div += '<div id="div_reserve"><input type="submit" class="btn_reserve" value="예약하기" data-count="' + tent.tentMaxCount + '"></div></div>'; 
 		      	    		tent_div += '</div>';
 		      	    		tent_div += '<div style="clear:both;"></div>';
 		      	    		$('#tent_info').append(tent_div);
-      	    			} 
-      	    				
-      	    		});
-      	    		
+		      	    		
+		      	    		
+      	    			}
+      	    			
+      	    		}); // each
       	    	},
-      	    	
       	    }); // ajax
       		
       	}
       	
- /*      	function fn_change() {
-      		
-      		$('#RESERVE_COUNT').on('keyup', function() {
-      			alert('asdf');
-      			if($('#RESERVE_COUNT').val() < $('.tent_div').data('maxCount')) {
-      				$('#div_reserve').empty();
+       	function fn_change() {
+       		
+       		let check = /^[1-9]+$/;  // 숫자 정규식
+       		
+      		$('#RESERVE_COUNT').on('change', function() {
+      			
+      			// 인원수 입력(정규식 숫자만 가능)
+      			if(!check.test($('#RESERVE_COUNT').val())) {
+      				alert('0 이상의 숫자만 입력 가능합니다.')
+      				$('#RESERVE_COUNT').val('');
+      				$('#RESERVE_COUNT').focus();
+      				return;
+      			} 
+      			
+      			// 텐트의 수용인원을 초과한 숫자를 입력하는 경우
+      			else if($('#RESERVE_COUNT').val() > Math.max(...tentMaxCount)) {
+      				alert('모든 텐트의 수용 가능 인원을 초과하였습니다. 다시 입력해주세요.');
+      				$('#RESERVE_COUNT').val('');
+      				$('#RESERVE_COUNT').focus();
+      				return;
       			}
       			
       		});
       		
-      	} */
-      	
-      	
+      	}
+       	
+       	
+       	
       	
     </script>
     
@@ -221,22 +262,30 @@
 	
 	<div class="fakeLoader"></div>
 	
-	<div id="reserve_container">
-		<div class="left_side">
-			<span id='calendar' ></span>
-		</div>
-		<div class="right_side">
-			<div id="camp_info"></div>
-			<div id="reserve_info">
-				시작일 <input type="text"  readonly="readonly" id="RESERVE_BEGIN_DATE" class="DATE">
-				종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE" class="DATE">
-				일정 <input type="text" readonly="readonly" id="RESERVE_DATE" class="DATE">
-				인원수 <input type="text" id="RESERVE_COUNT">
+	<form id="frm_reserve" name="frm_reserve" method="post" action="/reserve/pay">
+	
+		<input type="hidden" name="tentNo">
+		<input type="hidden" name="campNo">
+		
+		<div id="reserve_container">
+			<div class="left_side">
+				<div id="calendar_div">달력에 마우스를 드래그하여 숙박희망 날짜를 선택하세요</div><br><hr>
+				<span id='calendar' ></span>
 			</div>
-			<hr>
-			<div id="tent_info"></div>
+			<div class="right_side">
+				<div id="camp_info"></div>
+				<div id="reserve_info">
+					시작일 <input type="text"  readonly="readonly" id="RESERVE_BEGIN_DATE" name="RESERVE_BEGIN_DATE" class="DATE">
+					종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE" name="RESERVE_END_DATE" class="DATE">
+					숙박일 <input type="text" readonly="readonly" id="RESERVE_DATE" name="RESERVE_DATE" class="DATE">
+					인원수 <input type="text" id="RESERVE_COUNT" name="RESERVE_COUNT">
+				</div>
+				<hr>
+				<div id="tent_info"></div>
+			</div>
 		</div>
-	</div>
+	
+	</form>
 	
 	
 	
