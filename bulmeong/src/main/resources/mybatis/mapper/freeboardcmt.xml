@@ -29,16 +29,16 @@
 		INSERT INTO FREE_CMT
 			(FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
 		VALUES
-			(FREE_CMT_NO_SEQ.NEXTVAL, #{freeNo}, #{nickname}, #{freeCmtContent}, TO_CHAR(SYSDATE, 'YY/MM/DD HH24:MI'), TO_CHAR(SYSDATE, 'YY/MM/DD HH24:MI'), #{freeCmtIp}, 1, 0, FREE_CMT_NO_SEQ.CURRVAL, 0)
+			(FREE_CMT_NO_SEQ.NEXTVAL, #{freeNo}, #{nickname}, #{freeCmtContent}, DATE_FORMAT(NOW(),  '%y-%m-%d %h:%i'), TO_CHAR(SYSDATE, 'YY/MM/DD HH24:MI'), #{freeCmtIp}, 1, 0, FREE_CMT_NO_SEQ.CURRVAL, 0)
 	</insert>
 	
 	
 
 	
 	<!-- 4. 댓글 삭제 -->
-	<update id="deleteComment" parameterType="int">
+	<update id="deleteCmt" parameterType="int">
 		UPDATE FREE_CMT
-		   SET STATE = -1
+		   SET FREE_CMT_STATE = -1
 		 WHERE FREE_CMT_NO = #{freeCmtNo}
 	</update>
 

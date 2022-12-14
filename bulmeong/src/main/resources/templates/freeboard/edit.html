@@ -26,8 +26,9 @@
 	
 	
 			$('#btn_list').click(function(){
-				alert('게시글이 저장되지 않았습니다. 정말 돌아가시겠습니까?');
-				location.href = '/freeboard/list';
+				if(confirm('게시글이 저장되지 않았습니다. 정말 돌아가시겠습니까?')){
+					location.href = '/freeboard/list';
+				}	
 			});
 			
 			$('#frm_write').submit(function(event){

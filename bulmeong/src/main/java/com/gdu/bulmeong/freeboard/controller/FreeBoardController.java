@@ -37,6 +37,7 @@ public class FreeBoardController {
 		}
 	}
 	
+	
 	@GetMapping("/freeboard/write")
 	public String write() {
 		return "freeboard/write";
@@ -88,6 +89,7 @@ public class FreeBoardController {
 	public void nextview(HttpServletRequest request, HttpServletResponse response) {
 		freeBoardService.findPrevNextBoard(request, response);
 	}
+	
 	
 	
 	

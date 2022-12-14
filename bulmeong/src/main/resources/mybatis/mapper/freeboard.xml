@@ -29,15 +29,10 @@
 	
 	<!-- 4. 게시글 추가 -->
 	<insert id="insertFreeBoard" parameterType="FreeBoardDTO"  useGeneratedKeys="true" keyProperty="freeNo">
-
-		<selectKey keyProperty="freeNo" resultType="int" order="BEFORE">			   
-			SELECT FREE_BRD_NO_SEQ.NEXTVAL FROM DUAL
-		</selectKey>
-
       INSERT INTO FREE_BRD
-         (FREE_NO, NICKNAME, FREE_TITLE, FREE_CONTENT, FREE_CREATE_DATE, FREE_MODIFY_DATE, FREE_IP, FREE_HIT)
+         (NICKNAME, FREE_TITLE, FREE_CONTENT, FREE_CREATE_DATE, FREE_MODIFY_DATE, FREE_IP, FREE_HIT)
       VALUES
-         (${freeNo}, #{nickname}, #{freeTitle}, #{freeContent}, TO_CHAR(SYSDATE, 'YY/MM/DD HH24:MI'), TO_CHAR(SYSDATE, 'YY/MM/DD HH24:MI'), #{freeIp}, 0)
+         (#{nickname}, #{freeTitle}, #{freeContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y%m%d%h%i'), #{freeIp}, 0)
 	</insert>
    
 	<!-- 5. 특정 게시글 선택 -->
@@ -52,7 +47,7 @@
 		UPDATE FREE_BRD
 		   SET FREE_TITLE = #{freeTitle}, 
 		   FREE_CONTENT = #{freeContent},
-		   FREE_MODIFY_DATE = TO_CHAR(SYSDATE, 'YY/MM/DD')
+		   FREE_MODIFY_DATE = DATE_FORMAT(NOW(), '%y%m%d%h%i')
 		 WHERE FREE_NO = #{freeNo}
 	</update>
 	
@@ -69,9 +64,19 @@
 	<select id="selectFindFreeboardsCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*)
 		  FROM FREE_BRD
-		<where>
-			<if test="column=='FREE_TITLE'">${column} LIKE '%' || #{query} || '%'</if>
-		</where>
+
+		 <if test="column=='FREE_TITLE'">
+			WHERE FREE_TITLE
+			LIKE CONCAT('%',#{query},'%')
+		</if>
+		<if test="column=='FREE_CONTENT'">
+			WHERE FREE_CONTENT
+			LIKE CONCAT('%',#{query},'%')
+		</if>
+		<if test="column=='NICKNAME'">
+			WHERE NICKNAME
+			LIKE CONCAT('%',#{query},'%')
+		</if>
 	</select>
 	
 	
@@ -80,16 +85,24 @@
 		SELECT A.FREE_NO, A.NICKNAME, A.FREE_TITLE, A.FREE_CREATE_DATE, A.FREE_HIT
  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_NO DESC) AS ROW_NUM, FREE_NO, NICKNAME, FREE_TITLE, FREE_CREATE_DATE, FREE_HIT
          		  FROM FREE_BRD
-		<where>
-			<if test="column == 'FREE_TITLE'">${column} LIKE '%' || #{query} || '%') A</if>
-			<if test="column == 'FREE_CONTENT'">${column} LIKE '%' || #{query} || '%') A</if>
-			<!--
-			<if test="column == 'FREE_CONTENT or column == 'FREE_CMT_CONTENT'">${column} LIKE '%' || #{query} || '%') A</if>
-			<if test="column == 'A.NICKNAME'">${column} LIKE '%' || #{query} || '%') A</if>
-			<if test="column == 'FREE_CMT_CONTENT'">${column} LIKE '%' || #{query} || '%') A</if>
-			<if test="column == 'FREE_CMT_NICKNAME'">${column} LIKE '%' || #{query} || '%') A</if>
-			!-->
-		</where>
+
+
+		<if test="dateColumn=='ADAY'">
+			
+		</if>
+
+		<if test="column=='FREE_TITLE'">
+			WHERE FREE_TITLE
+			LIKE CONCAT('%',#{query},'%')) A
+		</if>
+		<if test="column=='FREE_CONTENT'">
+			WHERE FREE_CONTENT
+			LIKE CONCAT('%',#{query},'%')) A
+		</if>
+		<if test="column=='NICKNAME'">
+			WHERE NICKNAME
+			LIKE CONCAT('%',#{query},'%')) A
+		</if>
 		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	

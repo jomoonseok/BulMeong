@@ -51,6 +51,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("freeBoardList", freeBoardMapper.selectFreeListByMap(map));
@@ -76,7 +77,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
-		String nickname = "u03";
+		String nickname = "관리자";
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
@@ -105,7 +106,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			out.println("<script>");
 			if(result > 0) {
 				out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='" + request.getContextPath() + "/freeboard/detail?freeNo=" + freeBoard.getFreeNo() + "'}");
-				out.println("else { location.href='" + request.getContextPath() + "/freeboard/list'}");
+				out.println("else { location.href='/freeboard/list'}");
 			} else {
 				out.println("alert('게시글 등록에 실패하였습니다.');");
 				out.println("history.back();");
@@ -148,7 +149,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			out.println("<script>");
 			if(result > 0) {			
 				out.println("alert('게시글 수정에 성공하였습니다.');");
-				out.println("location.href='" + request.getContextPath() + "/freeBoard/detail?freeNo=" + freeNo + "';");
+				out.println("location.href='/freeboard/detail?freeNo=" + freeBoard.getFreeNo() + "';");
 			} else {
 				out.println("alert('게시글 수정에 실패하였습니다.');");
 				out.println("history.back();");
@@ -198,10 +199,12 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
 		
+		String dateColumn = request.getParameter("dateColumn");
 		String column = request.getParameter("column");
 		String query = request.getParameter("query");
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("dateColumn", dateColumn);
 		map.put("column", column);
 		map.put("query", query);
 
@@ -227,15 +230,34 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		model.addAttribute("beginNo", totalRecord - (page - 1) + pageUtil.getRecordPerPage());
 
 		String path = null;
-		switch(column) {
-		case "FREE_TITLE":
-		case "FREE_CONTENT_FREE_CMT_CONTENT":
-		case "FREE_CONTENT":
-		case "FREE_BRD_NICKNAME":
-		case "FREE_CMT_CONTENT":
-		case "FREE_CMT_NICKNAME":
-			path = request.getContextPath() + "/freeboard/search?column=" + column + "&query=" + query;
-			break;
+
+		if(dateColumn == "") {
+			switch(column) {
+			case "FREE_TITLE":
+			case "FREE_CONTENT+FREE_CMT_CONTENT":
+			case "FREE_CONTENT":
+			case "NICKNAME":
+			case "FREE_CMT_CONTENT":
+			case "FREE_CMT_NICKNAME":
+				path = request.getContextPath() + "/freeboard/search?&column=" + column + "&query=" + query;
+				break;
+			}
+		} else {
+			switch(dateColumn) {
+			case "ADAY":
+			case "AWEEK":
+			case "AMONTH":
+			case "AYEAR":
+				path = request.getContextPath() + "/freeboard/search?&dateColumn=" + dateColumn;
+			case "FREE_TITLE":
+			case "FREE_CONTENT+FREE_CMT_CONTENT":
+			case "FREE_CONTENT":
+			case "NICKNAME":
+			case "FREE_CMT_CONTENT":
+			case "FREE_CMT_NICKNAME":
+				path += "&column=" + column + "&query=" + query;
+				break;
+			}
 		}
 		
 		model.addAttribute("paging", pageUtil.getPaging(path));

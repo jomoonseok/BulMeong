@@ -37,19 +37,17 @@
 				}
 				
 			});
-			
 			// # 게시글 끝 # //
-			
-			fn_commentCount();
-			fn_commentList();
-			fn_changePage();
-			fn_showReplyArea();
-			fn_hideReplyArea()
-			fn_removeComment()
-
 			
 			
 			// # 댓글 관련 # //
+			fn_commentCount();
+			fn_commentList();
+			fn_showReplyArea();
+			fn_hideReplyArea()
+			fn_changePage();
+			fn_removeComment()
+
 			// 1. 댓글 갯수
 			function fn_commentCount(){
 				$.ajax({
@@ -65,7 +63,7 @@
 			
 
 			
-			// 3. 댓글 리스트
+			// 2. 댓글 리스트
 			function fn_commentList(){
 				$.ajax({
 					type: 'get',
@@ -89,17 +87,18 @@
 								div += '&nbsp;';
 								div += '<span class="cmt_Create_Date">' + comment.freeCmtCreateDate + '</span>';
 								div += '&nbsp;';
-								div += '<div class="cmt_Content_Area">' + comment.freeCmtContent + '</div>';
+								div += '<div class="cmt_Content_Area">' + comment.freeCmtContent;
+								// 로그인한 유저만 수정/삭제
+								div += '<input type="button" value="수정" class="btn_cmt_modify">';
+								div += '<input type="button" value="삭제" class="btn_cmt_remove" data-free_cmt_no="">';
+								
+								div += '</div>'
 								div += '</div>'
 							}	
 							div += '<div>';
 							moment.locale('ko-KR');
 							div += '</div>';
 
-							
-							// 로그인한 유저만 수정/삭제
-							div += '<input type="button" value="수정" class="btn_cmt_modify">';
-							div += '<input type="button" value="삭제" class="btn_cmt_remove">';
 							
 							
 							
@@ -154,21 +153,21 @@
 				});
 			}
 			
-			// 답글 보이는 버튼
+			// 3. 답글 보이는 버튼
 			function fn_showReplyArea(){
 				$(document).on('click', '.btn_reply_area', function(){
 					$(".blind").show();
 				});
 			}
 			
-			// 답글 숨기기 버튼(취소)
+			// 4. 답글 숨기기 버튼(취소)
 			function fn_hideReplyArea(){
 				$(document).on('click', '.btn_cancel', function(){
 					$(".blind").hide();
 				});
 			}
 			
-			// 3. 페이지 버튼
+			// 5. 페이지 버튼
 			function fn_changePage(){
 				$(document).on('click', '.enable_link', function(){
 					$('#page').val( $(this).data('page') );

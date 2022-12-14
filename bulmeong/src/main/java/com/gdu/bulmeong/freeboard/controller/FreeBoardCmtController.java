@@ -45,7 +45,7 @@ public class FreeBoardCmtController {
 	@ResponseBody
 	@PostMapping(value="/freecomment/remove", produces="application/json")
 	public Map<String, Object> remove(@RequestParam("freeCmtNo") int freeCmtNo){
-		return freeBoardCmtService.removeComment(freeCmtNo);
+		return freeBoardCmtService.removeCmt(freeCmtNo);
 	}
 	
 	
