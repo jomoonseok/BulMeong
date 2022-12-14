@@ -31,7 +31,7 @@ public class CampController {
 	
 	@GetMapping("/camp")
 	public String camp() {
-		return "camp/list";
+		return "camp/camp_list";
 	}
 	
 	@ResponseBody
