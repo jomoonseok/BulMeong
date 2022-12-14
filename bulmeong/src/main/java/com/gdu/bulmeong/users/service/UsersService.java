@@ -14,6 +14,9 @@ public interface UsersService {
 	public Map<String, Object> sendAuthCode(String email);
 	public void join(HttpServletRequest request, HttpServletResponse response);
 	public void login(HttpServletRequest request, HttpServletResponse response);
-	//public void keepLogin(HttpServletRequest request, HttpServletResponse response);
+	public void keepLogin(HttpServletRequest request, HttpServletResponse response);
+	public void retire(HttpServletRequest request, HttpServletResponse response);
+	public void logout(HttpServletRequest request, HttpServletResponse response);
+	public Map<String, Object> confirmPassword(HttpServletRequest request);
 	//public UsersDTO getUserBySessionId(Map<String, Object> map);
 }

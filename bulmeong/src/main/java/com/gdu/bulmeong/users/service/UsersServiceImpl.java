@@ -9,11 +9,13 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.users.mapper.UsersMapper;
 import com.gdu.bulmeong.util.JavaMailUtil;
@@ -151,7 +153,7 @@ public class UsersServiceImpl implements UsersService {
 		
 		int result = usersMapper.insertUser(user);
 		
-try {
+		try {
 			
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
@@ -164,7 +166,7 @@ try {
 				
 				// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
 				request.getSession().setAttribute("loginUser", usersMapper.selectUserByMap(map));
-				System.out.println(request.getSession().getId());
+				
 				// 로그인 기록 남기기
 				int updateResult = usersMapper.updateAccessLog(id);
 				if(updateResult == 0) {
@@ -195,6 +197,59 @@ try {
 	
 	
 	
+	@Transactional
+	@Override
+	public void retire(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 탈퇴할 회원의 userNo, id, joinDate는 session의 loginUser에 저장되어 있다.
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
+		
+		// 탈퇴할 회원 RetireUserDTO 생성
+		RetireUsersDTO retireUser = RetireUsersDTO.builder()
+				.id(loginUser.getId())
+				.joinDate(loginUser.getJoinDate())
+				.build();
+		
+		// 탈퇴처리
+		int deleteResult1 = usersMapper.deleteUserAccess(loginUser.getId());
+		int deleteResult2 = usersMapper.deleteUser(loginUser.getId());
+		int insertResult = usersMapper.insertRetireUser(retireUser);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(deleteResult1 > 0 && deleteResult2 > 0 && insertResult > 0) {
+				
+				// session 초기화(로그인 사용자 loginUser 삭제를 위해서)
+				session.invalidate();
+				
+				out.println("<script>");
+				out.println("alert('회원 탈퇴되었습니다.');");
+				out.println("location.href='/';");
+				out.println("</script>");
+				
+			} else {
+				
+				out.println("<script>");
+				out.println("alert('회원 탈퇴에 실패했습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+				
+			}
+			
+			out.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 	@Override
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		// 파라미터
@@ -219,7 +274,7 @@ try {
 		if(loginUser != null) {
 			
 			// 로그인 유지 처리는 keepLogin 메소드가 따로 처리함
-			//keepLogin(request, response);
+			keepLogin(request, response);
 			
 			// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
 			request.getSession().setAttribute("loginUser", loginUser);
@@ -261,7 +316,7 @@ try {
 	}
 	
 	
-	/*
+	
 	@Override
 	public void keepLogin(HttpServletRequest request, HttpServletResponse response) {
 		
@@ -303,7 +358,52 @@ try {
 		}
 		
 	}
-	*/
+	
+	
+	
+	@Override
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 로그아웃 처리
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginUser") != null) {
+			session.invalidate();
+		}
+		
+		// 로그인 유지 풀기
+		Cookie cookie = new Cookie("keepLogin", "");
+		cookie.setMaxAge(0);
+		cookie.setPath(request.getContextPath());
+		response.addCookie(cookie);
+		
+	}
+	
+	
+	
+	@Override
+	public Map<String, Object> confirmPassword(HttpServletRequest request) {
+		
+		// 파라미터 pw + SHA-256 처리
+		String pw = securityUtil.sha256(request.getParameter("pw"));
+		
+		// id
+		HttpSession session = request.getSession();
+		String id = ((UsersDTO)session.getAttribute("loginUser")).getId();
+		
+		// 조회 조건으로 사용할 Map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("pw", pw);
+		
+		// id, pw가 일치하는 회원 조회
+		UsersDTO user = usersMapper.selectUserByMap(map);
+		
+		// 결과 반환
+		Map<String, Object> result= new HashMap<String, Object>();
+		result.put("isUser", user != null);
+		return result;
+	}
+	
 	 
 	
 }

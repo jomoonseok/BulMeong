@@ -61,7 +61,7 @@
 	
 		<h1>로그인</h1>
 		
-		<form id="frm_login" action="@{/users/login}" method="post">
+		<form id="frm_login" th:action="@{/users/login}" method="post">
 			
 			<!-- 컨트롤러에서 넘겨준 값 : 로그인 후 이동할 주소가 있음 -->
 			<input type="hidden" name="url" th:value="${url}">
@@ -96,7 +96,7 @@
 		<div>
 			<a th:href="@{/user/findId/form}">아이디 찾기</a> &nbsp | &nbsp
 			<a th:href="@{/user/findPw/form}">비밀번호 찾기</a> &nbsp | &nbsp
-			<a href="javascript">회원가입</a>
+			<a th:href="@{/users/agree}">회원가입</a>
 		</div>
 		
 		<hr>
