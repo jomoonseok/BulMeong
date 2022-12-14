@@ -35,7 +35,7 @@
     		height: 500px;
     	}
     	
-    	.left_side > input[type=text] {
+    	.right_side input[type=text] {
     		width: 80px;
     		text-align: center;
     	}
@@ -62,6 +62,8 @@
     		
     		fn_reserve();
     		fn_list();
+    		fn_change();
+    		
     		
     	});
 		
@@ -162,7 +164,7 @@
       	    		
       	    		// 캠프장의 텐트현황 출력
       	    		$.each(resData.tentList, function(i, tent) {
-      	    			var tent_div = '<div class="tent_div" height="133px">';
+      	    			var tent_div = '<div class="tent_div" height="133px" class="" data-maxCount="' + tent.tentMaxCount + '">';
       	    			
       	    			// 텐트의 상태가 0이면 		      
       	    			if(tent.tentState == 0) {
@@ -182,7 +184,7 @@
 		      	    		tent_div += '<div>텐트구분 : ' + tent.tentCategory + ' / </div>'; 
 		      	    		tent_div += '<div>최대인원 : ' + tent.tentMaxCount + ' / </div>'; 
 		      	    		tent_div += '<div>이용금액 : ' + tent.tentSum + ' / </div>';
-		      	    		tent_div += '<div><input type="button" class="btn_reserve" value="예약하기"></div></div>'; 
+		      	    		tent_div += '<div id="div_reserve"><input type="button" class="btn_reserve" value="예약하기"></div></div>'; 
 		      	    		tent_div += '</div>';
 		      	    		tent_div += '<div style="clear:both;"></div>';
 		      	    		$('#tent_info').append(tent_div);
@@ -195,6 +197,18 @@
       	    }); // ajax
       		
       	}
+      	
+ /*      	function fn_change() {
+      		
+      		$('#RESERVE_COUNT').on('keyup', function() {
+      			alert('asdf');
+      			if($('#RESERVE_COUNT').val() < $('.tent_div').data('maxCount')) {
+      				$('#div_reserve').empty();
+      			}
+      			
+      		});
+      		
+      	} */
       	
       	
       	
