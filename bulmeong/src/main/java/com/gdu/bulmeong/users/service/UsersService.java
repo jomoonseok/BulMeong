@@ -5,8 +5,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.gdu.bulmeong.users.domain.UsersDTO;
-
 public interface UsersService {
 	public Map<String, Object> isReduceId(String id);
 	public Map<String, Object> isReduceNickname(String nickname);

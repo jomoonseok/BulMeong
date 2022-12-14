@@ -304,7 +304,7 @@ public class UsersServiceImpl implements UsersService {
 				
 				out.println("<script>");
 				out.println("alert('일치하는 회원 정보가 없습니다.');");
-				out.println("location.href='/';");
+				out.println("location.href='/users/login/form';");
 				out.println("</script>");
 				out.close();
 				

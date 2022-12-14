@@ -37,7 +37,7 @@
 			let regId = /^[0-9a-zA-Z!@#$%^&*]{6,20}$/;
 			
 			
-			// 2개 이상 조합 확인
+			// 3개 이상 조합 확인
 			let validateId = /[0-9]/.test(idValue)        // 숫자가 있으면 true, 없으면 false
 			               + /[a-z]/.test(idValue)        // 소문자가 있으면 true, 없으면 false
 			               + /[A-Z]/.test(idValue)        // 대문자가 있으면 true, 없으면 false
@@ -85,7 +85,7 @@
 			// 정규식(8~20자, 소문자+대문자+숫자+특수문자8종(!@#$%^&*) 3개 이상 조합)
 			let regPw = /^[0-9a-zA-Z!@#$%^&*]{8,20}$/;
 			
-			// 2개 이상 조합 확인
+			// 3개 이상 조합 확인
 			let validatePw = /[0-9]/.test(pwValue)        // 숫자가 있으면 true, 없으면 false
 			               + /[a-z]/.test(pwValue)        // 소문자가 있으면 true, 없으면 false
 			               + /[A-Z]/.test(pwValue)        // 대문자가 있으면 true, 없으면 false
@@ -341,10 +341,6 @@
 				return;
 			}else if(mobilePass == false){
 				alert('휴대전화번호를 확인하세요.');
-				event.preventDefault();
-				return;
-			} else if($('#birthyear').val() == '' || $('#birthmonth').val() == '' || $('#birthdate').val() == ''){
-				alert('생년월일을 확인하세요.');
 				event.preventDefault();
 				return;
 			} else if(authCodePass == false){
