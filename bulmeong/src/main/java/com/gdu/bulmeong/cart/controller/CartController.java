@@ -20,7 +20,13 @@ public class CartController {
 
 	@Autowired
 	private CartService cartService;
-	 
+	
+	@GetMapping("/cart/jjim")
+	public String cart() {
+		return "cart/jjim";
+	}
+	
+	/*
 	@GetMapping("/cart")
 	public String cart() {
 		return "cart/addCart";
@@ -43,7 +49,7 @@ public class CartController {
 	   return result;
 	   
 	}
-	
+	*/
 
 	
 	
