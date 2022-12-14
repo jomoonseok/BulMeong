@@ -11,9 +11,9 @@ import com.gdu.bulmeong.pay.service.PayService;
 public class PayController {
 
 	 
-	@GetMapping("/camp/pay")
+	@GetMapping("/pay/info")
 	public String iamport() {
-		return "camp/pay";
+		return "pay/info";
 	}
 	
 		
