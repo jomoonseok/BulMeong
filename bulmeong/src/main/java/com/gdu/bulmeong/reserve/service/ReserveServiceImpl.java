@@ -19,7 +19,6 @@ public class ReserveServiceImpl implements ReserveService {
 	 
 	@Override
 	public Map<String, Object> getTentByCampNo(int campNo) {
-		System.out.println(campNo);
 		Map<String, Object> result = new HashMap<>();
 		result.put("tentList", reserveMapper.selectTentByCampNo(campNo));
 		result.put("camp", reserveMapper.selectCampByCampNo(campNo));
@@ -29,7 +28,13 @@ public class ReserveServiceImpl implements ReserveService {
 	@Override
 	public void getInfoReserve(HttpServletRequest request) {
 		
-		String  = request.getParameter("");
+		int campNo = Integer.parseInt(request.getParameter("campNo"));
+		int tentNo = Integer.parseInt(request.getParameter("tentNo"));
+		String RESERVE_BEGIN_DATE = request.getParameter("RESERVE_BEGIN_DATE");
+		String RESERVE_END_DATE = request.getParameter("RESERVE_END_DATE");
+		String RESERVE_COUNT = request.getParameter("RESERVE_COUNT");
+		
+		
 		
 	}
 	

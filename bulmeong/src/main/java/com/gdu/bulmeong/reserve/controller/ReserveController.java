@@ -39,11 +39,14 @@ public class ReserveController {
 	 */
 	
 	
-	@PostMapping("/reserve/pay")
-	public String reserve_pay(HttpServletRequest request) {
-		return "reserve/pay";
-	}
-	
+	 @GetMapping("/reserve/pay") 
+	 public String reserve_pay(HttpServletRequest request) { 
+		 reserveService.getInfoReserve(request); 
+		 return "reserve/pay"; 
+		 
+	 }
+	 
+	 
 	
 	
 	
