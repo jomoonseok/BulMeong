@@ -41,7 +41,6 @@ public class ReserveController {
 	
 	@PostMapping("/reserve/pay")
 	public String reserve_pay(HttpServletRequest request) {
-		System.out.println(request.getParameter("tentNo"));
 		return "reserve/pay";
 	}
 	
