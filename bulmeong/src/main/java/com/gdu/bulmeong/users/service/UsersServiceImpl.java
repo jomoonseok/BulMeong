@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
@@ -402,6 +404,116 @@ public class UsersServiceImpl implements UsersService {
 		Map<String, Object> result= new HashMap<String, Object>();
 		result.put("isUser", user != null);
 		return result;
+	}
+	
+	
+	
+	@Override
+	public void modifyPassword(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 현재 로그인 된 사용자
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
+
+		// 파라미터
+		String pw = securityUtil.sha256(request.getParameter("pw"));
+
+		// 동일한 비밀번호로 변경 금지
+		if(pw.equals(loginUser.getPw())) {
+			
+			// 응답
+			try {
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				out.println("alert('현재 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+				out.close();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+
+		// 사용자 번호
+		String id = loginUser.getId();
+		
+		// DB로 보낼 UserDTO
+		UsersDTO user = UsersDTO.builder()
+				.id(id)
+				.pw(pw)
+				.build();
+		
+		// 비밀번호 수정
+		int result = usersMapper.updateUserPassword(user);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(result > 0) {
+				
+				// session에 저장된 loginUser 업데이트
+				loginUser.setPw(pw);
+				
+				out.println("<script>");
+				out.println("alert('비밀번호가 수정되었습니다.');");
+				out.println("location.href='" + request.getContextPath() + "';");
+				out.println("</script>");
+				
+			} else {
+				
+				out.println("<script>");
+				out.println("alert('비밀번호가 수정되지 않았습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+				
+			}
+			
+			out.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	@Override
+	public void modifyUser(HttpServletRequest request, HttpServletResponse response) {
+		
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String gender = request.getParameter("gender");
+		String mobile = request.getParameter("mobile");
+		String birthYear = request.getParameter("birthyear");
+		String birthMonth = request.getParameter("birthmonth");
+		String birthDate = request.getParameter("birthdate");
+		String postCode = request.getParameter("postCode");
+		String roadAddress = request.getParameter("roadAddress");
+		String jibunAddress = request.getParameter("jibunAddress");
+		String detailAddress = request.getParameter("detailAddress");
+		String extraAddress = request.getParameter("extraAddress");
+		String email = request.getParameter("email");
+		String location = request.getParameter("location");
+		String promotion = request.getParameter("jibunAddress");
+		
+	}
+	
+	
+	
+	@Override
+	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest) {
+		MultipartFile multipartFile = multipartRequest.getFile("image");
+		
+		return null;
 	}
 	
 	 

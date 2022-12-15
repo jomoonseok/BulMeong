@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.bulmeong.users.service.UsersService;
 
@@ -87,7 +88,7 @@ public class UsersController {
 		usersService.login(request, response);
 	}
 	
-	@GetMapping("/user/logout")
+	@GetMapping("/users/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		usersService.logout(request, response);
 		return "redirect:/";
@@ -109,6 +110,31 @@ public class UsersController {
 		return "users/mypage";
 	}
 	
+	@PostMapping("/users/modify/pw")
+	public void requiredLogin_modifyPw(HttpServletRequest request, HttpServletResponse response) {
+		usersService.modifyPassword(request, response);
+	}
+	
+	@PostMapping("/users/modify")
+	public void modify(HttpServletRequest request, HttpServletResponse response) {
+		usersService.modifyUser(request, response);
+	}
+	
+	@GetMapping("/users/profile")
+	public String modifyProfileImage() {
+		return "users/profile";
+	}
+	/*
+	@ResponseBody
+	@GetMapping(value="/users/changeImage", produces="application/json")
+	public Map<String, Object> changeImage(MultipartHttpServletRequest multipartRequest){
+		return usersService.saveImage;
+	}
+	*/
+	@PostMapping("users/modify/profile")
+	public void modifyProfile(HttpServletRequest request, HttpServletResponse response) {
+		usersService.modifyPassword(request, response);
+	}
 	
 	
 }

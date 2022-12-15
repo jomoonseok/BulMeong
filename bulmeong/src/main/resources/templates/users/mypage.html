@@ -12,7 +12,6 @@
 			fn_pwSubmit();
 			// 일반정보 수정
 			fn_nameCheck();
-			fn_nicknameCheck();
 			fn_mobileCheck();
 			fn_birthmonth();
 			fn_emailCheck();
@@ -87,7 +86,6 @@
 		
 		// 일반정보 수정
 		var namePass = true;
-		var nicknamePass = true;
 		var mobilePass = true;
 		var emailPass = true;
 		
@@ -110,46 +108,6 @@
 				
 			});  // keyup
 		}
-		
-		function fn_nicknameCheck(){
-			
-			$('#nickname').keyup(function(){
-				// 입력한 닉네임
-				let nicknameValue = $(this).val();
-				
-				// 정규식(2~20자, 한글+영어+숫자)
-				let regNickname = /^[가-힣0-9a-zA-Z]{2,20}$/;
-				
-				if(nicknameValue != '' && regNickname.test(nicknameValue) == true){
-					$('#msg_nickname').text('');
-				} else {
-					$('#msg_nickname').text('닉네임을 확인하세요.');
-					nicknamePass = false;
-					return;
-				}
-				
-				// 닉네임 중복체크
-				$.ajax({
-					/* 요청 */
-					type: 'get',
-					url: '/users/checkReduceNickname',
-					data: 'nickname=' + nicknameValue,
-					/* 응답 */
-					dataType: 'json',
-					success: function(resData){  
-						if(nicknameValue != '[[${session.loginUser.nickname}]]'){
-							if(resData.isUser || resData.isSleepUser){
-								$('#msg_nickname').text('이미 사용중인 닉네임입니다.');
-								nicknamePass = false;
-							} else {
-								$('#msg_nickname').text('사용 가능한 닉네임입니다.');
-								nicknamePass = true;
-							}
-						}
-					}
-				});  // ajax
-			}); // keyup
-		} // fn_nicknameCheck
 		
 		function fn_mobileCheck(){
 			$('#mobile').keyup(function(){
@@ -286,11 +244,11 @@
 
 			<hr>
 
-			<form id="frm_edit" th:action="@{/user/modify}" method="post">
+			<form id="frm_edit" th:action="@{/users/modify}" method="post">
 
 				<!-- hidden -->
 				<input type="hidden" name="id" th:value="${session.loginUser.id}">
-
+				
 				<!-- 아이디 -->
 				<div th:text="|아이디 ${session.loginUser.id}|"></div>
 
@@ -305,13 +263,6 @@
 					<span id="msg_name"></span>
 				</div>
 				
-				<!-- 닉네임 -->
-				<div>
-					<label for="name">닉네임*</label> 
-					<input type="text" name="nickname" id="nickname" th:value="${session.loginUser.nickname}">
-					<span id="msg_nickname"></span>
-				</div>
-
 				<!-- 성별 -->
 				<div>
 					<span>성별*</span> 
@@ -338,8 +289,8 @@
 				<!-- 생년월일 -->
 				<div>
 					<label for="birthyear">생년월일</label>
-					<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" >
-					<select name="birthmonth" id="birthmonth"></select>
+					<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" th:value="${session.loginUser.birthYear}">
+					<select name="birthmonth" id="birthmonth" ></select>
 					<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일" >
 				</div>
 

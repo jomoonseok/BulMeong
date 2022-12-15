@@ -106,4 +106,32 @@
 		 WHERE ID = #{id}
 	</update>
 	
+	<!-- 마이페이지 : 비밀번호 수정, 임시비밀번호로 수정 -->
+	<update id="updateUserPassword" parameterType="UsersDTO">
+		UPDATE USERS
+		   SET PW = #{pw}
+		     , PW_MODIFY_DATE = SYSDATE
+		 WHERE ID = #{id}
+	</update>
+	
+	<!-- 회원정보수정 -->
+	<update id="updateUser" parameterType="UsersDTO">
+		UPDATE USERS
+		  SET NAME = #{name}
+		    , NICKNAME = #{nickname}
+		    , GENDER = #{gender}
+		    , EMAIL = #{email}
+		    , MOBILE = #{mobile}
+		    , BIRTHYEAR = #{birthYear}
+		    , BIRTHDAY = #{birthDay}
+		    , POSTCODE = #{postCode}
+		    , ROAD_ADDRESS = #{roadAddress}
+		    , JIBUN_ADDRESS = #{jibunAddress}
+		    , DETAIL_ADDRESS = #{detailAddress}
+		    , EXTRA_ADDRESS = #{extraAddress}
+		    , AGREE_CODE = #{agreeCode}
+		    , INFO_MODIFY_DATE = SYSDATE
+		WHERE ID = #{id}
+	</update>
+	
 </mapper>

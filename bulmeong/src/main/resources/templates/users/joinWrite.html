@@ -33,20 +33,20 @@
 			// 입력한 아이디
 			let idValue = $(this).val();
 			
-			// 정규식(6~20자, 소문자+대문자+숫자+특수문자8종(!@#$%^&*) 3개 이상 조합)
-			let regId = /^[0-9a-zA-Z!@#$%^&*]{6,20}$/;
+			// 정규식(6~20자, 소문자+대문자+숫자+특수문자8종(!@#$&*) 3개 이상 조합)
+			let regId = /^[0-9a-zA-Z!@#$&*]{6,20}$/;
 			
 			
 			// 3개 이상 조합 확인
 			let validateId = /[0-9]/.test(idValue)        // 숫자가 있으면 true, 없으면 false
 			               + /[a-z]/.test(idValue)        // 소문자가 있으면 true, 없으면 false
 			               + /[A-Z]/.test(idValue)        // 대문자가 있으면 true, 없으면 false
-			               + /[!@#$%^&*]/.test(idValue);  // 특수문자8종이 있으면 true, 없으면 false
+			               + /[!@#$&*]/.test(idValue);    // 특수문자가 있으면 true, 없으면 false
 			
 			
 			// 정규식 검사
 			if(regId.test(idValue) == false || validateId < 3){
-				$('#msg_id').text('6~20자의 소문자, 대문자, 숫자, 특수문자(!@#$%^&*)를 3개 이상 조합해야 합니다.');
+				$('#msg_id').text('6~20자의 소문자, 대문자, 숫자, 특수문자(!, @, #, $, &, *)를 3개 이상 조합해야 합니다.');
 				idPass = false;
 				return;  // 코드 진행 방지(이후에 나오는 ajax 실행을 막음)
 			}
@@ -89,7 +89,7 @@
 			let validatePw = /[0-9]/.test(pwValue)        // 숫자가 있으면 true, 없으면 false
 			               + /[a-z]/.test(pwValue)        // 소문자가 있으면 true, 없으면 false
 			               + /[A-Z]/.test(pwValue)        // 대문자가 있으면 true, 없으면 false
-			               + /[!@#$%^&*]/.test(pwValue);  // 특수문자8종이 있으면 true, 없으면 false
+			               + /[!@#$%^&*]/.test(pwValue);  // 특수문자가 있으면 true, 없으면 false
 			
 			// 정규식 및 3개 이상 조합 검사
 			if(regPw.test(pwValue) == false || validatePw < 3){
@@ -151,8 +151,8 @@
 			// 입력한 닉네임
 			let nicknameValue = $(this).val();
 			
-			// 정규식(2~20자, 한글+영어+숫자)
-			let regNickname = /^[가-힣0-9a-zA-Z]{2,20}$/;
+			// 정규식(2~10자, 한글+영어+숫자)
+			let regNickname = /^[가-힣0-9a-zA-Z]{2,10}$/;
 			
 			if(nicknameValue != '' && regNickname.test(nicknameValue) == true){
 				$('#msg_nickname').text('');

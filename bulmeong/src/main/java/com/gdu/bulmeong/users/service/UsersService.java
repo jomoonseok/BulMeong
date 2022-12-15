@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 public interface UsersService {
 	public Map<String, Object> isReduceId(String id);
 	public Map<String, Object> isReduceNickname(String nickname);
@@ -16,5 +18,8 @@ public interface UsersService {
 	public void retire(HttpServletRequest request, HttpServletResponse response);
 	public void logout(HttpServletRequest request, HttpServletResponse response);
 	public Map<String, Object> confirmPassword(HttpServletRequest request);
+	public void modifyPassword(HttpServletRequest request, HttpServletResponse response);
+	public void modifyUser(HttpServletRequest request, HttpServletResponse response);
+	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest);
 	//public UsersDTO getUserBySessionId(Map<String, Object> map);
 }

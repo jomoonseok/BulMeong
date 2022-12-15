@@ -14,7 +14,8 @@
 	<!-- 로그인이 된 상태 -->
 	<div th:if="${session.loginUser != null}">
 		<div>
-			<a th:href="@{/users/check/form}" th:text="${session.loginUser.name}"></a>님 반갑습니다.
+			<a th:href="@{/users/profile}"><img th:src=${session.loginUser.profileImage} width="38px" style="border:1px solid black;"></a>
+			<span th:text="|${session.loginUser.name}님 반갑습니다.|"></span>
 		</div>
 		<div>
 			<a th:href="@{/users/logout}">로그아웃</a>
