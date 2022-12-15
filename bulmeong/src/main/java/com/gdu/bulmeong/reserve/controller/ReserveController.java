@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,8 +41,8 @@ public class ReserveController {
 	
 	
 	 @GetMapping("/reserve/pay") 
-	 public String reserve_pay(HttpServletRequest request) { 
-		 reserveService.getInfoReserve(request); 
+	 public String reserve_pay(HttpServletRequest request, Model model) { 
+		 reserveService.getInfoReserve(request, model); 
 		 return "reserve/pay"; 
 		 
 	 }

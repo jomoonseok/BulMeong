@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!-- <head th:insert="~{layout/header::head('BulMeong')}"></head> -->
+<head th:insert="~{layout/header::head('Bulmeong Pay')}"></head>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 
-	<link th:href='@{fakeLoader.js-master/dist/fakeLoader.min.css}' rel='stylesheet' />
-    <script th:src='@{fakeLoader.js-master/dist/fakeLoader.min.js}'></script>
+	<!-- <link th:href='@{fakeLoader.js-master/dist/fakeLoader.min.css}' rel='stylesheet' />
+    <script th:src='@{fakeLoader.js-master/dist/fakeLoader.min.js}'></script> -->
     
     <style>
-        
+    
     </style>
     
+    <script th:inline="javascript">
+    
+    	$(function() {
+    		
+    		fn_close();
+    		
+    	});
+    	
+    	
+    	
+    	function fn_close() {
+			
+			$('#btn_close').click(function() {
+				alert('예약이 취소되었습니다.');
+				window.close();
+			})
+			
+		}
+    	
+    
+    </script>
     
     
     
@@ -29,25 +51,25 @@
 		<hr>
 		
 		<div>
-			캠핑장명 <input type="text" readonly"> ex: 파라미터 받기
+			캠핑장명 <input type="text" readonly th:value="${camp.facltNm}"> 
 		</div>
 		<div>
-			날짜     <input type="text" readonly> ex: 파라미터 받기
+			날짜     <input type="text" readonly th:value="${reserveBeginEndDate}"> 
 		</div>
 		<div>
-			숙박일정 <input type="text" readonly> ex: 파라미터 받기
+			숙박일정 <input type="text" readonly th:value="${reserveDate}"> 
 		</div>
 		<div>
-			텐트종류 <input type="text" readonly> ex: 파라미터 받기
+			텐트종류 <input type="text" readonly th:value="${strCategory}"> 
 		</div>
 		<div>
-			텐트이름 <input type="text" readonly> ex: 파라미터 받기
+			텐트이름 <input type="text" readonly th:value="${tent.tentName}"> 
 		</div>
 		<div>
-			인원 <input type="text" readonly> ex: 파라미터 받기
+			인원 <input type="text" readonly th:value="${reserveCount}"> 
 		</div>
 		<div>
-			합계금액 <input type="text" readonly> ex: 파라미터 받기
+			합계금액 <input type="text" readonly th:value="${sum}"> 
 		</div>
 		
 		<hr>
@@ -72,7 +94,7 @@
 	
 	<div>
 		<input type="button" value="확인">
-		<input type="button" value="취소">
+		<input type="button" value="취소" id="btn_close">
 	</div>
 	
 </body>

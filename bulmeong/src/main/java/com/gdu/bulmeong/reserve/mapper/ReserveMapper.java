@@ -10,7 +10,9 @@ import com.gdu.bulmeong.reserve.domain.TentDTO;
 @Mapper
 public interface ReserveMapper {
 	
-	public List<TentDTO> selectTentByCampNo(int campNo);
-	public List<CampDTO> selectCampByCampNo(int campNo);
+	public List<TentDTO> selectAllTentByCampNo(int campNo);
+	public List<CampDTO> selectAllCampByCampNo(int campNo);
+	public CampDTO selectCampByCampNo(int campNo);
+	public TentDTO selectTentByTentNo(int tentNo);
 	
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{layout/header::head('BulMeong')}"></head>
+<head th:insert="~{layout/header::head('Bulmeong Reserve')}"></head>
 
 	<link th:href='@{fullcalendar-5.11.3/lib/main.css}' rel='stylesheet' />
 	<link th:href='@{fakeLoader.js-master/dist/fakeLoader.min.css}' rel='stylesheet' />
@@ -224,7 +224,7 @@
       			$.ajax({
       				type: 'get',
       				success: function(resData) {
-      					window.open("/reserve/pay?campNo=" + campNo + '&tentNo=' + $(e).data('tentno') + '&RESERVE_BEGIN_DATE=' + $('#RESERVE_BEGIN_DATE').val() + '&RESERVE_END_DATE=' + $('#RESERVE_END_DATE').val() + '&RESERVE_COUNT=' + $('#RESERVE_COUNT').val()  , "예약결제창", "width=600px height=800px");
+      					window.open("/reserve/pay?campNo=" + campNo + '&tentNo=' + $(e).data('tentno') + '&RESERVE_BEGIN_DATE=' + $('#RESERVE_BEGIN_DATE').val() + '&RESERVE_END_DATE=' + $('#RESERVE_END_DATE').val() + '&RESERVE_DATE=' + $('#RESERVE_DATE').val() + '&RESERVE_COUNT=' + $('#RESERVE_COUNT').val()  , "예약결제창", "width=600px height=700px left=470px top=200px location=no");
       				}
       			})
       	}
