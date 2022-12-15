@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.gdu.bulmeong.notice.domain.NoticeDTO;
 import com.gdu.bulmeong.notice.domain.SummernoteImageDTO;
 import com.gdu.bulmeong.notice.mapper.NoticeMapper;
+import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.MyFileUtil;
 import com.gdu.bulmeong.util.PageUtil;
 
@@ -40,6 +41,20 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public void getNoticeList(HttpServletRequest request, Model model) {
 		
+//		// 세션
+//		HttpSession session = request.getSession();
+//		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
+//		String id = request.getParameter(loginUser.getId());
+//		
+//		String noticeTitle = request.getParameter("noticeTitle");
+//		String noticeContent = request.getParameter("noticeContent");
+//		
+//		NoticeDTO notice = NoticeDTO.builder()
+//				.noticeTitle(noticeTitle)
+//				.noticeContent(noticeContent)
+//				.id(id)
+//				.build();
+//		
 		// 페이지 파라미터
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
@@ -108,14 +123,14 @@ public class NoticeServiceImpl implements NoticeService {
 	public void saveNotice(HttpServletRequest request, HttpServletResponse response) {
 		
 		// 세션
-		//HttpSession session = request.getSession();
-		//UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
 		
 		// 파라미터
 		String noticeTitle = request.getParameter("noticeTitle");
 		String noticeContent = request.getParameter("noticeContent");
-		// String id = request.getParameter(loginUser.getId());
-		String id = "admin";
+		//String id = request.getParameter(loginUser.getId());
+		String id = loginUser.getId();
 
 		
 		NoticeDTO notice = NoticeDTO.builder()
@@ -131,18 +146,18 @@ public class NoticeServiceImpl implements NoticeService {
 			PrintWriter out = response.getWriter();
 			
 			if(result > 0) {
-//				String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
-//
-//				if(summernoteImageNames !=  null) {
-//					for(String filesystem : summernoteImageNames) {
-//						SummernoteImageDTO summernoteImage = SummernoteImageDTO.builder()
-//								.noticeNo(notice.getNoticeNo())
-//								.filesystem(filesystem)
-//								.build();
-//						noticeMapper.insertSummernoteImage(summernoteImage);
-//					}
-//					System.out.println(notice.getNoticeNo());
-//				}
+				String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
+
+				if(summernoteImageNames !=  null) {
+					for(String filesystem : summernoteImageNames) {
+						SummernoteImageDTO summernoteImage = SummernoteImageDTO.builder()
+								.noticeNo(notice.getNoticeNo())
+								.filesystem(filesystem)
+								.build();
+						noticeMapper.insertSummernoteImage(summernoteImage);
+					}
+					System.out.println(notice.getNoticeNo());
+				}
 				out.println("<script>");
 				out.println("alert('공지사항이 등록되었습니다.')");
 				out.println("location.href='/notice/list';");
@@ -194,12 +209,12 @@ public class NoticeServiceImpl implements NoticeService {
 	public void modifyNotice(HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session = request.getSession();
-		// UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
 		
 		String noticeTitle = request.getParameter("noticeTitle");
 		String noticeContent = request.getParameter("noticeContent");
-		//String id = request.getParameter(loginUser.getId());
-		String id = "ADMIN";
+		String id = request.getParameter(loginUser.getId());
+		//String id = "ADMIN";
 		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 		
 		NoticeDTO notice = NoticeDTO.builder()
