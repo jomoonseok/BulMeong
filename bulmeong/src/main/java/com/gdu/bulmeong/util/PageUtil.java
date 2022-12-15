@@ -3,7 +3,6 @@ package com.gdu.bulmeong.util;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
-import lombok.Setter;
 
 
 @Component
@@ -52,8 +51,8 @@ public class PageUtil {
 	}
 	
 	
-	
-	public void setPageUtil2(int page, int totalRecord, int recordPerPage) {
+	// 자유게시판 검색기능
+	public void setSearchPageUtil(int page, int totalRecord, int recordPerPage) {
 		
 		// page, totalRecord 필드 저장
 		this.page = page;
@@ -112,8 +111,8 @@ public class PageUtil {
 	}
 	
 	
-	
-	public String getPaging2(String path) {
+	// 자유게시판 검색기능
+	public String getSearchPaging(String path) {
 		
 		StringBuilder sb = new StringBuilder();
 		

@@ -13,7 +13,7 @@ public interface FreeBoardCmtMapper {
 	public int selectCmtCount(int freeNo);
 	public List<FreeBoardCmtDTO> selectCmtList(Map<String, Object> map);
 	public int insertCmt(FreeBoardCmtDTO freeCmt);
-	public int deleteCmt(int freeNo);
+	public int deleteCmt(int freeCmtNo);
 
 
 }

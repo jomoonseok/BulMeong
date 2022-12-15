@@ -50,12 +50,15 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
 		
-		pageUtil.setPageUtil(page, commentCount, recordPerPage);
+		pageUtil.setSearchPageUtil(page, commentCount, recordPerPage);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("freeNo", freeNo);
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
+		System.out.println("map : " + map);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("commentList", freeBoardCmtMapper.selectCmtList(map));
@@ -67,11 +70,12 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	public Map<String, Object> addCmt(FreeBoardCmtDTO freeCmt) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		String freeCmtIp = request.getRemoteAddr();
-		
+
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
-		freeCmt.setNickname("u03");
+		freeCmt.setNickname("관리자");
+
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
@@ -87,7 +91,8 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	@Override
 	public Map<String, Object> removeCmt(int freeCmtNo) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("isRemove", freeBoardCmtMapper.deleteCmt(freeCmtNo) == 1);
+		result.put("isRemove", freeBoardCmtMapper.deleteCmt(freeCmtNo) == 1 );
+		System.out.println("result : "  + result);
 		return result;
 	}
 	

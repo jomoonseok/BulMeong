@@ -12,11 +12,11 @@
 		  FROM FREE_BRD
 	</select>
 	
-	<!-- 2. 게시글 조회 -->
+	<!-- 2. 게시글 리스트 및 검색 -->
 	<select id="selectFreeListByMap" parameterType="Map" resultType="FreeBoardDTO">
 		SELECT A.FREE_NO, A.NICKNAME, A.FREE_TITLE, A.FREE_CREATE_DATE, A.FREE_HIT
-		 FROM FREE_BRD A		
-      		  WHERE 1=1
+		 FROM FREE_BRD A
+      		  WHERE 1 = 1
 		<choose>
 			<when test="dateColumn=='ADAY'">
 				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()) 
@@ -28,23 +28,25 @@
 				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW())
 			</when>
 			<when test="dateColumn=='AYEAR'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -4 YEAR) AND NOW())
+				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 YEAR) AND NOW())
 			</when>
 		</choose>
 		<choose>
 			<when test="column=='FREE_TITLE'">
-				AND FREE_TITLE
-				LIKE CONCAT('%',#{query},'%')
+				AND FREE_TITLE LIKE CONCAT('%',#{query},'%')
 			</when>
 			<when test="column=='FREE_CONTENT'">
-				AND FREE_CONTENT
-				LIKE CONCAT('%',#{query},'%')
+				AND FREE_CONTENT LIKE CONCAT('%',#{query},'%')
+			</when>
+			<when test="column=='FREE_CONTENT_FREE_CMT_CONTENT'">
+				AND FREE_TITLE LIKE CONCAT('%', #{query}, '%')
+                 OR FREE_CONTENT LIKE CONCAT('%', #{query}, '%')
 			</when>
 			<when test="column=='NICKNAME'">
-				AND NICKNAME
-				LIKE CONCAT('%',#{query},'%')
+				AND NICKNAME LIKE CONCAT('%',#{query},'%')
 			</when>
 		</choose>
+			 ORDER BY A.FREE_NO DESC
 			 LIMIT #{begin}, #{recordPerPage}
 	</select>
 	
@@ -60,7 +62,7 @@
       INSERT INTO FREE_BRD
          (NICKNAME, FREE_TITLE, FREE_CONTENT, FREE_CREATE_DATE, FREE_MODIFY_DATE, FREE_IP, FREE_HIT)
       VALUES
-         (#{nickname}, #{freeTitle}, #{freeContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y%m%d%h%i'), #{freeIp}, 0)
+         (#{nickname}, #{freeTitle}, #{freeContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), #{freeIp}, 0)
 	</insert>
    
 	<!-- 5. 특정 게시글 선택 -->
@@ -75,7 +77,7 @@
 		UPDATE FREE_BRD
 		   SET FREE_TITLE = #{freeTitle}, 
 		   FREE_CONTENT = #{freeContent},
-		   FREE_MODIFY_DATE = DATE_FORMAT(NOW(), '%y%m%d%h%i')
+		   FREE_MODIFY_DATE = DATE_FORMAT(NOW(), '%y-%m-%d')
 		 WHERE FREE_NO = #{freeNo}
 	</update>
 	
@@ -92,90 +94,41 @@
 	<select id="selectFindFreeboardsCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*)
 		  FROM FREE_BRD
-
-		 <if test="column=='FREE_TITLE'">
-			WHERE FREE_TITLE
-			LIKE CONCAT('%',#{query},'%')
-		</if>
-		<if test="column=='FREE_CONTENT'">
-			WHERE FREE_CONTENT
-			LIKE CONCAT('%',#{query},'%')
-		</if>
-		<if test="column=='NICKNAME'">
-			WHERE NICKNAME
-			LIKE CONCAT('%',#{query},'%')
-		</if>
-	</select>
-	
-
-	
-	
-	<!-- 2.  제목 검색 -->
-	<select id="selectFindFreeboard" parameterType="Map" resultType="FreeBoardDTO">
-		SELECT A.FREE_NO, A.NICKNAME, A.FREE_TITLE, A.FREE_CREATE_DATE, A.FREE_HIT
- 		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_NO DESC) AS ROW_NUM, FREE_NO, NICKNAME, FREE_TITLE, FREE_CREATE_DATE, FREE_HIT
-         		  FROM FREE_BRD		
+ 		 WHERE 1 = 1
 		<choose>
 			<when test="dateColumn=='ADAY'">
-				WHERE (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()) AND
+				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()) 
 			</when>
 			<when test="dateColumn=='AWEEK'">
-				WHERE (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW()) AND
+				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW())
 			</when>
 			<when test="dateColumn=='AMONTH'">
-				WHERE (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()) AND
+				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW())
 			</when>
 			<when test="dateColumn=='AYEAR'">
-				WHERE (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -4 YEAR) AND NOW()) AND
+				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -4 YEAR) AND NOW())
 			</when>
-				<otherwise>WHERE</otherwise>
 		</choose>
 		<choose>
 			<when test="column=='FREE_TITLE'">
-				FREE_TITLE
-				LIKE CONCAT('%',#{query},'%')) A
+				AND FREE_TITLE LIKE CONCAT('%',#{query},'%')
 			</when>
 			<when test="column=='FREE_CONTENT'">
-				FREE_CONTENT
-				LIKE CONCAT('%',#{query},'%')) A
+				AND FREE_CONTENT LIKE CONCAT('%',#{query},'%')
+			</when>
+			<when test="column=='FREE_CONTENT_FREE_CMT_CONTENT'">
+				AND FREE_TITLE LIKE CONCAT('%', #{query}, '%')
+                 OR FREE_CONTENT LIKE CONCAT('%', #{query}, '%')
 			</when>
 			<when test="column=='NICKNAME'">
-				NICKNAME
-				LIKE CONCAT('%',#{query},'%')) A
+				AND NICKNAME LIKE CONCAT('%',#{query},'%')
 			</when>
 		</choose>
-			 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+		
 	</select>
 	
-	
-	<!-- # 이전글, 다음글 기능 구현 -->
-	
-	<!-- 
-	SELECT *
-	  FROM FREE_BRD
-	 WHERE NICKNAME = (SELECT PREV_NO
-	                     FROM (SELECT NICKNAME, NICKNAME(ID, 1, -1) OVER(ORDER BY NICKNAME) AS PREV_NO 
-	                             FROM FREE_BRD) B
-	                    WHERE NICKNAME = :NICKNAME)
 
-	SELECT * FROM BOARD
-	WHERE ID = (SELECT PREV_NO FROM (SELECT ID, LEAD(ID, 1, -1) OVER(ORDER BY ID) AS PREV_NO FROM BOARD) B
-	WHERE ID = :ID)
-	-->
 	
-	
-	<!--
-	<select id="prevNextBoard" parameterType="int" resultType="int">
-		SELECT A.*
-		  FROM (SELECT FREE_NO, FREE_TITLE,
-			      LEAD(FREE_NO, 1) OVER (ORDER BY FREE_NO DESC) AS NEXT_NO,
-			      LEAD(FREE_TITLE, 1, '다음글이 없습니다') OVER (ORDER BY FREE_NO DESC) AS NEXT_TITLE,
-			      LAG(FREE_NO, 1) OVER (ORDER BY FREE_NO DESC) AS PRE_NO,
-			      LAG(FREE_TITLE, 1, '이전글이 없습니다') OVER (ORDER BY FREE_NO DESC) AS PRE_TITLE
-			      FROM FREE_BRD) A
-		 WHERE A.FREE_NO = #{freeNo};	
-	</select>
-	-->
 	
 
 	

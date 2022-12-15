@@ -22,7 +22,6 @@ public class FreeBoardController {
 	// 1. CRUD 기능
 	@GetMapping("/freeboard/list")
 	public String list(HttpServletRequest request, Model model) {
-		// 위에 GetMapping url 하나로 검색하고 리스트 조회 하는거 할려고 하는거야
 		model.addAttribute("request", request);
 		freeBoardService.getFreeList(model);
 		return "freeboard/list";
@@ -37,7 +36,6 @@ public class FreeBoardController {
 			return "redirect:/freeboard/list";
 		}
 	}
-	
 	
 	@GetMapping("/freeboard/write")
 	public String write() {
@@ -70,27 +68,6 @@ public class FreeBoardController {
 	@PostMapping("/freeboard/remove")
 	public void remove(HttpServletRequest request, HttpServletResponse response) {
 		freeBoardService.removeFreeBoard(request, response);
-	}
-	
-	
-	// 2. 검색 기능
-	// 이거 안써
-	
-	@GetMapping("/freeboard/search")
-	public String search(HttpServletRequest request, Model model) {
-		freeBoardService.findFreeobard(request, model);
-		return "freeboard/list";
-	}
-	
-	// 3. 이전글 다음글
-	@GetMapping("freeboard/preview")
-	public void preview(HttpServletRequest request, HttpServletResponse response) {
-		freeBoardService.findPrevNextBoard(request, response);
-	}
-	
-	@GetMapping("freeboard/nextview")
-	public void nextview(HttpServletRequest request, HttpServletResponse response) {
-		freeBoardService.findPrevNextBoard(request, response);
 	}
 	
 	
