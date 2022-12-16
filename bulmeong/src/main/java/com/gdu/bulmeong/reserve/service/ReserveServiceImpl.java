@@ -37,9 +37,11 @@ public class ReserveServiceImpl implements ReserveService {
 		String RESERVE_BEGIN_END_DATE = RESERVE_BEGIN_DATE + " ~ " + RESERVE_END_DATE;
 		String RESERVE_DATE = request.getParameter("RESERVE_DATE");
 		int RESERVE_COUNT = Integer.parseInt(request.getParameter("RESERVE_COUNT"));
+		String depositor = request.getParameter("depositor");
+		String depositor_tel = request.getParameter("depositor_tel");
 		
 		TentDTO tent = reserveMapper.selectTentByTentNo(tentNo);
-		int sum = RESERVE_COUNT * tent.getTentSum();
+		int sum = tent.getTentSum();
 		int tentCategory = tent.getTentCategory();
 		
 		String strCategory = "";
@@ -56,6 +58,8 @@ public class ReserveServiceImpl implements ReserveService {
 		model.addAttribute("reserveDate", RESERVE_DATE);
 		model.addAttribute("reserveCount", RESERVE_COUNT);
 		model.addAttribute("strCategory", strCategory);
+		model.addAttribute("depositor", depositor);
+		model.addAttribute("depositor_tel", depositor_tel);
 		model.addAttribute("sum", sum);
 		
 		

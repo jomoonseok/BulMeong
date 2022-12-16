@@ -19,16 +19,19 @@
 		<span>※주문자 정보</span>
 		<div>
 			<label for="name">이름</label>
+			<!-- <input type="text" name="name" id="name" th:value="${session.loginUser.name}"> -->
 			<input type="text" name="name" id="name" value="${loginUser.name}">
 			<span id="msg_name"></span>
 		</div>
 		<div>
 			<label for="tel">휴대전화</label>
+			<!-- <input type="text" name="tel" id="tel" th:value="${session.loginUser.tel}"> -->
 			<input type="text" name="tel" id="tel" value="${loginUser.tel}">
 			<span id="msg_mobile"></span>
 		</div>
 		<div>
 			<label for="email">이메일</label>
+			<!-- <input type="text" name="email" id="email" th:value="${session.loginUser.email}"> -->
 			<input type="text" name="email" id="email" value="${loginUser.email}">
 			<span id="msg_email"></span>
 		</div>
@@ -54,26 +57,14 @@
 			});
 		});  // 버튼 클릭하면 실행
 		
-		$(document).ready(function(){
-			$('#kakaoPay').click(function(){
-				kakaoPay();  // 버튼 클릭하면 호출
-			});
-		});  // 버튼 클릭하면 실행
-		
-		
-		$(document).ready(function(){
-			$('#payco').click(function(){
-				payco();
-			});
-		});  // 버튼 클릭하면 실행
 		
 		function pay() {  // (data)
 			IMP.init('imp72345478');  // '가맹점 식별코드' 입력  // 초기화
 			IMP.request_pay({  // param   // 결제창 호출
 				pg: "html5_inicis", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐, 아임포트 홈페이지에서 추가한 pg만 가능하다.)  // "html5_inicis"  // "kakaopay.TC0ONETIME"
 				pay_method: "card",
-				merchant_uid: "testpaysera",  // DB에 주문 레코드를 생성하여 해당 레코드의 주문번호를 param.merchant_uid 에 지정하기
-				name: "상품3",  // 결제창에 노출될 상품명 
+				merchant_uid: "testpaysera" + new Date().getTime(),  // DB에 주문 레코드를 생성하여 해당 레코드의 주문번호를 param.merchant_uid 에 지정하기
+				name: "상품4",  // 결제창에 노출될 상품명 
 				amount: 100,  // 네이버페이 최소 주문금액 100원
 				buyer_email : "testiamport03@naver.com", 
 				buyer_name : "크롱", 
@@ -90,52 +81,6 @@
 			});
 		}
 		
-		function kakaoPay() {  // (data)
-			IMP.init('imp72345478');  // '가맹점 식별코드' 입력  // 초기화
-			IMP.request_pay({  // param   // 결제창 호출
-				pg: "kakaopay.TC0ONETIME", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐, 아임포트 홈페이지에서 추가한 pg만 가능하다.)  // "html5_inicis"  // "kakaopay.TC0ONETIME"
-				pay_method: "card",  // 지불 방법 
-				merchant_uid: "test_sera",  // 가맹점 주문번호 (아임포트를 사용하는 가맹점에서 중복되지 않은 임의의 문자열을 입력) 
-				name: "상품1",  // 결제창에 노출될 상품명 
-				amount: 10, // 금액 
-				buyer_email : "testiamport01@naver.com", 
-				buyer_name : "뽀로로", 
-				buyer_tel: "01012341234"
-				
-			}, function (rsp) {  // callback  // 결제 완료
-				if (rsp.success) {
-					alert("[완료] imp_uid : "+ rsp.imp_uid +" / merchant_uid : " + rsp.merchant_uid);
-				} else {
-					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")"); 
-				}
-
-			});
-		}
-		
-		
-		function payco() {
-			IMP.init('imp72345478');  // '가맹점 식별코드' 입력
-			IMP.request_pay({
-				pg: "payco",
-				pay_method: "card",
-				merchant_uid: "payco_sera",
-				name: "상품2",
-				amount: 30,
-				buyer_email : "testiamport02@naver.com", 
-				buyer_name : "루피", 
-				buyer_tel: "01012345678",
-				buyer_addr : '서울특별시 강남구 삼성동',
-				buyer_postcode : '123-456'
-				
-			}, function (rsp) {  // callback  // 결제 완료
-				if (rsp.success) {
-					alert("[완료] imp_uid : "+ rsp.imp_uid +" / merchant_uid : " + rsp.merchant_uid);
-				} else {
-					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")"); 
-				}
-			
-			});
-		}
 		
 
 	

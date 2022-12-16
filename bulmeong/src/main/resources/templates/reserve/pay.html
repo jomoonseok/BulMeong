@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{layout/header::head('Bulmeong Pay')}"></head>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-
 	<!-- <link th:href='@{fakeLoader.js-master/dist/fakeLoader.min.css}' rel='stylesheet' />
     <script th:src='@{fakeLoader.js-master/dist/fakeLoader.min.js}'></script> -->
     
@@ -14,9 +13,49 @@
     
     	$(function() {
     		
-    		fn_close();
+    		// 함수 호출
+			pay();    		
+	   		fn_close();
+	    	
     		
     	});
+    	
+    	
+    	function pay() {  // (data)
+    		
+    		$('#btn_pay').click(function(){
+    			
+    			
+    			console.log($('depositer').val());
+    			console.log($('depositer_tel').val());
+    			
+    		
+				IMP.init('imp72345478');  // '가맹점 식별코드' 입력  // 초기화
+				IMP.request_pay({  // param   // 결제창 호출
+					pg: "html5_inicis", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐, 아임포트 홈페이지에서 추가한 pg만 가능하다.)  // "html5_inicis"  // "kakaopay.TC0ONETIME"
+					pay_method: "card",
+					merchant_uid: "testpaysera" + new Date().getTime(),  // DB에 주문 레코드를 생성하여 해당 레코드의 주문번호를 param.merchant_uid 에 지정하기
+					name: $('#facltNm').val() + "_" + $('#tentName').val(),  // 결제창에 노출될 상품명 
+					amount: $('#payment').val(),  // 네이버페이 최소 주문금액 100원
+					/* buyer_email : "testiamport03@naver.com",  */
+					buyer_name : $('#depositer').val(), 
+					buyer_tel: $('#depositer_tel').val(),
+					/* buyer_addr: "서울특별시 강남구 신사동", */
+			        /* buyer_postcode: "01181" */
+				}, function (rsp) {  // callback  // 결제 완료
+					if (rsp.success) {
+						alert("결제가 완료되었습니다.");  // alert('결제가 완료되었습니다.');  // location.href="결제 완료 후 이동할 페이지 url"
+						window.close();
+					} else {
+						alert("결제가 취소되었습니다.");  // alert('결제에 실패하였습니다. 에러 : ' + rsp.error_msg); 
+					}
+	
+				});
+			
+    		});
+		}
+    	
+    	
     	
     	
     	
@@ -28,6 +67,14 @@
 			})
 			
 		}
+    	
+    	
+    	
+		
+    	
+    	
+    	
+    	
     	
     
     </script>
@@ -51,41 +98,44 @@
 		<hr>
 		
 		<div>
-			캠핑장명 <input type="text" readonly th:value="${camp.facltNm}"> 
+			캠핑장명 <input type="text" id="facltNm" readonly th:value="${camp.facltNm}"> 
 		</div>
 		<div>
-			날짜     <input type="text" readonly th:value="${reserveBeginEndDate}"> 
+			날짜     <input type="text" id="reserveBeginEndDate" readonly th:value="${reserveBeginEndDate}"> 
 		</div>
 		<div>
-			숙박일정 <input type="text" readonly th:value="${reserveDate}"> 
+			숙박일정 <input type="text" id="reserveDate" readonly th:value="${reserveDate}"> 
 		</div>
 		<div>
-			텐트종류 <input type="text" readonly th:value="${strCategory}"> 
+			인원 <input type="text" id="reserveCount" readonly th:value="${reserveCount}"> 
 		</div>
 		<div>
-			텐트이름 <input type="text" readonly th:value="${tent.tentName}"> 
+			텐트종류 <input type="text" id="strCategory" readonly th:value="${strCategory}"> 
 		</div>
 		<div>
-			인원 <input type="text" readonly th:value="${reserveCount}"> 
+			텐트이름 <input type="text" id="tentName" readonly th:value="${tent.tentName}"> 
 		</div>
 		<div>
-			합계금액 <input type="text" readonly th:value="${sum}"> 
+			텐트가격 <input type="text" id="sum" readonly th:value="${sum}"> 
 		</div>
 		
 		<hr>
 		
-		결제정보 입력
+		결제 정보
 		
 		<hr>
 		
 		<div>
-			입금자명 <input type="text"> ex: 입력정보 받기
+			예약자명 <input type="text" id="depositor" readonly th:value="${depositor}">
 		</div>
 		<div>
-			전화번호 <input type="text"> ex: 입력정보 받기
+			연락처 <input type="text" id="depositor_tel" readonly th:value="${depositor_tel}">
 		</div>
 		<div>
-			결제수단 <input type="text"> ex: select-option 1. 무통장입금, 2. 카드결제
+			결제금액 <input type="text" id="payment" readonly th:value="${sum} * ${reserveCount}"> 
+		</div>
+		<div>
+			<input type="button" value="결제하기" id="btn_pay">
 		</div>
 	
 	</div>

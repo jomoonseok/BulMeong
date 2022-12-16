@@ -36,7 +36,7 @@
     	}
     	
     	.right_side input[type=text] {
-    		width: 80px;
+    		width: 100px;
     		text-align: center;
     	}
     	
@@ -140,7 +140,7 @@
       	    		campInfo += '<span id="facltNm">캠핑장명 : ' + resData.camp[0].facltNm + '<br>';
       	    		campInfo += '주소 : ' + resData.camp[0].addr1 + '<br>';
       	    		campInfo += '전화번호 : ' + resData.camp[0].tel + '<br>';
-      	    		campInfo += '홈페이지 : ' + resData.camp[0].homepage + '<br>';
+      	    		campInfo += '홈페이지 : <a href="' + resData.camp[0].homepage + '">' + resData.camp[0].homepage + '</a><br>';
       	    		campInfo += '</div><hr>';
       	    		$('#camp_info').append(campInfo);
       	    		
@@ -220,11 +220,40 @@
       				return;
       			}
       			
+      			let nameCheck = /^[가-힣]{2,10}$/;
+				let telCheck = /^(01[01346-9])-?([1-9]{1}[0-9]{2,3})-?([0-9]{4})$/;
+				
+    			if($('#depositor').val() == '') {
+        			alert('구매자명과 연락처는 필수 입력 항목입니다.');
+        			$('#depositor').focus();
+        			return;
+        		}
+    			
+    			if($('#depositor_tel').val() == '') {
+        			alert('구매자명과 연락처는 필수 입력 항목입니다.');
+        			$('#depositor_tel').focus();
+        			return;
+        		}
+    			
+    			if(!nameCheck.test($('#depositor').val())) {
+    				alert('잘못된 이름 형식을 입력하셨습니다.');
+    				$('#depositor').focus();
+    				return;
+    			}
+    			if(!telCheck.test($('#depositor_tel').val())) {
+    				alert('잘못된 연락처 형식을 입력하셨습니다.');
+    				$('#depositor_tel').focus();
+    				return;
+    			}
+    			
+    			
+      			
       			
       			$.ajax({
       				type: 'get',
       				success: function(resData) {
-      					window.open("/reserve/pay?campNo=" + campNo + '&tentNo=' + $(e).data('tentno') + '&RESERVE_BEGIN_DATE=' + $('#RESERVE_BEGIN_DATE').val() + '&RESERVE_END_DATE=' + $('#RESERVE_END_DATE').val() + '&RESERVE_DATE=' + $('#RESERVE_DATE').val() + '&RESERVE_COUNT=' + $('#RESERVE_COUNT').val()  , "예약결제창", "width=600px height=700px left=470px top=200px location=no");
+      					// 결제 팝업창 호출
+      					window.open("/reserve/pay?campNo=" + campNo + '&tentNo=' + $(e).data('tentno') + '&RESERVE_BEGIN_DATE=' + $('#RESERVE_BEGIN_DATE').val() + '&RESERVE_END_DATE=' + $('#RESERVE_END_DATE').val() + '&RESERVE_DATE=' + $('#RESERVE_DATE').val() + '&RESERVE_COUNT=' + $('#RESERVE_COUNT').val() + '&depositor=' + $('#depositor').val() + '&depositor_tel=' + $('#depositor_tel').val() , "예약결제창", "width=1000px height=700px left=470px top=200px location=no");
       				}
       			})
       	}
@@ -244,14 +273,16 @@
 			<div class="left_side">
 				<span id='calendar'></span>
 			</div>
-			<div class="right_side">
-				<div id="calendar_div">
-					* 달력에 마우스를 드래그하여 숙박희망 날짜를 선택하고 인원수를 입력하세요
-				</div>
+			
+			<div class="right_side"><hr>
+				<div style="text-align: center">예약자 정보</div><hr>
+					<span style="color: red; ">* 달력에 마우스를 드래그하여 숙박희망 날짜를 선택하고 예약 정보를 입력하세요</span><br>
 					시작일 <input type="text"  readonly="readonly" id="RESERVE_BEGIN_DATE" name="RESERVE_BEGIN_DATE" class="DATE">
 					종료일 <input type="text" readonly="readonly" id="RESERVE_END_DATE" name="RESERVE_END_DATE" class="DATE">
-					숙박일 <input type="text" readonly="readonly" id="RESERVE_DATE" name="RESERVE_DATE" class="DATE">
-					인원수 <input type="text" id="RESERVE_COUNT" name="RESERVE_COUNT"><hr>
+					숙박일 <input type="text" readonly="readonly" id="RESERVE_DATE" name="RESERVE_DATE" class="DATE"><br>
+					인원수 <input type="text" id="RESERVE_COUNT" name="RESERVE_COUNT">
+					예약자명 <input type="text" id="depositor" name="depositor">
+					연락처 <input type="text" id="depositor_tel" name="depositor_tel"><hr><hr>
 				<div id="camp_info"></div>
 				<div id="reserve_info"></div>
 				<hr>
