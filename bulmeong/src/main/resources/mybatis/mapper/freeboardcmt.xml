@@ -10,7 +10,7 @@
 	<select id="selectCmtCount" parameterType="int" resultType="int">
 		SELECT COUNT(*)
 		  FROM FREE_CMT
-		 WHERE FREE_NO = #{freeNo}
+		 WHERE FREE_NO = #{freeNo} AND FREE_CMT_STATE = 1
 	</select>
 	
 	
@@ -37,27 +37,34 @@
 		   SET FREE_CMT_STATE = 0
 		 WHERE FREE_CMT_NO = #{freeCmtNo}
 	</update>
+	
+	<!-- 5. 댓글 수정 -->
+	<update id="updateCmt" parameterType="FreeBoardCmtDTO">
+		UPDATE FREE_CMT
+		   SET FREE_CMT_CONTENT = #{freeCmtContent}, FREE_CMT_MODIFY_DATE = DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'
+		 WHERE FREE_CMT_NO = #{freeCmtNo}
+	</update>
+	
+	
 
 	
-	<!-- 5. 다단계층 댓글(groupOrder 1 증가시키는 쿼리) -->
-	<!--
+	<!-- 5. 다단계층 댓글(groupOrder 1 증가시키는 쿼리) -->	
 	<update id="updatePreviousReply" parameterType="FreeBoardCmtDTO">
 		UPDATE FREE_CMT
 		   SET FREE_GROUP_ORDER = FREE_GROUP_ORDER + 1
 		 WHERE FREE_GROUP_NO = #{freeGroupNo}
 		   AND FREE_GROUP_ORDER > #{freeGroupOrder}
 	</update>
-	-->
+	
+
 	
 	<!-- 6. 대댓글 추가 -->
-	<!--
-	<insert id="insertCommentReply" parameterType="FreeBoardCmtDTO">
+	<insert id="insertCmtReply" parameterType="FreeBoardCmtDTO" useGeneratedKeys="true" keyProperty="freeCmtNo">
 		INSERT INTO FREE_CMT
-			(FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
+			(FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
 		VALUES
-			(FREE_CMT_NO_SEQ.NEXTVAL, #{freeNo}, #{nickname}, #{freeCmtContent}, TO_CHAR(SYSDATE, 'YY/MM/DD', TO_CHAR(SYSDATE, 'YY/MM/DD', #{freeCmtIp}, 1, 1, #{freeGroupNo}, 0)
+			(#{freeNo}, #{nickname}, #{freeCmtContent},DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, 1, #{freeNo}, 0)
 	</insert>
-	-->
 
 
 	

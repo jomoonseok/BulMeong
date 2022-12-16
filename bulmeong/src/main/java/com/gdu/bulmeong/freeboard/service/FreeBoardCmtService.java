@@ -13,7 +13,8 @@ public interface FreeBoardCmtService {
 	public Map<String, Object> getCmtList(HttpServletRequest request);
 	public Map<String, Object> addCmt(FreeBoardCmtDTO freeCmt);
 	public Map<String, Object> removeCmt(int freeCmtNo);
-	
+	public Map<String, Object> modifyCmt(FreeBoardCmtDTO freeCmt);
+	public Map<String, Object> addReply(FreeBoardCmtDTO freeCmtReply);
 
 	
 }

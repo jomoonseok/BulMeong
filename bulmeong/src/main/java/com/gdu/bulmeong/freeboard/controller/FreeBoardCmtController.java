@@ -44,8 +44,19 @@ public class FreeBoardCmtController {
 	@ResponseBody
 	@PostMapping(value="/freecomment/remove", produces="application/json")
 	public Map<String, Object> remove(@RequestParam("freeCmtNo") int freeCmtNo){
-		System.out.println("freeComtNo : " + freeCmtNo);
 		return freeBoardCmtService.removeCmt(freeCmtNo);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/freecomment/modify", produces="application/json")
+	public Map<String, Object> modify(@RequestParam("") FreeBoardCmtDTO freeComment, int freeCmtNo){
+		return freeBoardCmtService.modifyCmt(freeComment);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/freecomment/reply/add", produces="application/json")
+	public Map<String, Object> addReply(FreeBoardCmtDTO freeCmtReply){
+		return freeBoardCmtService.addReply(freeCmtReply);
 	}
 	
 	

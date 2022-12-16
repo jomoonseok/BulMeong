@@ -58,8 +58,6 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		map.put("end", pageUtil.getEnd());
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
-		System.out.println("map : " + map);
-		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("commentList", freeBoardCmtMapper.selectCmtList(map));
 		result.put("pageUtil", pageUtil);
@@ -92,7 +90,51 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	public Map<String, Object> removeCmt(int freeCmtNo) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isRemove", freeBoardCmtMapper.deleteCmt(freeCmtNo) == 1 );
-		System.out.println("result : "  + result);
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> modifyCmt(FreeBoardCmtDTO freeCmt) {
+		
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		System.out.println("Service : " + freeCmt);
+		result.put("isModify", freeBoardCmtMapper.updateCmt(freeCmt) == 1);
+		
+		System.out.println("modify result : " + result);
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> addReply(FreeBoardCmtDTO freeCmtReply) {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		//HttpSession session = request.getSession();
+		//UsersDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+		String freeCmtIp = request.getRemoteAddr();
+		
+		// 원글의 DEPTH, GROUP_NO, GROUP_ORDER
+		int freeCmtDepth = Integer.parseInt(request.getParameter("freeCmtDepth"));
+		int freeGroupNo = Integer.parseInt(request.getParameter("freeGroupNo"));
+		int freeGroupOrder = Integer.parseInt(request.getParameter("freeGroupOrder"));
+		
+		FreeBoardCmtDTO freeBoardCmt = new FreeBoardCmtDTO();
+		freeBoardCmt.setFreeCmtDepth(freeCmtDepth + 1);
+		freeBoardCmt.setFreeGroupNo(freeGroupNo);
+		freeBoardCmt.setFreeGroupOrder(freeGroupOrder + 1);
+		
+		freeBoardCmtMapper.updatePreviousReply(freeCmtReply);
+		
+		System.out.println("freeCmtReply : " + freeCmtReply);
+		
+		// freeCmtReply.setId(loginUser.getId());
+		freeCmtReply.setFreeCmtIp(freeCmtIp);
+		freeCmtReply.setNickname("관리자");
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("isAddReply", freeBoardCmtMapper.insertCmtReply(freeCmtReply) == 1);
+		
+		System.out.println("result : " + result);
+		
 		return result;
 	}
 	
