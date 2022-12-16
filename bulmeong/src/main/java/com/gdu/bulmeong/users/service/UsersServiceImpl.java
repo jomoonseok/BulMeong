@@ -126,6 +126,7 @@ public class UsersServiceImpl implements UsersService {
 		name = securityUtil.preventXSS(name);
 		String birthday = birthmonth + birthdate;
 		detailAddress = securityUtil.preventXSS(detailAddress);
+		
 		int agreeCode = 0;  // 필수 동의
 		if(!location.isEmpty() && promotion.isEmpty()) {
 			agreeCode = 1;  // 필수 + 위치
@@ -383,6 +384,13 @@ public class UsersServiceImpl implements UsersService {
 	
 	
 	@Override
+	public UsersDTO getUserBySessionId(Map<String, Object> map) {
+		return usersMapper.selectUserByMap(map);
+	}
+	
+	
+	
+	@Override
 	public Map<String, Object> confirmPassword(HttpServletRequest request) {
 		
 		// 파라미터 pw + SHA-256 처리
@@ -439,10 +447,8 @@ public class UsersServiceImpl implements UsersService {
 			
 		}
 
-		// 사용자 번호
 		String id = loginUser.getId();
 		
-		// DB로 보낼 UserDTO
 		UsersDTO user = UsersDTO.builder()
 				.id(id)
 				.pw(pw)
@@ -500,10 +506,71 @@ public class UsersServiceImpl implements UsersService {
 		String roadAddress = request.getParameter("roadAddress");
 		String jibunAddress = request.getParameter("jibunAddress");
 		String detailAddress = request.getParameter("detailAddress");
-		String extraAddress = request.getParameter("extraAddress");
+		String extraAddress = securityUtil.preventXSS(request.getParameter("extraAddress"));
 		String email = request.getParameter("email");
 		String location = request.getParameter("location");
-		String promotion = request.getParameter("jibunAddress");
+		String promotion = request.getParameter("promotion");
+		
+		int agreeCode = 0;
+		if(location.equals("on") && promotion.equals("off")) {
+			agreeCode = 1;  // 필수 + 위치
+		} else if(location.equals("off") && promotion.equals("on")) {
+			agreeCode = 2;  // 필수 + 프로모션
+		} else if(location.equals("on") && promotion.equals("on")) {
+			agreeCode = 3;  // 필수 + 위치 + 프로모션
+		}
+		
+		String birthDay = birthMonth + birthDate;
+		
+		UsersDTO user = UsersDTO.builder()
+					.id(id)
+					.name(name)
+					.gender(gender)
+					.mobile(mobile)
+					.birthYear(birthYear)
+					.birthDay(birthDay)
+					.postCode(postCode)
+					.roadAddress(roadAddress)
+					.jibunAddress(jibunAddress)
+					.detailAddress(detailAddress)
+					.extraAddress(extraAddress)
+					.email(email)
+					.agreeCode(agreeCode)
+					.build();
+		
+		int result = usersMapper.updateUser(user);
+		
+		try {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(result > 0) {
+				
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("id", id);
+				
+				request.getSession().setAttribute("loginUser", usersMapper.selectUserByMap(map));
+				
+				out.println("<script>");
+				out.println("alert('회원 정보가 수정되었습니다.');");
+				out.println("location.href='/';");
+				out.println("</script>");
+				
+			} else {
+				
+				out.println("<script>");
+				out.println("alert('회원 정보 수정에 실패했습니다.');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+				
+			}
+			
+			out.close();
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

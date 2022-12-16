@@ -25,7 +25,7 @@
 			 </if>
 			 <if test="sessionId != null">
 			 	AND SESSION_ID = #{sessionId}
-			 	AND SESSION_LIMIT_DATE > SYSDATE
+			 	AND SESSION_LIMIT_DATE > NOW()
 			 </if>
 			 <if test="name != null">
 			 	AND NAME = #{name}
@@ -118,19 +118,18 @@
 	<update id="updateUser" parameterType="UsersDTO">
 		UPDATE USERS
 		  SET NAME = #{name}
-		    , NICKNAME = #{nickname}
 		    , GENDER = #{gender}
 		    , EMAIL = #{email}
 		    , MOBILE = #{mobile}
-		    , BIRTHYEAR = #{birthYear}
-		    , BIRTHDAY = #{birthDay}
+		    , BIRTH_YEAR = #{birthYear}
+		    , BIRTH_DAY = #{birthDay}
 		    , POSTCODE = #{postCode}
 		    , ROAD_ADDRESS = #{roadAddress}
 		    , JIBUN_ADDRESS = #{jibunAddress}
 		    , DETAIL_ADDRESS = #{detailAddress}
 		    , EXTRA_ADDRESS = #{extraAddress}
 		    , AGREE_CODE = #{agreeCode}
-		    , INFO_MODIFY_DATE = SYSDATE
+		    , INFO_MODIFY_DATE = DATE_FORMAT(NOW(), '%y/%m/%d')
 		WHERE ID = #{id}
 	</update>
 	

@@ -22,9 +22,6 @@ public class KeepLoginInterceptor implements HandlerInterceptor {
 	@Autowired
 	private UsersService usersService;
 	
-	// 컨트롤러의 모든 요청 이전에 KeepLoginInterceptor가 개입
-	// 컨트롤러의 모든 요청 이전에 개입한다는 코드를 servlet-context.xml에 작성해 둔다.
-	/*
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -36,7 +33,6 @@ public class KeepLoginInterceptor implements HandlerInterceptor {
 			// 스프링에서는 특정 쿠키를 가져올 수 있음
 			Cookie cookie = WebUtils.getCookie(request, "keepLogin");
 			if(cookie != null) {
-				
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("sessionId", cookie.getValue());
 				
@@ -52,5 +48,5 @@ public class KeepLoginInterceptor implements HandlerInterceptor {
 		return true;  // 컨트롤러의 요청을 처리하는 메소드가 수행된다.
 		
 	}
-	*/
+
 }

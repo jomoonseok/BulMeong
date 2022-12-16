@@ -21,6 +21,11 @@ public class UsersController {
 
 	@Autowired 
 	private UsersService usersService;
+	
+	@GetMapping("/")
+	public String index() {
+		return "index";
+	}
 	 
 	
 	@GetMapping("/users/agree")

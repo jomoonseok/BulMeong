@@ -13,21 +13,12 @@
 	
 	<!-- 로그인이 된 상태 -->
 	<div th:if="${session.loginUser != null}">
-		<div>
+		<div style="border:solid 1px black; width:300px; text-align:center">
 			<a th:href="@{/users/profile}"><img th:src=${session.loginUser.profileImage} width="38px" style="border:1px solid black;"></a>
-			<span th:text="|${session.loginUser.name}님 반갑습니다.|"></span>
-		</div>
-		<div>
+			<span th:text="|${session.loginUser.nickname}님 반갑습니다.|"></span>
+			<br>
+			<br>
 			<a th:href="@{/users/logout}">로그아웃</a>
-			<a href="javascript:fn_retire()">회원탈퇴</a>
-			<form id="lnk_retire" th:action="@{/users/retire}" method="post"></form>
-			<script>
-				function fn_retire(){
-					if (confirm('동일한 아이디로 재가입이 불가능합니다. 회원 탈퇴하시겠습니까?')){
-						$('#lnk_retire').submit();
-					}
-				}
-			</script>
 		</div>
 	</div>
 	
