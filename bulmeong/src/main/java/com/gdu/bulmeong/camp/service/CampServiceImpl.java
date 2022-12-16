@@ -209,11 +209,9 @@ public class CampServiceImpl implements CampService {
 		result.put("pageUtil", pageUtil);
 		result.put("campCount", campCount);
 		
-		/*
-		 * for(int )
-		 * 
-		 * model.addAttribute()
-		 */
+		
+		
+
 		
 		return result;
 	}
@@ -226,7 +224,7 @@ public class CampServiceImpl implements CampService {
 		String induty = request.getParameter("induty");
 		String themaEnvrnCl = request.getParameter("themaEnvrnCl");
 		
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("query", query);
 		map.put("doNm", doNm);
 		map.put("induty", induty);
@@ -239,5 +237,10 @@ public class CampServiceImpl implements CampService {
 		return result;
 	}
 	
-	
+	@Override
+	public void getDetailList(HttpServletRequest request, Model model) {
+		int campNo = Integer.parseInt(request.getParameter("campNo"));
+		model.addAttribute("camp", campMapper.selectCampByNo(campNo));
+		
+	}
 }

@@ -18,9 +18,7 @@
 		width: 16px;
 		margin-right: 5px;
 	}
-	.jjim_checked{
 	
-	}
 </style>
 <script th:inline="javascript">
 
@@ -31,6 +29,7 @@
 		fn_changePage();
 		/* fn_getListOption(); */
 		fn_reserve();
+		fn_detail();
 		
 		// 찜
 		//fn_jjimCheck(); 
@@ -185,6 +184,12 @@
 	function fn_reserve() {
 		$(document).on('click', '.btn_reserve', function() {
 			location.href='/reserve?campNo=' + $(this).attr('data-campNo');
+		});
+	}
+	
+	function fn_detail() {
+		$(document).on('click', '.btn_detail', function() {
+			location.href='/detail?campNo=' + $(this).attr('data-campNo');
 		});
 	}
 	

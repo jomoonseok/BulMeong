@@ -21,9 +21,9 @@
 
 	<insert id="insertCart" parameterType="map">
 		INSERT INTO CAMP_CART
-			(ID, CAMP_NO)
+			(CAMP_NO, ID)
 		VALUES
-			(#{id}, #{campNo})
+			(#{campNo}, #{id})
 	</insert>
 	
 	<delete id="deleteCart" parameterType="map">
