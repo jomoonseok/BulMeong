@@ -12,7 +12,7 @@
 					dataType: 'json',
 					success: function(resData){
 						if(resData.isUser){
-							location.href = '/users/mypage';
+							$('#lnk_retire').submit();
 						} else {
 							alert('비밀번호를 확인하세요.');
 						}
@@ -40,6 +40,7 @@
 			<input type="button" value="확인" id="btn_check_pw">
 		</div>
 		
+		<form id="lnk_retire" th:action="@{/users/retire}" method="post"></form>
 	</div>
 	
 </body>

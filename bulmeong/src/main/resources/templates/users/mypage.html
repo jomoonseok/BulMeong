@@ -18,7 +18,6 @@
 			fn_modify();
 			fn_cancel();
 			fn_retire();
-			fn_month();
 		});
 		
 		// 비밀번호 수정
@@ -128,9 +127,9 @@
 			var month = '<option value="">월</option>';
 			for(let m = 1; m<=12; m++){
 				if(m < 10){
-					month += '<option id="0' + m +'" value="0' + m +'">0' + m + '월</option>'
+					month += '<option value="0' + m +'">0' + m + '월</option>'
 				} else{
-					month += '<option id="' + m +'" value="' + m +'">' + m + '월</option>'
+					month += '<option value="' + m +'">' + m + '월</option>'
 				}
 			}
 			$('#birthmonth').append(month);
@@ -177,10 +176,6 @@
 					return;
 				} else if(mobilePass == false){
 					alert('휴대전화번호를 확인하세요.');
-					event.preventDefault();
-					return;
-				} else if($('#birthyear').val() == '' || $('#birthmonth').val() == '' || $('#birthdate').val() == ''){
-					alert('생년월일을 확인하세요.');
 					event.preventDefault();
 					return;
 				} else if(emailPass == false){
@@ -283,7 +278,7 @@
 				<!-- 휴대전화 -->
 				<div>
 					<label for="mobile">휴대전화*</label> 
-					<input type="text" name="mobile" id="mobile" th:value="${session.loginUser.mobile}" maxlength="11"> 
+					<input type="text" name="mobile" id="mobile" th:value="${session.loginUser.mobile}"> 
 					<span id="msg_mobile"></span>
 				</div>
 
@@ -292,14 +287,7 @@
 					<label for="birthyear">생년월일</label>
 					<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" th:value="${session.loginUser.birthYear}">
 					<select name="birthmonth" id="birthmonth"></select>
-					<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일" th:value="${#strings.substring(session.loginUser.birthDay,2,4)}">
-					<script>
-						function fn_month(){
-							if('[[${session.loginUser.birthDay}]]' != null){
-								$('#[[${#strings.substring(session.loginUser.birthDay,0,2)}]]').prop('selected', 'true');
-							}
-						}
-					</script>
+					<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일"> <!-- DB -->
 				</div>
 
 				<!-- 주소 -->

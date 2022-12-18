@@ -4,7 +4,7 @@
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		$(function(){
 			
@@ -18,13 +18,10 @@
 			$('#frm_login').submit(function(event){
 				
 				// 아이디, 비밀번호 공백 검사
-				if($('#id').val() == ''){
-					alert('아이디를 입력하세요.');
+				if($('#id').val() == '' || $('#pw').val() == ''){
+					alert('아이디와 비밀번호를 모두 입력하세요.');
 					event.preventDefault();
 					return;
-				} else if($('#pw').val() == ''){
-					alert('비밀번호를 입력하세요.');
-					event.preventDefault();
 				}
 				
 				// 아이디 기억을 체크하면 rememberId 쿠키에 입력된 아이디를 저장

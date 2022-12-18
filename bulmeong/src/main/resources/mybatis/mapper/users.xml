@@ -25,7 +25,7 @@
 			 </if>
 			 <if test="sessionId != null">
 			 	AND SESSION_ID = #{sessionId}
-			 	AND SESSION_LIMIT_DATE > NOW()
+			 	AND SESSION_LIMIT_DATE > DATE_FORMAT(NOW(), '%y/%m/%d');
 			 </if>
 			 <if test="name != null">
 			 	AND NAME = #{name}
@@ -68,26 +68,26 @@
 	<!-- 로그인 기록(ACCESS_LOG) 남기기 -->
 	<update id="updateAccessLog" parameterType="String">
 		UPDATE USERS_ACCESS
-		   SET LAST_LOGIN_DATE = NOW()
+		   SET LAST_LOGIN_DATE = DATE_FORMAT(NOW(), '%y/%m/%d')
 		 WHERE ID = #{id}
 	</update>
 	<insert id="insertAccessLog" parameterType="String">
 		INSERT INTO USERS_ACCESS
 			(ID, LAST_LOGIN_DATE)
 		VALUES
-			(#{id}, NOW())
+			(#{id}, DATE_FORMAT(NOW(), '%y/%m/%d'))
 	</insert>
 	
 	<!-- 회원탈퇴1 : USERS, USERS_ACCESS 테이블에서 제거 -->
 	<delete id="deleteUserAccess" parameterType="String">
 		DELETE
 		  FROM USERS_ACCESS
-		 WHERE id = #{id}
+		 WHERE ID = #{id}
 	</delete>
 	<delete id="deleteUser" parameterType="String">
 		DELETE
 		  FROM USERS
-		 WHERE id = #{id}
+		 WHERE ID = #{id}
 	</delete>
 	
 	<!-- 회원탈퇴2 : RETIRE_USERS 테이블에 추가 -->
@@ -95,7 +95,7 @@
 		INSERT INTO USERS_RETIRE
 			(ID, JOIN_DATE, RETIRE_DATE)
 		VALUES
-			(#{id}, #{joinDate}, NOW())
+			(#{id}, #{joinDate}, DATE_FORMAT(NOW(), '%y/%m/%d'))
 	</insert>
 	
 	<!-- 로그인 유지를 위한 SESSION_ID/SESSION_LIMIT_DATE 업데이트 -->
@@ -110,7 +110,7 @@
 	<update id="updateUserPassword" parameterType="UsersDTO">
 		UPDATE USERS
 		   SET PW = #{pw}
-		     , PW_MODIFY_DATE = SYSDATE
+		     , PW_MODIFY_DATE = DATE_FORMAT(NOW(), '%y/%m/%d')
 		 WHERE ID = #{id}
 	</update>
 	
@@ -132,5 +132,48 @@
 		    , INFO_MODIFY_DATE = DATE_FORMAT(NOW(), '%y/%m/%d')
 		WHERE ID = #{id}
 	</update>
+	
+	<!-- 휴면처리1 : 1년 이상 로그인 기록이 없으면 휴면테이블에 저장 -->
+	<insert id="insertSleepUser">
+		INSERT INTO USERS_SLEEP(USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, EMAIL, SLEEP_DATE, AGE, PROFILE_IMAGE, LAST_LOGIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
+			(SELECT U.USERS_NO, U.ID, U.NICKNAME, U.PW, U.NAME, U.MOBILE, U.GENDER, U.BIRTH_YEAR, U.BIRTH_DAY, U.POSTCODE, U.ROAD_ADDRESS, U.JIBUN_ADDRESS, U.DETAIL_ADDRESS, U.EXTRA_ADDRESS, U.JOIN_DATE, U.AGREE_CODE, U.SNS_TYPE, U.EMAIL, DATE_FORMAT(NOW(), '%y/%m/%d'), U.AGE, U.PROFILE_IMAGE, A.LAST_LOGIN_DATE, U.PW_MODIFY_DATE, U.INFO_MODIFY_DATE
+			   FROM USERS U LEFT OUTER JOIN USERS_ACCESS A
+                 ON U.ID = A.ID
+			  WHERE DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), A.LAST_LOGIN_DATE) >= 12
+			     OR (DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), U.JOIN_DATE) >= 12 AND A.LAST_LOGIN_DATE IS NULL))
+	</insert>
+	
+	<!-- 휴면처리2 : 1년 이상 로그인 기록이 없으면 회원테이블에서 삭제 -->
+	<delete id="deleteUserForSleep">
+		DELETE
+		  FROM USERS
+		 WHERE ID IN (SELECT U.ID
+		                FROM USERS U LEFT OUTER JOIN USERS_ACCESS A
+		                  ON U.ID = A.ID
+		               WHERE DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), A.LAST_LOGIN_DATE) >= 12
+		                  OR (DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), U.JOIN_DATE) >= 12 AND A.LAST_LOGIN_DATE IS NULL))
+	</delete>
+	
+	<!-- 로그인 이전에 휴면회원인지 확인 -->
+	<select id="selectSleepUserById" parameterType="String" resultType="SleepUsersDTO">
+		SELECT ID, JOIN_DATE, LAST_LOGIN_DATE, SLEEP_DATE
+		  FROM USERS_SLEEP
+		 WHERE ID = #{id}
+	</select>
+	
+	<!-- 휴면복원1 : 복원할 회원을 USERS 테이블에 삽입 -->
+	<insert id="insertRestoreUser" parameterType="String">
+		INSERT INTO USERS(USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
+			(SELECT USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE
+			   FROM SLEEP_USERS
+			  WHERE ID = #{id})
+	</insert>
+	
+	<!-- 휴면복원2 : 복원할 회원을 SLEEP_USERS 테이블에서 삭제 -->
+	<delete id="deleteSleepUser" parameterType="String">
+		DELETE
+		  FROM SLEEP_USERS
+		 WHERE ID = #{id}
+	</delete>
 	
 </mapper>

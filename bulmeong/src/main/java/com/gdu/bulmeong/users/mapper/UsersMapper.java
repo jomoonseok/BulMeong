@@ -22,4 +22,9 @@ public interface UsersMapper {
 	public int updateSessionInfo(UsersDTO user);
 	public int updateUserPassword(UsersDTO user);
 	public int updateUser(UsersDTO user);
+	public int insertSleepUser();
+	public int deleteUserForSleep();
+	public SleepUsersDTO selectSleepUserById(String id);
+	public int insertRestoreUser(String id);
+	public int deleteSleepUser(String id);
 }

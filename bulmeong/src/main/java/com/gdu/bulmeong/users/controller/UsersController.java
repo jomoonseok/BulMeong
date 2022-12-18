@@ -22,12 +22,6 @@ public class UsersController {
 	@Autowired 
 	private UsersService usersService;
 	
-	@GetMapping("/")
-	public String index() {
-		return "index";
-	}
-	 
-	
 	@GetMapping("/users/agree")
 	public String agree() {
 		return "users/agree";
@@ -125,6 +119,22 @@ public class UsersController {
 		usersService.modifyUser(request, response);
 	}
 	
+	@GetMapping("/users/sleep/display")
+	public String sleepDisplay() {
+		return "users/sleep";
+	}
+	
+	@PostMapping("/users/restore")
+	public void restore(HttpServletRequest request, HttpServletResponse response) {
+		usersService.restoreUser(request, response);
+	}
+	
+	
+	
+	
+	
+	
+	
 	@GetMapping("/users/profile")
 	public String modifyProfileImage() {
 		return "users/profile";
@@ -138,8 +148,10 @@ public class UsersController {
 	*/
 	@PostMapping("users/modify/profile")
 	public void modifyProfile(HttpServletRequest request, HttpServletResponse response) {
-		usersService.modifyPassword(request, response);
+		
 	}
+	
+	
 	
 	
 }

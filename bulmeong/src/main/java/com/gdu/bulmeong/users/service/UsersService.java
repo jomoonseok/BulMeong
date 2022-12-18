@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 
 public interface UsersService {
@@ -23,5 +24,9 @@ public interface UsersService {
 	public Map<String, Object> confirmPassword(HttpServletRequest request);
 	public void modifyPassword(HttpServletRequest request, HttpServletResponse response);
 	public void modifyUser(HttpServletRequest request, HttpServletResponse response);
+	public void sleepUserHandle();
+	public SleepUsersDTO getSleepUserById(String id);
+	public void restoreUser(HttpServletRequest request, HttpServletResponse response);
+	
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest);
 }
