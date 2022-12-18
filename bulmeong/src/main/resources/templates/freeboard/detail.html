@@ -49,6 +49,7 @@
 			fn_switchReplyArea();
 			fn_switchModifyArea();
 			fn_addCommentReply()
+			fn_switchModifyAreaCancle();
 
 			// 1. 댓글 갯수
 			function fn_commentCount(){
@@ -74,48 +75,32 @@
 						$('#comment_list').empty();	
 						$.each(resData.commentList, function(i, comment){
 							var div = '';
+							
+							// Depth가 0일 때()
 							if(comment.freeCmtDepth == 0){
 								div += '<div>';
-							} else {
-								div += '<div style="margin-left: 40px;">';
+							} else if(comment.freeCmtDepth > 0) {	
+								for (var i = 0; i < comment.freeCmtDepth; i++){
+									div += '<div style="margin-left:40px;">';
+								}
 							}
 							
-							// 일반 댓글
+							// State가 0일 때(일반 댓글)
 							if(comment.freeCmtState == 1) {
 								
-								div += '<div>';
+								div += '<div style="display: inline-block;">';
 								div += '<span><strong>' + comment.nickname + '</strong></span>';
 								div += '&nbsp;';
 								div += '<span class="cmt_create_date">' + comment.freeCmtCreateDate + '</span>';
 								div += '&nbsp;';
 								div += '<div class="cmt_content_area">'
 								div += '<span class="cmt_content">' + comment.freeCmtContent; + '</span>'
+								div += '</div>'
+								div += '</div>'
 								
 								// 로그인한 유저만 수정/삭제
 								// if( '${loginUser.id}' == comment.id) {
 								// div += '<input type="button" value="삭제" class="button_reply btn_comment_remove" data-free_comment_no="' + comment.freeCmtNo + '">';
-								
-								// 수정 form / hidden
-								div += '<div class="blind">';
-								div += '<form class="frm_cmt_modify">';
-								div += '<input type="hidden" name="freeNo" value="' + comment.freeNo + '">';
-								div += '<input type="hidden" name="freeCmtDepth" value="' + comment.freeCmtDepth + '">';
-								div += '<input type="hidden" name="freeGroupOrder" value="' + comment.freeGroupOrder + '">';
-								div += '<input type="hidden" name="freeCmtNo" value="' + comment.freeCmtNo + '">';
-								// hidden
-								div += '<input type="text" class="freeCmtContent" name="freeCmtContent" value="' + comment.freeCmtContent + '">';
-								div += '<input type="button" value="저장" class="btn_cmt_runModify">';		
-								div += '<input type="button" value="취소" class="">';		
-								div += '</form>'
-								div += '</div>'
-								// 수정 버튼
-								div += '<input type="button" value="수정" class="btn_cmt_modify">';
-								
-								
-								// 삭제 버튼
-								div += '<input type="button" value="삭제" class="btn_cmt_remove" data-free_cmt_no="' + comment.freeCmtNo + '">';
-								div += '</div>'
-								div += '</div>'	
 								
 								
 				
@@ -125,10 +110,39 @@
 								} else {
 									div += '<div>삭제된 답글입니다.</div>';
 								}
-							}							
+							}
+								
+								
+							if(comment.freeCmtState == 1) {
+								
+								// 수정 form / hidden
+								div += '<div class="blind">';
+								div += '<form class="frm_cmt_modify">';
+								div += '<input type="hidden" name="freeNo" value="' + comment.freeNo + '">';
+								div += '<input type="hidden" name="freeCmtDepth" value="' + comment.freeCmtDepth + '">';
+								div += '<input type="hidden" name="freeGroupOrder" value="' + comment.freeGroupOrder + '">';
+								div += '<input type="hidden" name="freeCmtNo" value="' + comment.freeCmtNo + '">';
+								// hidden
+								div += '<input type="text" name="freeCmtContent" value="' + comment.freeCmtContent + '">';
+								div += '<input type="button" value="저장" class="btn_cmt_run_modify">';		
+								div += '<input type="button" value="취소" class="btn_cmt_modify_cancle">';		
+								div += '</form>'
+								div += '</div>'
+								// 수정 버튼
+								div += '<span>'
+								div += '<input type="button" value="수정" class="btn_cmt_modify">';
+								
+								
+								// 삭제 버튼
+								div += '<input type="button" value="삭제" class="btn_cmt_remove" data-free_cmt_no="' + comment.freeCmtNo + '">';
+								div += '</span>'
+							}
+								
+								
 								
 							if(comment.freeCmtState == 1) {									
 								// 답글 버튼
+								div += '<div>'
 								div += '<input type="button" value="답글" class="btn_cmt_area">';
 								div += '<div style="margin-left: 40px;" class="blind">';								
 								// 답글 form
@@ -145,6 +159,7 @@
 								div += '</div>';
 								div += '</div>';	
 							}
+							
 
 							
 							div += '<div>';
@@ -189,13 +204,23 @@
 			// 수정 토글 버튼
 			function fn_switchModifyArea() {
 				$(document).on('click', '.btn_cmt_modify', function(){
-					$(this).prev().toggleClass('blind');
+					$(this).parent().prev().toggleClass('blind');
+					//$(this).parent().prev().children('.freeCmtContent').hide;
+					$('.cmt_content').hide();
 					$('.btn_cmt_modify').hide();
-					$('.btn_cmt_remove').hide();
-					// $('.cmt_content').not('.blind').hide();
-					
-
-					
+					$('.btn_cmt_remove').hide();							
+				});
+				
+			}
+			
+			// 수정 토글 버튼 취소
+			function fn_switchModifyAreaCancle() {
+				$(document).on('click', '.btn_cmt_modify_cancle', function(){
+					$(this).parent().parent().toggleClass('blind');
+					$('.cmt_content').show();
+					$('.btn_cmt_modify').show();
+					$('.btn_cmt_remove').show();	
+							
 				});
 				
 			}
@@ -231,15 +256,24 @@
 				});
 			});
 			
+			
+			
 			// 댓글 수정
 			function fn_modifyComment(){
-				$(document).on('click', '.btn_cmt_runModify', function(){
+				$(document).on('click', '.btn_cmt_run_modify', function(){
+					
+					var objParams = {
+							freeNo         : $(this).prev().prev().prev().prev().prev().val(),
+							freeCmtContent : $(this).prev().val(),
+							freeCmtNo      : $(this).prev().prev().val()
+					}
 
-				
+					console.log(objParams);
+					
 					$.ajax({
 						type: 'post',
 						url: '/freecomment/modify',
-						data: $('.btn_cmt_runModify').serialize(),
+						data: objParams,
 						dataType: 'json',
 						success: function(resData){
 							if(resData.isModify){
@@ -250,6 +284,7 @@
 							
 						}
 					});
+					
 				
 				});
 			}
@@ -401,7 +436,7 @@
 			<input type="button" value="TOP" id="btn_top">
 		</form>	
 	</div>
-	
+
 	
 	
 	

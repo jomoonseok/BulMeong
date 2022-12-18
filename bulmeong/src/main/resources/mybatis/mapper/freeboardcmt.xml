@@ -17,7 +17,7 @@
 	<!-- 2. 댓글 리스트 -->
 	<select id="selectCmtList" parameterType="int" resultType="FreeBoardCmtDTO">
 		SELECT A.ROW_NUM, A.FREE_CMT_NO, A.FREE_NO, A.NICKNAME, A.FREE_CMT_CONTENT, A.FREE_CMT_CREATE_DATE, A.FREE_CMT_MODIFY_DATE, A.FREE_CMT_IP, A.FREE_CMT_STATE, A.FREE_CMT_DEPTH, A.FREE_GROUP_NO, A.FREE_GROUP_ORDER
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_GROUP_NO ASC, FREE_GROUP_ORDER ASC) AS ROW_NUM, FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_GROUP_ORDER ASC) AS ROW_NUM, FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER
 		  		  FROM FREE_CMT
 		 		 WHERE FREE_NO = #{freeNo}) A
 		 LIMIT #{begin}, #{recordPerPage}
@@ -41,7 +41,7 @@
 	<!-- 5. 댓글 수정 -->
 	<update id="updateCmt" parameterType="FreeBoardCmtDTO">
 		UPDATE FREE_CMT
-		   SET FREE_CMT_CONTENT = #{freeCmtContent}, FREE_CMT_MODIFY_DATE = DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'
+		   SET FREE_CMT_CONTENT = #{freeCmtContent}, FREE_CMT_MODIFY_DATE = DATE_FORMAT(NOW(), '%y-%m-%d %h:%i')
 		 WHERE FREE_CMT_NO = #{freeCmtNo}
 	</update>
 	
@@ -63,7 +63,7 @@
 		INSERT INTO FREE_CMT
 			(FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
 		VALUES
-			(#{freeNo}, #{nickname}, #{freeCmtContent},DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, 1, #{freeNo}, 0)
+			(#{freeNo}, #{nickname}, #{freeCmtContent},DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, #{freeCmtDepth}, #{freeNo}, #{freeGroupOrder})
 	</insert>
 
 

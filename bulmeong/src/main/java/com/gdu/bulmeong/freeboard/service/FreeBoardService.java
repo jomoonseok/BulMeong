@@ -1,5 +1,7 @@
 package com.gdu.bulmeong.freeboard.service;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,5 +18,7 @@ public interface FreeBoardService {
 	public FreeBoardDTO getFreeBoardByNo(int freeNo);
 	public void modifyFreeBoard(HttpServletRequest request, HttpServletResponse response);
 	public void removeFreeBoard(HttpServletRequest request, HttpServletResponse response);
+	
+	
 	
 }

@@ -49,7 +49,7 @@ public class FreeBoardCmtController {
 	
 	@ResponseBody
 	@PostMapping(value="/freecomment/modify", produces="application/json")
-	public Map<String, Object> modify(@RequestParam("") FreeBoardCmtDTO freeComment, int freeCmtNo){
+	public Map<String, Object> modify(FreeBoardCmtDTO freeComment){
 		return freeBoardCmtService.modifyCmt(freeComment);
 	}
 	

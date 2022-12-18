@@ -45,7 +45,7 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
-		int recordPerPage = 5;
+		int recordPerPage = 100;
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
@@ -95,13 +95,9 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	
 	@Override
 	public Map<String, Object> modifyCmt(FreeBoardCmtDTO freeCmt) {
-		
-		
 		Map<String, Object> result = new HashMap<String, Object>();
-		System.out.println("Service : " + freeCmt);
 		result.put("isModify", freeBoardCmtMapper.updateCmt(freeCmt) == 1);
-		
-		System.out.println("modify result : " + result);
+
 		return result;
 	}
 	
@@ -118,22 +114,24 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		int freeGroupOrder = Integer.parseInt(request.getParameter("freeGroupOrder"));
 		
 		FreeBoardCmtDTO freeBoardCmt = new FreeBoardCmtDTO();
-		freeBoardCmt.setFreeCmtDepth(freeCmtDepth + 1);
+		freeBoardCmt.setFreeCmtDepth(freeCmtDepth);
 		freeBoardCmt.setFreeGroupNo(freeGroupNo);
-		freeBoardCmt.setFreeGroupOrder(freeGroupOrder + 1);
+		freeBoardCmt.setFreeGroupOrder(freeGroupOrder);
 		
-		freeBoardCmtMapper.updatePreviousReply(freeCmtReply);
+		freeBoardCmtMapper.updatePreviousReply(freeBoardCmt);
 		
-		System.out.println("freeCmtReply : " + freeCmtReply);
-		
+		System.out.println("freeBoardCmt : " + freeBoardCmt);
+
 		// freeCmtReply.setId(loginUser.getId());
 		freeCmtReply.setFreeCmtIp(freeCmtIp);
 		freeCmtReply.setNickname("관리자");
+		freeCmtReply.setFreeCmtDepth(freeCmtDepth + 1);
+		freeCmtReply.setFreeGroupNo(freeGroupNo);
+		freeCmtReply.setFreeGroupOrder(freeGroupOrder + 1);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAddReply", freeBoardCmtMapper.insertCmtReply(freeCmtReply) == 1);
-		
-		System.out.println("result : " + result);
+
 		
 		return result;
 	}

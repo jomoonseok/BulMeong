@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.gdu.bulmeong.freeboard.domain.FreeBoardDTO;
+import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.PageUtil;
@@ -23,6 +24,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	
 	@Autowired
 	private FreeBoardMapper freeBoardMapper;
+	
+	@Autowired
+	private FreeBoardCmtMapper freeBoardCmtMapper;
 	
 	@Autowired
 	private PageUtil pageUtil;
@@ -86,12 +90,12 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		HttpSession session = request.getSession();
 		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
 		
-		String nickname = loginUser.getNickname();
+		// String nickname = loginUser.getNickname();
 		
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
-		// String nickname = "관리자";
+		String nickname = "관리자";
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
@@ -206,7 +210,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 	}
 	
-	
+
 	
 	
 

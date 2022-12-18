@@ -23,4 +23,6 @@ public interface FreeBoardMapper {
 	public int selectFindFreeboardsCount(Map<String, Object> map);
 
 	
+
+	
 }
