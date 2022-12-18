@@ -30,5 +30,29 @@
 		 WHERE TENT_NO = #{tentNo}
 	</select>
 	
+	<insert id="insertReserve" parameterType="Map">
+		INSERT INTO RESERVE
+			(CAMP_NO, TENT_NO, ID, RESERVE_NAME, RESERVE_COUNT, RESERVE_BEGIN_DATE, RESERVE_END_DATE, RESERVE_SUM, RESERVE_OPTION, RESERVE_STATE, RESERVE_CANCEL)
+		VALUES
+			(#{campNo}, #{tentNo}, #{id}, #{reserveName}, #{reserveCount}, #{reserveBeginDate}, date_add(#{reserveEndDate}, interval -1 day), #{reserveSum}, 1, 0, 'NULL')
+	</insert>
+	
+	<!-- <select id="selectReservedTent" parameterType="Map" resultType="ReservedDTO">
+		 SELECT A.TENT_NO, A.CAMP_NO, A.TENT_CATEGORY, A.TENT_NAME, A.TENT_MAX_COUNT, A.TENT_SUM, A.TENT_IMAGE, B.ID, B.RESERVE_NAME, B.RESERVE_COUNT, B.RESERVE_BEGIN_DATE, B.RESERVE_END_DATE, B.RESERVE_SUM, B.RESERVE_STATE
+  		   FROM CAMP_TENT AS A INNER JOIN RESERVE AS B
+    		 ON A.CAMP_NO = B.CAMP_NO
+ 		  WHERE A.CAMP_NO = #{campNo} AND B.RESERVE_BEGIN_DATE BETWEEN #{reserveBeginDate} AND date_add(#{reserveEndDate}, interval -1 day)
+	</select> -->
+	<select id="selectReservedTent" parameterType="Map" resultType="ReservedDTO">
+		 SELECT DISTINCT A.TENT_NO  <!-- , A.CAMP_NO, A.TENT_CATEGORY, A.TENT_NAME, A.TENT_MAX_COUNT, A.TENT_SUM, A.TENT_IMAGE, B.ID, B.RESERVE_NAME, B.RESERVE_COUNT, B.RESERVE_BEGIN_DATE, B.RESERVE_END_DATE, B.RESERVE_SUM, B.RESERVE_STATE -->
+	  	  FROM CAMP_TENT AS A LEFT OUTER JOIN RESERVE AS B
+	    	ON A.TENT_NO = B.TENT_NO
+	     WHERE B.RESERVE_BEGIN_DATE BETWEEN #{reserveBeginDate} AND #{reserveEndDate} AND B.RESERVE_END_DATE BETWEEN #{reserveBeginDate} AND #{reserveEndDate}	
+	     <!-- WHERE A.CAMP_NO = #{campNo} AND B.RESERVE_BEGIN_DATE LIKE #{reserveBeginDate} OR B.RESERVE_END_DATE BETWEEN #{reserveBeginDate} AND date_add(#{reserveEndDate}, interval -1 day) -->
+	 	 <!-- WHERE A.CAMP_NO = #{campNo} AND B.RESERVE_BEGIN_DATE BETWEEN #{reserveBeginDate} AND date_add(#{reserveEndDate}, interval -1 day) -->
+	</select>
+	
+	
+	
 	
 </mapper>
