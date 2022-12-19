@@ -9,6 +9,11 @@
 <script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
+<!-- swiper(슬라이드 라이브러리) -->
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<link rel="stylesheet" th:href="@{/css/swiper@8.45-swiper-bundle.min.css}"/>
+<script th:src="@{/js/swiper@8.45-swiper-bundle.min.js}"></script>
+
 <style>
 	
 	h1{
@@ -64,6 +69,61 @@
     	display: block;
     }
     
+    /* swiper */
+    .swiper_html, .swiper_body {
+      position: relative;
+      height: 250px;
+    }
+
+    .swiper_body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .swiper-container {
+      width: 100%;
+      height: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      height: calc((100% - 30px) / 2);
+      width: 30%;
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+    
+	.swiper-overflow-container {
+    	overflow-x: hidden; /* prevent horizontal scroll */
+    	overflow-y: hidden; /* prevent horizontal scroll */
+	}
+	
+	.swiper-overflow-container .container {
+	    overflow: visible; /* if your container has overflow by default */
+	}
+	
+	.swiper-overflow-container .swiper-container {
+	    overflow: visible; /* remove swiper container overflow */
+	}
 
 </style>
 

@@ -52,5 +52,9 @@ public class CampController {
 		return "camp/detail";
 	}
 	
-	
+	@ResponseBody
+	@GetMapping(value="/camp/listIndex", produces="application/json" )                 // 나중에 찜 또는 리뷰게시글 수로 정렬해서 리스트 띄우기
+	public Map<String, Object> printCampListIndex() {
+		return campService.getCampListIndex();
+	}
 }

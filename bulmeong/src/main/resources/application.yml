@@ -11,15 +11,18 @@ server:
     session: 
       timeout: 1800
 
+
+
+
 # database connection
 # mail
 spring: 
   datasource: 
     hikari: 
-      # driver-class-name: com.mysql.cj.jdbc.Driver
-      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      # jdbc-url: jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-      jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      # jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       username: root
       password: 1111
   mail: 
@@ -39,4 +42,3 @@ spring:
 mybatis:
   config-location: mybatis/config/mybatis-config.xml
   mapper-locations: mybatis/mapper/*.xml
-  

@@ -243,4 +243,12 @@ public class CampServiceImpl implements CampService {
 		model.addAttribute("camp", campMapper.selectCampByNo(campNo));
 		
 	}
+	
+	@Override
+	public Map<String, Object> getCampListIndex() {
+		Map<String, Object> result = new HashMap<>();
+		result.put("camp", campMapper.selectAllCampIndex());
+		return result;
+	}
+	
 }
