@@ -39,7 +39,10 @@
 		}
 	</script>
 	
-	<input type="button" value="문의하기" onclick="fn_qnaWritePopup();">
+	<div>
+		<input type="button" value="문의하기" onclick="fn_qnaWritePopup();">
+		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
+	</div>
 	
 	
 		
@@ -48,53 +51,50 @@
 if(noShowPopup != 'true') { -->
 <!-- 			window.open('${contextPath}/view/popup', 'pop', 'width=400,height=410,top=100,left=500,menubar=no,history=no'); -->
 <!-- 		} -->
+	
+	<hr>
+	
 	<div>
-		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
-	</div>
-	
-<!-- 	<hr> -->
-	
-<!-- 	<div> -->
-<!-- 		<table border="1"> -->
-<!-- 			<thead> -->
-<!-- 				<tr> -->
-<!-- 					<th>답변상태</th> -->
-<!-- 					<th>제목</th> -->
-<!-- 					<th>작성자</th> -->
-<!-- 					<th>작성일</th> -->
+		<table border="1">
+			<thead>
+				<tr>
+					<th>답변상태</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
 <!-- 					loginUser가 관리자일때만 보이게 -->
-<!-- 					<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
-<!-- 						<th>답변/삭제</th> -->
-<!-- 					</th:block> -->
-<!-- 				</tr> -->
-<!-- 			</thead> -->
-<!-- 			<tbody> -->
-<!-- 				<th:block th:each="qna:${qnaList}"> -->
-<!-- 					<tr> -->
-<!-- 						<td th:switch> -->
-<!-- 							<span th:case="${qna.depth} eq 0">미답변</span> -->
-<!-- 							<span th:case="${qna.depth} eq 1">답변완료</span> -->
-<!-- 						</td> -->
-						
-<!-- 						<td> -->
+					<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+						<th>답변/삭제</th>
+					</th:block>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="qna:${qnaList}">
+					<tr>
+						<td>
+							<span th:if="${qna.depth} eq 0">미답변</span>
+							<span th:if="${qna.depth} eq 1">답변완료</span>
+							</th:block>
+						</td>
+						<td>
 <!-- 							<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">state==1을 어디서 보내줄지 -->
 <!-- 								<div>삭제된 질문 (클릭도 막아버리기)</div> -->
 <!-- 								<div>	 -->
-<!-- 									<div th:if="${loginUser.id=='admin'"> -->
+<!-- 									<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
 <!-- 										<input type="button" value="답변하기"> -->
 <!-- 									</div> -->
 <!-- 								</div> -->
 <!-- 							</th:block> -->
-<!-- 							<th:block th:if="${qna.qnaState == 1}">state==1을 어디서 보내줄지 -->
-<!-- 								<div>${qna.qnaTitle}</div>	 -->
+<!-- 							<th:block th:if="${qna.qnaState == 1}"> -->
+								<span th:utext="@{qna.qnaTitle}"></span>	
 <!-- 								<div>${qna.qnaContent} -->
-<!-- 									<div th:if="${loginUser.id=='admin'"> -->
+<!-- 									<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
 <!-- 										<input type="button" value="답변하기"> -->
 <!-- 									</div> -->
 <!-- 								</div> -->
 <!-- 							</th:block> -->
 <!-- 							<th:block th:if="${qna.qnaState == 2}">비밀글 -->
-<!-- 								<div th:if="${session,loginUser.id == qna.id}"> -->
+<!-- 								<div th:if="${session.loginUser.id} == qna.id}"> -->
 <!-- 									${qna.qnaTitle} -->
 <!-- 									<div>${qna.qnaContent} -->
 <!-- 										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
@@ -106,27 +106,27 @@ if(noShowPopup != 'true') { -->
 <!-- 									비밀글임 (클릭도 막아버리기) -->
 <!-- 								</div> -->
 <!-- 							</th:block>	 -->
-<!-- 						</td> -->
+						</td>
 <!-- 						<td th:text="${qna.id}"></td> -->
-<!-- 						/*<td th:text="$(#dates.fomat(qna.qnaCreateDate,'yyyy/M/d))" ></td>*/ -->
+<!-- 						<td th:text="$(#dates.fomat(qna.qnaCreateDate,'yyyy/M/d))" ></td> -->
 <!-- 						<td th:text="${qna.qnaCreateDate}"></td> -->
 						
 <!-- 						<th:block th:if="${loginUser == 'admin'}"> -->
 <!-- 							<td><input type="button" value="답변달기" id="btn_reply_qna"></td> -->
 <!-- 						</th:block> -->
-<!-- 					</tr> -->
+					</tr>
 <!-- 					<th:block th:if="${qna.qnaState == 0}"> -->
 <!-- 						<div>삭제됐음</div> -->
 <!-- 					</th:block> -->
-<!-- 				</th:block> -->
-<!-- 			</tbody> -->
-<!-- 			<tfoot> -->
-<!-- 				<tr> -->
-<!-- 					<td colspan="5" th:utext="${paging}"></td> -->
-<!-- 				</tr> -->
-<!-- 			</tfoot> -->
-<!-- 		</table> -->
-<!-- 	</div> -->
+				</th:block>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5" th:utext="${paging}"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
 
 </body>
 </html>
