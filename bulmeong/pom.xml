@@ -60,6 +60,13 @@
 			<scope>runtime</scope>
 		</dependency>
 	
+		<!-- mysql -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	
 		<!-- 썸네일 처리 -->
 		<!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
 		<dependency>
