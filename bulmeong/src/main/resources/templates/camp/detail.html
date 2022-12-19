@@ -60,6 +60,15 @@
 		    display: inline-block; 
 		}
 		
+		.btn_jjim {
+			width: 32%;
+		    margin: 0 1%;
+		    background-color: #e32242;
+		    padding-left: 0px;
+		    border: none;
+		    color: #fff;
+		}
+		
 	</style>
 
 <body>
@@ -153,7 +162,9 @@
 								<tbody>
 									<tr>
 										<th scope="col">주소</th>
-										<td th:text="${camp.addr1}"></td>
+										<td th:text="${camp.addr1}">
+											<img th:src="/images/linkcopy.png" onclick="clip();">주소복사</a>
+										</td>
 									</tr>
 									<tr>
 										<th scope="col">캠핑장 환경</th>
@@ -190,6 +201,7 @@
 							</table>
 						</div>
 						<div>
+							<button class="btn_jjim" onclick="fn_jjim();">찜하기</button>
 						</div>
 					</header>
 				</article>
