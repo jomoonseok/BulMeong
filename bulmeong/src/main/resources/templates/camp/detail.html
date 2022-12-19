@@ -53,6 +53,13 @@
 		    position: relative;
 		}
 		
+		.icon_link {
+			width: 16px;
+		    height: 16px;
+		    background: url(/images/link.png) no-repeat 0 center;
+		    display: inline-block; 
+		}
+		
 	</style>
 
 <body>
@@ -149,11 +156,40 @@
 										<td th:text="${camp.addr1}"></td>
 									</tr>
 									<tr>
+										<th scope="col">캠핑장 환경</th>
+										<td th:text="${camp.lctCl}"></td>
+									</tr>
+									<tr>
+										<th scope="col">캠핑장 유형</th>
+										<td th:text="${camp.induty}"></td>
+									</tr>
+									<tr>
+										<th scope="col">운영기간</th>
+										<td th:text="${camp.operPdCl}"></td>
+									</tr>
+									<tr>
+										<th scope="col">운영일</th>
+										<td th:text="${camp.operDeCl}"></td>
+									</tr>
+									<tr>
+										<th scope="col">홈페이지</th>
+										<td>
+											<a th:href="${camp.homepage}" target="_BLANK" title="새창열림">홈페이지 바로가기</a>
+											<i class="icon_link">
+												<span class="skip"></span>
+											</i>
+										</td>
+									</tr>
+									<tr class="camp_tel">
 										<th scope="col">연락처</th>
-										<td th:text="${camp.tel}"></td>
+										<td>
+											<a th:text="${camp.tel}">전화하기</a>
+										</td>
 									</tr>
 								</tbody>
 							</table>
+						</div>
+						<div>
 						</div>
 					</header>
 				</article>
