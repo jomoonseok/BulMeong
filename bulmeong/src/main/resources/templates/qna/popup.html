@@ -5,22 +5,57 @@
 	
 </style>
 <body>
-	<div>
-		<label for="qnaTitle">제목</label>
-		<input type="text" id="qnaTitle" placeholder="제목을 입력하세요.">
-	</div>
-	<div>
-		<textarea rows="150" cols="150" id="qnaContent" placeholder="내용을 입력하세요."></textarea>
-	</div>
+    
+    <div>
+        <label for="qnaTitle">제목</label>
+        <input type="text" id="qnaTitle" placeholder="제목을 입력해주세요.">
+    </div>
+    <div>
+        <label for="qnaContent">내용</label><br>
+        <textarea id="qnaContent" placeholder="내용을 입력하세요."></textarea>
+    </div>
+    <div>
+        <input type="button" id="btn_done" value="작성완료">
+        <input type="reset" value="작성초기화">
+        <input type="button" id="btn_popupClose" value="닫기">
+    </div>
+    <script>
+        var parentIpt = document.getElementById('qnaTitle');
+        var parentIpt = document.getElementById('qnaContent');
 
-	<hr>
-	
-	<div>
-		<button>작성완료</button>
-		<input type="reset" value="입력초기화">
-		<input type="button" value="목록" id="btn_list">
-		<input type="button">	
-	</div>
+
+         document.getElementById('btn_done').onclick = function(event) {
+            opener.document.getElementById('qnaTitle').textContent = document.getElementById('qnaTitle').textContent;
+            opener.document.getElementById('qnaContent').textContent = document.getElementById('qnaContent').textContent;
+        }
+
+        function sendData() {
+            childWindow.onload = function(event) {
+                childWindow.document.getElementById('qnaTitle').textContent = parentIpt.value;
+                childWindow.document.getElementById('qnaContent').textContent = parentIpt.value;
+            }
+        }
+    </script>
 
 </body>
+<!-- <body> -->
+	
+<!-- 	<div> -->
+<!-- 		<label for="qnaTitle">제목</label> -->
+<!-- 		<input type="text" id="qnaTitle" placeholder="제목을 입력하세요."> -->
+<!-- 	</div> -->
+<!-- 	<div> -->
+<!-- 		<textarea rows="150" cols="150" id="qnaContent" placeholder="내용을 입력하세요."></textarea> -->
+<!-- 	</div> -->
+
+<!-- 	<hr> -->
+	
+<!-- 	<div class="footer"> -->
+<!-- 		<button>작성완료</button> -->
+<!-- 		<input type="reset" value="입력초기화"> -->
+<!-- 		<input type="button" value="목록" id="btn_list"> -->
+<!-- 		<input type="button">	 -->
+<!-- 	</div> -->
+
+<!-- </body> -->
 </html>

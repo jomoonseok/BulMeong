@@ -18,12 +18,20 @@
 		 WHERE A.QNA_RN BETWEEN #{begin} AND #{end}
 	</select>
 	
-<!-- 	<insert id="insertQuestion" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="qnaNo"> -->
-<!-- 		INSERT INTO QNA -->
-<!-- 			(QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH) -->
-<!-- 		VALUES -->
-<!-- 			(#{qna_no}, #{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{qnaIp}, #{qnaNo}, 0) -->
-<!-- 	</insert> -->
+	<insert id="insertQuestion" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="qnaNo">
+		INSERT INTO QNA
+			(QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
+		VALUES
+		<if test="0">
+			(#{qna_no}, #{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 0, #{qnaIp}, #{qnaNo}, 0)
+		</if>
+		<if test="1">
+			(#{qna_no}, #{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{qnaIp}, #{qnaNo}, 0)
+		</if>
+		<if test="2">
+			(#{qna_no}, #{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 2, #{qnaIp}, #{qnaNo}, 0)
+		</if>
+	</insert>
 	
 	
 	
