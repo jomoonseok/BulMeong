@@ -80,7 +80,7 @@
 							if(comment.freeCmtDepth == 0){
 								div += '<div>';
 							} else if(comment.freeCmtDepth > 0) {	
-								for (var i = 0; i < comment.freeCmtDepth; i++){
+								for (var i = 0; i < comment.freeCmtDepth; i++){								
 									div += '<div style="margin-left:40px;">';
 								}
 							}
@@ -151,7 +151,7 @@
 								div += '<input type="hidden" name="freeNo" value="' + comment.freeNo + '">';
 								div += '<input type="hidden" name="freeCmtDepth" value="' + comment.freeCmtDepth + '">';
 								div += '<input type="hidden" name="freeGroupOrder" value="' + comment.freeGroupOrder + '">';
-								div += '<input type="hidden" name="freeGroupNo" value="' + comment.freeCmtNo + '">';
+								div += '<input type="hidden" name="freeGroupNo" value="' + comment.freeGroupNo + '">';
 								// hidden
 								div += '<input type="text" class="btn_reply_area" name="freeCmtContent" placeholder="답글 추가...">';
 								div += '<input type="button" value="답글" class="button_reply btn_reply_add">';				
@@ -160,6 +160,7 @@
 								div += '</div>';	
 							}
 							
+		
 
 							
 							div += '<div>';
@@ -195,8 +196,8 @@
 			
 			// 답글 토글 버튼
 			function fn_switchReplyArea() {
-				$(document).on('click', '.btn_cmt_area', function() {
-					$(this).next().toggleClass('blind');  //f12로 찾긔
+				$(document).on('click', '.btn_cmt_area', function() {				
+					$(this).next().toggleClass('blind');
 					
 				});
 			}
@@ -204,11 +205,10 @@
 			// 수정 토글 버튼
 			function fn_switchModifyArea() {
 				$(document).on('click', '.btn_cmt_modify', function(){
-					$(this).parent().prev().toggleClass('blind');
-					//$(this).parent().prev().children('.freeCmtContent').hide;
-					$('.cmt_content').hide();
-					$('.btn_cmt_modify').hide();
-					$('.btn_cmt_remove').hide();							
+					$(this).parent().prev().toggleClass('blind'); // 1. 수정할 input 박스 생성
+					$(this).hide();								  // 2. 수정버튼 hide
+					$(this).next().hide();						  // 3. 삭제버튼 hide
+					$(this).parent().prev().prev().children().next().children().toggleClass('blind'); // 4. content hide	
 				});
 				
 			}
@@ -216,10 +216,10 @@
 			// 수정 토글 버튼 취소
 			function fn_switchModifyAreaCancle() {
 				$(document).on('click', '.btn_cmt_modify_cancle', function(){
-					$(this).parent().parent().toggleClass('blind');
-					$('.cmt_content').show();
-					$('.btn_cmt_modify').show();
-					$('.btn_cmt_remove').show();	
+					$(this).parent().parent().toggleClass('blind');	// 1. input 박스 삭제
+					$(this).parent().parent().next().children().show(); // 2. 수정, 삭제버튼 show					
+					$(this).parent().parent().prev().children().next().children().show();
+					fn_commentList();
 							
 				});
 				
@@ -348,6 +348,15 @@
 				window.scrollTo({ top: 0, behavior: "smooth" });
 			});
 			
+			
+			// 댓글 창 이동
+			$('#move_cmt').click(function(){
+				var location = $('#h2_cmt').offset().top;
+				console.log(location);
+				
+				window.scrollTo({ top: location, behavior: "smooth" });
+			});
+			
 			// # 게시글 버튼 끝 # //
 
 			
@@ -389,7 +398,7 @@
 	
 	
 	<!-- 3. 댓글 추가 -->
-	<h2>댓글</h2>
+	<h2 id="h2_cmt">댓글</h2>
 	<div>
 		<form id="frm_add_comment">
 			<div class="add_comment">

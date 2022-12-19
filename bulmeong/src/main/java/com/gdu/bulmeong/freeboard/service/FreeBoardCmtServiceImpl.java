@@ -107,23 +107,28 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	public Map<String, Object> addReply(FreeBoardCmtDTO freeCmtReply) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		//HttpSession session = request.getSession();
-		//UsersDTO loginUser = (UserDTO)session.getAttribute("loginUser");
-		String freeCmtIp = request.getRemoteAddr();
 		
+		// 1. 기존 댓글 groupOrder증가 !
 		// 원글의 DEPTH, GROUP_NO, GROUP_ORDER
 		int freeCmtDepth = Integer.parseInt(request.getParameter("freeCmtDepth"));
 		int freeGroupNo = Integer.parseInt(request.getParameter("freeGroupNo"));
 		int freeGroupOrder = Integer.parseInt(request.getParameter("freeGroupOrder"));
 		
-		FreeBoardCmtDTO freeBoardCmt = new FreeBoardCmtDTO();
-		freeBoardCmt.setFreeCmtDepth(freeCmtDepth);
-		freeBoardCmt.setFreeGroupNo(freeGroupNo);
-		freeBoardCmt.setFreeGroupOrder(freeGroupOrder);
 		
-		freeBoardCmtMapper.updatePreviousReply(freeBoardCmt);
+		FreeBoardCmtDTO freeCmt = new FreeBoardCmtDTO();
+		freeCmt.setFreeCmtDepth(freeCmtDepth);
+		freeCmt.setFreeGroupNo(freeGroupNo);
+		freeCmt.setFreeGroupOrder(freeGroupOrder);
 		
-		System.out.println("freeBoardCmt : " + freeBoardCmt);
+		freeBoardCmtMapper.updatePreviousReply(freeCmt);
+		
+		System.out.println("freeCmtDepth : " + freeCmtDepth);
+		System.out.println("freeGroupNo : " + freeGroupNo);
+		System.out.println("freeGroupOrder : " + freeGroupOrder);
 
+		// 2. 답글 달기!
+		//UsersDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+		String freeCmtIp = request.getRemoteAddr();
 		// freeCmtReply.setId(loginUser.getId());
 		freeCmtReply.setFreeCmtIp(freeCmtIp);
 		freeCmtReply.setNickname("관리자");
