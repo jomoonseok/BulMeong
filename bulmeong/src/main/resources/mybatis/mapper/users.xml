@@ -147,11 +147,12 @@
 	<delete id="deleteUserForSleep">
 		DELETE
 		  FROM USERS
-		 WHERE ID IN (SELECT U.ID
-		                FROM USERS U LEFT OUTER JOIN USERS_ACCESS A
-		                  ON U.ID = A.ID
-		               WHERE DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), A.LAST_LOGIN_DATE) >= 12
-		                  OR (DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), U.JOIN_DATE) >= 12 AND A.LAST_LOGIN_DATE IS NULL))
+		 WHERE ID = (SELECT DISTINCT TMP_ID
+		               FROM (SELECT U.ID TMP_ID
+							   FROM USERS U LEFT OUTER JOIN USERS_ACCESS A
+								 ON U.ID = A.ID
+							  WHERE DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), A.LAST_LOGIN_DATE) >= 12
+							     OR (DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), U.JOIN_DATE) >= 12 AND A.LAST_LOGIN_DATE IS NULL)) A)
 	</delete>
 	
 	<!-- 로그인 이전에 휴면회원인지 확인 -->
