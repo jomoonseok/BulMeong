@@ -25,7 +25,7 @@
 			 </if>
 			 <if test="sessionId != null">
 			 	AND SESSION_ID = #{sessionId}
-			 	AND SESSION_LIMIT_DATE > DATE_FORMAT(NOW(), '%y/%m/%d');
+			 	AND 1 = (SESSION_LIMIT_DATE > DATE_FORMAT(NOW(), '%Y/%m/%d'))
 			 </if>
 			 <if test="name != null">
 			 	AND NAME = #{name}
@@ -62,7 +62,7 @@
 		INSERT INTO USERS
 			(ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, AGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
 		VALUES
-			(#{id}, #{nickname}, #{pw}, #{name}, #{mobile}, #{gender}, #{birthYear}, #{birthDay}, #{postCode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, DATE_FORMAT(NOW(), '%y/%m/%d'), #{agreeCode}, NULL, NULL, NULL, #{email}, (DATE_FORMAT(NOW(), '%Y') - #{birthYear} + 1), DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'))
+			(#{id}, #{nickname}, #{pw}, #{name}, #{mobile}, #{gender}, #{birthYear}, #{birthDay}, #{postCode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, DATE_FORMAT(NOW(), '%y/%m/%d'), #{agreeCode}, NULL, NULL, NULL, #{email}, NULL, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'))
 	</insert>
 	
 	<!-- 로그인 기록(ACCESS_LOG) 남기기 -->
@@ -147,11 +147,11 @@
 	<delete id="deleteUserForSleep">
 		DELETE
 		  FROM USERS
-		 WHERE ID = (SELECT DISTINCT TMP_ID
+		 WHERE ID = (SELECT  TMP_ID
 		               FROM (SELECT U.ID TMP_ID
 							   FROM USERS U LEFT OUTER JOIN USERS_ACCESS A
 								 ON U.ID = A.ID
-							  WHERE DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), A.LAST_LOGIN_DATE) >= 12
+							  WHERE DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), A.LAST_LOGIN_DATE) >= 365
 							     OR (DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), U.JOIN_DATE) >= 12 AND A.LAST_LOGIN_DATE IS NULL)) A)
 	</delete>
 	

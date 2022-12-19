@@ -31,8 +31,8 @@ public class KeepLoginInterceptor implements HandlerInterceptor {
 		
 		// 로그인이 되어 있지 않은 경우 + 쿠키에 keepLogin이 있는 경우 => 로그인 유지 동작(자동 로그인)
 		HttpSession session = request.getSession();
-		if(session.getAttribute("loginUser") == null) {
-			
+		if(session.getAttribute("loginUser") != null) {
+			System.out.println("keep");
 			// 스프링에서는 특정 쿠키를 가져올 수 있음
 			Cookie cookie = WebUtils.getCookie(request, "keepLogin");
 			if(cookie != null) {
