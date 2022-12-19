@@ -276,11 +276,11 @@ public class UsersServiceImpl implements UsersService {
 		// id, pw가 일치하는 회원이 있다 : session에 loginUser 저장하기 + 로그인 기록 남기기 
 		if(loginUser != null) {
 			
-			// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
-			request.getSession().setAttribute("loginUser", loginUser);
-			
 			// 로그인 유지 처리는 keepLogin 메소드가 따로 처리함
 			keepLogin(request, response);
+			
+			// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
+			request.getSession().setAttribute("loginUser", loginUser);
 
 			// 로그인 기록 남기기
 			int updateResult = usersMapper.updateAccessLog(id);
@@ -326,13 +326,14 @@ public class UsersServiceImpl implements UsersService {
 		// 파라미터
 		String id = request.getParameter("id");
 		String keepLogin = request.getParameter("keepLogin");
+		System.out.println("keepLogin : " + keepLogin);
 		
 		// 로그인 유지를 체크한 경우
 		if(keepLogin != null) {
 			
 			// session_id
 			String sessionId = request.getSession().getId();
-			
+			System.out.println("sessionId : " + sessionId);
 			// session_id를 쿠키에 저장하기
 			Cookie cookie = new Cookie("keepLogin", sessionId);
 			cookie.setMaxAge(60 * 60 * 24 * 15);  // 15일
