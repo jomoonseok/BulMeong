@@ -53,12 +53,12 @@
 		    position: relative;
 		}
 		
-		.icon_link {
+		.icon_copy {
 			width: 16px;
 		    height: 16px;
-		    background: url(/images/link.png) no-repeat 0 center;
+		    background: url(/images/copy.png) no-repeat 0 center;
 		    display: inline-block; 
-		}
+		} 
 		
 		.btn_jjim {
 			width: 32%;
@@ -69,7 +69,62 @@
 		    color: #fff;
 		}
 		
+		.tab {
+	        width: 800px;
+	        border-top: 1px solid gray;
+	        border-bottom: 1px solid gray;
+	        list-style: none; 
+	        display: flex;   
+	        padding: 0;
+	        margin: 0 auto 45px;
+	        background-color: gray;
+    	}
+    	
+    	.tab li {
+	        width: 200px;            /* 너비 */
+	        height: 50px;           /* 높이 */
+	        text-align: center;     /* 가로 가운데 정렬 */
+	        line-height: 50px;      /* 세로 가운데 정렬 */
+    	}
+    	
+    	.tab li:active {
+        height: 45px;  
+        background-color: white;
+    	}
+    
+	    .red {
+	    	color: red;
+	    }
+    
+    	.guide_tb {
+   		    position: relative;
+		    width: 100%;
+		    letter-spacing: 0px;
+		    border-left: 1px solid #b3b3b3;
+		    border-top: 2px solid #000000;
+    	}
+	
 	</style>
+	
+	<script>
+	
+		$(document).ready(function(){
+			console.log($('#addr').data('addr'));
+			clip();
+		});
+		
+		function clip() {
+			$('#copy').click(function(){
+					var url=$('#addr').data('addr');
+					var textarea = document.createElement("textarea");
+					textarea.value = url;
+					textarea.select();
+					document.execCommand("copy");
+					alert("링크가 복사되었습니다. 필요하신 곳에 붙여넣기 하세요.")
+			});
+		}
+		
+	</script>
 
 <body>
 
@@ -146,7 +201,7 @@
 	
 	<section id="content" style="right: 0px">
 		<h2 class="skip">캠핑장 정보</h2>
-		<div id="contentBox">
+		<div id="contentBox1">
 			<div class="layout2">
 				<article>
 					<header class="campInfo">
@@ -162,8 +217,9 @@
 								<tbody>
 									<tr>
 										<th scope="col">주소</th>
-										<td th:text="${camp.addr1}">
-											<img th:src="/images/linkcopy.png" onclick="clip();">주소복사
+										<td>
+											<span id="addr" th:text="${camp.addr1}" th:data-addr="${camp.addr1}"></span>
+											<img id="copy" src="images/copy.png">
 										</td>
 									</tr>
 									<tr>
@@ -191,6 +247,10 @@
 											</i>
 										</td>
 									</tr>
+									<tr>
+										<th scope="col">특징</th>
+										<td th:text="${camp.featureNm}"></td>
+									</tr>
 									<tr class="camp_tel">
 										<th scope="col">연락처</th>
 										<td>
@@ -205,6 +265,165 @@
 						</div>
 					</header>
 				</article>
+			</div>
+			
+			<hr>
+			
+			<div class="white_bar">
+				<span class="skip">화이트바 줄 예정</span>
+			</div>
+	
+			<div class="contentBox2">
+				<ul class="tab">
+					<li class="c_intro">
+						<a href="#intro" class="camp_intro">캠핑장 소개</a>
+					</li>
+					<li class="c_guide">
+						<a href="#guide" class="camp_guide">이용안내</a>
+					</li>
+					<li class="c_map">
+						<a href="#map" class="camp_map">위치 정보</a>
+					</li>
+					<li class="c_review">
+						<a href="#review" class="camp_review">캠핑 후기</a>
+					</li>
+					<li class="c_notice">
+						<a href="#notice" class="camp_notice">공지/이벤트</a>
+					</li>
+				</ul>
+			</div>
+			<div id="intro">
+				<h3>
+					<img src="images/info.png">캠핑장 소개
+				</h3>
+				<p class="intro_txt">
+					<span th:text="${camp.intro}"></span>
+				</p>
+			</div>
+			
+			<hr>
+			
+			<h3>
+				<img src="images/info.png">캠핑장 시설정보
+			</h3>
+			<div class="camp_item">
+				<ul>
+					<li>
+						<i class="items">
+							<span th:text="${camp.sbrsCl}"></span>
+						</i>
+					</li>
+				</ul>
+			</div>
+			
+			<hr>
+			
+			<h3>
+				<img src="images/info.png">기타 주요시설
+			</h3>
+			<div>
+				<table class="camp_table">
+					<tbody class="camp_table_body">
+						<tr>
+							<th scope="col">캠핑장</th>
+							<td>
+								<ul>
+									<li th:text="|전체 면적: ${camp.allar}|"></li>
+									<li th:text="|인허가일자: ${camp.prmisnDe}|"></li>
+									<li th:text="|입지구분: ${camp.lctCl}|"></li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<th scope="col">내부 시설</th>
+							<td>
+								<ul>
+									<li th:text="|캠핑장비 대여: ${camp.eqpmnLendCl}|"></li>
+									<li th:text="|글램핑 내부시설: ${camp.glampInnerFclty}|"></li>
+									<li th:text="|카라반 내부시설: ${camp.caravInnerFclty}|"></li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<th scope="col">설치물 갯수</th>
+							<td>
+								<ul>
+									<li th:text="|화로대: ${camp.brazierCl}|"></li>
+									<li th:text="|화장실 개수: ${camp.toiletCo}|"></li>
+									<li th:text="|소화기 개수: ${camp.extshrCo}|"></li>
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<th scope="col">휴장기간</th>
+							<td>
+								<ul>
+									<li th:text="|휴무기간 시작일: ${camp.hvofBgnde}|"></li>
+									<li th:text="|휴무기간 종료일: ${camp.hvofEnddle}|"></li>
+								</ul>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<hr>
+			
+			<p class="notice">
+				<span class="caution">
+				" *BulMeong에 등록된 정보는 현장상황과 다소 다를 수 있으니 "
+				<span class="red">내부 시설, 설치물, 휴장기간</span>
+				"등 원활한 캠핑을 위해 꼭 필요한 사항은 해당 캠핑장에 미리 확인하시기 바랍니다."
+				</span>
+			</p>
+			
+			<hr>
+			
+			<div id="guide">
+				<h3>
+					<img src="images/guide.png">일반 캠핑
+				</h3>
+				<div class="table_guide">
+					<table class="guide_tb">
+						<colgroup>
+							<col style="width: 20%">
+							<col style="width: 20%">
+							<col style="width: 20%">
+							<col style="width: 20%">
+							<col style="width: 20%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th rowspan="2" scope="col">구분</th>
+								<th colspan="2" scope="colgroup">평상시</th>
+								<th colspan="2" scope="colgroup">성수기</th>
+							</tr>
+							<tr>
+								<th scope="col" class="gray">주중</th>
+								<th scope="col" class="gray">주말</th>
+								<th scope="col" class="gray">주중</th>
+								<th scope="col" class="gray">주말</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="col">일반</th>
+								<td data-cell-header="평상시 주중 : ">
+									40,000 ~ 50,000
+								</td>
+								<td data-cell-header="평상시 주말 : ">
+									50,000 ~ 60,000
+								</td>
+								<td data-cell-header="성수기 주중 : ">
+									60,000 ~ 70,000
+								</td>
+								<td data-cell-header="성수기 주말 : ">
+									60,000 ~ 70,000
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</section>
