@@ -12,6 +12,12 @@ public interface FreeBoardCmtMapper {
 	
 	// 1. 댓글
 	public int selectCmtCount(int freeNo);
+	
+	public int insertFreeSeq(int freeSeq);
+	public int updateFreeSeq();
+	public FreeBoardCmtDTO selectFreeCmtdByNo(int freeGroupNo);
+	
+	
 	public List<FreeBoardCmtDTO> selectCmtList(Map<String, Object> map);
 	public int insertCmt(FreeBoardCmtDTO freeCmt);
 	public int deleteCmt(int freeCmtNo);

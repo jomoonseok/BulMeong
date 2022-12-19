@@ -13,6 +13,25 @@
 		 WHERE FREE_NO = #{freeNo} AND FREE_CMT_STATE = 1
 	</select>
 	
+	<!-- 0. 시퀀스 초기화 -->
+	<insert id="insertFreeSeq" parameterType="int">
+		INSERT INTO FREE_SEQ_TABLE
+		VALUES (0);
+	</insert>
+	
+	<!-- 0. 시퀀스 업데이트(nextval) -->
+	<update id="updateFreeSeq">
+		UPDATE FREE_SEQ_TABLE
+		   SET FREE_SEQ = LAST_INSERT_ID(SEQ + 1);
+	</update>
+	
+	<!-- 0. 특정 댓글 선택 -->
+	<select id="selectFreeCmtdByNo" parameterType="int" resultType="FreeBoardCmtDTO">
+		SELECT FREE_GROUP_NO
+		  FROM FREE_CMT
+		 WHERE FREE_CMT_NO = #{freeCmtNo}
+	</select>
+	
 	
 	<!-- 2. 댓글 리스트 -->
 	<select id="selectCmtList" parameterType="int" resultType="FreeBoardCmtDTO">
@@ -28,7 +47,7 @@
 		INSERT INTO FREE_CMT
 			(FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
 		VALUES
-			(#{freeNo}, #{nickname}, #{freeCmtContent}, DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, 0, #{freeNo}, 0)
+			(#{freeNo}, #{nickname}, #{freeCmtContent}, DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, 0, #{freeSeq}, 0)
 	</insert>
 	
 	<!-- 4. 댓글 삭제 -->
@@ -38,15 +57,15 @@
 		 WHERE FREE_CMT_NO = #{freeCmtNo}
 	</update>
 	
+	
+	
+	
 	<!-- 5. 댓글 수정 -->
 	<update id="updateCmt" parameterType="FreeBoardCmtDTO">
 		UPDATE FREE_CMT
 		   SET FREE_CMT_CONTENT = #{freeCmtContent}, FREE_CMT_MODIFY_DATE = DATE_FORMAT(NOW(), '%y-%m-%d %h:%i')
 		 WHERE FREE_CMT_NO = #{freeCmtNo}
 	</update>
-	
-	
-
 	
 	<!-- 5. 다단계층 댓글(groupOrder 1 증가시키는 쿼리) -->	
 	<update id="updatePreviousReply" parameterType="FreeBoardCmtDTO">

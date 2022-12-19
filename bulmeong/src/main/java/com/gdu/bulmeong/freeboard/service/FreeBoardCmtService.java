@@ -15,6 +15,10 @@ public interface FreeBoardCmtService {
 	public Map<String, Object> removeCmt(int freeCmtNo);
 	public Map<String, Object> modifyCmt(FreeBoardCmtDTO freeCmt);
 	
+	
+	public FreeBoardCmtDTO getFreeCmtByNo(int freeGroupNo);
+	
+	
 	// 2. 대댓글
 	public Map<String, Object> addReply(FreeBoardCmtDTO freeCmtReply);
 

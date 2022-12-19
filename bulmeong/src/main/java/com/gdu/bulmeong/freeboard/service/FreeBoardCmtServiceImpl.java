@@ -69,6 +69,24 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	public Map<String, Object> addCmt(FreeBoardCmtDTO freeCmt) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		String freeCmtIp = request.getRemoteAddr();
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////
+		String strFreeSeq = request.getParameter("freeSeq") == null ? "" : request.getParameter("freeSeq");
+		// 조건 ? 만족하는 경우 : 만족하지 않는 경우
+
+		// int freeSeq = Integer.parseInt(request.getParameter("freeSeq")) == 0 ? 0 : Integer.parseInt(request.getParameter("freeSeq"));
+		
+		if (strFreeSeq == null) {
+			freeBoardCmtMapper.insertFreeSeq(0);
+			System.out.println("if freeSeq : ");
+		} else {
+			freeBoardCmtMapper.updateFreeSeq();
+			System.out.println("else freeSeq : ");
+		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////////
 
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
@@ -79,6 +97,8 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
 		freeCmt.setFreeCmtIp(freeCmtIp);
+		
+		
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAdd", freeBoardCmtMapper.insertCmt(freeCmt) == 1);
@@ -101,6 +121,13 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 
 		return result;
 	}
+	
+	
+	@Override
+	public FreeBoardCmtDTO getFreeCmtByNo(int freeGroupNo) {
+		return freeBoardCmtMapper.selectFreeCmtdByNo(freeGroupNo);
+	}
+	
 	
 	@Transactional
 	@Override
