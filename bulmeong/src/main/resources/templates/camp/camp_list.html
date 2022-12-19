@@ -9,15 +9,32 @@
 	.camp_img {
 		width: 300px;
 	}
+	
+	.lnk_jjim:hover span {
+		cursor: pointer;
+		color: #f83030;
+	}
+	.heart {
+		width: 16px;
+		margin-right: 5px;
+	}
+	
 </style>
 <script th:inline="javascript">
 
 	$(function(){
-
+		var id = $('#userId').data('id');
+		console.log(id);
 		fn_getList();
 		fn_changePage();
-		fn_getListOption();
+		/* fn_getListOption(); */
 		fn_reserve();
+		fn_detail();
+		
+		// 찜
+		//fn_jjimCheck(); 
+		//fn_jjimCount(); 
+		//fn_pressJjim();
 	});
 
 	function fn_getList() {
@@ -43,6 +60,16 @@
 					camp_div += '<div>' + camp.addr1 + '</div>';
 					camp_div += '<div>' + camp.sbrsCl + '</div>';
 					camp_div += '<div>' + camp.tel + '</div>';
+					camp_div += '<div>' + camp.jjim + '</div>';
+					camp_div += '<div>' + camp.sum + '</div>';
+					
+					camp_div += '<div class="lnk_jjim" data-campno="'+ camp.campNo +'" onclick="fn_pressJjim(this)">'
+					
+					camp_div += '<span class="heart"></span>'
+					camp_div += '<span class="jjim">찜 </span>'
+					camp_div += '<span class="jjim_count"></span>'
+					camp_div += '</div>';
+					
 					camp_div += '<div><input type="button" class="btn_detail" data-campNo="' + camp.campNo + '" value="상세보기" </div>';  // 구현하기
 					camp_div += '<div><input type="button" class="btn_reserve" data-campNo="' + camp.campNo + '" value="예약하기" </div>';
 					$('#camp_list').append(camp_div);
@@ -81,7 +108,7 @@
 		});
 	}
 
-	function fn_getListOption() {
+	/* function fn_getListOption() {
 		fn_btnInit();
 		$('#btn_query, #btn_search').on('click', function() {  // 묶어놓은 거 풀 생각하기
 
@@ -107,6 +134,7 @@
 						camp_div += '<div>' + camp.addr1 + '</div>';
 						camp_div += '<div>' + camp.sbrsCl + '</div>';
 						camp_div += '<div>' + camp.tel + '</div>';
+						camp_div += '<div id="lnk_jjim"><span id="heart"></span><span id="jjim">찜</span><span id="jjim_count"></span></div>';
 						camp_div += '<div><input type="button" class="btn_detail" data-campNo="' + camp.campNo + '" value="상세보기" </div>';
 						camp_div += '<div><input type="button" class="btn_reserve" data-campNo="' + camp.campNo + '" value="예약하기" </div>';
 						$('#camp_list').append(camp_div);
@@ -140,7 +168,7 @@
 			});
 		});
 	}
-
+ */
 	function fn_btnInit() {
 		$('#btn_query').on('click', function() {
 			$('#doNm').val('');
@@ -158,13 +186,105 @@
 			location.href='/reserve?campNo=' + $(this).attr('data-campNo');
 		});
 	}
-
-
+	
+	function fn_detail() {
+		$(document).on('click', '.btn_detail', function() {
+			location.href='/detail?campNo=' + $(this).attr('data-campNo');
+		});
+	}
+	
+	
+/* 
+	// 찜 표시 여부(찜테이블에 사용자가 있는지 확인)
+	function fn_jjimCheck() { 
+		$.ajax({
+			url: '/cart/getJjimCheck',
+			type: 'get',
+			
+			dataType: 'json',
+			success: function(resData){
+				if (resData.count == 0) {
+					$('.heart').html('<img src="images/whiteheart.png" id="heart" width="15px">');
+					$('.jjim').removeClass("jjim_checked");
+				} else {
+					$('.heart').html('<img src="images/redheart.png" id="heart" width="15px">');
+					$('.jjim').addClass("jjim_checked");
+				}
+			}
+		});
+	}
+	
+	// 좋아요 개수
+	 function fn_jjimCount(){
+		$.ajax({
+			url: '/cart/getJjimCount',
+			type: 'get',
+			data: 'campNo=${camp.campNo}',
+			dataType: 'json',
+			success: function(resData){
+				$('#jjim_count').empty();
+				$('#jjim_count').text(resData.count + '개');
+			}
+		});
+	}
+	  */
+	  
+	  
+	// 좋아요 누르기
+	function fn_pressJjim(e){  // event의 e
+		  
+			// 로그인을 해야 "좋아요"를 누를 수 있다.
+			/* if('${loginUser.usersNo}' == ''){
+				alert('해당 기능은 로그인이 필요합니다.');
+				return;
+			}
+			// 셀프 좋아요 방지
+			if('${loginUser.usersNo}' == '${camp.user.usersNo}'){
+				alert('본인의 게시글에서는 "좋아요"를 누를 수 없습니다.');
+				return;
+			} */
+			// "좋아요" 선택/해제 상태에 따른 하트 변경
+			$(e).toggleClass("jjim_checked");
+			if ($(e).hasClass("jjim_checked")) {
+				$('.heart').html('<img src="images/redheart.png" width="15px">');
+			} else {
+				$('.heart').html('<img src="images/whiteheart.png" width="15px">');
+			}
+			
+			// "좋아요" 처리
+			$.ajax({
+				url: '/cart/mark',
+				type: 'get',
+				data: 'campNo=' + $(e).data('campno') + '&id='+ $('#userId').data('id'),
+				dataType: 'json',
+				success: function(resData){
+					if(resData.isSuccess) {
+						$.ajax({
+							url: '/cart/getJjimCount',
+							type: 'get',
+							data: 'campNo=' + $(e).data('campno'),
+							dataType: 'json',
+							success: function(resData){
+								$('#jjim_count').empty();
+								$('#jjim_count').text(resData.count + '개');
+							}
+						});
+						
+						
+					}
+				},
+				error: function(error) {
+					
+				}
+			});
+			
+		}
+	
 </script>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
-
+	<!-- <h1 th:text="${camp.campNo}"></h1> -->
     <div id="list_container">
 
    		<div>
@@ -230,7 +350,7 @@
    			</span>
    			<input type="button" value="검색" id="btn_search">
    		</div>
-
+		
    		<hr>
 
    		<div id="title"></div> 
@@ -240,8 +360,21 @@
    			<div id="paging"></div>
 			<input type="hidden" id="page" value="1">
    		</div>
+   		
+   		<form>
+   			<div>
+   				<input type="hidden" name="campNo" value="${camp.campNo}">
+   			</div>
+	   		<div id="lnk_jjim">
+	   			<span id="heart"></span><span id="jjim">찜 </span><span id="jjim_count"></span>
+	   		</div>
+   		</form>
+   		
+   		
 
     </div>
-
+    <div th:if="${session.loginUser != null}">
+		<input type="hidden" id="userId" th:data-id="${session.loginUser.id}">
+	</div>
 </body>
 </html>

@@ -2,19 +2,21 @@ package com.gdu.bulmeong.freeboard.service;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.gdu.bulmeong.freeboard.domain.FreeBoardDTO;
+import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper;
+import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.PageUtil;
 
 @Service
@@ -24,17 +26,32 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	private FreeBoardMapper freeBoardMapper;
 	
 	@Autowired
+	private FreeBoardCmtMapper freeBoardCmtMapper;
+	
+	@Autowired
 	private PageUtil pageUtil;
+	
 	
 	@Override
 	public void getFreeList(Model model) {
 		Map<String, Object> modelMap = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+		// 원하는 파라미터 가져오는 방법이 이거자나
+		String dateColumn = request.getParameter("dateColumn");
+		String column = request.getParameter("column");
+		String query = request.getParameter("query");
+		
+	
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("dateColumn", dateColumn);
+		map.put("column", column);
+		map.put("query", query);
+		 
 		
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
 		
-		int totalRecord = freeBoardMapper.selectFreeListCount();
+		int totalRecord = freeBoardMapper.selectFindFreeboardsCount(map);
 
 		
 		/**************************************************************************************/
@@ -46,9 +63,8 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		/**************************************************************************************/
 		
 		
-		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
+		pageUtil.setSearchPageUtil(page, totalRecord, recordPerPage);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
@@ -56,9 +72,11 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("freeBoardList", freeBoardMapper.selectFreeListByMap(map));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/freeboard/list"));
+		model.addAttribute("paging", pageUtil.getSearchPaging(request.getContextPath() + "/freeboard/list"));
 
-		
+		model.addAttribute("dateColumn", dateColumn);
+		model.addAttribute("column", column);
+		model.addAttribute("query", query);
 	}
 	
 	@Override
@@ -69,8 +87,8 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public void addFreeBoard(HttpServletRequest request, HttpServletResponse response) {
 		
-		// HttpSession session = request.getSession();
-		// UserDTO loginUser = (UserDTO)session.getAttribute("loginUser"); 
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
 		
 		// String nickname = loginUser.getNickname();
 		
@@ -82,7 +100,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
 		
-		
+
 		String freeTitle = request.getParameter("freeTitle");
 		String freeContent = request.getParameter("freeContent");
 		String freeIp = request.getRemoteAddr();
@@ -192,109 +210,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 	}
 	
-	
-	@Override
-	public void findFreeobard(HttpServletRequest request, Model model) {
-		
-		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
-		int page = Integer.parseInt(opt.orElse("1"));
-		
-		String dateColumn = request.getParameter("dateColumn");
-		String column = request.getParameter("column");
-		String query = request.getParameter("query");
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("dateColumn", dateColumn);
-		map.put("column", column);
-		map.put("query", query);
 
-		int totalRecord = freeBoardMapper.selectFindFreeboardsCount(map);
-
-		/**************************************************************************************/
-		/***********************************수정필요합니다*************************************/
-		/**************************************************************************************/
-		int recordPerPage = 5;
-		/**************************************************************************************/
-		/***********************************수정필요합니다*************************************/
-		/**************************************************************************************/
-		
-		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
-		
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-		
-		
-		List<FreeBoardDTO> freeBoards = freeBoardMapper.selectFindFreeboard(map);
-	
-		model.addAttribute("freeBoardList", freeBoards);
-		model.addAttribute("beginNo", totalRecord - (page - 1) + pageUtil.getRecordPerPage());
-
-		String path = null;
-
-		if(dateColumn == "") {
-			switch(column) {
-			case "FREE_TITLE":
-			case "FREE_CONTENT+FREE_CMT_CONTENT":
-			case "FREE_CONTENT":
-			case "NICKNAME":
-			case "FREE_CMT_CONTENT":
-			case "FREE_CMT_NICKNAME":
-				path = request.getContextPath() + "/freeboard/search?&column=" + column + "&query=" + query;
-				break;
-			}
-		} else {
-			switch(dateColumn) {
-			case "ADAY":
-			case "AWEEK":
-			case "AMONTH":
-			case "AYEAR":
-				path = request.getContextPath() + "/freeboard/search?&dateColumn=" + dateColumn;
-			case "FREE_TITLE":
-			case "FREE_CONTENT+FREE_CMT_CONTENT":
-			case "FREE_CONTENT":
-			case "NICKNAME":
-			case "FREE_CMT_CONTENT":
-			case "FREE_CMT_NICKNAME":
-				path += "&column=" + column + "&query=" + query;
-				break;
-			}
-		}
-		
-		model.addAttribute("paging", pageUtil.getPaging(path));
-	}
-	
-	
-	@Override
-	public FreeBoardDTO findPrevNextBoard(HttpServletRequest request, HttpServletResponse response) {
-		
-		int freeNo = Integer.parseInt(request.getParameter("freeNo"));
-		int result = freeBoardMapper.prevNextBoard(freeNo);
-		
-		try {
-			
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			
-			out.println("<script>");
-			if(result > 0) {
-				out.println("alert('게시글이 삭제되었습니다.');");
-			} else {
-				out.println("alert('게시글이 삭제되지 않았습니다.");
-			}
-			out.println("</script>");
-			out.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return freeBoardMapper.selectFreeBoardByNo(freeNo);
-		
-		
-				
-		
-	}
-	
 	
 	
 

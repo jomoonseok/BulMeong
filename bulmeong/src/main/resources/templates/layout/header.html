@@ -7,6 +7,7 @@
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/summernote-lite.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
 <style>
@@ -50,18 +51,56 @@
     #navigation > li:hover > a {
         color: limegreen;
     }
-	
+    
+    #navigation > li > ul {
+    	display: none;
+    	position: absolute;
+		font-size:14px;
+		background: skyblue;
+		opacity: 0.5;
+		list-style: none; 
+    }
+
+    #navigation:hover > li > ul {
+    	display: block;
+    }
+    
+
 </style>
+
 </head>
 <body>
 	<header th:fragment="header_layout">
 		<h1><a th:href="@{/}">BulMeong</a></h1>
 		
 		<ul id="navigation">
-			<li><a th:href="@{/camp}">캠핑예약</a></li>
-			<li><a th:href="@{/}">캠핑커뮤니티</a></li>
-			<li><a th:href="@{/}">고객센터</a></li>
-			<li><a th:href="@{/users/mypage}">마이페이지</a></li>
+			<li><a th:href="@{/camp}">캠핑예약</a>
+				<ul id="id">
+					<li><a th:href="@{/camp}">캠핑예약</a></li>
+				</ul>
+			</li>
+			<li><a th:href="@{/freeboard/list}">캠핑커뮤니티</a>
+				<ul>
+					<li><a th:href="@{/freeboard/list}">자유게시판</a></li>
+					<li><a th:href="@{/reviewboard/list}">리뷰게시판</a></li>
+					<li><a th:href="@{/usedboard/list}">중고게시판</a></li>
+				</ul>
+			</li>
+			<li><a th:href="@{/qna/list}">고객센터</a>
+				<ul>
+					<li><a th:href="@{/qna/list}">QnA</a></li>
+					<li><a th:href="@{/notice/list}">공지사항</a></li>
+					<li><a th:href="@{/faq/list}">FAQ</a></li>
+				</ul>
+			</li>
+			<li><a th:href="@{/users/mypage}">마이페이지</a>
+				<ul>
+					<li><a>회원정보변경</a></li>
+					<li><a>찜목록</a></li>
+					<li><a>내가 쓴 글</a></li>
+					<li><a>예약 내역</a></li>
+				</ul>
+			</li>
 		</ul>
 	</header>	
 </body>

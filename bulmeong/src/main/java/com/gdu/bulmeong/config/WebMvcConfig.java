@@ -21,21 +21,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/load/image/**")
-			.addResourceLocations("file:///C:/summernoteImage/");
+			.addResourceLocations("file:///C:/noticeImage/");
 	}
-	
+	/*
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(keepLoginInterceptor)
 		.addPathPatterns("/")
-		.addPathPatterns("/users/UsersController/**")
+		.addPathPatterns("/users/UsersController/*")
 		.excludePathPatterns("/login");
 		
 		registry.addInterceptor(sleepUserCheckingInterceptor)
 		.addPathPatterns("/")
 		.addPathPatterns("/users/UsersController/login");
 	}
-	
+	*/
 	
 	
 }
