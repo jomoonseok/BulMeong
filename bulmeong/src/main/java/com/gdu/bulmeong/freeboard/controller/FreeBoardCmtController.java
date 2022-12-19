@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,6 +45,18 @@ public class FreeBoardCmtController {
 	@PostMapping(value="/freecomment/remove", produces="application/json")
 	public Map<String, Object> remove(@RequestParam("freeCmtNo") int freeCmtNo){
 		return freeBoardCmtService.removeCmt(freeCmtNo);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/freecomment/modify", produces="application/json")
+	public Map<String, Object> modify(FreeBoardCmtDTO freeComment){
+		return freeBoardCmtService.modifyCmt(freeComment);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/freecomment/reply/add", produces="application/json")
+	public Map<String, Object> addReply(FreeBoardCmtDTO freeCmtReply){
+		return freeBoardCmtService.addReply(freeCmtReply);
 	}
 	
 	

@@ -2,22 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('공지사항')}"></head>
 <body>
-<div>
 	
  	<header th:replace="~{layout/header::header_layout}"></header>
 	
-		<h3>🔥🔥🔥공지사항🔥🔥🔥</h3>
+	<h3>🔥🔥🔥공지사항🔥🔥🔥</h3>
 	
-<!--/* 	<th:block th:if="${loginUser.id == 'ADMIN'}"> */-->
-		<input type="button" value="공지사항 작성하기" id="btn_noticeWrite">
-		<script th:inline="javascript">
-			$('#btn_noticeWrite').click(function(){
-				location.href= '/notice/write';
-			});
-		</script>
-	</th:block>
-	
-	
+<!-- 	<div th:if="${session.loginUser != null and session.loginUser.id == 'admin'}"> -->
+	<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+		<a th:href="@{/notice/write}">공지사항 작성하기</a>
+	</div>
 	
 	<div>
 		<table border="1">
@@ -44,9 +37,5 @@
 			</tfoot>
 		</table>
 	</div>
-	
-	<div id="picture"></div>
-	
-</div>
 </body>
 </html>

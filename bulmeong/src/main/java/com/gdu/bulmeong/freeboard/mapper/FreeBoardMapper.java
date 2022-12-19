@@ -21,8 +21,8 @@ public interface FreeBoardMapper {
 	
 	// 2. 검색 기능
 	public int selectFindFreeboardsCount(Map<String, Object> map);
-	public List<FreeBoardDTO> selectFindFreeboard(Map<String, Object> map);
+
 	
-	// 3. 이전글 다음글
-	public int prevNextBoard(int freeNo);
+
+	
 }

@@ -1,5 +1,7 @@
 package com.gdu.bulmeong.freeboard.service;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,9 +19,6 @@ public interface FreeBoardService {
 	public void modifyFreeBoard(HttpServletRequest request, HttpServletResponse response);
 	public void removeFreeBoard(HttpServletRequest request, HttpServletResponse response);
 	
-	// 2. 검색 기능
-	public void findFreeobard(HttpServletRequest request, Model model);
 	
-	// 3. 이전글 다음글
-	public FreeBoardDTO findPrevNextBoard(HttpServletRequest request, HttpServletResponse response);
+	
 }

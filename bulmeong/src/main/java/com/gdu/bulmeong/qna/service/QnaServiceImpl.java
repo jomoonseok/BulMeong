@@ -28,18 +28,14 @@ public class QnaServiceImpl implements QnaService {
 	
 	@Override
 	public void findQnaList(HttpServletRequest request, Model model) {
-		
-		// 파라미터 page
+
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
-		
-		// 전체 개시글 개수
+
 		int totalRecord = qnaMapper.selectQnaCount();
-		
-		// recordPerPage
+
 		int recordPerPage = 10;
-		
-		// 페이징 계산
+
 		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
 		
 		// DB로 보낼 Map

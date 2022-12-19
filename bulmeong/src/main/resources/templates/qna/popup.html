@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('QNA목록')}"></head>
+<style>
+	
+</style>
+<body>
+	<div>
+		<label for="qnaTitle">제목</label>
+		<input type="text" id="qnaTitle" placeholder="제목을 입력하세요.">
+	</div>
+	<div>
+		<textarea rows="150" cols="150" id="qnaContent" placeholder="내용을 입력하세요."></textarea>
+	</div>
+
+	<hr>
+	
+	<div>
+		<button>작성완료</button>
+		<input type="reset" value="입력초기화">
+		<input type="button" value="목록" id="btn_list">
+		<input type="button">	
+	</div>
+
+</body>
+</html>
