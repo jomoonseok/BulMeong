@@ -1,5 +1,7 @@
 package com.gdu.bulmeong.freeboard.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.bulmeong.freeboard.service.FreeBoardService;
 
@@ -36,7 +39,6 @@ public class FreeBoardController {
 			return "redirect:/freeboard/list";
 		}
 	}
-	
 	
 	@GetMapping("/freeboard/write")
 	public String write() {
@@ -71,28 +73,6 @@ public class FreeBoardController {
 		freeBoardService.removeFreeBoard(request, response);
 	}
 	
-	
-	// 2. 검색 기능
-	@GetMapping("/freeboard/search")
-	public String search(HttpServletRequest request, Model model) {
-		freeBoardService.findFreeobard(request, model);
-		return "freeboard/list";
-	}
-	
-	// 3. 이전글 다음글
-	@GetMapping("freeboard/preview")
-	public void preview(HttpServletRequest request, HttpServletResponse response) {
-		freeBoardService.findPrevNextBoard(request, response);
-	}
-	
-	@GetMapping("freeboard/nextview")
-	public void nextview(HttpServletRequest request, HttpServletResponse response) {
-		freeBoardService.findPrevNextBoard(request, response);
-	}
-	
-	
-	
-	
-	
+
 	
 }

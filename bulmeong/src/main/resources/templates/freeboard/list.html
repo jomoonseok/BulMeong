@@ -10,40 +10,27 @@
 			$('#write').click(function(){
 				location.href = '/freeboard/write';				
 			});
+
 		});
+		
+		function goPage(page){ // page는 받는 이름...
+			
+			var dateColumn = $("#dateColumn option:selected").val();
+			var column = $("#column option:selected").val();
+			var query = $("#query").val();
+			location.href="/freeboard/list?page=" + page + "&dateColumn=" + dateColumn + "&column=" + column + "&query=" + query;
+
+		}
+		
 	</script>
 	
 	
 	<h3>자유게시판</h3>
-	<div>
-		<form id="frm_search" th:action="@{/freeboard/search}">
-			<select id="dateColumn" name="dateColumn">
-				<option value="">전체기간</option>
-				<option value="ADAY">1일</option>
-				<option value="AWEEK">1주일</option>
-				<option value="AMONTH">1개월</option>
-				<option value="AYEAR">1년</option>
-			</select>
-			<select id="column" name="column">
-				<option value="FREE_TITLE">제목</option>
-				<option value="FREE_CONTENT+FREE_CMT_CONTENT">게시글 + 댓글</option>
-				<option value="FREE_CONTENT">게시글</option>
-				<option value="NICKNAME">게시글 작성자</option>
-				<option value="FREE_CMT_CONTENT">댓글</option>
-				<option value="FREE_CMT_NICKNAME">댓글 작성자</option>
-			</select>
-			<input type="text" id="query" name="query">
-			<input type="submit" value="검색">
-		</form>
-	</div>
 	
-	
-	
-	
-	<div>
-		<input type="button" value="글쓰기" id="write">
-	</div>
-	
+<!-- 	<div th:if="${session.loginUser} != null"> -->
+ 		<input type="button" value="글쓰기" id="write">
+<!-- 	</div> -->
+
 	<table border="1">
 		<thead>
 			<tr>
@@ -69,6 +56,32 @@
 			</tr>
 		</tfoot>
 	</table>
+	
+
+	
+	
+	<div>
+	
+		<select id="dateColumn" name="dateColumn">
+			<option value="">전체기간</option>
+			<option value="ADAY">1일</option>
+			<option value="AWEEK">1주일</option>
+			<option value="AMONTH">1개월</option>
+			<option value="AYEAR">1년</option>
+		</select>
+		<select id="column" name="column">
+			<option value="FREE_TITLE" th:selected="${column} == FREE_TITLE">제목</option>
+			<option value="FREE_CONTENT"  th:selected="${column} == FREE_CONTENT">내용</option>
+			<option value="FREE_CONTENT_FREE_CONTENT" th:selected="${column} == FREE_CONTENT_FREE_CONTENT">제목 + 내용</option>
+			<option value="FREE_CONTENT_FREE_CMT_CONTENT" th:selected="${column} == FREE_CONTENT_FREE_CMT_CONTENT">내용 + 댓글</option>
+			<option value="NICKNAME" th:selected="${column} == NICKNAME">게시글 작성자</option>
+			<option value="FREE_CMT_CONTENT" th:selected="${column} == FREE_CMT_CONTENT">댓글</option>
+			<option value="FREE_CMT_NICKNAME" th:selected="${column} == FREE_CMT_NICKNAME">댓글 작성자</option>
+		</select>
+		<input type="text" id="query" name="query" th:value=${query}>
+		<button th:onclick="goPage(1)">검색</button>
+
+	</div>
 	
 	
 	

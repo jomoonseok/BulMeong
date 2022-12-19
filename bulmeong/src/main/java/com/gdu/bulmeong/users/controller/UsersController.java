@@ -87,7 +87,7 @@ public class UsersController {
 		usersService.login(request, response);
 	}
 	
-	@GetMapping("/user/logout")
+	@GetMapping("/users/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		usersService.logout(request, response);
 		return "redirect:/";
