@@ -45,5 +45,7 @@ public class CampDTO {
 	private String tel;  // 전화                                 061-383-5155
 	private String createdtime;  // 등록일                       2022-08-01 23:17:22
 	private String modifiedtime;  // 수정일                      2022-08-01 23:17:22
+	private int jjim;
+	private int sum;
 
 }
