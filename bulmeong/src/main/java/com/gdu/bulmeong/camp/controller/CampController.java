@@ -1,7 +1,5 @@
 package com.gdu.bulmeong.camp.controller;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gdu.bulmeong.camp.domain.CampDTO;
 import com.gdu.bulmeong.camp.service.CampService;
 
 
@@ -52,9 +49,4 @@ public class CampController {
 		return "camp/detail";
 	}
 	
-	@ResponseBody
-	@GetMapping(value="/camp/listIndex", produces="application/json" )                 // 나중에 찜 또는 리뷰게시글 수로 정렬해서 리스트 띄우기
-	public Map<String, Object> printCampListIndex() {
-		return campService.getCampListIndex();
-	}
 }

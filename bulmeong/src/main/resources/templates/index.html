@@ -43,7 +43,9 @@
 	</div>
     
  	 <!-- Initialize Swiper -->
+ 	 <!-- 캠핑장 리스트 -->
   	<script>
+  	
   		function fn_swiper() {
   			var swiper = new Swiper('.mySwiper', {
   	      		slidesPerView: 3,
@@ -57,15 +59,10 @@
   	      		},
   	    	});
   		}
-    	
-    	
-  	</script>
-  	<!-- 캠핑장 리스트 -->
-  	<script>
   		
   		$.ajax({
   			type: 'get',
-  			url: '/camp/listIndex',
+  			url: '/index/listIndex',
   			success: function(resData) {
   				/* var rand = [];
   				for(let i=0; i < 10; i++) {
@@ -76,14 +73,14 @@
   				
   				$.each(resData.camp, function(i, camp) {
   					if(camp.themaEnvrnCl != '') {
-		  				var div = '<div class="swiper-slide">';
-	  					div += '<div><img src ="' + camp.firstImageUrl + '" style="height:50px; width:50px"><img><div>';
-	  					div += '<div style="font-size:4px">' + camp.facltNm + '<div>';
+		  				var campDiv = '<div class="swiper-slide">';
+		  				campDiv += '<div><img src ="' + camp.firstImageUrl + '" style="width:175px; height:116px"><img><div>';
+		  				campDiv += '<div style="font-size:4px">' + camp.facltNm + '<div>';
 	  					if(!camp.themaEnvrnCl.startsWith(',')) {
-		  					div += '<div style="font-size:4px">' + '#' + camp.themaEnvrnCl.replaceAll(',',' #'); + '<div>';
+	  						campDiv += '<div style="font-size:4px">' + '#' + camp.themaEnvrnCl.replaceAll(',',' #'); + '<div>';
 	  					} 
 	  					
-		  				$('.swiper-wrapper').append(div);
+		  				$('.swiper-wrapper').append(campDiv);
 		  				
   					}
   				})
@@ -92,7 +89,62 @@
   		})
   		
   	</script>
+  	
+  	<div class="weatherLoaction"></div>
+	<script>
+		
+		// 위치정보 받아오기
+		navigator.geolocation.getCurrentPosition(
+			
+			function(position) {
+				var latitude = position.coords.latitude;
+				var longitude = position.coords.longitude;
+				
+				fn_addr(latitude, longitude);     // 좌표->주소 api
+				fn_weather(latitude, longitude);  // 좌표->날씨 api
+				
+			}, 
+		);
 
+		// 주소 api 받아오기 https://www.vworld.kr/dev/v4dv_geocoderguide_s002.do
+		function fn_addr(x, y) {
+		    $.ajax({
+				type: 'get',
+				url: '/index/location',
+				data: 'latitude=' + x + '&longitude=' + y,
+				success: function(resData) {
+					var jsonObj = JSON.parse(resData.location);  // jsonObj - ADDR : "서울특별시 금천구 가산동 557-3"
+					
+					var locationDiv = '<div class="location">';
+					locationDiv += '<div>' + jsonObj.ADDR + '</div>';
+					$('.weatherLoaction').append(locationDiv);
+				}
+			})
+	    }
+		
+	    // 기상청 api 받아오기
+		
+	    function fn_weather(x, y) {
+		    $.ajax({
+				type: 'get',
+				url: '/index/weather',
+				data: 'latitude=' + x + '&longitude=' + y,
+				success: function(resData) {
+					console.log(resData);
+					var jsonObj = JSON.parse(resData.weather);  // jsonObj - item[0] : baseDate: "20221220" baseTime: "0500" category: "TMP" fcstDate: "20221220" fcstTime: "0600" fcstValue: "-2" nx: 37 ny: 126
+					var weather = jsonObj.item;
+					console.log(weather);
+					var weatherDiv = '<div class="weather">';
+					weatherDiv += '<div>' + weather.baseDate + ' ' + weather.baseTime + '</div>';
+					weatherDiv += '<div>' + weather.category + ' ' + weather.fcstValue + '</div>';
+					weatherDiv += '</div>';
+					$('.weatherLoaction').append(weatherDiv);
+					
+					
+				}
+			})
+	    }
+	</script>
 	
 	
 </body>

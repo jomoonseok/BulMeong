@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.bulmeong.index.mapper.IndexMapper">
+
+	 <select id="selectAllCampIndex" resultType="CampDTO">
+	 	SELECT CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime, jjim, sum 
+	 	  FROM CAMP
+	 </select>
+	 
+</mapper>

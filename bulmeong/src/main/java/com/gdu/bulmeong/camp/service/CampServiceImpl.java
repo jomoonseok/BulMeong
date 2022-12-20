@@ -244,11 +244,5 @@ public class CampServiceImpl implements CampService {
 		
 	}
 	
-	@Override
-	public Map<String, Object> getCampListIndex() {
-		Map<String, Object> result = new HashMap<>();
-		result.put("camp", campMapper.selectAllCampIndex());
-		return result;
-	}
 	
 }
