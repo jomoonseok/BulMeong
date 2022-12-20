@@ -12,7 +12,7 @@
     </div>
     <div>
         <label for="qnaContent">내용</label><br>
-        <textarea id="qnaContent" placeholder="내용을 입력하세요."></textarea>
+        <textarea rows="40" cols="76" id="qnaContent" placeholder="내용을 입력하세요."></textarea>
     </div>
     <div>
         <input type="button" id="btn_done" value="작성완료">
@@ -35,6 +35,8 @@
                 childWindow.document.getElementById('qnaContent').textContent = parentIpt.value;
             }
         }
+        
+        
     </script>
 
 </body>

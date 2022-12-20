@@ -28,6 +28,10 @@ public class QnaController {
 		return "qna/list";
 	}
 	
+	@GetMapping("/popup")
+	public String popup() {
+		return "qna/popup";
+	}
 	
 	
 }

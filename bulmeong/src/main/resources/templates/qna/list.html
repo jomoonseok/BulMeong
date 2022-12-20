@@ -45,7 +45,7 @@
 		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
 	</div>
 	
-	<script >
+	<script th:inline="javascript">
 	
         var parentIpt = document.getElementById('parent_ipt');
         var btn_qnaWrite = document.getElementById('btn_qnaWrite');
@@ -59,10 +59,11 @@
             if(childWindow == null || childWindow.closed) {
                 childWindow = open(url, name, features);
             }
-        }
+            console.log('악!!');
+       	}
         // 여기서 계속오류남개빡치게
         btn_qnaWrite.onclick = function(event){
-            openChildWindow('http://localhost:9090/popup.html', 'popup');
+        	openChildWindow('/popup', 'popup');
             sendData();
         }
        
