@@ -14,8 +14,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
+import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.users.mapper.UsersMapper;
 import com.gdu.bulmeong.util.JavaMailUtil;
@@ -109,8 +112,8 @@ public class UsersServiceImpl implements UsersService {
 		String mobile = request.getParameter("mobile");
 		String gender = request.getParameter("gender");
 		String birthyear = request.getParameter("birthyear");
-		String birthmonth = request.getParameter("birthmonth");
-		String birthdate = request.getParameter("birthdate");
+		String birthMonth = request.getParameter("birthmonth");
+		String birthDate = request.getParameter("birthdate");
 		String postcode = request.getParameter("postcode");
 		String roadAddress = request.getParameter("roadAddress");
 		String jibunAddress = request.getParameter("jibunAddress");
@@ -122,7 +125,7 @@ public class UsersServiceImpl implements UsersService {
 		
 		pw = securityUtil.sha256(pw);
 		name = securityUtil.preventXSS(name);
-		String birthday = birthmonth + birthdate;
+		String birthday = birthMonth + birthDate;
 		detailAddress = securityUtil.preventXSS(detailAddress);
 		int agreeCode = 0;  // 필수 동의
 		if(!location.isEmpty() && promotion.isEmpty()) {
@@ -261,7 +264,7 @@ public class UsersServiceImpl implements UsersService {
 		
 		// pw는 DB에 저장된 데이터와 동일한 형태로 가공
 		pw = securityUtil.sha256(pw);
-
+		
 		// 조회 조건으로 사용할 Map
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
@@ -304,7 +307,7 @@ public class UsersServiceImpl implements UsersService {
 				
 				out.println("<script>");
 				out.println("alert('일치하는 회원 정보가 없습니다.');");
-				out.println("location.href='/';");
+				out.println("location.href='/users/login/form';");
 				out.println("</script>");
 				out.close();
 				
@@ -333,7 +336,7 @@ public class UsersServiceImpl implements UsersService {
 			// session_id를 쿠키에 저장하기
 			Cookie cookie = new Cookie("keepLogin", sessionId);
 			cookie.setMaxAge(60 * 60 * 24 * 15);  // 15일
-			cookie.setPath(request.getContextPath());
+			cookie.setPath("/");
 			response.addCookie(cookie);
 			
 			// session_id를 DB에 저장하기
@@ -352,7 +355,7 @@ public class UsersServiceImpl implements UsersService {
 			// keepLogin 쿠키 제거하기
 			Cookie cookie = new Cookie("keepLogin", "");
 			cookie.setMaxAge(0);  // 쿠키 유지 시간이 0이면 삭제를 의미함
-			cookie.setPath(request.getContextPath());
+			cookie.setPath("/");
 			response.addCookie(cookie);
 			
 		}
@@ -373,9 +376,16 @@ public class UsersServiceImpl implements UsersService {
 		// 로그인 유지 풀기
 		Cookie cookie = new Cookie("keepLogin", "");
 		cookie.setMaxAge(0);
-		cookie.setPath(request.getContextPath());
+		cookie.setPath("/");
 		response.addCookie(cookie);
 		
+	}
+	
+	
+	
+	@Override
+	public UsersDTO getUserBySessionId(Map<String, Object> map) {
+		return usersMapper.selectUserByMap(map);
 	}
 	
 	
@@ -402,6 +412,246 @@ public class UsersServiceImpl implements UsersService {
 		Map<String, Object> result= new HashMap<String, Object>();
 		result.put("isUser", user != null);
 		return result;
+	}
+	
+	
+	
+	@Override
+	public void modifyPassword(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 현재 로그인 된 사용자
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
+
+		// 파라미터
+		String pw = securityUtil.sha256(request.getParameter("pw"));
+
+		// 동일한 비밀번호로 변경 금지
+		if(pw.equals(loginUser.getPw())) {
+			
+			// 응답
+			try {
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				out.println("alert('현재 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+				out.close();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+
+		// 사용자 번호
+		String id = loginUser.getId();
+		
+		// DB로 보낼 UserDTO
+		UsersDTO user = UsersDTO.builder()
+				.id(id)
+				.pw(pw)
+				.build();
+		
+		// 비밀번호 수정
+		int result = usersMapper.updateUserPassword(user);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(result > 0) {
+				
+				// session에 저장된 loginUser 업데이트
+				loginUser.setPw(pw);
+				
+				out.println("<script>");
+				out.println("alert('비밀번호가 수정되었습니다.');");
+				out.println("location.href='/';");
+				out.println("</script>");
+				
+			} else {
+				
+				out.println("<script>");
+				out.println("alert('비밀번호가 수정되지 않았습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+				
+			}
+			
+			out.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	@Override
+	public void modifyUser(HttpServletRequest request, HttpServletResponse response) {
+		
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String gender = request.getParameter("gender");
+		String mobile = request.getParameter("mobile");
+		String birthYear = request.getParameter("birthyear");
+		String birthMonth = request.getParameter("birthmonth");
+		String birthDate = request.getParameter("birthdate");
+		String postCode = request.getParameter("postCode");
+		String roadAddress = request.getParameter("roadAddress");
+		String jibunAddress = request.getParameter("jibunAddress");
+		String detailAddress = request.getParameter("detailAddress");
+		String extraAddress = securityUtil.preventXSS(request.getParameter("extraAddress"));
+		String email = request.getParameter("email");
+		String location = request.getParameter("location");
+		String promotion = request.getParameter("promotion");
+		
+		int agreeCode = 0;
+		if(location.equals("on") && promotion.equals("off")) {
+			agreeCode = 1;  // 필수 + 위치
+		} else if(location.equals("off") && promotion.equals("on")) {
+			agreeCode = 2;  // 필수 + 프로모션
+		} else if(location.equals("on") && promotion.equals("on")) {
+			agreeCode = 3;  // 필수 + 위치 + 프로모션
+		}
+		
+		String birthday = birthMonth + birthDate;
+		UsersDTO user = UsersDTO.builder()
+					.id(id)
+					.name(name)
+					.gender(gender)
+					.mobile(mobile)
+					.birthYear(birthYear)
+					.birthDay(birthday)
+					.postCode(postCode)
+					.roadAddress(roadAddress)
+					.jibunAddress(jibunAddress)
+					.detailAddress(detailAddress)
+					.extraAddress(extraAddress)
+					.email(email)
+					.agreeCode(agreeCode)
+					.build();
+		
+		int result = usersMapper.updateUser(user);
+		
+		try {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(result > 0) {
+				
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("id", id);
+				
+				request.getSession().setAttribute("loginUser", usersMapper.selectUserByMap(map));
+				
+				out.println("<script>");
+				out.println("alert('회원 정보가 수정되었습니다.');");
+				out.println("location.href='/';");
+				out.println("</script>");
+				
+			} else {
+				
+				out.println("<script>");
+				out.println("alert('회원 정보 수정에 실패했습니다.');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+				
+			}
+			
+			out.close();
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	@Transactional
+	@Override
+	public void sleepUserHandle() {
+		int insertCount = usersMapper.insertSleepUser();
+		if(insertCount > 0) {
+			usersMapper.deleteUserForSleep();
+		}
+		
+	}
+	
+	
+	
+	@Override
+	public SleepUsersDTO getSleepUserById(String id) {
+		return usersMapper.selectSleepUserById(id);
+	}
+	
+	
+	
+	@Transactional
+	@Override
+	public void restoreUser(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 계정 복원을 원하는 사용자의 아이디
+		HttpSession session = request.getSession();
+		SleepUsersDTO sleepUser = (SleepUsersDTO)session.getAttribute("sleepUser");
+		String id = sleepUser.getId();
+		
+		// 계정복구진행
+		int insertCount = usersMapper.insertRestoreUser(id);
+		int deleteCount = 0;
+		if(insertCount > 0) {
+			deleteCount = usersMapper.deleteSleepUser(id);
+		}
+		
+		// 응답
+		try {
+
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(insertCount > 0 && deleteCount > 0) {
+				
+				// session에 저장된 sleepUser 제거
+				session.removeAttribute("sleepUser");
+				
+				out.println("<script>");
+				out.println("alert('휴면 계정이 복구되었습니다. 휴면 계정 활성화를 위해 곧바로 로그인을 해 주세요.');");
+				// out.println("location.href='" + request.getContextPath() + "/user/login/form';");  // 로그인 후 referer에 의해 /user/restore로 되돌아오기 때문에 사용하지 말 것
+				out.println("location.href='/';");
+				out.println("</script>");
+				
+			} else {
+				
+				out.println("<script>");
+				out.println("alert('휴면 계정이 복구되지 않았습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+				
+			}
+			
+			out.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	@Override
+	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest) {
+		MultipartFile multipartFile = multipartRequest.getFile("image");
+		
+		return null;
 	}
 	
 	 

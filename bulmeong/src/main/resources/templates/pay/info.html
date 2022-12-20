@@ -37,15 +37,11 @@
 	<hr>
 	
 	<div>
-		<span>※결제수단</span><br>
-		<button id="pay" type="button">일반 결제</button> <br>
-		<button id="kakaoPay" type="button">카카오페이 결제</button> <br>
-		<button id="payco" type="button">페이코 결제</button> <br>
+		<span>※결제</span><br>
+		<button id="pay" type="button">일반 결제</button> |
+		<input type="button" value="취소하기" onclick="history.go(-1)">
 	</div>
 	
-	<hr>
-	
-		<input type="button" value="취소하기" onclick="history.go(-1)">
 	<script>
 	
 		$(document).ready(function(){
@@ -54,25 +50,56 @@
 			});
 		});  // 버튼 클릭하면 실행
 		
-		$(document).ready(function(){
-			$('#kakaoPay').click(function(){
-				kakaoPay();  // 버튼 클릭하면 호출
-			});
-		});  // 버튼 클릭하면 실행
-		
-		
-		$(document).ready(function(){
-			$('#payco').click(function(){
-				payco();
-			});
-		});  // 버튼 클릭하면 실행
-		
 		function pay() {  // (data)
 			IMP.init('imp72345478');  // '가맹점 식별코드' 입력  // 초기화
 			IMP.request_pay({  // param   // 결제창 호출
 				pg: "html5_inicis", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐, 아임포트 홈페이지에서 추가한 pg만 가능하다.)  // "html5_inicis"  // "kakaopay.TC0ONETIME"
 				pay_method: "card",
-				merchant_uid: "testpaysera",  // DB에 주문 레코드를 생성하여 해당 레코드의 주문번호를 param.merchant_uid 에 지정하기
+				merchant_uid: "serapaytest" + new Date().getTime(),  // DB에 주문 레코드를 생성하여 해당 레코드의 주문번호를 param.merchant_uid 에 지정하기
+				name: "상품3",  // 결제창에 노출될 상품명 
+				amount: 100,  // 네이버페이 최소 주문금액 100원
+				buyer_email : "testiamport03@naver.com", 
+				buyer_name : "크롱", 
+				buyer_tel: "01012341234",
+				buyer_addr: "서울특별시 강남구 신사동",
+		        buyer_postcode: "01181"
+			}, function (rsp) {  // callback  // 결제 완료
+				if (rsp.success) {
+					// jQuery로 HTTP 요청
+					jQuery.ajax({
+						url: "/pay/complete",
+				        method: "POST",
+				        headers: {"content-Type" : "application/json"},
+				        data: {
+				        	imp_uid: rsp.imp_uid,
+			                merchant_uid: rsp.merchant_uid
+				        }
+					}).done(function(data){
+						switch(data.status) {
+							case "vbankIssued":
+								// 가상계좌 발급 시 로직
+								break;
+							case "success":
+								// 결제 성공 시 로직
+								break;
+						}
+					});
+					alert("[완료] imp_uid : "+ rsp.imp_uid +" / merchant_uid : " + rsp.merchant_uid);   // alert('결제가 완료되었습니다.');  // location.href="결제 완료 후 이동할 페이지 url"
+				} else {
+					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");  // alert('결제에 실패하였습니다. 에러 : ' + rsp.error_msg); 
+				}
+
+			});
+		}
+		
+		
+		/*
+		function pay() {  // (data)
+			IMP.init('imp72345478');  // '가맹점 식별코드' 입력  // 초기화
+			IMP.request_pay({  // param   // 결제창 호출
+				pg: "html5_inicis", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐, 아임포트 홈페이지에서 추가한 pg만 가능하다.)  // "html5_inicis"  // "kakaopay.TC0ONETIME"
+				pay_method: "card",
+				merchant_uid: "serapaytest" + new Date().getTime(),  // DB에 주문 레코드를 생성하여 해당 레코드의 주문번호를 param.merchant_uid 에 지정하기
 				name: "상품3",  // 결제창에 노출될 상품명 
 				amount: 100,  // 네이버페이 최소 주문금액 100원
 				buyer_email : "testiamport03@naver.com", 
@@ -86,59 +113,87 @@
 				} else {
 					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");  // alert('결제에 실패하였습니다. 에러 : ' + rsp.error_msg); 
 				}
-
 			});
 		}
-		
-		function kakaoPay() {  // (data)
-			IMP.init('imp72345478');  // '가맹점 식별코드' 입력  // 초기화
-			IMP.request_pay({  // param   // 결제창 호출
-				pg: "kakaopay.TC0ONETIME", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐, 아임포트 홈페이지에서 추가한 pg만 가능하다.)  // "html5_inicis"  // "kakaopay.TC0ONETIME"
-				pay_method: "card",  // 지불 방법 
-				merchant_uid: "test_sera",  // 가맹점 주문번호 (아임포트를 사용하는 가맹점에서 중복되지 않은 임의의 문자열을 입력) 
-				name: "상품1",  // 결제창에 노출될 상품명 
-				amount: 10, // 금액 
-				buyer_email : "testiamport01@naver.com", 
-				buyer_name : "뽀로로", 
-				buyer_tel: "01012341234"
-				
-			}, function (rsp) {  // callback  // 결제 완료
-				if (rsp.success) {
-					alert("[완료] imp_uid : "+ rsp.imp_uid +" / merchant_uid : " + rsp.merchant_uid);
-				} else {
-					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")"); 
-				}
-
-			});
-		}
+		*/
 		
 		
-		function payco() {
-			IMP.init('imp72345478');  // '가맹점 식별코드' 입력
-			IMP.request_pay({
-				pg: "payco",
-				pay_method: "card",
-				merchant_uid: "payco_sera",
-				name: "상품2",
-				amount: 30,
-				buyer_email : "testiamport02@naver.com", 
-				buyer_name : "루피", 
-				buyer_tel: "01012345678",
-				buyer_addr : '서울특별시 강남구 삼성동',
-				buyer_postcode : '123-456'
-				
-			}, function (rsp) {  // callback  // 결제 완료
-				if (rsp.success) {
-					alert("[완료] imp_uid : "+ rsp.imp_uid +" / merchant_uid : " + rsp.merchant_uid);
-				} else {
-					alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")"); 
-				}
+		// 주문번호 만들기
+		function createOrderNum(){
+			const date = new Date();
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, "0");
+			const day = String(date.getDate()).padStart(2, "0");
 			
-			});
+			let orderNum = year + month + day;
+			for(let i=0;i<10;i++) {
+				orderNum += Math.floor(Math.random() * 8);	
+			}
+			return orderNum;
 		}
-		
-
 	
+	</script>
+	
+	<script>
+
+		// 서버에서 결제 번호(imp_uid)와 주문번호(merchant_uid)를 전달받는 API 작성
+		// /pay/complete에 대한 POST요청을 처리
+		app.use(bodyParser.json());
+		app.post("/pay/complete", async (req, res) => {
+			try {
+				const { imp_uid, merchant_uid } = req.body; // req의 body에서 imp_uid, merchant_uid 추출
+				
+				// 결제 정보 조회하기
+				// 액세스 토큰(access token) 발급 받기
+				const getToken = await axios({
+					url: "https://api.iamport.kr/users/getToken",
+					method: "post",
+					headers: { "Content-Type": "application/json" },
+					data: {
+						imp_key: "8065170024876056", // REST API 키
+			            imp_secret: "CDs8383xzILY3saeYAhexnYapiBNQcKqktpkKVHrAt26K99XqoGZbsw63aFw8aaexJPG2aosl2RsHoXl" // REST API Secret
+					}
+				});
+				const { access_token } = getToken.data.response; // 인증 토큰
+				
+				// imp_uid로 아임포트 서버에서 결제 정보 조회
+				const getPaymentData = await axios({
+					url: "https://api.iamport.kr/payments/${imp_uid}", // imp_uid 전달
+					method: "get",
+					headers: { "Authorization": access_token } // 인증 토큰 Authorization header에 추가
+				});
+				const paymentData = getPaymentData.data.response; // 조회한 결제 정보
+				
+				// DB에서 결제되어야 하는 금액 조회
+				const order = await Orders.findById(paymentData.merchant_uid);
+      			const amountToBePaid = order.amount; // 결제 되어야 하는 금액
+				
+      			// 결제 검증하기
+      			const { amount, status } = paymentData;
+      			if (amount === amountToBePaid) { // 결제금액 일치. 결제 된 금액 === 결제 되어야 하는 금액
+      				await Orders.findByIdAndUpdate(merchant_uid, { $set: paymentData }); // DB에 결제 정보 저장
+      				
+      				switch (status) {
+      					case "ready": // 가상계좌 발급
+      						// DB에 가상계좌 발급 정보 저장
+      						const { vbank_num, vbank_date, vbank_name } = paymentData;
+      						await Users.findByIdAndUpdate("/* 고객 id */", { $set: { vbank_num, vbank_date, vbank_name }});
+      						// 가상계좌 발급 안내 문자메시지 발송
+      						SMS.send({ text: "가상계좌 발급이 성공되었습니다. 계좌 정보 ${vbank_num}, ${vbank_date}, ${vbank_name}"});
+      						res.send({ status: "vbankIssued", message: "가상계좌 발급 성공" });
+      						break;
+      					case "paid": // 결제 완료
+    						res.send({ status: "success", message: "일반 결제 성공" });
+    						break;
+      				}
+      			} else {  // 결제금액 불일치. 위/변조 된 결제
+      				throw { status: "forgery", message: "위조된 결제시도" };
+      			}
+			} catch (e) {
+				res.status(400).send(e);
+			}
+		});
+		
 	</script>
 	
 	   

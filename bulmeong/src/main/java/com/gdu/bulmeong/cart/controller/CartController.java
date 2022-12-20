@@ -1,50 +1,37 @@
 package com.gdu.bulmeong.cart.controller;
 
-import javax.servlet.http.HttpSession;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.gdu.bulmeong.cart.domain.CartDTO;
 import com.gdu.bulmeong.cart.service.CartService;
-import com.gdu.bulmeong.users.domain.UsersDTO;
 
 
-@Controller
+@RestController  // @Controller + @ResponseBody
 public class CartController {
+
 
 	@Autowired
 	private CartService cartService;
-	 
-	@GetMapping("/cart")
-	public String cart() {
-		return "cart/addCart";
+	
+	@GetMapping(value="/cart/getJjimCheck", produces="application/json")
+	public Map<String, Object> getJjimCheck(HttpServletRequest request) {
+		return cartService.getJjimCheck(request);
 	}
 	
-	// 카트 담기
-	@ResponseBody
-	@RequestMapping(value = "/cart/addCart", method = RequestMethod.POST)
-	public int addCart(CartDTO cart, HttpSession session) {
-	   int result = 0;
-	   
-	   UsersDTO user = (UsersDTO)session.getAttribute("user");
-	   
-	   if(user != null) {
-		   cart.setId(user.getId());
-		   cartService.addCart(cart);
-		   result = 1;
-	   }
-	   
-	   return result;
-	   
+	@GetMapping(value="/cart/getJjimCount", produces="application/json")
+	public Map<String, Object> getJjimCount(int campNo) {
+		return cartService.getJjimCount(campNo);
 	}
 	
-
+	@GetMapping(value="/cart/mark", produces="application/json")
+	public Map<String, Object> mark(HttpServletRequest request) {
+		return cartService.mark(request);
+	}
 	
 	
 		

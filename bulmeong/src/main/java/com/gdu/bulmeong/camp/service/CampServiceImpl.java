@@ -142,6 +142,7 @@ public class CampServiceImpl implements CampService {
 			String createdtime = obj5.getString("createdtime");
 			String modifiedtime = obj5.getString("modifiedtime");
 			
+			
 			CampDTO camp = CampDTO.builder()
 					.facltNm(facltNm).intro(intro).lineIntro(lineIntro).featureNm(featureNm).sbrsCl(sbrsCl).firstImageUrl(firstImageUrl).themaEnvrnCl(themaEnvrnCl).eqpmnLendCl(eqpmnLendCl).tourEraCl(tourEraCl).induty(induty)
 					.allar(allar).operPdCl(operPdCl).hvofBgnde(hvofBgnde).hvofEnddle(hvofEnddle).prmisnDe(prmisnDe).operDeCl(operDeCl).toiletCo(toiletCo).extshrCo(extshrCo).brazierCl(brazierCl).glampInnerFclty(glampInnerFclty).caravInnerFclty(caravInnerFclty)
@@ -201,10 +202,16 @@ public class CampServiceImpl implements CampService {
 //		map.put("end", pageUtil.getEnd());
 		map.put("end", pageUtil.getRecordPerPage());
 		
+		List<CampDTO> camp = campMapper.selectAllCamp(map);
+		
 		Map<String, Object> result = new HashMap<>();
-		result.put("campList", campMapper.selectAllCamp(map));
+		result.put("campList", camp);
 		result.put("pageUtil", pageUtil);
 		result.put("campCount", campCount);
+		
+		
+		
+
 		
 		return result;
 	}
@@ -217,7 +224,7 @@ public class CampServiceImpl implements CampService {
 		String induty = request.getParameter("induty");
 		String themaEnvrnCl = request.getParameter("themaEnvrnCl");
 		
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("query", query);
 		map.put("doNm", doNm);
 		map.put("induty", induty);
@@ -230,5 +237,10 @@ public class CampServiceImpl implements CampService {
 		return result;
 	}
 	
-	
+	@Override
+	public void getDetailList(HttpServletRequest request, Model model) {
+		int campNo = Integer.parseInt(request.getParameter("campNo"));
+		model.addAttribute("camp", campMapper.selectCampByNo(campNo));
+		
+	}
 }

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('상세보기')}"></head>
+<style>
+	
+		.layout {
+			background: url(/images/camp.jpg) repeat-x 0 bottom;
+			background-repeat: no-repeat;
+			background-size: auto;
+			/*
+			background-image: url(/images/camp.jpg); 
+			width: auto;
+			max-height: 100%;
+			background-repeat: none;
+			background-size: auto;
+			*/
+		}
+		
+		.facltNm {
+			font-size: 40px;
+			font-family: "NanumG", "나눔고딕", Dotum, "돋움", Helvetica, AppleGothic, Sans-serif, "Tahoma", "MS PGothic";
+		    width: 100%;
+		    margin-top: 30px;
+		    z-index: 3;
+		    text-align: left;
+		    color: #fff;
+		    top: 75px;
+		    text-shadow: 2px 2px 3px rgb(0 0 0);
+		}
+		
+		.lineIntro {
+		    width: 100%;
+		    z-index: 3;
+		    color: #fff;
+		    top: 55px;
+		    text-shadow: 2px 2px 3px rgb(0 0 0);
+		}
+		
+		
+		/* .sns_share {
+			float: left;
+		    width: 300px;
+		    height: 41px;
+		    background: url(/images/share.png) no-repeat 0 0;
+		    background-image: url(/images/share.png);
+		} */
+		
+		.graybar {
+			width: 100%;
+		    height: auto;
+		    padding: 9px 0;
+		    background-color: #eff0f4;
+		    position: relative;
+		}
+		
+		.icon_link {
+			width: 16px;
+		    height: 16px;
+		    background: url(/images/link.png) no-repeat 0 center;
+		    display: inline-block; 
+		}
+		
+		.btn_jjim {
+			width: 32%;
+		    margin: 0 1%;
+		    background-color: #e32242;
+		    padding-left: 0px;
+		    border: none;
+		    color: #fff;
+		}
+		
+	</style>
+
+<body>
+
+	<header th:replace="~{layout/header::header_layout}"></header>	
+	
+	
+	<div class="layout">
+		
+		<div class="title">
+			<p class="facltNm" th:text="${camp.facltNm}"></p>
+			<p class="lineIntro" th:text="${camp.lineIntro}"></p>
+		</div>
+		
+		<div class="icon">
+			<ul class="share">
+				<li class="sns">
+					<button type="button" class="sns_share">
+						<span class="skip">SNS 공유</span>
+					</button>
+					<div class="sns_share" style="display: none;">
+						<ul>
+							<li>
+								<button type="button" class="sns_list1">
+									<span class="skip">닫기</span>
+								</button>
+							</li>
+							<li>
+								<button type="button" class="sns_list2" onclick="fn_sendSns('facebook')">
+									<span class="skip">페이스북</span>
+								</button>
+							</li>
+							<li>
+								<button type="button" class="sns_list3" onclick="fn_sendSns('twitter')">
+									<span class="skip">트위터</span>
+								</button>
+							</li>
+							<li>
+								<button type="button" class="sns_list4" onclick="fn_sendSns('blog')">
+									<span class="skip">블로그</span>
+								</button>
+							</li>
+							<li>
+								<button type="button" class="sns_list5" onclick="fn_sendSns('kstory')">
+									<span class="skip">카카오스토리</span>
+								</button>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="bookmark">
+					<a href="javascript:CreateBookmarkLink('', '현재페이지');" id="favorite" title="즐겨찾기">
+						<span class="skip">즐겨찾기</span>
+					</a>
+				</li>
+				<li class="link">
+					<a href="#" onclick="copy(this.href)">
+						<span class="skip">링크 복사하기</span>
+					</a>
+				</li>
+				<li class="print">
+					<a href="#none" onclick="printCamp()">
+						<span class="skip">인쇄하기</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<hr>
+		
+	<div class="gray_bar">
+		<span class="skip">그레이바 줄 예정</span>
+	</div>
+	
+	<section id="content" style="right: 0px">
+		<h2 class="skip">캠핑장 정보</h2>
+		<div id="contentBox">
+			<div class="layout2">
+				<article>
+					<header class="campInfo">
+						<div class="image">
+							<img th:src="${camp.firstImageUrl}" alt="대표이미지" th:if="${camp.firstImageUrl != null}" />
+						</div>
+						<div class="cont">
+							<table class="table">
+								<colgroup>
+									<col style="width: 30%;">
+									<col style="width: 70%;">
+								</colgroup>
+								<tbody>
+									<tr>
+										<th scope="col">주소</th>
+										<td th:text="${camp.addr1}">
+											<img th:src="/images/linkcopy.png" onclick="clip();">주소복사</a>
+										</td>
+									</tr>
+									<tr>
+										<th scope="col">캠핑장 환경</th>
+										<td th:text="${camp.lctCl}"></td>
+									</tr>
+									<tr>
+										<th scope="col">캠핑장 유형</th>
+										<td th:text="${camp.induty}"></td>
+									</tr>
+									<tr>
+										<th scope="col">운영기간</th>
+										<td th:text="${camp.operPdCl}"></td>
+									</tr>
+									<tr>
+										<th scope="col">운영일</th>
+										<td th:text="${camp.operDeCl}"></td>
+									</tr>
+									<tr>
+										<th scope="col">홈페이지</th>
+										<td>
+											<a th:href="${camp.homepage}" target="_BLANK" title="새창열림">홈페이지 바로가기</a>
+											<i class="icon_link">
+												<span class="skip"></span>
+											</i>
+										</td>
+									</tr>
+									<tr class="camp_tel">
+										<th scope="col">연락처</th>
+										<td>
+											<a th:text="${camp.tel}">전화하기</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div>
+							<button class="btn_jjim" onclick="fn_jjim();">찜하기</button>
+						</div>
+					</header>
+				</article>
+			</div>
+		</div>
+	</section>
+		
+</body>
+</html>
