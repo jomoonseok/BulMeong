@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head>
+	<style>
+		.blind {
+			display: none;
+		}
+		.lbl_all, .lbl_one {
+			padding-left: 20px;
+			background-image: url(/images/uncheck.png);
+			background-size: 18px 18px;
+			background-repeat: no-repeat;
+		}
+		.lbl_checked {
+			background-image: url(/images/check.png);
+		}
+	</style>
+	<script>
+		$(function(){
+			fn_checkAll();
+			fn_checkOne();
+			fn_toggleCheck();
+			fn_submit();
+		});
+		
+		function fn_checkAll(){
+			$('#check_all').click(function(){
+				$('.check_one').prop('checked', $(this).prop('checked'));
+				
+				if($(this).is(':checked')){  
+					$('.lbl_one').addClass('lbl_checked');
+				} else {
+					$('.lbl_one').removeClass('lbl_checked');
+				}
+			});
+		}
+		
+		function fn_checkOne(){
+			$('.check_one').click(function(){
+				let checkCnt = 0;
+				for(let i=0; i < $('.check_one').length; i++){
+					checkCnt += $($('.check_one')[i]).prop('checked');
+				}
+				$('#check_all').prop('checked', $('.check_one').length == checkCnt);	
+				
+				if($('#check_all').is(':checked')){
+					$('.lbl_all').addClass('lbl_checked');
+				} else {
+					$('.lbl_all').removeClass('lbl_checked');
+				}
+			});
+		}
+		
+		function fn_toggleCheck(){
+			$('.lbl_all, .lbl_one').click(function(){
+				$(this).toggleClass('lbl_checked');
+			})
+		}
+		
+		function fn_submit(){
+			$('#frm_agree').submit(function(event){
+				if($('#service').is(':checked') == false || $('#privacy').is(':checked') == false){
+					alert('필수 약관에 동의하세요.');
+					event.preventDefault();
+					return;
+				}
+			});
+		}
+		
+	</script>
+</head>
+<body>
+
+	<header th:replace="~{layout/header::header_layout}"></header>
+	
+	<script>
+	
+	$(function(){
+		fn_nicknameCheck();
+		fn_emailCheck();
+		fn_join();
+	});
+	
+	var nicknamePass = false;
+	var emailPass = false;
+	
+	function fn_nicknameCheck(){
+		
+		$('#nickname').keyup(function(){
+			
+			// 입력한 닉네임
+			let nicknameValue = $(this).val();
+			
+			// 정규식(2~10자, 한글+영어+숫자)
+			let regNickname = /^[가-힣0-9a-zA-Z]{2,10}$/;
+			
+			if(nicknameValue != '' && regNickname.test(nicknameValue) == true){
+				$('#msg_nickname').text('');
+			} else {
+				$('#msg_nickname').text('닉네임을 확인하세요.');
+				nicknamePass = false;
+				return;
+			}
+			
+			// 닉네임 중복체크
+			$.ajax({
+				/* 요청 */
+				type: 'get',
+				url: '/users/checkReduceNickname',
+				data: 'nickname=' + nicknameValue,
+				/* 응답 */
+				dataType: 'json',
+				success: function(resData){  
+					if(resData.isUser || resData.isSleepUser){
+						$('#msg_nickname').text('이미 사용중인 닉네임입니다.');
+						nicknamePass = false;
+					} else {
+						$('#msg_nickname').text('사용 가능한 닉네임입니다.');
+						nicknamePass = true;
+					}
+				}
+			});  // ajax
+			
+		});  // keyup
+		
+	}  // fn_nicknameCheck
+	
+	// 이메일 중복 체크
+	function fn_emailCheck(){	
+		$('#btn_check').click(function(){
+			$('#msg_email').text('');
+			
+			// 정규식 
+			let regEmail = /^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+(\.[a-zA-Z]{2,}){1,2}$/;
+			
+			// 입력한 이메일
+			let emailValue = $('#email').val();
+			
+			// 정규식 검사
+			if(regEmail.test(emailValue) == false){
+				$('#msg_email').text('이메일 형식을 확인하세요');
+				emailPass = false;
+				return;
+			}
+			
+			$.ajax({
+				/* 요청 */
+				type: 'get',
+				url: '/users/checkReduceEmail',
+				data: 'email=' + $('#email').val(),
+				/* 응답 */
+				dataType: 'json',
+				success: function(resData){
+					// 기존 회원 정보에 등록된 이메일이라면 실패 처리
+					if(resData.isUser){
+						$('#msg_email').text('이미 사용중인 이메일입니다.');
+						$('#email').prop('readonly', false);
+						emailPass = false;
+					} else {
+						$('#msg_email').text('사용 가능한 이메일입니다.');
+						emailPass = true;
+					}
+				}
+			});
+		});
+	}
+	
+	function fn_join(){
+		$('#frm_join').submit(function(event){
+			if(nicknamePass == false){
+				alert('닉네임을 확인하세요.');
+				event.preventDefault();
+				return;
+			} else if(emailPass == false){
+				alert('이메일을 확인하세요.');
+				event.preventDefault();
+				return;
+			} else if($('#service').is(':checked') == false || $('#privacy').is(':checked') == false){
+				alert('필수 약관에 동의하세요.');
+				event.preventDefault();
+				return;
+			}
+		});
+	}
+	
+</script>
+</head>
+<body>
+
+	<div>
+		<h1>네이버 간편 가입</h1>
+	
+		<div>* 표시는 필수 입력사항입니다.</div>
+		
+		<hr>
+		
+		<form id="frm_join" th:action="@{/users/naver/join}" method="post">
+		
+			<input type="hidden" name="id" th:value="${profile.id}">
+			<input type="hidden" name="gender" th:value="${profile.gender}">
+			<input type="hidden" name="name" th:value="${profile.name}">
+			<input type="hidden" name="mobile" th:value="${profile.mobile}">
+			<input type="hidden" name="birthYear" th:value="${profile.birthYear}">
+			<input type="hidden" name="birthDay" th:value="${profile.birthDay}">
+			<input type="hidden" name="profileImage" th:value="${profile.profileImage}">
+			
+			<div th:text="|이름 : ${profile.name}|"></div>
+			
+			<div th:text="|휴대전화 : ${profile.mobile}|"></div>
+			
+			<div th:text="|생년월일 : ${profile.birthYear}${profile.birthDay}|"></div>
+			
+			<div>
+				<label for="nickname">닉네임*</label>
+				<input type="text" name="nickname" id="nickname" th:value="${profile.nickname}">
+				<span id="msg_nickname"></span>
+			</div>
+			<!--  
+			<div>
+				<input type="text" onclick="fn_execDaumPostcode()" name="postcode" id="postcode" placeholder="우편번호" readonly="readonly">
+				<input type="button" onclick="fn_execDaumPostcode()" value="우편번호 찾기"><br>
+				<input type="text" name="roadAddress" id="roadAddress" placeholder="도로명주소"  readonly="readonly">
+				<input type="text" name="jibunAddress" id="jibunAddress" placeholder="지번주소"  readonly="readonly"><br>
+				<span id="guide" style="color:#999;display:none"></span>
+				<input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소">
+				<input type="text" name="extraAddress" id="extraAddress" placeholder="참고항목" readonly="readonly">
+				<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+				<script>
+				    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+				    function fn_execDaumPostcode() {
+				        new daum.Postcode({
+				            oncomplete: function(data) {
+				                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+				
+				                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+				                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				                var roadAddr = data.roadAddress; // 도로명 주소 변수
+				                var extraRoadAddr = ''; // 참고 항목 변수
+				
+				                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+				                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+				                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+				                    extraRoadAddr += data.bname;
+				                }
+				                // 건물명이 있고, 공동주택일 경우 추가한다.
+				                if(data.buildingName !== '' && data.apartment === 'Y'){
+				                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+				                }
+				                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+				                if(extraRoadAddr !== ''){
+				                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+				                }
+				
+				                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+				                document.getElementById('postcode').value = data.zonecode;
+				                document.getElementById("roadAddress").value = roadAddr;
+				                document.getElementById("jibunAddress").value = data.jibunAddress;
+				                
+				                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+				                if(roadAddr !== ''){
+				                    document.getElementById("extraAddress").value = extraRoadAddr;
+				                } else {
+				                    document.getElementById("extraAddress").value = '';
+				                }
+				
+				                var guideTextBox = document.getElementById("guide");
+				                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+				                if(data.autoRoadAddress) {
+				                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+				                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+				                    guideTextBox.style.display = 'block';
+				
+				                } else if(data.autoJibunAddress) {
+				                    var expJibunAddr = data.autoJibunAddress;
+				                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+				                    guideTextBox.style.display = 'block';
+				                } else {
+				                    guideTextBox.innerHTML = '';
+				                    guideTextBox.style.display = 'none';
+				                }
+				            }
+				        }).open();
+				    }
+				</script>
+			</div> -->
+			
+			<div>
+				<label for="email">이메일*</label>
+				<input type="text" name="email" id="email" th:value="${profile.email}" readonly>
+				<input type="button" value="중복체크" id="btn_check">
+				<span id="msg_email"></span>
+			</div>
+			
+			<hr>
+			
+			<!-- 약관 -->
+			<div>
+				<input type="checkbox" id="check_all" class="blind">
+				<label for="check_all" class="lbl_all">모두 동의</label>
+			</div>
+			
+			<hr>
+			
+			<div>
+				<input type="checkbox" id="service" class="check_one blind">
+				<label for="service" class="lbl_one">이용약관 동의(필수)</label>
+				<div>
+					<textarea>본 약관은 ...</textarea>
+				</div>
+			</div>
+			<div>
+				<input type="checkbox" id="privacy" class="check_one blind">
+				<label for="privacy" class="lbl_one">개인정보수집 동의(필수)</label>
+				<div>
+					<textarea>개인정보보호법에 따라 ...</textarea>
+				</div>
+			</div>
+			<div>
+				<input type="checkbox" id="location" name="location" class="check_one blind">
+				<label for="location" class="lbl_one">위치정보수집 동의(선택)</label>
+				<div>
+					<textarea>위치정보 ...</textarea>
+				</div>
+			</div>
+			<div>
+				<input type="checkbox" id="promotion" name="promotion" class="check_one blind">
+				<label for="promotion" class="lbl_one">마케팅 동의(선택)</label>
+				<div>
+					<textarea>이벤트 ...</textarea>
+				</div>
+			</div>
+			
+			<!-- 버튼 -->
+			<div>
+				<button>가입하기</button>
+				<input type="button" value="취소하기" onclick="history.back()">
+			</div>
+		
+		</form>
+	
+	</div>
+	
+</body>
+</html>

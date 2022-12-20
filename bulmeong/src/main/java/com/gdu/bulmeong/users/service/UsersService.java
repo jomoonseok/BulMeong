@@ -28,5 +28,12 @@ public interface UsersService {
 	public SleepUsersDTO getSleepUserById(String id);
 	public void restoreUser(HttpServletRequest request, HttpServletResponse response);
 	
+	public String getNaverLoginApiURL(HttpServletRequest request);  // 네이버로그인-1
+	public String getNaverLoginToken(HttpServletRequest request);   // 네이버로그인-2
+	public UsersDTO getNaverLoginProfile(String access_token);       // 네이버로그인-3
+	public UsersDTO getNaverUserById(String id);
+	public void naverLogin(HttpServletRequest request, UsersDTO naverUser);
+	public void naverJoin(HttpServletRequest request, HttpServletResponse response);
+	
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest);
 }

@@ -147,7 +147,7 @@
 	<delete id="deleteUserForSleep">
 		DELETE
 		  FROM USERS
-		 WHERE ID = (SELECT  TMP_ID
+		 WHERE ID = (SELECT TMP_ID
 		               FROM (SELECT U.ID TMP_ID
 							   FROM USERS U LEFT OUTER JOIN USERS_ACCESS A
 								 ON U.ID = A.ID
@@ -166,15 +166,23 @@
 	<insert id="insertRestoreUser" parameterType="String">
 		INSERT INTO USERS(USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
 			(SELECT USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE
-			   FROM SLEEP_USERS
+			   FROM USERS_SLEEP
 			  WHERE ID = #{id})
 	</insert>
 	
 	<!-- 휴면복원2 : 복원할 회원을 SLEEP_USERS 테이블에서 삭제 -->
 	<delete id="deleteSleepUser" parameterType="String">
 		DELETE
-		  FROM SLEEP_USERS
+		  FROM USERS_SLEEP
 		 WHERE ID = #{id}
 	</delete>
+	
+	<!-- 네이버아이디로그인 회원가입 -->
+	<insert id="insertNaverUser" parameterType="UsersDTO">
+		INSERT INTO USERS
+			(ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
+		VALUES
+			(#{id}, #{nickname}, #{pw}, #{name}, #{mobile}, #{gender}, #{birthYear}, #{birthDay}, DATE_FORMAT(NOW(), '%y/%m/%d'), #{agreeCode}, #{snsType}, NULL, NULL, #{email}, #{profileImage}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'))
+	</insert>
 	
 </mapper>

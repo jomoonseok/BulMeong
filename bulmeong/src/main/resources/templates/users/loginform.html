@@ -9,6 +9,7 @@
 			
 			fn_login();
 			fn_displayRememberId();
+			console.log("[[${apiURL}]]");
 			
 		});
 		
@@ -101,7 +102,7 @@
 		<hr>
 		
 		<div>
-			<a th:href="@{apiURL}"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
+			<a th:href="${apiURL}"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
 		</div>
 	
 	</div>

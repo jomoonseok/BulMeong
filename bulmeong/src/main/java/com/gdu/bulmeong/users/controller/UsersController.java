@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.users.service.UsersService;
 
 @Controller
@@ -77,7 +78,7 @@ public class UsersController {
 		model.addAttribute("url", request.getHeader("referer"));  // 로그인 후 되돌아 갈 주소 url
 		
 		// 네이버 로그인
-		//model.addAttribute("apiURL", usersService.getNaverLoginApiURL(request));
+		model.addAttribute("apiURL", usersService.getNaverLoginApiURL(request));
 		
 		return "users/loginForm";
 	}
@@ -85,6 +86,30 @@ public class UsersController {
 	@PostMapping("/users/login")
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		usersService.login(request, response);
+	}
+	
+	@GetMapping("/users/naver/login")
+	public String naverLogin(HttpServletRequest request, Model model) {
+		String access_token = usersService.getNaverLoginToken(request);
+		UsersDTO profile = usersService.getNaverLoginProfile(access_token);  // 네이버로그인에서 받아온 프로필 정보
+		UsersDTO naverUser = usersService.getNaverUserById(profile.getId()); // 이미 네이버로그인으로 가입한 회원이라면 DB에 정보가 있음
+		
+		// 네이버로그인으로 가입하려는 회원 : 간편가입페이지로 이동
+		if(naverUser == null) {
+			model.addAttribute("profile", profile);
+			return "users/naver_join";
+		}
+		// 네이버로그인으로 이미 가입한 회원 : 로그인 처리
+		else {
+			usersService.naverLogin(request, naverUser);
+			return "redirect:/";
+		}
+		
+	}
+	
+	@PostMapping("/users/naver/join")
+	public void naverJoin(HttpServletRequest request, HttpServletResponse response) {
+		usersService.naverJoin(request, response);
 	}
 	
 	@GetMapping("/users/logout")

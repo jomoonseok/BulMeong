@@ -27,4 +27,5 @@ public interface UsersMapper {
 	public SleepUsersDTO selectSleepUserById(String id);
 	public int insertRestoreUser(String id);
 	public int deleteSleepUser(String id);
+	public int insertNaverUser(UsersDTO user);
 }
