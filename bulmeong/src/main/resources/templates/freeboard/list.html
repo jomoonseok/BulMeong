@@ -12,6 +12,9 @@
 			});
 
 		});
+
+		
+		
 		
 		function goPage(page){ // page는 받는 이름...
 			
@@ -25,6 +28,7 @@
 	</script>
 	
 	
+	
 	<h3>자유게시판</h3>
 
 	<div th:if="${session.loginUser} != null">
@@ -34,7 +38,7 @@
 	<table border="1">
 		<thead>
 			<tr>
-				<th>말머리</th>
+				<th>번호</th>
 				<th>제목</th>
 				<th>작성자</th>
 				<th>작성일</th>
@@ -42,9 +46,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="free : ${freeBoardList}">
+			<tr th:each="free , i : ${freeBoardList}">
 				<td th:text="${free.freeNo}"></td>
-				<td><a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="${free.freeTitle}"></a></td>
+				<td>
+					<a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="|${free.freeTitle} (${freeCmt[i.index]})|"></a>
+				</td>
 				<td th:text="${free.nickname}"></td>
 				<td th:text="${free.freeCreateDate}"></td>
 				<td th:text="${free.freeHit}"></td>
@@ -57,7 +63,7 @@
 		</tfoot>
 	</table>
 	
-
+<!-- 	<span id="comment_count"></span>개 -->
 	
 	
 	<div>

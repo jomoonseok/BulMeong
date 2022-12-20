@@ -14,6 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
 import com.gdu.bulmeong.util.PageUtil;
+import com.gdu.bulmeong.util.SecurityUtil;
 
 @Service
 public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
@@ -24,6 +25,9 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	
 	@Autowired
 	private PageUtil pageUtil;
+	
+	@Autowired
+	private SecurityUtil securityUtil;
 	
 
 	@Override
@@ -72,18 +76,15 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////
-		String strFreeSeq = request.getParameter("freeSeq") == null ? "" : request.getParameter("freeSeq");
+		// String strFreeSeq = request.getParameter("freeSeq") == null ? "" : request.getParameter("freeSeq");
 		// 조건 ? 만족하는 경우 : 만족하지 않는 경우
 
-		// int freeSeq = Integer.parseInt(request.getParameter("freeSeq")) == 0 ? 0 : Integer.parseInt(request.getParameter("freeSeq"));
+		int freeGroupNo = Integer.parseInt(request.getParameter("freeGroupNo")); // == 0 ? 0 : Integer.parseInt(request.getParameter("freeSeq"));
 		
-		if (strFreeSeq == null) {
-			freeBoardCmtMapper.insertFreeSeq(0);
-			System.out.println("if freeSeq : ");
-		} else {
-			freeBoardCmtMapper.updateFreeSeq();
-			System.out.println("else freeSeq : ");
-		}
+
+		freeBoardCmtMapper.updateFreeSeq();
+		System.out.println("else freeSeq : ");
+		freeCmt.setFreeGroupNo(freeGroupNo);
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////

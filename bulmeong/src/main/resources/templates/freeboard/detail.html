@@ -23,6 +23,7 @@
 			
 			// 3. 게시글 수정
 			$('#btn_edit').click(function(){
+
 				$('#frm_btn').attr('action', '/freeboard/edit');
 				$('#frm_btn').submit();
 			});
@@ -405,12 +406,7 @@
 					<input type="text" name="freeCmtContent" id="content" size="50" placeholder="댓글을 작성하려면 로그인을 해야합니다.">
 					<span class="add_comment_btn">
 						<input type="button" value="등록" id="btn_add_comment">
-<!-- 						<span th:if=""> -->
-<!--  							<input type="hidden" name="freeSeq" value=""> -->
-<!-- 						</span>						 -->
-<!-- 						<span th:if=""> -->
-<!--  							<input type="hidden" name="freeSeq" value=""> -->
-<!-- 						</span>						 -->
+ 						<input type="text" name="freeGroupNo" th:value="${free.freeNo}">
 					</span>
 				</div>
 			</div>
@@ -438,24 +434,20 @@
 	
 	
 	
-	
 	<!-- 4. 게시판 하단 버튼 -->
 	<div>
 		<form id="frm_btn" method="post">
 			<input type="hidden" name="freeNo" th:value="${free.freeNo}">
 			<input type="button" value="글쓰기" id="btn_write">
 			<input type="button" value="목록" th:onclick="|location.href='@{/freeboard/list}'|">
-			<input type="button" value="수정" id="btn_edit">
-			<input type="button" value="삭제" id="btn_remove">
+			<span th:if="${session.loginUser} != null and ${free.nickname == session.loginUser.nickname}">
+				<input type="button" value="수정" id="btn_edit">
+				<input type="button" value="삭제" id="btn_remove">
+			</span>
 			<input type="button" value="TOP" id="btn_top">
 		</form>	
 	</div>
 
-	
-	
-	
-	
-	
 	 
 
 

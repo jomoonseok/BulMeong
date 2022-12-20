@@ -11,7 +11,7 @@
 		SELECT COUNT(*)
 		  FROM FREE_BRD
 	</select>
-	
+
 	<!-- 2. 게시글 리스트 및 검색 -->
 	<select id="selectFreeListByMap" parameterType="Map" resultType="FreeBoardDTO">
 		SELECT A.FREE_NO, A.NICKNAME, A.FREE_TITLE, A.FREE_CREATE_DATE, A.FREE_HIT
@@ -45,6 +45,12 @@
 			<when test="column=='NICKNAME'">
 				AND NICKNAME LIKE CONCAT('%',#{query},'%')
 			</when>
+			<when test="column=='FREE_CMT_CONTENT'">
+				AND FREE_CMT_CONTENT LIKE CONCAT('%',#{query},'%')
+			</when>
+			
+			
+			
 		</choose>
 			 ORDER BY A.FREE_NO DESC
 			 LIMIT #{begin}, #{recordPerPage}

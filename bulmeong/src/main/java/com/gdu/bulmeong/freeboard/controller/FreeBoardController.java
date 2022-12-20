@@ -54,7 +54,6 @@ public class FreeBoardController {
 	@GetMapping("/freeboard/detail")
 	public String detail(@RequestParam(value="freeNo", required=false, defaultValue="0") int freeNo, Model model) {
 		model.addAttribute("free", freeBoardService.getFreeBoardByNo(freeNo));
-
 		return "freeboard/detail";
 	}
 	
@@ -74,6 +73,15 @@ public class FreeBoardController {
 	public void remove(HttpServletRequest request, HttpServletResponse response) {
 		freeBoardService.removeFreeBoard(request, response);
 	}
+	
+	
+	
+//	@ResponseBody
+//	@GetMapping(value="/freecomment/getCount", produces="application/json")
+//	public Map<String, Object> getCount(@RequestParam("freeNo") int freeNo){
+//		return freeBoardCmtService.getCmtCount(freeNo);
+//	}
+
 	
 
 	

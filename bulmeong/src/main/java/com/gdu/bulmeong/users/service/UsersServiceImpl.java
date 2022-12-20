@@ -259,6 +259,7 @@ public class UsersServiceImpl implements UsersService {
 		String url = request.getParameter("url");
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw");
+		String nickname = request.getParameter("nickname");
 		
 		id = securityUtil.preventXSS(id);
 		
@@ -268,6 +269,7 @@ public class UsersServiceImpl implements UsersService {
 		// 조회 조건으로 사용할 Map
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
+		map.put("nickname", nickname);
 		map.put("pw", pw);
 		
 		// id, pw가 일치하는 회원을 DB에서 조회하기

@@ -49,6 +49,7 @@
 			<form id="frm_write" method="post" th:action="@{/freeboard/modify}">
 			
 				<input type="hidden" name="freeNo" th:value="${free.freeNo}">
+				<input type="hidden" name="nickname" th:value="${free.nickname}">
 			
 				<div>
 					<label for="title">제목</label>
