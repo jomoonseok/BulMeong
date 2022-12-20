@@ -133,8 +133,8 @@ public class IndexServiceImpl implements IndexService {
 		
 		
 		// 현재 시간대 구하기
-		LocalDateTime nowTime = LocalDateTime.now();
-		String formatNow = nowTime.format(DateTimeFormatter.ofPattern("HH00"));  // 현재 시간대(ex:1800)
+		LocalDateTime nowTime = LocalDateTime.now().plusHours(1);
+		String formatNow = nowTime.format(DateTimeFormatter.ofPattern("HH00"));  // 현재부터 1시간 뒤
 		
 		String apiURL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst" 
 						+ "?serviceKey=" + serviceKey + "&pageNo=" + pageNo + "&numOfRows=" + numOfRows + "&dataType=" + dataType + "&base_date=" + base_date + "&base_time=" + base_time + "&nx=" + intLatitude + "&ny=" + intlongitude;
@@ -169,51 +169,85 @@ public class IndexServiceImpl implements IndexService {
 		JSONObject obj3 = new JSONObject(obj2.get("body").toString());
 		JSONObject obj4 = new JSONObject(obj3.get("items").toString());  // {"item":[{"baseDate":"20221220","fcstTime":"0600","fcstValue":"-2","nx":37,"ny":126,"category":"TMP","baseTime":"0500","fcstDate":"20221220"}]}
 		
-		JSONArray arr = new JSONArray();
-		arr = obj4.getJSONArray("item");
+		JSONArray arr = obj4.getJSONArray("item");
 		
+		// 사용할 객체와 담을 필드 값
 		WeatherDTO weather = new WeatherDTO();
-		JSONObject obj6 = null;
+		String fcstDate;   // 예보일자
+		String fcstTime;   // 예보시간
+		String category;   // 항목
+	    String fcstValue;  // 항목에 따른 값
+	    int gubun;         // 사용여부를 가릴 필드
 		
-		String category;
-		String fcstDate;
-		String fcstTime;
-	    String fcstValue;
-		
-	    List<WeatherDTO> list = new ArrayList<>();
-	    Map<String, Object> result = new HashMap<>();
+	    List<WeatherDTO> list = new ArrayList<>();  // json array와 list 차이 공부하기
+	    JSONObject obj5 = null;
 	    
 		for(int i = 0; i < arr.length(); i++) {
-			obj6 = arr.getJSONObject(i);  // 키값으로 값을 불러오기 위해서 다시 JSONObject에 JSONArray의 값을 하나하나 담아옴
-			category = obj6.getString("category");
-			fcstValue = obj6.getString("fcstValue");
-			fcstDate = obj6.getString("fcstDate");
-			fcstTime = obj6.getString("fcstTime");
+			obj5 = arr.getJSONObject(i);  // 키값으로 값을 불러오기 위해서 다시 JSONObject에 JSONArray의 값을 하나하나 담아옴
 			
-			switch (category) {
+			// 각각의 object에서 weatherDTO 객체에 담을 필드의 값 뽑아 저장하기
+			fcstDate = obj5.getString("fcstDate");
+			fcstTime = obj5.getString("fcstTime");
+			category = obj5.getString("category");
+			fcstValue = obj5.getString("fcstValue");
+			
+			if(fcstTime.equals(formatNow)) {
+				gubun = 0;
+				switch (category) {
 	            case "TMP":
-	                category = "기온";		// 
+	                category = "기온";		// °C
+	                fcstValue = fcstValue + "°C";
+	                gubun = 1;
 	                break;
 	            case "REH":
-	                category = "습도";      // %
+	                category = "습도";      // 90%
+	                fcstValue = fcstValue + "%";
+	                gubun = 1;
 	                break;
 	            case "PTY":
-	            	category = "강수형태";  // 없음0 , 비1, 비/눈2, 눈3, 소나기4
+	            	category = "강수형태";  // 없음0 , 비1, 비 또는 눈2, 눈3, 소나기4
+	            	
+	            	switch(fcstValue) {
+	            	case "0": fcstValue = "없음"; break;
+	                case "1": fcstValue = "비"; break;
+	                case "2": fcstValue = "비 또는 눈"; break;
+	                case "3": fcstValue = "눈"; break;
+	                case "4": fcstValue = "소나기"; break;
+	                }
+	            	gubun = 1;
+	            	break;
+	            case "POP":
+	            	category = "강수확률";  // 60%
+	            	fcstValue = fcstValue + "%";
+	            	gubun = 1;
+	            	break;
+	            case "PCP":
+	            	category = "강수량";
+	            	gubun = 1;
 	            	break;
 	            case "SKY":
 	                category = "하늘상태";  // 맑음1, 구름많음3, 흐림4
+	                
+	                switch(fcstValue) {
+	                case "1": fcstValue = "맑음"; break;
+	                case "3": fcstValue = "구름 많음"; break;
+	                case "4": fcstValue = "흐림"; break;
+	                }
+	                gubun = 1;
 	                break;
-			}
+				}
 			
-			weather = WeatherDTO.builder()
-					.category(category).fcstValue(fcstValue).fcstValue(fcstValue).fcstDate(fcstDate).fcstTime(fcstTime).build();
-			list.add(weather);
+				weather = WeatherDTO.builder()
+						.category(category).fcstValue(fcstValue).fcstDate(fcstDate).fcstTime(fcstTime).gubun(gubun).build();
+			
+				if(gubun == 1) {
+					list.add(weather);	
+				}
+			}
 		}
 		
-		
+		Map<String, Object> result = new HashMap<>();
 		result.put("weather", list);
-		result.put("formatNow", formatNow);
-		
 		return result;
 	}
 	

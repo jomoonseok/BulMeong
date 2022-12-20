@@ -122,22 +122,60 @@
 			})
 	    }
 		
-	    // 기상청 api 받아오기
+		// 오늘 날짜 구하기(yyyyMMdd)
+		function getToday(){
+		    var date = new Date();
+		    var year = date.getFullYear();
+		    var month = ("0" + (1 + date.getMonth())).slice(-2);
+		    var day = ("0" + date.getDate()).slice(-2);
+
+		    return year + month + day;
+		}
 		
+		
+		// 기상청 api 받아오기
 	    function fn_weather(x, y) {
 		    $.ajax({
 				type: 'get',
 				url: '/index/weather',
 				data: 'latitude=' + x + '&longitude=' + y,
 				success: function(resData) {
-					console.log(resData);
-					var jsonObj = JSON.parse(resData.weather);  // jsonObj - item[0] : baseDate: "20221220" baseTime: "0500" category: "TMP" fcstDate: "20221220" fcstTime: "0600" fcstValue: "-2" nx: 37 ny: 126
-					var weather = jsonObj.item;
+					var weather = resData.weather;
 					console.log(weather);
+					
+					var today = getToday();
+					
+					
+					
+					
+					$.each(weather, function(i, item) {
+						
+						if(today == weather.fcstDate) {
+							
+						}
+						
+						
+					})
+						
 					var weatherDiv = '<div class="weather">';
-					weatherDiv += '<div>' + weather.baseDate + ' ' + weather.baseTime + '</div>';
-					weatherDiv += '<div>' + weather.category + ' ' + weather.fcstValue + '</div>';
+					
+					weatherDiv += '<div style="float:left">'; 
+					weatherDiv += '<div> 오늘 &nbsp;&nbsp;</div>'; 
+					weatherDiv += '<div>' + 'd' + '</div>'; 
+					weatherDiv += '</div>'; 
+
+					weatherDiv += '<div style="float:left">'; 
+					weatherDiv += '<div> 내일 &nbsp;&nbsp;</div>'; 
+					weatherDiv += '<div>' + 'd' +'</div>'; 
+					weatherDiv += '</div>'; 
+
+					weatherDiv += '<div style="float:left">'; 
+					weatherDiv += '<div> 모레 &nbsp;&nbsp;</div>'; 
+					weatherDiv += '<div>' + 'd' +'</div>'; 
+					weatherDiv += '</div>'; 
+					
 					weatherDiv += '</div>';
+					
 					$('.weatherLoaction').append(weatherDiv);
 					
 					

@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 
 public class WeatherDTO {
 
-	private String category;
 	private String fcstDate;
 	private String fcstTime;
+	private String category;
 	private String fcstValue;
+	private int gubun;  // 1 - 사용
 	
 }
