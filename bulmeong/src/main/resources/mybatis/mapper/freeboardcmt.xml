@@ -14,7 +14,8 @@
 	</select>
 	
 	<!-- 0. 시퀀스 초기화 -->
-	<insert id="insertFreeSeq" parameterType="int">
+	<insert id="insertFreeSeq" parameterType="int">0
+	
 		INSERT INTO FREE_SEQ_TABLE
 		VALUES (0);
 	</insert>
