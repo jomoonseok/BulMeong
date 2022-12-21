@@ -51,10 +51,17 @@
 	</select>
 	
 	<!-- 아이디 중복체크3 탈퇴유저 -->
-	<select id="selectRetireUserById" parameterType="String" resultType="RetireUsersDTO">
+	<select id="selectRetireUserByMap" parameterType="Map" resultType="RetireUsersDTO">
 		SELECT ID
 		  FROM USERS_RETIRE
-		 WHERE ID = #{id}
+		 <where>
+			 <if test="id != null">
+			 	ID = #{id}
+			 </if>
+			 <if test="nickname != null">
+			 	AND NICKNAME = #{nickname}
+			 </if>
+		 </where>
 	</select>
 	
 	<!-- 일반회원가입 -->
@@ -93,9 +100,9 @@
 	<!-- 회원탈퇴2 : RETIRE_USERS 테이블에 추가 -->
 	<insert id="insertRetireUser" parameterType="RetireUsersDTO">
 		INSERT INTO USERS_RETIRE
-			(ID, JOIN_DATE, RETIRE_DATE)
+			(ID, NICKNAME, JOIN_DATE, RETIRE_DATE)
 		VALUES
-			(#{id}, #{joinDate}, DATE_FORMAT(NOW(), '%y/%m/%d'))
+			(#{id}, #{nickname}, #{joinDate}, DATE_FORMAT(NOW(), '%y/%m/%d'))
 	</insert>
 	
 	<!-- 로그인 유지를 위한 SESSION_ID/SESSION_LIMIT_DATE 업데이트 -->

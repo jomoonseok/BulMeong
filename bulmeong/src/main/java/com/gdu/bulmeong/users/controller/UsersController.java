@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -154,8 +155,33 @@ public class UsersController {
 		usersService.restoreUser(request, response);
 	}
 	
+	@GetMapping("/users/findId/form")
+	public String findId() {
+		return "users/findId";
+	}
 	
+	@ResponseBody
+	@PostMapping(value="/users/findId", produces="application/json")  // 아이디 찾기
+	public Map<String, Object> findId(@RequestBody Map<String, Object> map) {
+		return usersService.findUser(map);
+	}
 	
+	@GetMapping("/users/findPw/form")
+	public String findPW() {
+		return "users/findPw";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/users/findPw", produces="application/json")  // 비밀번호 찾기
+	public Map<String, Object> findPw(@RequestBody Map<String, Object> map) {
+		return usersService.findUser(map);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/users/sendTemporaryPassword", produces="application/json")  // 이메일로 임시비번 전송
+	public  Map<String, Object> memberSendEmailTemporaryPassword(UsersDTO user) {
+		return usersService.sendTemporaryPassword(user);
+	}
 	
 	
 	

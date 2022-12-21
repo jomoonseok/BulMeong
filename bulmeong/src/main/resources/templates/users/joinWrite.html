@@ -170,7 +170,7 @@
 				/* 응답 */
 				dataType: 'json',
 				success: function(resData){  
-					if(resData.isUser || resData.isSleepUser){
+					if(resData.isUser || resData.isSleepUser || resData.isRetireUser){
 						$('#msg_nickname').text('이미 사용중인 닉네임입니다.');
 						nicknamePass = false;
 					} else {

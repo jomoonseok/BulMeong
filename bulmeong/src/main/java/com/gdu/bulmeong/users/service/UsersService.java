@@ -35,5 +35,8 @@ public interface UsersService {
 	public void naverLogin(HttpServletRequest request, UsersDTO naverUser);
 	public void naverJoin(HttpServletRequest request, HttpServletResponse response);
 	
+	public Map<String, Object> findUser(Map<String, Object> map);
+	public Map<String, Object> sendTemporaryPassword(UsersDTO user);
+	
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest);
 }

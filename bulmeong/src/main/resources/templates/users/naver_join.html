@@ -85,34 +85,30 @@
 	var nicknamePass = false;
 	var emailPass = false;
 	
-	function fn_nicknameCheck(){
-		
-		$('#nickname').keyup(function(){
-			
-			// 입력한 닉네임
-			let nicknameValue = $(this).val();
+	function fn_nicknameCheck(){	
+		$('#btn_nickname_check').click(function(){
+			$('#msg_nickname').text('');
 			
 			// 정규식(2~10자, 한글+영어+숫자)
 			let regNickname = /^[가-힣0-9a-zA-Z]{2,10}$/;
 			
-			if(nicknameValue != '' && regNickname.test(nicknameValue) == true){
-				$('#msg_nickname').text('');
-			} else {
-				$('#msg_nickname').text('닉네임을 확인하세요.');
+			let nicknameValue = $('#nickname').val();
+			
+			if(regNickname.test(nicknameValue) == false){
+				$('#msg_nickname').text('닉네임을 확인하세요');
 				nicknamePass = false;
 				return;
 			}
 			
-			// 닉네임 중복체크
 			$.ajax({
 				/* 요청 */
 				type: 'get',
 				url: '/users/checkReduceNickname',
-				data: 'nickname=' + nicknameValue,
+				data: 'nickname=' + $('#nickname').val(),
 				/* 응답 */
 				dataType: 'json',
-				success: function(resData){  
-					if(resData.isUser || resData.isSleepUser){
+				success: function(resData){
+					if(resData.isUser || resData.isSleepUser || resData.isRetireUser){
 						$('#msg_nickname').text('이미 사용중인 닉네임입니다.');
 						nicknamePass = false;
 					} else {
@@ -120,15 +116,13 @@
 						nicknamePass = true;
 					}
 				}
-			});  // ajax
-			
-		});  // keyup
-		
-	}  // fn_nicknameCheck
+			});
+		});
+	}
 	
 	// 이메일 중복 체크
 	function fn_emailCheck(){	
-		$('#btn_check').click(function(){
+		$('#btn_email_check').click(function(){
 			$('#msg_email').text('');
 			
 			// 정규식 
@@ -153,9 +147,8 @@
 				dataType: 'json',
 				success: function(resData){
 					// 기존 회원 정보에 등록된 이메일이라면 실패 처리
-					if(resData.isUser){
+					if(resData.isUser || resData.isSleepUser){
 						$('#msg_email').text('이미 사용중인 이메일입니다.');
-						$('#email').prop('readonly', false);
 						emailPass = false;
 					} else {
 						$('#msg_email').text('사용 가능한 이메일입니다.');
@@ -214,6 +207,7 @@
 			<div>
 				<label for="nickname">닉네임*</label>
 				<input type="text" name="nickname" id="nickname" th:value="${profile.nickname}">
+				<input type="button" value="중복체크" id="btn_nickname_check">
 				<span id="msg_nickname"></span>
 			</div>
 			<!--  
@@ -287,8 +281,8 @@
 			
 			<div>
 				<label for="email">이메일*</label>
-				<input type="text" name="email" id="email" th:value="${profile.email}" readonly>
-				<input type="button" value="중복체크" id="btn_check">
+				<input type="text" name="email" id="email" th:value="${profile.email}">
+				<input type="button" value="중복체크" id="btn_email_check">
 				<span id="msg_email"></span>
 			</div>
 			

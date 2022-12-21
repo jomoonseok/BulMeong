@@ -54,7 +54,7 @@ public class UsersServiceImpl implements UsersService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isUser", usersMapper.selectUserByMap(map) != null);
 		result.put("isSleepUser", usersMapper.selectSleepUserByMap(map) != null);
-		result.put("isRetireUser", usersMapper.selectRetireUserById(id) != null);
+		result.put("isRetireUser", usersMapper.selectRetireUserByMap(map) != null);
 		
 		return result;
 	}
@@ -70,6 +70,7 @@ public class UsersServiceImpl implements UsersService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isUser", usersMapper.selectUserByMap(map) != null);
 		result.put("isSleepUser", usersMapper.selectSleepUserByMap(map) != null);
+		result.put("isRetireUser", usersMapper.selectRetireUserByMap(map) != null);
 		
 		return result;
 	}
@@ -221,6 +222,7 @@ public class UsersServiceImpl implements UsersService {
 		// 탈퇴할 회원 RetireUserDTO 생성
 		RetireUsersDTO retireUser = RetireUsersDTO.builder()
 				.id(loginUser.getId())
+				.nickname(loginUser.getNickname())
 				.joinDate(loginUser.getJoinDate())
 				.build();
 		
@@ -317,7 +319,8 @@ public class UsersServiceImpl implements UsersService {
 				
 				out.println("<script>");
 				out.println("alert('일치하는 회원 정보가 없습니다.');");
-				out.println("location.href='/users/login/form';"); // 새로고침으로 바꾸기
+				out.println("history.back();");
+				//out.println("location.href='/users/login/form';");
 				out.println("</script>");
 				out.close();
 				
@@ -819,13 +822,17 @@ public class UsersServiceImpl implements UsersService {
 			String birthyear = profile.getString("birthyear");
 			String birthday = profile.getString("birthday").replace("-", "");
 			String profileImage = "";
+			System.out.println("imageIsNull : " + profile.isNull("profile_image"));
 			if(profile.isNull("profile_image")){
 				profileImage = "/images/basic_profileImage.png";
 			} else{
 				profileImage = profile.getString("profile_image");
 			};
+			System.out.println("if 처리후 image : " + profileImage);
 			
 			profileImage = profileImage.equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png") ? "/images/basic_profileImage.png" : profileImage;
+			
+			System.out.println("기본 프로필인지 아닌지 : " + profileImage);
 			
 			user = UsersDTO.builder()
 					.id(id)
@@ -961,6 +968,43 @@ public class UsersServiceImpl implements UsersService {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	
+	
+	@Override
+	public Map<String, Object> findUser(Map<String, Object> map) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("findUser", usersMapper.selectUserByMap(map));
+		return result;
+	}
+	
+	
+	
+	@Override
+	public Map<String, Object> sendTemporaryPassword(UsersDTO user) {
+
+		// 9자리 임시 비밀번호
+		String temporaryPassword = securityUtil.generateRandomString(9);
+		System.out.println("임시비번 : " + temporaryPassword);
+		
+		// 메일 내용
+		String text = "";
+		text += "비밀번호가 초기화되었습니다.<br>";
+		text += "임시비밀번호 : <strong>" + temporaryPassword + "</strong><br><br>";
+		text += "임시비밀번호로 로그인 후에 반드시 비밀번호를 변경해 주세요.";
+		
+		// 메일 전송
+		javaMailUtil.sendJavaMail(user.getEmail(), "[Application] 임시비밀번호", text);
+		
+		// DB로 보낼 user
+		user.setPw(securityUtil.sha256(temporaryPassword));  // user에 포함된 userNo와 pw를 사용
+		
+		// 임시 비밀번호로 DB 정보 수정하고 결과 반환
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("isSuccess", usersMapper.updateUserPassword(user));
+		return result;
 		
 	}
 	
