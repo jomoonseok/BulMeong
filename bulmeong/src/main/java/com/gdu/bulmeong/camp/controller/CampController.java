@@ -46,6 +46,11 @@ public class CampController {
 		return campService.getCampListOption(request);
 	}
 	
+	@GetMapping("/detail")
+	public String detail(HttpServletRequest request, Model model) {
+		campService.getDetailList(request, model);
+		return "camp/detail";
+	}
 	
 	
 }

@@ -9,6 +9,9 @@ import com.gdu.bulmeong.pay.service.PayService;
 
 @Controller
 public class PayController {
+	
+	@Autowired
+	private PayService payService;
 
 	 
 	@GetMapping("/pay/info")

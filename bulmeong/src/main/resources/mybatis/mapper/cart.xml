@@ -6,12 +6,31 @@
 
 <mapper namespace="com.gdu.bulmeong.cart.mapper.CartMapper">
 
-	<!-- 카트 담기 -->
-	<insert id="addCart">
+	<select id="selectUserCartCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		  FROM CAMP_CART
+		 WHERE CAMP_NO = #{campNo}
+		   AND ID = #{id}
+	</select>
+	
+	<select id="selectCampCartCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM CAMP_CART
+		 WHERE CAMP_NO = #{campNo}
+	</select>
+
+	<insert id="insertCart" parameterType="map">
 		INSERT INTO CAMP_CART
 			(CAMP_NO, ID)
 		VALUES
-			(CAMP_NO_SEQ.NEXTVAL, #{id})
+			(#{campNo}, #{id})
 	</insert>
+	
+	<delete id="deleteCart" parameterType="map">
+		DELETE
+		  FROM CAMP_CART
+		 WHERE CAMP_NO = #{campNo}
+		   AND ID = #{id}
+	</delete>
 	 
 </mapper>

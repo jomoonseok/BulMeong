@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head>
+	<script>
+		$(function(){
+			fn_nicknameCheck();
+			fn_changeImage();
+		});
+		
+		var nicknamePass = true;
+		
+		function fn_nicknameCheck(){
+			
+			$('#nickname').keyup(function(){
+				// 입력한 닉네임
+				let nicknameValue = $(this).val();
+				
+				// 정규식(2~20자, 한글+영어+숫자)
+				let regNickname = /^[가-힣0-9a-zA-Z]{2,20}$/;
+				
+				if(nicknameValue != '' && regNickname.test(nicknameValue) == true){
+					$('#msg_nickname').text('');
+				} else {
+					$('#msg_nickname').text('닉네임을 확인하세요.');
+					nicknamePass = false;
+					return;
+				}
+				
+				// 닉네임 중복체크
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '/users/checkReduceNickname',
+					data: 'nickname=' + nicknameValue,
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){  
+						if(nicknameValue != '[[${session.loginUser.nickname}]]'){
+							if(resData.isUser || resData.isSleepUser){
+								$('#msg_nickname').text('이미 사용중인 닉네임입니다.');
+								nicknamePass = false;
+							} else {
+								$('#msg_nickname').text('사용 가능한 닉네임입니다.');
+								nicknamePass = true;
+							}
+						}
+					}
+				});  // ajax
+			}); // keyup
+		} // fn_nicknameCheck
+		
+		function fn_changeImage(){
+			$('#image').change(function(){
+				console.log($('#image').val());
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '/users/changeImage',
+					data: 'image=' + $('#image').val(),
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						
+					}
+				});
+			});
+		}
+		
+	</script>
+	<style>
+		.image{
+			display: inline-block; 
+			border:1px solid gray; 
+			width:100px; 
+			height:30px;
+			line-height: 30px; 
+			text-align:center;
+			font-weight: bold; 
+		}
+	</style>
+</head>
+<body>
+
+	<header th:replace="~{layout/header::header_layout}"></header>
+	
+	<h1>프로필 수정</h1>
+	
+	<form th:action="@{users/modify/profile}" method="post" >
+		<table border="1">
+			<tbody>
+				<tr>
+					<td>프로필 이미지</td>
+					<td>
+						<img id="profileImage" th:src=${session.loginUser.profileImage} width="100px" >
+						<div>
+							<label for="image" class="image">사진변경</label>
+							<input type="file" id="image" name="image" accept="image/png, image/jpeg" style="display:none">
+							<!-- <input type="file" id="image" name="image" accept="image/png, image/jpeg"> -->
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="nickname">닉네임</label> </td>
+					<td>
+						<!-- 닉네임 -->
+						<div>
+							
+							<input type="text" name="nickname" id="nickname" th:value="${session.loginUser.nickname}">
+							<span id="msg_nickname"></span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<button>적용</button>
+		<input type="button" value="취소하기" id="btn_cancel">
+	</form>
+	
+</body>
+</html>

@@ -23,6 +23,7 @@
 		<typeAlias type="com.gdu.bulmeong.pay.domain.PayDTO" alias="PayDTO" />
 		<typeAlias type="com.gdu.bulmeong.reserve.domain.TentDTO" alias="TentDTO" />
 		<typeAlias type="com.gdu.bulmeong.reserve.domain.ReserveDTO" alias="ReserveDTO" />
+		<typeAlias type="com.gdu.bulmeong.reserve.domain.ReservedDTO" alias="ReservedDTO" />
 		<typeAlias type="com.gdu.bulmeong.cart.domain.CartDTO" alias="CartDTO" />
 
 		<typeAlias type="com.gdu.bulmeong.users.domain.UsersDTO" alias="UsersDTO" />
