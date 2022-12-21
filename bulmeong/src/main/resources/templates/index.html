@@ -9,6 +9,7 @@
 	<div th:if="${session.loginUser == null}">
 		<a th:href="@{/users/agree}">회원가입</a>
 		<a th:href="@{/users/login/form}">로그인</a>
+		<a th:href="@{/admin}">관리자 전용</a>
 	</div>
 	
 	<!-- 로그인이 된 상태 -->
@@ -25,8 +26,6 @@
 	
 	
 </head>
-	
-
 
 	<!-- 홈화면 -->
     <!-- Swiper -->
@@ -90,7 +89,17 @@
   		
   	</script>
   	
-  	<div class="weatherLoaction"></div>
+  	<div id="weatherArea">
+	 	<div class="xyLoaction">
+	 		<div class="location"></div>
+	 	</div>
+	 	<div class="xyWeather">
+	 		<div class="today" style="float:left"></div>
+	 		<div class="tomorrow" style="float:left"></div>
+	 		<div class="afterTomorrow" style="float:left"></div>
+	 	</div>
+  	</div>
+  	
 	<script>
 		
 		// 위치정보 받아오기
@@ -114,10 +123,7 @@
 				data: 'latitude=' + x + '&longitude=' + y,
 				success: function(resData) {
 					var jsonObj = JSON.parse(resData.location);  // jsonObj - ADDR : "서울특별시 금천구 가산동 557-3"
-					
-					var locationDiv = '<div class="location">';
-					locationDiv += '<div>' + jsonObj.ADDR + '</div>';
-					$('.weatherLoaction').append(locationDiv);
+					$('.location').append('<div>' + jsonObj.ADDR + ' 부근</div>');
 				}
 			})
 	    }
@@ -140,49 +146,100 @@
 				url: '/index/weather',
 				data: 'latitude=' + x + '&longitude=' + y,
 				success: function(resData) {
-					var weather = resData.weather;
-					console.log(weather);
+					var skyDiv = '<div>';
+					var todayDiv = '<div>오늘&nbsp;(' + resData.todayDate + ')</div>';
 					
-					var today = getToday();
-					
-					
-					
-					
-					$.each(weather, function(i, item) {
+					$.each(resData.todayWeather, function(i, today) {
 						
-						if(today == weather.fcstDate) {
-							
+						switch(today.fcstValue) {
+						case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+						case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+						case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;	height: 59px;"></div>'; break;
+						
 						}
 						
-						
+						todayDiv += '<div class="todayDiv" data-idx="' + i + '">' + today.category + ' : ' + today.fcstValue + '</div>'; 
 					})
+					$('.today').append(skyDiv);
+					$('.today').append(todayDiv);
+					
+					var tomorrowDiv = '<div>내일&nbsp;(' + resData.tomorrowDate + ')</div>';
+					$.each(resData.tomorrowWeather, function(i, tomorrow) {
 						
-					var weatherDiv = '<div class="weather">';
+						switch(tomorrow.fcstValue) {
+						case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+						case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+						case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;	height: 59px;"></div>'; break;
+						
+						}
+						
+						tomorrowDiv += '<div class="tomorrowDiv" data-idx="' + i + '">' + tomorrow.category + ' : ' + tomorrow.fcstValue + '</div>'; 
+					})
+					$('.tomorrow').append(skyDiv);
+					$('.tomorrow').append(tomorrowDiv);
 					
-					weatherDiv += '<div style="float:left">'; 
-					weatherDiv += '<div> 오늘 &nbsp;&nbsp;</div>'; 
-					weatherDiv += '<div>' + 'd' + '</div>'; 
-					weatherDiv += '</div>'; 
-
-					weatherDiv += '<div style="float:left">'; 
-					weatherDiv += '<div> 내일 &nbsp;&nbsp;</div>'; 
-					weatherDiv += '<div>' + 'd' +'</div>'; 
-					weatherDiv += '</div>'; 
-
-					weatherDiv += '<div style="float:left">'; 
-					weatherDiv += '<div> 모레 &nbsp;&nbsp;</div>'; 
-					weatherDiv += '<div>' + 'd' +'</div>'; 
-					weatherDiv += '</div>'; 
-					
-					weatherDiv += '</div>';
-					
-					$('.weatherLoaction').append(weatherDiv);
-					
-					
+					var afterTomorrowDiv = '<div>모레&nbsp;(' + resData.afterTomorrowDate + ')</div>';
+					$.each(resData.afterTomorrowWeather, function(i, afterTomorrow) {
+						
+						switch(afterTomorrow.fcstValue) {
+						case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+						case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+						case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;	height: 59px;"></div>'; break;
+						
+						}
+						
+						afterTomorrowDiv += '<div class="afterTomorrowDiv" data-idx="' + i + '">' + afterTomorrow.category + ' : ' + afterTomorrow.fcstValue + '</div>'; 
+					})
+					$('.afterTomorrow').append(skyDiv);
+					$('.afterTomorrow').append(afterTomorrowDiv);
 				}
 			})
 	    }
 	</script>
+	
+	<div class="jjimListArea">
+		<table class="jjimList" border="1" style="text-align: center;">
+			<thead>
+				<tr>
+					<td>순위</td>
+					<td>캠핑장명</td>
+					<td>지역</td>
+					<td>찜</td>
+				</tr>
+			</thead>
+			<tbody id="tbody_jjim">
+				<div>찜 캠핑장 TOP 10</div>
+			</tbody>
+		</table>
+	</div>
+	<script>
+		
+			
+		$.ajax({
+			
+			type: 'get',
+			url: '/index/jjimList',
+			success: function(resData) {
+				
+				$.each(resData.jjim, function(i, jjim) {
+					console.log(jjim.campNo);
+					var jjimBoard = '<tr>';
+					jjimBoard += '<td>' + ++i + '</td>';
+					jjimBoard += '<td><a href="/detail?campNo=' + jjim.campNo + '">' + jjim.facltNm + '</a></td>';
+					jjimBoard += '<td>' + jjim.sigunguNm + '</td>';
+					jjimBoard += '<td>' + jjim.jjim + '</td>';
+					jjimBoard += '</tr>';
+					$('#tbody_jjim').append(jjimBoard);
+				});
+					
+					
+				
+			}
+			
+		})
+		
+	</script>
+	
 	
 	
 </body>

@@ -11,4 +11,11 @@
 	 	  FROM CAMP
 	 </select>
 	 
+	 <select id="selectAllCampByJjim" resultType="CampDTO"> 
+	    SELECT CAMP_NO, facltNm, sigunguNm, jjim, sum
+ 		  FROM CAMP
+ 		 ORDER BY jjim DESC, CAMP_NO LIMIT 10
+	 </select>
+	 
+	 
 </mapper>

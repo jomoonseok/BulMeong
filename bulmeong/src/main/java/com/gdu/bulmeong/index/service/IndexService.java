@@ -9,6 +9,7 @@ public interface IndexService {
 	public Map<String, Object> getCampListIndex();
 	public Map<String, Object> getLocation(HttpServletRequest request);
 	public Map<String, Object> getWeather(HttpServletRequest request);
+	public Map<String, Object> getCampListByJjim();
 	
 	
 }

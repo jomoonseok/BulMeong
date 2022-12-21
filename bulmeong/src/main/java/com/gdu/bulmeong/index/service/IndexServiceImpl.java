@@ -98,10 +98,21 @@ public class IndexServiceImpl implements IndexService {
 		BufferedReader br = null;
 		StringBuilder sb = null;
 		
-		LocalDate now = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String formatedNow = now.format(formatter);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 		
+		
+		// 시간
+		LocalDate now = LocalDate.now();  // 오늘
+        String formatedNow = now.format(formatter);  
+        LocalDate tomorrow = LocalDate.now().plusDays(1);  // 내일
+        String fmtTomorrow = tomorrow.format(formatter);
+        LocalDate afterTomorrow = LocalDate.now().plusDays(2);  // 모레
+        String fmtAfterTomorrow = afterTomorrow.format(formatter);
+        
+ 		// 현재 시간에서 1시간 뒤 구하기
+ 		LocalDateTime nowTimePlus = LocalDateTime.now().plusHours(1);
+ 		String formatNow = nowTimePlus.format(DateTimeFormatter.ofPattern("HH00"));  // 현재부터 1시간 뒤
+        
 		String serviceKey = "tuKJQnWosgochz4Xdrz%2FEnE0fod1HOfyo0ZK7gAZMn7bUHdBQNpbTN6zksDAGe2KOWYJLpKMYuvDJWjBI5aAvQ%3D%3D";
 		String pageNo = "1";
 		String numOfRows = "1000";
@@ -118,7 +129,6 @@ public class IndexServiceImpl implements IndexService {
 		int nx = 37;  // 기본값
 		int ny = 126; // 기본값
 		
-		
 		if(latitude != null) {  // 위도 (nx)
 			intLatitude = (int)Double.parseDouble(latitude);
 		} else {
@@ -131,10 +141,6 @@ public class IndexServiceImpl implements IndexService {
 			intlongitude = ny;
 		}
 		
-		
-		// 현재 시간대 구하기
-		LocalDateTime nowTime = LocalDateTime.now().plusHours(1);
-		String formatNow = nowTime.format(DateTimeFormatter.ofPattern("HH00"));  // 현재부터 1시간 뒤
 		
 		String apiURL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst" 
 						+ "?serviceKey=" + serviceKey + "&pageNo=" + pageNo + "&numOfRows=" + numOfRows + "&dataType=" + dataType + "&base_date=" + base_date + "&base_time=" + base_time + "&nx=" + intLatitude + "&ny=" + intlongitude;
@@ -170,18 +176,26 @@ public class IndexServiceImpl implements IndexService {
 		JSONObject obj4 = new JSONObject(obj3.get("items").toString());  // {"item":[{"baseDate":"20221220","fcstTime":"0600","fcstValue":"-2","nx":37,"ny":126,"category":"TMP","baseTime":"0500","fcstDate":"20221220"}]}
 		
 		JSONArray arr = obj4.getJSONArray("item");
+		JSONObject obj5 = null;
 		
-		// 사용할 객체와 담을 필드 값
-		WeatherDTO weather = new WeatherDTO();
+		// 3일의 날짜를 일별로 구분해서 전달하기 위한 작업
+		// 사용할 객체
+		WeatherDTO todayWeather = new WeatherDTO();          // 오늘 객체
+		WeatherDTO tomorrowWeather = new WeatherDTO();       // 내일 객체
+		WeatherDTO afterTomorrowWeather = new WeatherDTO();  // 모레 객체
+		
+		// 사용할 필드값
 		String fcstDate;   // 예보일자
 		String fcstTime;   // 예보시간
 		String category;   // 항목
 	    String fcstValue;  // 항목에 따른 값
 	    int gubun;         // 사용여부를 가릴 필드
 		
-	    List<WeatherDTO> list = new ArrayList<>();  // json array와 list 차이 공부하기
-	    JSONObject obj5 = null;
-	    
+		// 객체를 담을 리스트
+		List<WeatherDTO> todayList = new ArrayList<>();          
+	    List<WeatherDTO> tomorrowList = new ArrayList<>();      
+	    List<WeatherDTO> afterTomorrowList = new ArrayList<>();  
+		
 		for(int i = 0; i < arr.length(); i++) {
 			obj5 = arr.getJSONObject(i);  // 키값으로 값을 불러오기 위해서 다시 JSONObject에 JSONArray의 값을 하나하나 담아옴
 			
@@ -191,7 +205,7 @@ public class IndexServiceImpl implements IndexService {
 			category = obj5.getString("category");
 			fcstValue = obj5.getString("fcstValue");
 			
-			if(fcstTime.equals(formatNow)) {
+			if(fcstTime.equals(formatNow)) {  // 한시간 뒤의 예보와 같은 데이터만 추출하기
 				gubun = 0;
 				switch (category) {
 	            case "TMP":
@@ -206,7 +220,6 @@ public class IndexServiceImpl implements IndexService {
 	                break;
 	            case "PTY":
 	            	category = "강수형태";  // 없음0 , 비1, 비 또는 눈2, 눈3, 소나기4
-	            	
 	            	switch(fcstValue) {
 	            	case "0": fcstValue = "없음"; break;
 	                case "1": fcstValue = "비"; break;
@@ -230,25 +243,47 @@ public class IndexServiceImpl implements IndexService {
 	                
 	                switch(fcstValue) {
 	                case "1": fcstValue = "맑음"; break;
-	                case "3": fcstValue = "구름 많음"; break;
+	                case "3": fcstValue = "구름많음"; break;
 	                case "4": fcstValue = "흐림"; break;
 	                }
 	                gubun = 1;
 	                break;
 				}
-			
-				weather = WeatherDTO.builder()
-						.category(category).fcstValue(fcstValue).fcstDate(fcstDate).fcstTime(fcstTime).gubun(gubun).build();
-			
-				if(gubun == 1) {
-					list.add(weather);	
+				
+				if(gubun == 1 && fcstDate.equals(formatedNow)) {
+					todayWeather = WeatherDTO.builder()
+							.category(category).fcstValue(fcstValue).fcstDate(fcstDate).fcstTime(fcstTime).gubun(gubun).build();
+					todayList.add(todayWeather);	
+				} else if(gubun == 1 && fcstDate.equals(fmtTomorrow)) {
+					tomorrowWeather = WeatherDTO.builder()
+							.category(category).fcstValue(fcstValue).fcstDate(fcstDate).fcstTime(fcstTime).gubun(gubun).build();
+					tomorrowList.add(tomorrowWeather);	
+				} else if(gubun == 1 && fcstDate.equals(fmtAfterTomorrow)) {
+					afterTomorrowWeather = WeatherDTO.builder()
+							.category(category).fcstValue(fcstValue).fcstDate(fcstDate).fcstTime(fcstTime).gubun(gubun).build();
+					afterTomorrowList.add(afterTomorrowWeather);
 				}
-			}
+				
+			} // if
 		}
 		
 		Map<String, Object> result = new HashMap<>();
-		result.put("weather", list);
+		result.put("todayWeather", todayList);  // 오늘
+		result.put("tomorrowWeather", tomorrowList);  // 내일
+		result.put("afterTomorrowWeather", afterTomorrowList); // 모레  
+		
+		result.put("todayDate", formatedNow);  // 오늘 날짜
+		result.put("tomorrowDate", fmtTomorrow);  // 내일 날짜
+		result.put("afterTomorrowDate", fmtAfterTomorrow);  // 모레 날짜
 		return result;
 	}
+	
+	@Override
+	public Map<String, Object> getCampListByJjim() {
+		Map<String, Object> result = new HashMap<>();
+		result.put("jjim", indexMapper.selectAllCampByJjim());
+		return result;
+	}
+	
 	
 }

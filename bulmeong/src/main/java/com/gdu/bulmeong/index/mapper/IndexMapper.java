@@ -11,4 +11,7 @@ import com.gdu.bulmeong.camp.domain.CampDTO;
 public interface IndexMapper {
 	
 	public List<CampDTO> selectAllCampIndex();
+	public List<CampDTO> selectAllCampByJjim();
+	
+	
 }

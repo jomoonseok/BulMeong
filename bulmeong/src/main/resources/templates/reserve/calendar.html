@@ -226,7 +226,7 @@
 	      	    		}
 	      	    		tent_div += '<div id="category" data-category = "' + tent.tentCategory + '">텐트 구분 : ' + tent.tentCategory + '</div>'; 
 	      	    		tent_div += '<div>최대 인원 : ' + tent.tentMaxCount + '</div>'; 
-	      	    		tent_div += '<div>이용 금액 : ' + tent.tentSum + '</div>';
+	      	    		tent_div += '<div>이용 금액 : ' + tent.tentSum.toLocaleString() + '</div>';
 	      	    		
 	      	    		if(tent.tentState == 0) {
 		      	    		tent_div += '<div id="div_reserve"><input type="submit" class="btn_reserve" value="예약하기" data-tentname="' + tent.tentName+ '"  data-tentno="' + tent.tentNo + '" data-count="' + tent.tentMaxCount + '" onclick="fn_reserve(this)"  ></div></div>'; 

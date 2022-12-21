@@ -36,5 +36,11 @@ public class IndexController {
 		return indexService.getWeather(request);
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/index/jjimList", produces="application/json" )     
+	public Map<String, Object> printCampJjim(HttpServletRequest request) {
+		return indexService.getCampListByJjim();
+	}
+	
 	
 }
