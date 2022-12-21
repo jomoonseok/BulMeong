@@ -4,7 +4,7 @@
 <style>
 	
 		.layout {
-			background: url(/images/hooray.jpg) repeat-x 0 bottom;
+			background: url(/images/wall.jpg) repeat-x 0 bottom;
 			background-repeat: no-repeat;
 			background-size: cover;
 			width: 100%;
@@ -119,6 +119,22 @@
 			float: left;
 		}
 		
+		.share {
+			list-style: none; 
+			display: flex;
+		}
+		.sns_type > ul {
+			margin:0;
+			padding-left:6px;
+		}
+		.sns_type > ul > li {
+			list-style: none;
+			
+		}
+		
+
+		
+		
 	</style>
 	
 	<script>
@@ -160,60 +176,126 @@
 			<p class="lineIntro" th:text="${camp.lineIntro}"></p>
 		</div>
 		
+		<hr>
+		
+		<div class="tag">
+			<!-- <p class="themaEnvrnCl" th:text="${camp.themaEnvrnCl}"></p> -->
+			<!-- <block th:each=" lang : ${#strings.listSplit(themaEnvrnCl,',')}"> -->
+			<th:block th:each="lang : ${camp.themaEnvrnCl}">
+					<th:block th:if = "${lang != null}" th:text="${'#'.concat(lang.replaceAll(',',' #'))}"></th:block>
+					<th:block th:unless = "${lang == '#'}" th:text="${lang}"></th:block>
+			</th:block>
+		</div>
+		
 		<div class="icon">
 			<ul class="share">
 				<li class="sns">
-					<button type="button" class="sns_share">
-						<span class="skip">SNS 공유</span>
+					<button class="sns_share" onclick="fn_showHide()" style="background: none; border: none;">
+						<img src="images/share.png" style="width: 24px; height: 24px;">
 					</button>
-					<div class="sns_share" style="display: none;">
+					<div class="sns_type" style="display:none;">
 						<ul>
 							<li>
-								<button type="button" class="sns_list1">
-									<span class="skip">닫기</span>
-								</button>
+								<img src="images/back.png" class="sns_cancel" style="width: 24px; height: 24px;">
 							</li>
 							<li>
-								<button type="button" class="sns_list2" onclick="fn_sendSns('facebook')">
-									<span class="skip">페이스북</span>
-								</button>
+								<img src="images/facebook.png" class="sns_list1" onclick="fn_sendSns('facebook')" style="width: 24px; height: 24px;">
 							</li>
 							<li>
-								<button type="button" class="sns_list3" onclick="fn_sendSns('twitter')">
-									<span class="skip">트위터</span>
-								</button>
+								<img src="images/twitter.png" class="sns_list2" onclick="fn_sendSns('twitter')" style="width: 24px; height: 24px;">
 							</li>
 							<li>
-								<button type="button" class="sns_list4" onclick="fn_sendSns('blog')">
-									<span class="skip">블로그</span>
-								</button>
-							</li>
-							<li>
-								<button type="button" class="sns_list5" onclick="fn_sendSns('kstory')">
-									<span class="skip">카카오스토리</span>
-								</button>
+								<img src="images/kakaotalk.png" class="sns_list4" onclick="fn_sendSns('kakaotalk')" style="width: 24px; height: 24px;">
 							</li>
 						</ul>
 					</div>
 				</li>
-				<li class="bookmark">
-					<a href="javascript:CreateBookmarkLink('', '현재페이지');" id="favorite" title="즐겨찾기">
-						<span class="skip">즐겨찾기</span>
-					</a>
-				</li>
 				<li class="link">
-					<a href="#" onclick="copy(this.href)">
-						<span class="skip">링크 복사하기</span>
+					<a href="" onclick="linkCopy()">
+						<img src="images/url.png" style="width: 24px; height: 24px;">
 					</a>
 				</li>
 				<li class="print">
-					<a href="#none" onclick="printCamp()">
-						<span class="skip">인쇄하기</span>
+					<a href="#printThis" onclick="printThis()">
+						<img src="images/print.png" style="width: 24px; height: 24px;">
 					</a>
 				</li>
 			</ul>
 		</div>
 	</div>
+	
+	<script>
+	
+		function fn_showHide() {
+			
+			$('.sns_type').hide();
+			
+			$('.sns_share').click(function(){
+				$('.sns_type').show();
+			});
+			
+			$('.sns_cancel').click(function(){
+				$('.sns_type').hide();
+			});
+			
+		}
+	
+		function fn_sendSns(sns) {
+			var method = "popup";
+			var thisUrl = document.URL;
+			var snsTitle = "캠핑장 공유";
+			if (sns == 'facebook') {
+				var url = "http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(thisUrl);
+				window.open(url, "", "width=486, height=286");
+			} else if (sns == 'twitter') {
+				var url = "http://twitter.com/share?url=" + encodeURIComponent(thisUrl) + "&text=" + encodeURIComponent(snsTitle);
+				window.open(url, "tweetPop", "width=486, height=286,scrollbars=yes");
+			} else if (sns == 'kakaotalk') {
+				Kakao.init('92939f8bc862108b29a394da4d1b8fbb');
+				
+				// SDK 초기화 여부를 판단합니다.
+				console.log(Kakao.isInitialized());
+				
+				// 카카오링크 버튼 생성
+				Kakao.Link.sendDefault({
+					// container: '.sns_list4', // HTML에서 작성한 ID값
+			        objectType: 'feed',
+			        content: {
+			        title: "캠핑장 공유", // 보여질 제목
+			        description: "공유할거삼", // 보여질 설명
+			        imageUrl: thisUrl, // 콘텐츠 URL
+			        link: {
+			            mobileWebUrl: thisUrl,
+			            webUrl: thisUrl
+			        }
+			        }
+				});
+				/* var url = "https://kakaotalk.com/share?url=" + encodeURIComponent(thisUrl);
+				window.open(url, "shareKakao", "width=400, height=500, resizable=yes"); */
+			}
+		}
+		
+		function linkCopy() {
+			
+				var url = '';
+				var textarea = document.createElement("textarea");
+				document.body.appendChild(textarea);
+				url = window.document.location.href;
+				textarea.value = url;
+				textarea.select();
+				document.execCommand("copy");
+				document.body.removeChild(textarea);
+				alert("URL이 복사되었습니다.");
+			
+		}
+		
+		function printThis() {
+			$("#content").printThis({
+				
+			});
+		}
+	
+	</script>
 	
 	<hr>
 		
@@ -265,9 +347,7 @@
 										<th scope="col">홈페이지</th>
 										<td>
 											<a th:href="${camp.homepage}" target="_BLANK" title="새창열림">홈페이지 바로가기</a>
-											<i class="icon_link">
-												<span class="skip"></span>
-											</i>
+											<img src="images/link.png">
 										</td>
 									</tr>
 									<tr>
@@ -284,31 +364,90 @@
 							</table>
 						</div>
 						<div>
-							<button class="btn_jjim" onclick="fn_jjim">찜하기</button>
+							<button class="btn_jjim" >찜하기</button>
+							<span id="heart"></span>
+							<span id="jjim"></span>
+							<span id="cartCnt"></span>
 						</div>
-						
+						<div th:if="${session.loginUser != null}">
+							<input type="hidden" id="loginUser" th:data-user="${session.loginUser.id}">
+						</div>
 						<script>
 							
 							// 함수 호출
-							fn_jjim();
+							$(function(){
+								fn_jjim();
+								fn_jjimCount();
+								fn_jjimCheck();
+							});
+							
+							function fn_jjimCheck() {
+								var loginUser = $('#loginUser').data('user');
+								var campNo = "[[${camp.campNo}]]";
+								$.ajax({
+									url: '/cart/getJjimCheck',
+									type: 'get',
+									data: 'campNo='+ campNo +'&id=' + loginUser,
+									dataType: 'json',
+									success: function(resData){
+										if(resData.count == 0) {
+											$('#heart').html('<img src="/images/whiteheart.png" width="15px">');
+											$('#jjim').removeClass("jjim_checked");
+										} else {
+											$('#heart').html('<img src="/images/redheart.png" width="15px">');
+											$('#jjim').addClass("jjim_checked");
+											
+										}
+									}
+								});
+							}
+							
+							function fn_jjimCount(){
+								var campNo = "[[${camp.campNo}]]";
+								$.ajax({
+									url: '/cart/getJjimCount',
+									type: 'get',
+									data: 'campNo=' + campNo,
+									dataType: 'json',
+									success: function(resData){
+										$('#cartCnt').text(resData.count + '개');
+									}
+								});
+							}
 						
 							function fn_jjim() {
 								$('.btn_jjim').click(function(){
 									// 로그인을 해야 "좋아요"를 누를 수 있다.
-									if("${session.loginUser} == ''") {
+									var loginUser = $('#loginUser').data('user');
+									var campNo = "[[${camp.campNo}]]";
+									console.log(loginUser);
+									if(loginUser == null) {
 										alert('해당 기능은 로그인이 필요합니다.');
 										return;
+									}
+									
+									// "좋아요" 선택/해제 상태에 따른 하트 변경
+									$('#jjim').toggleClass("jjim_checked");
+									if($('#jjim').hasClass("jjim_checked")) {
+										$('#heart').html('<img src="/images/redheart.png" width="15px">');
+									} else {
+										$('#heart').html('<img src="/images/whiteheart.png" width="15px">');
 									}
 									
 									// "좋아요" 처리
 									$.ajax({
 										url: '/cart/mark',
 										type: 'get',
-										data: 'campNo=${camp.campNo}&id=${session.loginUser.id}',
+										data: 'campNo='+ campNo +'&id=' + loginUser,
 										dataType: 'json',
 										success: function(resData){
-											if(resData.isSuccess) {
-												fn_jjimCount();
+											$('#cartCnt').text(resData.cartCnt + '개');
+											if(resData.insertSuccess) {
+												// alert('찜하기 성공?');
+												//fn_jjimCount();
+											}
+											if(resData.deleteSuccess){
+												// alert('찜풀기');
 											}
 										}
 									});
@@ -593,16 +732,17 @@
 			<div>
 				<p><img src="images/campinfo.png"></p>
 			</div>
-			
-			<hr>
-			
-			<div>
-				<h3>
-					<img src="images/info.png">위치 정보
-				</h3>
-			</div>			
-			<div id="map">
+		</div>
 		
+		<hr>
+		
+		<div>
+			<h3>
+				<img src="images/info.png">위치 정보
+			</h3>
+		</div>			
+		<div id="map">
+	
 			<input type="hidden"  id="mapY" th:value="${camp.mapY}" >
 			<input type="hidden"  id="mapX" th:value="${camp.mapX}" >
 			<input type="hidden"  id="facltNm" th:value="${camp.facltNm}">
@@ -625,7 +765,7 @@
 				
 				// 지도에 추가된 지도타입정보를 가지고 있을 변수입니다
 				var currentTypeId;
-
+	
 				// 버튼이 클릭되면 호출되는 함수입니다
 				function setOverlayMapTypeId(maptype) {
 				    var changeMaptype;
@@ -640,12 +780,12 @@
 				        
 				        // 로드뷰 도로정보 지도타입
 				        changeMaptype = kakao.maps.MapTypeId.ROADVIEW;    
-
+	
 				    } else if (maptype === 'terrain') {
 				        
 				        // 지형정보 지도타입
 				        changeMaptype = kakao.maps.MapTypeId.TERRAIN;    
-
+	
 				    } else if (maptype === 'use_district') {
 				        
 				        // 지적편집도 지도타입
@@ -667,15 +807,15 @@
 				
 				// 마커가 표시될 위치입니다 
 				var markerPosition  = new kakao.maps.LatLng(mapY, mapX); 
-
+	
 				// 마커를 생성합니다
 				var marker = new kakao.maps.Marker({
 				    position: markerPosition
 				});
-
+	
 				// 마커가 지도 위에 표시되도록 설정합니다
 				marker.setMap(map);
-
+	
 				// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
 				// marker.setMap(null); 
 				
@@ -692,16 +832,16 @@
 				infowindow.open(map, marker); 
 			</script>
 		</div>
-		
-		<div>
-		
-			<p>
-			<button onclick="setOverlayMapTypeId('traffic')">교통정보 보기</button> 
-			<button onclick="setOverlayMapTypeId('roadview')">로드뷰 도로정보 보기</button> 
-			<button onclick="setOverlayMapTypeId('terrain')">지형정보 보기</button>
-			<button onclick="setOverlayMapTypeId('use_district')">지적편집도 보기</button>
-			</p>
-		</div>
+	
+	<div>
+	
+		<p>
+		<button onclick="setOverlayMapTypeId('traffic')">교통정보 보기</button> 
+		<button onclick="setOverlayMapTypeId('roadview')">로드뷰 도로정보 보기</button> 
+		<button onclick="setOverlayMapTypeId('terrain')">지형정보 보기</button>
+		<button onclick="setOverlayMapTypeId('use_district')">지적편집도 보기</button>
+		</p>
+	</div>
 			
 	</section>
 	

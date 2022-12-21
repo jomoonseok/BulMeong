@@ -63,11 +63,11 @@
 					camp_div += '<div>' + camp.jjim + '</div>';
 					camp_div += '<div>' + camp.sum + '</div>';
 					
-					camp_div += '<div class="lnk_jjim" data-campno="'+ camp.campNo +'" onclick="fn_pressJjim(this)">'
+					camp_div += '<div class="lnk_jjim" data-campno="'+ camp.campNo + '>';
 					
-					camp_div += '<span class="heart"></span>'
-					camp_div += '<span class="jjim">찜 </span>'
-					camp_div += '<span class="jjim_count"></span>'
+					//camp_div += '<span class="heart"></span>';
+					//camp_div += '<span class="jjim">찜 </span>';
+					camp_div += '<span class="jjim_count"></span>';
 					camp_div += '</div>';
 					
 					camp_div += '<div><input type="button" class="btn_detail" data-campNo="' + camp.campNo + '" value="상세보기" </div>';  // 구현하기
@@ -231,8 +231,43 @@
 	  
 	  
 	// 좋아요 누르기
-	function fn_pressJjim(e){  // event의 e
-		  
+	function fn_pressJjim(){  // event의 e
+		  $(document).on('click', '.lnk_jjim', function() {
+			  /* $(this).toggleClass("jjim_checked");
+				if ($(this).hasClass("jjim_checked")) {
+					$(this).$('.heart').html('<img src="images/redheart.png" width="15px">');
+				} else {
+					$(this).$('.heart').html('<img src="images/whiteheart.png" width="15px">');
+				} */
+				
+				// "좋아요" 처리
+				$.ajax({
+					url: '/cart/mark',
+					type: 'get',
+					data: 'campNo=' + $(this).data('campno') + '&id='+ $('#userId').data('id'),
+					dataType: 'json',
+					success: function(resData){
+						if(resData.isSuccess) {
+							$.ajax({
+								url: '/cart/getJjimCount',
+								type: 'get',
+								data: 'campNo=' + $(this).data('campno'),
+								dataType: 'json',
+								success: function(resData){
+									$('#jjim_count').empty();
+									$('#jjim_count').text(resData.count + '개');
+								}
+							});
+							
+							
+						}
+					},
+					error: function(error) {
+						
+					}
+				});
+				
+			});
 			// 로그인을 해야 "좋아요"를 누를 수 있다.
 			/* if('${loginUser.usersNo}' == ''){
 				alert('해당 기능은 로그인이 필요합니다.');
@@ -244,39 +279,6 @@
 				return;
 			} */
 			// "좋아요" 선택/해제 상태에 따른 하트 변경
-			$(e).toggleClass("jjim_checked");
-			if ($(e).hasClass("jjim_checked")) {
-				$('.heart').html('<img src="images/redheart.png" width="15px">');
-			} else {
-				$('.heart').html('<img src="images/whiteheart.png" width="15px">');
-			}
-			
-			// "좋아요" 처리
-			$.ajax({
-				url: '/cart/mark',
-				type: 'get',
-				data: 'campNo=' + $(e).data('campno') + '&id='+ $('#userId').data('id'),
-				dataType: 'json',
-				success: function(resData){
-					if(resData.isSuccess) {
-						$.ajax({
-							url: '/cart/getJjimCount',
-							type: 'get',
-							data: 'campNo=' + $(e).data('campno'),
-							dataType: 'json',
-							success: function(resData){
-								$('#jjim_count').empty();
-								$('#jjim_count').text(resData.count + '개');
-							}
-						});
-						
-						
-					}
-				},
-				error: function(error) {
-					
-				}
-			});
 			
 		}
 	
