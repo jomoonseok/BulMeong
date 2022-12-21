@@ -15,7 +15,7 @@
 	
 	
 	<!-- 0. 시퀀스 업데이트(nextval) -->
-	<update id="updateFreeSeq">
+	<update id="updateFreeSeq" parameterType="freeSeqDTO">
 		UPDATE FREE_SEQ_TABLE
 		   SET FREE_SEQ = LAST_INSERT_ID(FREE_SEQ + 1);
 	</update>
@@ -78,7 +78,7 @@
 		INSERT INTO FREE_CMT
 			(FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
 		VALUES
-			(#{freeNo}, #{nickname}, #{freeCmtContent},DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, #{freeCmtDepth}, #{freeNo}, #{freeGroupOrder})
+			(#{freeNo}, #{nickname}, #{freeCmtContent},DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, #{freeCmtDepth}, #{freeGroupNo}, #{freeGroupOrder})
 	</insert>
 
 
