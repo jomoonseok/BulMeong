@@ -16,7 +16,7 @@ public class SleepUserCheckingInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private UsersService usersService;
-	/*
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -33,7 +33,7 @@ public class SleepUserCheckingInterceptor implements HandlerInterceptor {
 		
 		// 휴면회원이면 복원을 위한 과정(/user/sleep/display)을 진행함
 		if(sleepUser != null) {
-			response.sendRedirect(request.getContextPath() + "/user/sleep/display");
+			response.sendRedirect("/users/sleep/display");
 			return false;
 		}
 		// 휴면회원이 아니면 로그인(/user/login)을 진행함
@@ -42,5 +42,5 @@ public class SleepUserCheckingInterceptor implements HandlerInterceptor {
 		}
 		
 	}
-	*/
+	
 }
