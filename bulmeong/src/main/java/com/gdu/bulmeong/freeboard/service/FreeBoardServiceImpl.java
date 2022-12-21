@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
 import com.gdu.bulmeong.freeboard.domain.FreeBoardDTO;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper;
@@ -53,6 +54,12 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		map.put("dateColumn", dateColumn);
 		map.put("column", column);
 		map.put("query", query);
+		
+		// 1-3. model에 검색기능 값 넣어주기
+		model.addAttribute("dateColumn", dateColumn);
+		model.addAttribute("column", column);
+		model.addAttribute("query", query);
+		
 		 
 		// 2-1. 페이징 처리('0'일 경우 1페이지로 가기)
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
@@ -68,6 +75,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		// 2-3. model에 값 넣어주기
 		model.addAttribute("totalRecord", totalRecord);
+		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
+		model.addAttribute("paging", pageUtil.getSearchPaging(request.getContextPath() + "/freeboard/list"));
+		
 		
 		// 3-1. freeBoardDTO 받아오기 (Mapper에서)
 		List<FreeBoardDTO> freeBoard = freeBoardMapper.selectFreeListByMap(map);
@@ -77,31 +87,21 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		// 3-3.
 		List<Integer> freeNo = new ArrayList<Integer>();
-		List<Integer> cmtCnt = new ArrayList<Integer>();
+		List<Integer> cmtCount = new ArrayList<Integer>();
 		for(int i = 0; i < freeBoard.size(); i++) {
 			freeNo.add(freeBoard.get(i).getFreeNo());
-			cmtCnt.add(freeBoardCmtMapper.selectCmtCount(freeNo.get(i)));
+			cmtCount.add(freeBoardCmtMapper.selectCmtCount(freeNo.get(i)));
 		}
-		
-		// model.addAttribute("freeCmt", freeNo);
-		// model.addAttribute("freeCmt", freeBoardCmtMapper.selectCmtCount(freeNo));
-		model.addAttribute("freeCmt", cmtCnt);
-		
-		
-		
-		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getSearchPaging(request.getContextPath() + "/freeboard/list"));
 
-		model.addAttribute("dateColumn", dateColumn);
-		model.addAttribute("column", column);
-		model.addAttribute("query", query);
+		// 3-4. model에 댓글수 넣어주기
+		model.addAttribute("freeCmt", cmtCount);
+
+		
+		
+		
 		
 	}
 	
-//	@Override
-//	public int getCmtCountByList(int freeNo) {	
-//		return freeBoardMapper.selectCmtCountByList(freeNo);
-//	}
 	
 	@Override
 	public int increseFreeBoardHit(int freeNo) {
@@ -173,12 +173,16 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		HttpSession session = request.getSession();
 		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
+		
+		// 1. session에 loginUser가 없을때 권한 막기
 		if (loginUser == null) {
+			
 			try {	
+				
 				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				out.println("<script>");			
-				out.println("alert('수정 권한이 없습니다.');");
+				out.println("alert('세션이 만료되었습니다.');");
 				out.println("location.href='/freeboard/list';");
 				out.println("</script>");			
 				out.close();
@@ -193,6 +197,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		String writer = request.getParameter("nickname"); // 작성자
 		
+		// 2. session에 loginUser가 작성자랑 같을 때 권한 주기
 		if (nickname.equals(writer)) {
 			
 				String freeTitle = request.getParameter("freeTitle");
@@ -227,9 +232,11 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 					e.printStackTrace();
 				}
 				
+		// 3. session에 loginUser가 작성자랑 다를 때 권한 막기 ( 1.이랑 3.은 다른것임)
 		} else {
 		
-			try {	
+			try {
+				
 				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				out.println("<script>");			
@@ -252,27 +259,74 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	public void removeFreeBoard(HttpServletRequest request, HttpServletResponse response) {
 		
 		int freeNo = Integer.parseInt(request.getParameter("freeNo"));		
-		int result = freeBoardMapper.deleteFreeBoard(freeNo);
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
 		
-		try {
+
+		
+		// 1. session에 loginUser가 없을때 권한 막기
+		if (loginUser == null) {
 			
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			
-			out.println("<script>");
-			if(result > 0) {
-				out.println("alert('게시글이 삭제되었습니다.');");
-				out.println("location.href='" + request.getContextPath() + "/freeboard/list';");
-			} else {
-				out.println("alert('게시글이 삭제되지 않았습니다.");
-				out.println("history.back();");
+			try {	
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");			
+				out.println("alert('세션이 만료되었습니다.');");
+				out.println("location.href='/freeboard/list';");
+				out.println("</script>");			
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			out.println("</script>");
-			out.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		
+		String nickname = loginUser.getNickname(); 		  // 로그인한사람
+		String writer = request.getParameter("nickname"); // 작성자
+		
+		// 2. session에 loginUser가 작성자랑 같을 때 권한 주기
+		if (nickname.equals(writer)) {
+			
+			int result = freeBoardMapper.deleteFreeBoard(freeNo);
+			
+			try {
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				if(result > 0) {
+					out.println("alert('게시글이 삭제되었습니다.');");
+					out.println("location.href='" + request.getContextPath() + "/freeboard/list';");
+				} else {
+					out.println("alert('게시글이 삭제되지 않았습니다.");
+					out.println("history.back();");
+				}
+				out.println("</script>");
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		// 3. session에 loginUser가 작성자랑 다를 때 권한 막기
+		} else {
+			
+			try {	
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");			
+				out.println("alert('삭제 권한이 없습니다.');");
+				out.println("history.back();");
+				out.println("</script>");			
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
 		
 	}
 	

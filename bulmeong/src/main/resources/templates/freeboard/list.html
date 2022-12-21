@@ -12,6 +12,26 @@
 			});
 
 		});
+		
+		function fn_login(){
+			if(window.sessionStorage.getitem('[[${session.loginUser}]]') == null){
+				console.log('안녕');
+			}
+			
+		}
+		
+		console.log('length : ' + '[[${session.loginUser}]]'.length);
+		console.log('typeof : ' + typeof '[[${session.loginUser}]]');
+		console.log('loginUser : ' + '[[${session.loginUser}]]');
+		
+		if('[[${session.loginUser}]]' != null){
+			console.log('로그인 안됨');
+		}
+		
+		if('[[${session.loginUser}]]' == ''){
+			console.log('로그인 안됨2');
+		}
+
 
 		
 		
@@ -70,19 +90,16 @@
 	
 		<select id="dateColumn" name="dateColumn">
 			<option value="">전체기간</option>
-			<option value="ADAY">1일</option>
-			<option value="AWEEK">1주일</option>
-			<option value="AMONTH">1개월</option>
-			<option value="AYEAR">1년</option>
+			<option value="ADAY" th:selected="${dateColumn} == ADAY">1일</option>
+			<option value="AWEEK" th:selected="${dateColumn} == AWEEK">1주일</option>
+			<option value="AMONTH" th:selected="${dateColumn} == AMONTH">1개월</option>
+			<option value="AYEAR" th:selected="${dateColumn} == AYEAR">1년</option>
 		</select>
 		<select id="column" name="column">
 			<option value="FREE_TITLE" th:selected="${column} == FREE_TITLE">제목</option>
 			<option value="FREE_CONTENT"  th:selected="${column} == FREE_CONTENT">내용</option>
 			<option value="FREE_CONTENT_FREE_CONTENT" th:selected="${column} == FREE_CONTENT_FREE_CONTENT">제목 + 내용</option>
-			<option value="FREE_CONTENT_FREE_CMT_CONTENT" th:selected="${column} == FREE_CONTENT_FREE_CMT_CONTENT">내용 + 댓글</option>
 			<option value="NICKNAME" th:selected="${column} == NICKNAME">게시글 작성자</option>
-			<option value="FREE_CMT_CONTENT" th:selected="${column} == FREE_CMT_CONTENT">댓글</option>
-			<option value="FREE_CMT_NICKNAME" th:selected="${column} == FREE_CMT_NICKNAME">댓글 작성자</option>
 		</select>
 		<input type="text" id="query" name="query" th:value=${query}>
 		<button th:onclick="goPage(1)">검색</button>

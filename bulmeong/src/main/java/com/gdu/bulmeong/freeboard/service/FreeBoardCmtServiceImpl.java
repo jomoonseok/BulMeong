@@ -1,18 +1,24 @@
 package com.gdu.bulmeong.freeboard.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
+import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.PageUtil;
 import com.gdu.bulmeong.util.SecurityUtil;
 
@@ -41,19 +47,15 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	
 	
 	@Override
-	public Map<String, Object> getCmtList(HttpServletRequest request) {
+	public Map<String, Object> getCmtList(Model model) {
+		
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		int freeNo = Integer.parseInt(request.getParameter("freeNo"));
 		int page = Integer.parseInt(request.getParameter("page"));
 		
 		int commentCount = freeBoardCmtMapper.selectCmtCount(freeNo);
 		
-		/**************************************************************************************/
-		/***********************************수정필요합니다*************************************/
-		/**************************************************************************************/
-		int recordPerPage = 100;
-		/**************************************************************************************/
-		/***********************************수정필요합니다*************************************/
-		/**************************************************************************************/
+		int recordPerPage = 50;
 		
 		pageUtil.setSearchPageUtil(page, commentCount, recordPerPage);
 		
@@ -66,13 +68,37 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("commentList", freeBoardCmtMapper.selectCmtList(map));
 		result.put("pageUtil", pageUtil);
+		
+		
+		// 여기부터 ! 
+		//HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		
+		List<FreeBoardCmtDTO> freeCmtDTO = freeBoardCmtMapper.selectCmtList(map);
+		model.addAttribute("freeCmt", freeCmtDTO);
+		System.out.println("freeCmtDTO : " + freeCmtDTO);
+		
+		// result.put("freeCmt", model.addAttribute(freeCmtDTO));
+		
+		System.out.println("result : " + result);
+		
+		
+		
+		
 		return result;
+		
+		
+		
+		
 	}
 	
 	@Override
 	public Map<String, Object> addCmt(FreeBoardCmtDTO freeCmt) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
+		
 		String freeCmtIp = request.getRemoteAddr();
+		String nickname = loginUser.getNickname();
 		
 		
 		////////////////////////////////////////////////////////////////////////////////////////
@@ -83,7 +109,7 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		
 
 		freeBoardCmtMapper.updateFreeSeq();
-		System.out.println("else freeSeq : ");
+		System.out.println("freeSeq : ");
 		freeCmt.setFreeGroupNo(freeGroupNo);
 		
 		
@@ -92,7 +118,7 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
 		/**************************************************************************************/
-		freeCmt.setNickname("관리자");
+		freeCmt.setNickname(nickname);
 
 		/**************************************************************************************/
 		/***********************************수정필요합니다*************************************/
@@ -124,10 +150,7 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	}
 	
 	
-	@Override
-	public FreeBoardCmtDTO getFreeCmtByNo(int freeGroupNo) {
-		return freeBoardCmtMapper.selectFreeCmtdByNo(freeGroupNo);
-	}
+
 	
 	
 	@Transactional
