@@ -74,6 +74,15 @@ public class FreeBoardController {
 		freeBoardService.removeFreeBoard(request, response);
 	}
 	
+	
+	
+//	@ResponseBody
+//	@GetMapping(value="/freecomment/getCount", produces="application/json")
+//	public Map<String, Object> getCount(@RequestParam("freeNo") int freeNo){
+//		return freeBoardCmtService.getCmtCount(freeNo);
+//	}
+
+	
 
 	
 }

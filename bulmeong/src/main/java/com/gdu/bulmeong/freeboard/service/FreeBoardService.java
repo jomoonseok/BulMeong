@@ -11,6 +11,9 @@ public interface FreeBoardService {
 
 	// 1. CRUD 기능
 	public void getFreeList(Model model);
+	
+//	public int getCmtCountByList(int freeNo);
+	
 	public int increseFreeBoardHit(int freeNo);
 	public void addFreeBoard(HttpServletRequest request, HttpServletResponse response);
 	public FreeBoardDTO getFreeBoardByNo(int freeNo);
