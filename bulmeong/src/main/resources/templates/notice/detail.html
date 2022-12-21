@@ -30,7 +30,7 @@
 			<form id="frm_btn" method="post">
 				<input type="hidden" name="noticeNo" th:value="${notice.noticeNo}">
 					<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-						<input type="button" value="수정" id="btn_edit_notice"> 
+						<input type="button" value="수정" id="btn_edit_notice">
 						<input type="button" value="삭제" id="btn_remove_notice">
 					</th:block>
 				<input type="button" value="목록" onclick="location.href='/notice/list'">

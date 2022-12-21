@@ -59,12 +59,11 @@
             if(childWindow == null || childWindow.closed) {
                 childWindow = open(url, name, features);
             }
-            console.log('악!!');
+
        	}
-        // 여기서 계속오류남개빡치게
+        
         btn_qnaWrite.onclick = function(event){
         	openChildWindow('/popup', 'popup');
-            sendData();
         }
        
     </script>
