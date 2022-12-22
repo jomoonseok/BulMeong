@@ -6,18 +6,13 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
-import com.gdu.bulmeong.freeboard.domain.FreeSeqDTO;
 
 @Mapper
 public interface FreeBoardCmtMapper {
 	
 	// 1. 댓글
 	public int selectCmtCount(int freeNo);
-	
-	public int updateGroupNo(FreeBoardCmtDTO freeCmt);
-	public FreeBoardCmtDTO selectFreeCmtdByNo(int freeCmtNo);
-	
-	
+	public int updateGroupNo(FreeBoardCmtDTO freeCmt);	
 	public List<FreeBoardCmtDTO> selectCmtList(Map<String, Object> map);
 	public int insertCmt(FreeBoardCmtDTO freeCmt);
 	public int deleteCmt(int freeCmtNo);

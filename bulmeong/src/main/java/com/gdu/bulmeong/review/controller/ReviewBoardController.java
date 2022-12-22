@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.gdu.bulmeong.review.service.ReviewService;
+import com.gdu.bulmeong.review.service.ReviewBoardService;
 
 @Controller
-public class ReviewController {
+public class ReviewBoardController {
 
 	@Autowired
-	private ReviewService reviewService;
+	private ReviewBoardService reviewService;
 	
-	@GetMapping("/review/list")
+	@GetMapping("/reviewboard/list")
 	public String list() {
-		return "review/list";
+		return "reviewboard/list";
 	}
 
 	

@@ -404,11 +404,9 @@
 	<div th:utext="${free.freeContent}"></div>
 
 	<div th:text="${freeCmt}"></div>
-	
-	
-	
-	
+
 	<hr>
+	좋아요
 	
 	<!-- 3. 댓글 추가 -->
 	<h2 id="h2_cmt">댓글</h2>
@@ -420,12 +418,6 @@
 						<input type="text" name="freeCmtContent" id="content" size="50" placeholder="댓글을 입력해주세요.">
 						<input type="button" value="등록" id="btn_add_comment">
  							<input type="hidden" name="freeGroupNo" th:value="0">
-<!-- 						<span th:if=""> -->
-<!--  							<input type="hidden" name="freeGroupNo" th:value="${freeCmt.freeGroupNo}"> -->
-<!-- 						</span> -->
-<!-- 						<span th:if=""> -->
-<!--  							<input type="hidden" name="freeGroupNo" th:value="${free.G}"> -->
-<!-- 						</span> -->
 					</span>
 				</div>
 			</div>

@@ -1,12 +1,10 @@
 package com.gdu.bulmeong.freeboard.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
-import com.gdu.bulmeong.freeboard.domain.FreeSeqDTO;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.PageUtil;
@@ -102,26 +99,15 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		String freeCmtIp = request.getRemoteAddr();
 		String nickname = loginUser.getNickname();
 		
-		// 댓글의 gropuNo를 받아서 (만약 groupNo가 1이면)
-		int freeGroupNo = Integer.parseInt(request.getParameter("freeGroupNo")); // == 0 ? 0 : Integer.parseInt(request.getParameter("freeSeq"));
+		int freeGroupNo = Integer.parseInt(request.getParameter("freeGroupNo"));
 		FreeBoardCmtDTO freeCmtDTO = new FreeBoardCmtDTO();
 		freeCmtDTO.setFreeGroupNo(freeGroupNo);
-		// freeSeq 업데이트
-		freeBoardCmtMapper.updateGroupNo(freeCmtDTO);
-		
+		freeBoardCmtMapper.updateGroupNo(freeCmtDTO);				
 
-		////////////////////////////////////////////////////////////////////////////////////////
-		// String strFreeSeq = request.getParameter("freeSeq") == null ? "" : request.getParameter("freeSeq");
-		// 조건 ? 만족하는 경우 : 만족하지 않는 경우
-
-		
-		// freeSeq가 2가 되었으니 2를.. 넣어줌
 		freeCmt.setFreeCmtIp(freeCmtIp);
 		freeCmt.setNickname(nickname);
 		freeCmt.setFreeGroupNo(freeGroupNo);
-		
-		
-		
+	
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAdd", freeBoardCmtMapper.insertCmt(freeCmt) == 1);
 		
@@ -180,6 +166,8 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		freeCmtReply.setFreeCmtDepth(freeCmtDepth + 1);
 		freeCmtReply.setFreeGroupNo(freeGroupNo);
 		freeCmtReply.setFreeGroupOrder(freeGroupOrder + 1);
+		
+		System.out.println("freeCmtReply : " + freeCmtReply);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAddReply", freeBoardCmtMapper.insertCmtReply(freeCmtReply) == 1);

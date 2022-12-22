@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class FreeSeqDTO {
-	private int freeSeq;
+public class FreeBoardLikeDTO {
+	private int freeNo;
+	private String nickname;
 }

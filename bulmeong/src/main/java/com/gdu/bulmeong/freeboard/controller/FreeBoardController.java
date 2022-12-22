@@ -57,6 +57,7 @@ public class FreeBoardController {
 		return "freeboard/detail";
 	}
 	
+	
 	@PostMapping("/freeboard/edit")
 	public String edit(int freeNo, Model model) {
 		model.addAttribute("free", freeBoardService.getFreeBoardByNo(freeNo));
