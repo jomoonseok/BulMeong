@@ -144,7 +144,7 @@ public class IndexServiceImpl implements IndexService {
 		
 		String apiURL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst" 
 						+ "?serviceKey=" + serviceKey + "&pageNo=" + pageNo + "&numOfRows=" + numOfRows + "&dataType=" + dataType + "&base_date=" + base_date + "&base_time=" + base_time + "&nx=" + intLatitude + "&ny=" + intlongitude;
-
+		System.out.println(apiURL);
 		try {
 			url = new URL(apiURL);
 			conn = (HttpURLConnection)url.openConnection();

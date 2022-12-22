@@ -60,7 +60,6 @@
     
     <!-- 캘린더 스크립트 -->
     <script th:inline="javascript">
-    	
    		var tentMaxCount = [];  // tentMaxCount를 입력받을 배열
    		var frmData = document.reserve_form;
    		
@@ -130,7 +129,7 @@
 			      	  	$('#reserveCount').focus();
 		      		}
 		      		// 해당 날짜의 텐트 정보 불러오기
-		      		fn_tentInfo(info.startStr, info.endStr);
+		      		fn_tentInfo(info.startStr, info.endStr, reserveDate);
 		      		
 		      	}, // 날짜 드래그 이벤트
        		});
@@ -165,11 +164,11 @@
         }
         
         // 텐트 정보 가져오기
-      	function fn_tentInfo(startStr, endStr) {
+      	function fn_tentInfo(startStr, endStr, reserveDate) {
       	    
       		$.ajax({
       	    	type: 'get',
-      	    	url: 'reserve/tentInfo?campNo=' + campNo + '&reserveBeginDate=' + startStr + '&reserveEndDate=' + endStr,
+      	    	url: 'reserve/tentInfo?campNo=' + campNo + '&reserveBeginDate=' + startStr + '&reserveEndDate=' + endStr + '&reserveDate=' + reserveDate,
       	    	dataType: 'json',
       	    	success: function(resData) {
       	    		$('#tent_info').empty();
@@ -274,7 +273,7 @@
       	}
        	
 		function fn_reserve(e) {
-      		
+				
       			if($('.DATE').val() == '') {
       				alert('날짜선택은 필수입니다.');
       				$('#calendar').focus();
@@ -338,7 +337,6 @@
     
 </head>
 <body>
-
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
 	<div class="fakeLoader"></div>

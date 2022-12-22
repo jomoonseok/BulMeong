@@ -42,9 +42,10 @@
 		<input type="button" value="취소하기" onclick="history.go(-1)">
 	</div>
 	
-	<script>
+	<script th:inline="javascript">
 	
 		$(document).ready(function(){
+			
 			$('#pay').click(function(){
 				pay();  // 버튼 클릭하면 호출
 			});
