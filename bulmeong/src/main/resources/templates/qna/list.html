@@ -115,7 +115,7 @@ if(noShowPopup != 'true') { -->
 						</td>
 						<td>
 							<th:block th:if="${qna.qnaState} eq 1">
-								<div th:text="${qna.qnaTitle}" id="btn_blindToggle"></div>
+								<div th:text="${qna.qnaTitle}" id="btn_contentToggle"></div>
 								<div th:text="${qna.qnaContent}" class="blind">
 									<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
 										<input type="button" value="답변하기">
@@ -124,26 +124,27 @@ if(noShowPopup != 'true') { -->
 							</th:block>
 							
 							<th:block th:if="${qna.qnaState} eq 2">
-								<div th:if="${session.loginUser} != null and ${session.loginUser.id} == ${qna.id}">
-									<div th:text="${qna.qnaTitle}"></div>
+								<div th:if="${session.loginUser} != null and ${session.loginUser.id} == ${qna.id} or ${session.loginUser.id} == 'admin'">
+									<div th:text="${qna.qnaTitle}" id="btn_contentToggle"></div>
 									<div th:text="${qna.qnaContent}" class="blind">
-										<div th:if="${sessio n.loginUser} != null and ${session.loginUser.id} == 'admin'">
+										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
 											<input type="button" value="답변하기">
 										</div>
 									</div>
 								</div>
 								
-								<div th:if="${session.loginUser} != null and ${session.loginUser.id} != ${qna.id}">
-									<span>비밀글입니다</span>
+								<div th:if="${session.loginUser} != null and ${session.loginUser.id} != ${qna.id} and ${session.loginUser.id} != 'admin'">
+									<div>비밀글입니다</div>
 								</div>
-<!-- 								<div th:if="${session.loginUser} == null"> -->
-<!-- 									<span>비밀글입니다</span> -->
-<!-- 								</div> -->
+<!--  								<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
+<!--  									<div th:text="${qna.qnaTitle}" id="btn_contentToggle"></div> -->
+<!-- 									<div th:text="${qna.qnaContent}" class="blind"></div> -->
+<!--  								</div> -->
 							</th:block>
 							
-							<th:block th:if="${qna.qnaState} eq 0">
-								<div>삭제된글입니다.</div>
-							</th:block>
+<!-- 							<th:block th:if="${qna.qnaState} eq 0"> -->
+<!-- 								<div>삭제된글입니다.</div> -->
+<!-- 							</th:block> -->
 							
 						</td>
 						<td th:utext=${qna.id}></td>
@@ -158,8 +159,8 @@ if(noShowPopup != 'true') { -->
 <!-- 					</th:block> -->
 						<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
 							<td>
-								<input type="button" value="답변">/
-								<input type="button" value="삭제">
+								<input type="button" value="답변" id="btn_answer">/
+								<input type="button" value="삭제" id="btn_remove">
 							</td>
 						</th:block>
 					</tr>
