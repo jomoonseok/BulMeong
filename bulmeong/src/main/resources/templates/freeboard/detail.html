@@ -324,6 +324,9 @@
 				
 			}
 			
+			// 11. url 복사
+
+			
 			// # 좋아요 관련 # //
 			function fn_likeCheck() { 
 				$.ajax({
@@ -363,6 +366,23 @@
 			// # 게시글 버튼 끝 # //
 			
 		});
+		
+		// url 복사
+		function linkCopy() {
+		
+			var url = '';
+			var textarea = document.createElement("textarea");
+			document.body.appendChild(textarea);
+			url = window.document.location.href;
+			textarea.value = url;
+			textarea.select();
+			document.execCommand("copy");
+			document.body.removeChild(textarea);
+			alert("URL이 복사되었습니다.");
+	
+		}
+		
+		
 	</script>
 	
 	<!-- session이랑 loginUser가 같다면 nickname 값 넘겨주기 -->
@@ -385,9 +405,11 @@
 			<span th:text="${free.nickname}"></span>
 			<span th:text="${free.freeCreateDate}"></span>
 			<span id="move_cmt">댓글</span><br>
-			<span>URL 복사</span>
+			<span><a href="" onclick="linkCopy()">URL 복사</a></span>
+			
 		</div>
 	</div>
+
 	
 	<hr>
 	
@@ -398,8 +420,12 @@
 	<hr>
 	
 	<a id="lnk_like">
-		<span id="heart"></span><span id="like">좋아요 </span><span id="like_count"></span>
+		<span id="heart"></span><span id="like">좋아요</span><span id="like_count"></span>
 	</a>
+	
+	<img th:src="@{/images/camp/whiteheart.png}" width="15px">
+	<img th:src="@{/images/camp/redheart.png}" width="15px">
+	
 	
 	
 	<!-- 3. 댓글 추가 -->
@@ -433,7 +459,7 @@
 	</div>
 	
 
- 	<img src="../../static/images/heart/off_heart.png" width="15px">
+
 
 
 	<!-- 4. 게시판 하단 버튼 -->

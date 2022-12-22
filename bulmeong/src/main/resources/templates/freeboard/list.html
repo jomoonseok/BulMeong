@@ -8,29 +8,24 @@
 	<script>
 		$(document).ready(function(){
 			
-			fn_birth();
-			
+
 			
 			$('#write').click(function(){
 				location.href = '/freeboard/write';				
 			});
 		
-		function fn_login(){
-			if(window.sessionStorage.getitem('[[${session.loginUser}]]') == null){
-				console.log('안녕');
+
+		
+		});
+
+			function goPage(page){ // page는 받는 이름...
+				
+				var dateColumn = $("#dateColumn option:selected").val();
+				var column = $("#column option:selected").val();
+				var query = $("#query").val();
+				location.href="/freeboard/list?page=" + page + "&dateColumn=" + dateColumn + "&column=" + column + "&query=" + query;
+	
 			}
-			
-		}
-
-		function goPage(page){ // page는 받는 이름...
-			
-			var dateColumn = $("#dateColumn option:selected").val();
-			var column = $("#column option:selected").val();
-			var query = $("#query").val();
-			location.href="/freeboard/list?page=" + page + "&dateColumn=" + dateColumn + "&column=" + column + "&query=" + query;
-
-		}
-
 		
 	</script>
 
@@ -93,11 +88,6 @@
 		<button th:onclick="goPage(1)">검색</button>
 
 	</div>
-	
-	
-	
-	
-
 
 </body>
 </html>

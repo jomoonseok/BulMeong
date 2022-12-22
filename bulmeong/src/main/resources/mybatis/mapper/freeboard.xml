@@ -44,8 +44,7 @@
 			</when>
 			<when test="column=='NICKNAME'">
 				AND NICKNAME LIKE CONCAT('%',#{query},'%')
-			</when>
-			
+			</when>	
 		</choose>
 			 ORDER BY A.FREE_NO DESC
 			 LIMIT #{begin}, #{recordPerPage}
