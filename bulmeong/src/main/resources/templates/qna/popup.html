@@ -19,7 +19,7 @@
         <input type="reset" value="작성초기화">
         <input type="button" id="btn_popupClose" value="닫기">
     </div>
-    <script>
+    <script th:inline="javascript">
         var parentIpt = document.getElementById('qnaTitle');
         var parentIpt = document.getElementById('qnaContent');
 
@@ -31,12 +31,16 @@
                 childWindow.document.getElementById('qnaContent').textContent = parentIpt.value;
             }
         }
-         document.getElementById('btn_done').onclick = function(event) {
-            opener.document.getElementById('qnaTitle').textContent = document.getElementById('qnaTitle').textContent;
-            opener.document.getElementById('qnaContent').textContent = document.getElementById('qnaContent').textContent;
-            sendData();
-        }
+//          document.getElementById('btn_done').onclick = function(event) {
+//             opener.document.getElementById('qnaTitle').textContent = document.getElementById('qnaTitle').textContent;
+//             opener.document.getElementById('qnaContent').textContent = document.getElementById('qnaContent').textContent;
+//             sendData();
+//         }
         
+		function sendChildValue(qnaTitle, qnaContent) {
+			opener.setChildValue(qnaTitle, qnaContent);
+			window.close();
+		}
         
     </script>
 

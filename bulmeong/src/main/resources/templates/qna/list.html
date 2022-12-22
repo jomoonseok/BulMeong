@@ -65,6 +65,13 @@
         btn_qnaWrite.onclick = function(event){
         	openChildWindow('/popup', 'popup');
         }
+        
+        function setChildValue(qnaTitle, qnaContent){
+
+            document.getElementById("${qna.qnaTitle}").value = qnaTitle;
+            document.getElementById("${qna.qnaContent}").value = qnaContent;
+
+      	}
        
     </script>
 	
