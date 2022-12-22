@@ -19,8 +19,9 @@
 		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_GROUP_NO DESC, FREE_GROUP_ORDER ASC) AS ROW_NUM, FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER
 		  		  FROM FREE_CMT
 		 		 WHERE FREE_NO = #{freeNo}) A
-		 LIMIT #{begin}, #{recordPerPage}
 	</select>
+	
+	
 	
 	<!-- 3. 댓글 추가 -->
 	<insert id="insertCmt" parameterType="FreeBoardCmtDTO" useGeneratedKeys="true" keyProperty="freeCmtNo">

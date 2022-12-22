@@ -43,51 +43,28 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		return result;
 	}
 	
-	
 	@Override
 	public Map<String, Object> getCmtList(Model model) {
 		
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		int freeNo = Integer.parseInt(request.getParameter("freeNo"));
-		int page = Integer.parseInt(request.getParameter("page"));
-		
-		int commentCount = freeBoardCmtMapper.selectCmtCount(freeNo);
-		
-		int recordPerPage = 50;
-		
-		pageUtil.setSearchPageUtil(page, commentCount, recordPerPage);
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("freeNo", freeNo);
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-		map.put("recordPerPage", pageUtil.getRecordPerPage());
-		
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("commentList", freeBoardCmtMapper.selectCmtList(map));
-		result.put("pageUtil", pageUtil);
-		
-		
-		// 여기부터 ! 
-		//HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		
-		List<FreeBoardCmtDTO> freeCmtDTO = freeBoardCmtMapper.selectCmtList(map);
-		model.addAttribute("freeCmt", freeCmtDTO);
-		//System.out.println("freeCmtDTO : " + freeCmtDTO);
-		
-		// result.put("freeCmt", model.addAttribute(freeCmtDTO));
-		
-		//System.out.println("result : " + result);
-		
-		
-		
-		
-		return result;
-		
-		
-		
+
+		return result;	
 		
 	}
+	
+//	@Override
+//	public List<FreeBoardCmtDTO> getCmtLists(int freeNo) {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("freeNo", freeNo);
+//		return freeBoardCmtMapper.selectCmtList(map);
+//	}
 	
 	@Transactional
 	@Override
@@ -99,14 +76,20 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		String freeCmtIp = request.getRemoteAddr();
 		String nickname = loginUser.getNickname();
 		
+		// 기존 freeGroupNo 파라미터로 받아오기
 		int freeGroupNo = Integer.parseInt(request.getParameter("freeGroupNo"));
+		
+		// 기존 freeCmt에 GroupNo 넣어주기
 		FreeBoardCmtDTO freeCmtDTO = new FreeBoardCmtDTO();
 		freeCmtDTO.setFreeGroupNo(freeGroupNo);
+		
+		// 기존 freeCmt에 update 해주기? (기존에 0을 받았으니 > + 1 이 된다. )
 		freeBoardCmtMapper.updateGroupNo(freeCmtDTO);				
 
+		// 새로 단 댓글에 ip, nickname, groupNo를 넣어준다.
 		freeCmt.setFreeCmtIp(freeCmtIp);
 		freeCmt.setNickname(nickname);
-		freeCmt.setFreeGroupNo(freeGroupNo);
+		freeCmt.setFreeGroupNo(freeGroupNo); // 0번을 받아온다.
 	
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAdd", freeBoardCmtMapper.insertCmt(freeCmt) == 1);
