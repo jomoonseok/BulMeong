@@ -92,6 +92,7 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		
 	}
 	
+	@Transactional
 	@Override
 	public Map<String, Object> addCmt(FreeBoardCmtDTO freeCmt) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
@@ -101,21 +102,20 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		String freeCmtIp = request.getRemoteAddr();
 		String nickname = loginUser.getNickname();
 		
-		// 댓글의 deptth
+		// 댓글의 gropuNo를 받아서 (만약 groupNo가 1이면)
 		int freeGroupNo = Integer.parseInt(request.getParameter("freeGroupNo")); // == 0 ? 0 : Integer.parseInt(request.getParameter("freeSeq"));
+		FreeBoardCmtDTO freeCmtDTO = new FreeBoardCmtDTO();
+		freeCmtDTO.setFreeGroupNo(freeGroupNo);
+		// freeSeq 업데이트
+		freeBoardCmtMapper.updateGroupNo(freeCmtDTO);
 		
-		FreeSeqDTO freeSeq = new FreeSeqDTO();
-		freeSeq.setFreeSeq(freeGroupNo);
-		
-		freeBoardCmtMapper.updateFreeSeq(freeSeq);
-		
+
 		////////////////////////////////////////////////////////////////////////////////////////
 		// String strFreeSeq = request.getParameter("freeSeq") == null ? "" : request.getParameter("freeSeq");
 		// 조건 ? 만족하는 경우 : 만족하지 않는 경우
 
 		
-
-		System.out.println("freeSeq : " + freeSeq);
+		// freeSeq가 2가 되었으니 2를.. 넣어줌
 		freeCmt.setFreeCmtIp(freeCmtIp);
 		freeCmt.setNickname(nickname);
 		freeCmt.setFreeGroupNo(freeGroupNo);

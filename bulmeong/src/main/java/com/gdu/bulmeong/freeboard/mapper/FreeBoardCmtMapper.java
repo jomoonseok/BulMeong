@@ -14,7 +14,7 @@ public interface FreeBoardCmtMapper {
 	// 1. 댓글
 	public int selectCmtCount(int freeNo);
 	
-	public int updateFreeSeq(FreeSeqDTO freeSeq);
+	public int updateGroupNo(FreeBoardCmtDTO freeCmt);
 	public FreeBoardCmtDTO selectFreeCmtdByNo(int freeCmtNo);
 	
 	

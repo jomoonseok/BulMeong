@@ -259,7 +259,11 @@
 							fn_commentList();
 							fn_commentCount();
 						}
+					}, error: function(){
+						alert('세션이 만료되었습니다.');
+						location.replace('/users/login/form');
 					}
+						
 				});
 			});
 			
@@ -409,10 +413,10 @@
 	<!-- 3. 댓글 추가 -->
 	<h2 id="h2_cmt">댓글</h2>
 	<div>
-		<form id="frm_add_comment">
+		<form id="frm_add_comment" th:if="${session.loginUser} != null">
 			<div class="add_comment">
 				<div class="add_comment_input">
-					<span class="add_comment_btn" th:if="${session.loginUser} != null">
+					<span class="add_comment_btn">
 						<input type="text" name="freeCmtContent" id="content" size="50" placeholder="댓글을 입력해주세요.">
 						<input type="button" value="등록" id="btn_add_comment">
  							<input type="hidden" name="freeGroupNo" th:value="0">
