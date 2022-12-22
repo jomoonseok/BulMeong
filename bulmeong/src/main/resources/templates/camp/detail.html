@@ -4,7 +4,7 @@
 <style>
 	
 		.layout {
-			background: url(/images/wall.jpg) repeat-x 0 bottom;
+			background: url(/images/camp/wall.jpg) repeat-x 0 bottom;
 			background-repeat: no-repeat;
 			background-size: cover;
 			width: 100%;
@@ -58,7 +58,7 @@
 		.icon_copy {
 			width: 16px;
 		    height: 16px;
-		    background: url(/images/copy.png) no-repeat 0 center;
+		    background: url(/images/camp/copy.png) no-repeat 0 center;
 		    display: inline-block; 
 		} 
 		
@@ -113,7 +113,7 @@
 		    font-size: 14px;
 		    padding-left: 20px;
 		    color: #626262;
-			background: url(images/forest.png) no-repeat 0 center;
+			background: url(images/camp/forest.png) no-repeat 0 center;
 		}
 		.iconList {
 			float: left;
@@ -132,7 +132,63 @@
 			
 		}
 		
-
+		.tag_p {
+			display: block;
+		    float: left;
+		    padding: 0 15px;
+		    border: 1px solid #fff;
+		    border-radius: 100px;
+		    text-align: center;
+		    font-size: 15px;
+		    color: #fff;
+		    margin-right: 5px; 
+		    margin-left: 5px;
+		}
+		
+		.tag_u {
+			color: #fff;
+			font-size: 15px;
+		}
+		
+		.underbar {
+			display: flex;
+		}
+		
+		.icon {
+			float: right;
+		}
+		
+		.pt {
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+		}
+		
+		.pic {
+			display: inline-flex; 
+			position:relative;
+			height: 50px;
+			margin-left: 30px;
+		}
+		
+		.txt {
+			display: block; 
+			position:absolute; top:50px;
+			text-align: center;
+			font-size: 10px;
+			width: 100%;
+		}
+		
+		.camp_item > ul {
+			word-break:break-all;
+			
+		}
+		
+		.camp_item > ul > li {
+			list-style: none;
+		}
+		
+		
 		
 		
 	</style>
@@ -178,51 +234,56 @@
 		
 		<hr>
 		
-		<div class="tag">
-			<!-- <p class="themaEnvrnCl" th:text="${camp.themaEnvrnCl}"></p> -->
-			<!-- <block th:each=" lang : ${#strings.listSplit(themaEnvrnCl,',')}"> -->
-			<th:block th:each="lang : ${camp.themaEnvrnCl}">
-					<th:block th:if = "${lang != null}" th:text="${'#'.concat(lang.replaceAll(',',' #'))}"></th:block>
-					<th:block th:unless = "${lang == '#'}" th:text="${lang}"></th:block>
-			</th:block>
+		<div class="underbar">
+			<div class="tag">
+				<p class="tag_p">태그</p>
+				<ul class="tag_u">
+					<th:block th:each="lang : ${camp.themaEnvrnCl}">
+						<th:block th:if = "${#strings.isEmpty(lang)}" th:text="${lang}"></th:block>
+						<th:block th:unless = "${#strings.isEmpty(lang)} and ${!lang.startsWith(',')}" th:text="|#${lang.replaceAll(',',' #')}|"></th:block>
+					</th:block>
+				</ul>
+			</div>
+			
+			<div class="icon">
+				<ul class="share">
+					<li class="sns">
+						<button class="sns_share" onclick="fn_showHide()" style="background: none; border: none;">
+							<img src="images/camp/share.png" style="width: 32px; height: 32px;">
+						</button>
+						<div class="sns_type" style="display:none;">
+							<ul>
+								<li>
+									<img src="images/camp/back.png" class="sns_cancel" style="width: 32px; height: 32px;">
+								</li>
+								<li>
+									<img src="images/camp/facebook.png" class="sns_list1" onclick="fn_sendSns('facebook')" style="width: 32px; height: 32px;">
+								</li>
+								<li>
+									<img src="images/camp/twitter.png" class="sns_list2" onclick="fn_sendSns('twitter')" style="width: 32px; height: 32px;">
+								</li>
+								<li>
+									<img src="images/camp/kakaotalk.png" class="sns_list4" onclick="fn_sendSns('kakaotalk')" style="width: 32px; height: 32px;">
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="link">
+						<a href="" onclick="linkCopy()">
+							<img src="images/camp/url.png" style="width: 32px; height: 32px;">
+						</a>
+					</li>
+					<li class="print">
+						<a href="#printThis" onclick="printThis()">
+							<img src="images/camp/print.png" style="width: 32px; height: 32px;">
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 		
-		<div class="icon">
-			<ul class="share">
-				<li class="sns">
-					<button class="sns_share" onclick="fn_showHide()" style="background: none; border: none;">
-						<img src="images/share.png" style="width: 24px; height: 24px;">
-					</button>
-					<div class="sns_type" style="display:none;">
-						<ul>
-							<li>
-								<img src="images/back.png" class="sns_cancel" style="width: 24px; height: 24px;">
-							</li>
-							<li>
-								<img src="images/facebook.png" class="sns_list1" onclick="fn_sendSns('facebook')" style="width: 24px; height: 24px;">
-							</li>
-							<li>
-								<img src="images/twitter.png" class="sns_list2" onclick="fn_sendSns('twitter')" style="width: 24px; height: 24px;">
-							</li>
-							<li>
-								<img src="images/kakaotalk.png" class="sns_list4" onclick="fn_sendSns('kakaotalk')" style="width: 24px; height: 24px;">
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="link">
-					<a href="" onclick="linkCopy()">
-						<img src="images/url.png" style="width: 24px; height: 24px;">
-					</a>
-				</li>
-				<li class="print">
-					<a href="#printThis" onclick="printThis()">
-						<img src="images/print.png" style="width: 24px; height: 24px;">
-					</a>
-				</li>
-			</ul>
-		</div>
 	</div>
+		
 	
 	<script>
 	
@@ -324,7 +385,7 @@
 										<td>
 											<span th:text="${camp.addr1}"></span>
 											<input type="hidden" id="addr" th:value="${camp.addr1}">
-											<img id="copy" src="images/copy.png">
+											<img id="copy" src="images/camp/copy.png">
 										</td>
 									</tr>
 									<tr>
@@ -347,7 +408,7 @@
 										<th scope="col">홈페이지</th>
 										<td>
 											<a th:href="${camp.homepage}" target="_BLANK" title="새창열림">홈페이지 바로가기</a>
-											<img src="images/link.png">
+											<img src="images/camp/link.png">
 										</td>
 									</tr>
 									<tr>
@@ -391,10 +452,10 @@
 									dataType: 'json',
 									success: function(resData){
 										if(resData.count == 0) {
-											$('#heart').html('<img src="/images/whiteheart.png" width="15px">');
+											$('#heart').html('<img src="/images/camp/whiteheart.png" width="15px">');
 											$('#jjim').removeClass("jjim_checked");
 										} else {
-											$('#heart').html('<img src="/images/redheart.png" width="15px">');
+											$('#heart').html('<img src="/images/camp/redheart.png" width="15px">');
 											$('#jjim').addClass("jjim_checked");
 											
 										}
@@ -429,9 +490,9 @@
 									// "좋아요" 선택/해제 상태에 따른 하트 변경
 									$('#jjim').toggleClass("jjim_checked");
 									if($('#jjim').hasClass("jjim_checked")) {
-										$('#heart').html('<img src="/images/redheart.png" width="15px">');
+										$('#heart').html('<img src="/images/camp/redheart.png" width="15px">');
 									} else {
-										$('#heart').html('<img src="/images/whiteheart.png" width="15px">');
+										$('#heart').html('<img src="/images/camp/whiteheart.png" width="15px">');
 									}
 									
 									// "좋아요" 처리
@@ -488,7 +549,7 @@
 		</div>
 		<div id="intro">
 			<h3>
-				<img src="images/info.png">캠핑장 소개
+				<img src="images/camp/info.png">캠핑장 소개
 			</h3>
 			<p class="intro_txt">
 				<span th:text="${camp.intro}"></span>
@@ -497,29 +558,38 @@
 		
 		<hr>
 		
-		<h3>
-			<img src="images/info.png">캠핑장 시설정보
-		</h3>
-		<div class="camp_item">
-			<ul>
-				<li>
-					<i class="items">
-						<span th:text="${camp.sbrsCl}"></span><br>
-						<block th:each=" lang : ${#strings.listSplit(camp.sbrsCl,',')}">
-						<th:block th:switch="${lang}">
-						<div th:case="전기"><img src="/images/test.png" width="100px" height="100px" class="iconList"></div>
-						<div th:case="무선인터넷"><img src="/images/test.png" width="100px" height="100px"></div>
-						<th:block>
-						</block>
-					</i>
-				</li>
-			</ul>
+		<div class="pt">
+			<h3>
+				<img src="images/camp/info.png">캠핑장 시설정보
+			</h3>
+			<div class="camp_item">
+				<ul>
+					<li>
+						<i class="items">
+							<th:block th:each=" lang : ${#strings.listSplit(camp.sbrsCl,',')}">
+								<th:block th:switch="${lang}">
+								<div class="pic" th:case="전기"><img src="/images/camp/electric.png" width="42px" height="42px" class="iconList"><div class="txt">전기</div></div>
+								<div class="pic" th:case="무선인터넷"><img src="/images/camp/wifi.png" width="42px" height="42px" class="iconList"><div class="txt">와이파이</div></div>
+								<div class="pic" th:case="장작판매"><img src="/images/camp/wood.png" width="42px" height="42px" class="iconList"><div class="txt">장작판매</div></div>
+								<div class="pic" th:case="온수"><img src="/images/camp/hot.png" width="42px" height="42px" class="iconList"><div class="txt">온수</div></div>
+								<div class="pic" th:case="물놀이장"><img src="/images/camp/pool.png" width="42px" height="42px" class="iconList"><div class="txt">물놀이장</div></div>
+								<div class="pic" th:case="놀이터"><img src="/images/camp/play.png" width="42px" height="42px" class="iconList"><div class="txt">놀이터</div></div>
+								<div class="pic" th:case="운동장"><img src="/images/camp/ground.png" width="42px" height="42px" class="iconList"><div class="txt">운동장</div></div>
+								<div class="pic" th:case="운동시설"><img src="/images/camp/dumbbell.png" width="42px" height="42px" class="iconList"><div class="txt">운동시설</div></div>
+								<div class="pic" th:case="산책로"><img src="/images/camp/path.png" width="42px" height="42px" class="iconList"><div class="txt">산책로</div></div>
+								<div class="pic" th:case="마트.편의점"><img src="/images/camp/store.png" width="42px" height="42px" class="iconList"><div class="txt">마트.편의점</div></div>
+								<th:block>
+							</th:block>
+						</i>
+					</li>
+				</ul>
+			</div>
 		</div>
 		
 		<hr>
 		
 		<h3>
-			<img src="images/info.png">기타 주요시설
+			<img src="images/camp/info.png">기타 주요시설
 		</h3>
 		<div>
 			<table class="camp_table">
@@ -581,7 +651,7 @@
 		
 		<div id="guide">
 			<h3>
-				<img src="images/guide.png">일반 캠핑
+				<img src="images/camp/guide.png">일반 캠핑
 			</h3>
 			<div class="table_guide">
 				<table class="guide_tb">
@@ -663,7 +733,7 @@
 			<hr>
 		
 			<h3>
-				<img src="images/guide.png">글램핑
+				<img src="images/camp/guide.png">글램핑
 			</h3>
 			
 			<div class="table_guide">
@@ -726,11 +796,11 @@
 			<hr>
 			
 			<h3>
-				<img src="images/info.png">안전 및 시설 배치도
+				<img src="images/camp/info.png">안전 및 시설 배치도
 			</h3>
 			
 			<div>
-				<p><img src="images/campinfo.png"></p>
+				<p><img src="images/camp/campinfo.png"></p>
 			</div>
 		</div>
 		
@@ -738,7 +808,7 @@
 		
 		<div>
 			<h3>
-				<img src="images/info.png">위치 정보
+				<img src="images/camp/info.png">위치 정보
 			</h3>
 		</div>			
 		<div id="map">
