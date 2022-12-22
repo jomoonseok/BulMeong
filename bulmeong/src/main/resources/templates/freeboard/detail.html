@@ -53,7 +53,7 @@
 			fn_switchModifyAreaCancle();
 			
 			// # 좋아요 관련 # //
-// 			fn_likeCheck();
+			fn_likeCheck();
 // 			fn_likeCount();
 // 			fn_pressLike();
 
@@ -325,25 +325,23 @@
 			}
 			
 			// # 좋아요 관련 # //
-// 			function fn_goodCheck() { 
-// 				$.ajax({
-// 					url: '/like/getlikeCheck',
-// 					type: 'get',
-// 					data: 'freeNo=[[${free.freeNo}]]&nickname=[[${loginUser}]]',
-// 					dataType: 'json',
-// 					success: function(resData){
-// 						if (resData.count == 0) {
-// 							$('#thumns_up').html('<img src="../resources/images/whiteheart.png" width="15px">');
-// 							$('#like').removeClass("like_checked");
-// 						} else {
-// 							$('#thumns_up').html('<img src="../resources/images/redheart.png" width="15px">');
-// 							$('#like').addClass("like_checked");
-// 						}
-// 					}
-// 				});
-// 			}
-			
-			
+			function fn_likeCheck() { 
+				$.ajax({
+					url: '/like/getlikeCheck',
+					type: 'get',
+					data: 'freeNo=[[${free.freeNo}]]&nickname=[[${session.loginUser.nickname}]]',
+					dataType: 'json',
+					success: function(resData){
+						if (resData.count == 0) {
+							$('#heart').html('<img src="../../static/images/heart/heart_on.png" width="15px">');
+							$('#like').removeClass("like_checked");
+						} else {
+							$('#heart').html('<img src="../../static/images/heart/heart_off.png" width="15px">');
+							$('#like').addClass("like_checked");
+						}
+					}
+				});
+			}	
 			// # 좋아요 관련 끝 # //
 
 			// # 게시글 버튼 관련 # //
@@ -398,7 +396,11 @@
 	<div th:text="${freeCmt}"></div>
 
 	<hr>
-	좋아요
+	
+	<a id="lnk_like">
+		<span id="heart"></span><span id="like">좋아요 </span><span id="like_count"></span>
+	</a>
+	
 	
 	<!-- 3. 댓글 추가 -->
 	<h2 id="h2_cmt">댓글</h2>
@@ -431,7 +433,7 @@
 	</div>
 	
 
- 	
+ 	<img src="../../static/images/heart/off_heart.png" width="15px">
 
 
 	<!-- 4. 게시판 하단 버튼 -->

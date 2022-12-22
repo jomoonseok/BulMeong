@@ -7,11 +7,13 @@
 	
 	<script>
 		$(document).ready(function(){
+			
+			fn_birth();
+			
+			
 			$('#write').click(function(){
 				location.href = '/freeboard/write';				
 			});
-
-		});
 		
 		function fn_login(){
 			if(window.sessionStorage.getitem('[[${session.loginUser}]]') == null){
@@ -19,23 +21,7 @@
 			}
 			
 		}
-		
-		console.log('length : ' + '[[${session.loginUser}]]'.length);
-		console.log('typeof : ' + typeof '[[${session.loginUser}]]');
-		console.log('loginUser : ' + '[[${session.loginUser}]]');
-		
-		if('[[${session.loginUser}]]' != null){
-			console.log('로그인 안됨');
-		}
-		
-		if('[[${session.loginUser}]]' == ''){
-			console.log('로그인 안됨2');
-		}
 
-
-		
-		
-		
 		function goPage(page){ // page는 받는 이름...
 			
 			var dateColumn = $("#dateColumn option:selected").val();
@@ -44,9 +30,11 @@
 			location.href="/freeboard/list?page=" + page + "&dateColumn=" + dateColumn + "&column=" + column + "&query=" + query;
 
 		}
+
 		
 	</script>
-	
+
+
 	
 	
 	<h3>자유게시판</h3>
@@ -83,7 +71,7 @@
 		</tfoot>
 	</table>
 	
-<!-- 	<span id="comment_count"></span>개 -->
+
 	
 	
 	<div>
