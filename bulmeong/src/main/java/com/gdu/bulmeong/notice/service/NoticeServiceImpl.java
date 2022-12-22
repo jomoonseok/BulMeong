@@ -280,7 +280,7 @@ public class NoticeServiceImpl implements NoticeService {
 				
 				if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 					for(SummernoteImageDTO summernoteImage : summernoteImageList) {
-						File file = new File("C:" + File.separator + "noticeImage", summernoteImage.getFilesystem());
+						File file = new File("images" + File.separator + "noticeImage", summernoteImage.getFilesystem());
 						if(file.exists()) {
 							file.delete();
 						}

@@ -26,6 +26,8 @@
 		
 		<div th:utext="${notice.noticeContent}"></div>
 		
+		<hr>
+		
 		<div id="only_admin">
 			<form id="frm_btn" method="post">
 				<input type="hidden" name="noticeNo" th:value="${notice.noticeNo}">

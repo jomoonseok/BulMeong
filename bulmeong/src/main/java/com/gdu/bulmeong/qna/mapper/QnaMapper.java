@@ -11,4 +11,5 @@ import com.gdu.bulmeong.qna.domain.QnaDTO;
 public interface QnaMapper {
 	public int selectQnaCount();
 	public List<QnaDTO> selectQnaList(Map<String, Object> map);
+
 }

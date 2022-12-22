@@ -5,34 +5,34 @@
 
 	$(document).ready(function(){
 		
-        var parentIpt = document.getElementById('qnaTitle');
-        var parentIpt = document.getElementById('qnaContent');
+//         var parentIpt = document.getElementById('qnaTitle');
+//         var parentIpt = document.getElementById('qnaContent');
 
 
 
-        function sendData() {
-            childWindow.onload = function(event) {
-                childWindow.document.getElementById('qnaTitle').textContent = parentIpt.value;
-                childWindow.document.getElementById('qnaContent').textContent = parentIpt.value;
-            }
-        }
+//         function sendData() {
+//             childWindow.onload = function(event) {
+//                 childWindow.document.getElementById('qnaTitle').textContent = parentIpt.value;
+//                 childWindow.document.getElementById('qnaContent').textContent = parentIpt.value;
+//             }
+//         }
 //          document.getElementById('btn_done').onclick = function(event) {
 //             opener.document.getElementById('qnaTitle').textContent = document.getElementById('qnaTitle').textContent;
 //             opener.document.getElementById('qnaContent').textContent = document.getElementById('qnaContent').textContent;
 //             sendData();
 //         }
         
-		function sendChildValue(qnaTitle, qnaContent) {
-			opener.setChildValue(qnaTitle, qnaContent);
-			window.close();
-		}
+// 		function sendChildValue(qnaTitle, qnaContent) {
+// 			opener.setChildValue(qnaTitle, qnaContent);
+// 			window.close();
+// 		}
 		
 		$('#btn_popupClose').click(function(){
 			window.close();
 		});
 		
-		$('#frm_write').submit(function(event){
-			if($('#noticeTitle').val() == ''){
+		$('#frm_writePop').submit(function(event){
+			if($('#qnaTitle').val() == ''){
 				alert('제목을 입력하세요.');
 				event.preventDefault();
 				return;
