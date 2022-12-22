@@ -20,6 +20,7 @@ public class SleepUserCheckingInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		System.out.println("sleepinterceptor실행");
 		
 		// 로그인하려고 사용자가 입력한 아이디
 		String id = request.getParameter("id");

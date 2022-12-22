@@ -19,5 +19,5 @@ public interface CampService {
 	public Map<String, Object> getCampList(HttpServletRequest request);  // DB에서 CampDTO List로 받아오기
 	public Map<String, Object> getCampListOption(HttpServletRequest request); 
 	
-	public void getDetailList(HttpServletRequest request, Model model);  
+	public void getDetailList(HttpServletRequest request, Model model);
 }

@@ -12,7 +12,7 @@ import com.gdu.bulmeong.users.domain.UsersDTO;
 public interface UsersMapper {
 	public UsersDTO selectUserByMap(Map<String, Object> map);
 	public SleepUsersDTO selectSleepUserByMap(Map<String, Object> map);
-	public RetireUsersDTO selectRetireUserById(String id);
+	public RetireUsersDTO selectRetireUserByMap(Map<String, Object> map);
 	public int insertUser(UsersDTO user);
 	public int insertAccessLog(String id);
 	public int updateAccessLog(String id);
@@ -27,4 +27,5 @@ public interface UsersMapper {
 	public SleepUsersDTO selectSleepUserById(String id);
 	public int insertRestoreUser(String id);
 	public int deleteSleepUser(String id);
+	public int insertNaverUser(UsersDTO user);
 }

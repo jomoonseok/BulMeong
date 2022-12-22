@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gdu.bulmeong.users.interceptor.KeepLoginInterceptor;
 import com.gdu.bulmeong.users.interceptor.SleepUserCheckingInterceptor;
+import com.gdu.bulmeong.users.interceptor.TestInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -16,7 +17,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	private KeepLoginInterceptor keepLoginInterceptor;
 	
 	@Autowired
-	private SleepUserCheckingInterceptor sleepUserCheckingInterceptor ;
+	private SleepUserCheckingInterceptor sleepUserCheckingInterceptor;
+	
+	@Autowired
+	private TestInterceptor testInterceptor;
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -26,16 +30,23 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	/*
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(keepLoginInterceptor)
-		.addPathPatterns("/")
-		.addPathPatterns("/users/UsersController/*")
-		.excludePathPatterns("/login");
-		
-		registry.addInterceptor(sleepUserCheckingInterceptor)
-		.addPathPatterns("/")
-		.addPathPatterns("/users/UsersController/login");
+		registry.addInterceptor(testInterceptor)
+		.addPathPatterns("/**");
 	}
 	*/
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(keepLoginInterceptor)
+		.addPathPatterns("/**")
+		.excludePathPatterns("/users/login/form")
+		.excludePathPatterns("/users/login");
+		
+		registry.addInterceptor(sleepUserCheckingInterceptor)
+		.addPathPatterns("/users/login");
+		
+	}
+	
 	
 	
 }

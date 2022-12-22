@@ -4,9 +4,11 @@
 <style>
 	
 		.layout {
-			background: url(/images/camp.jpg) repeat-x 0 bottom;
+			background: url(/images/camp/wall.jpg) repeat-x 0 bottom;
 			background-repeat: no-repeat;
-			background-size: auto;
+			background-size: cover;
+			width: 100%;
+			height: 100%;
 			/*
 			background-image: url(/images/camp.jpg); 
 			width: auto;
@@ -53,12 +55,12 @@
 		    position: relative;
 		}
 		
-		.icon_link {
+		.icon_copy {
 			width: 16px;
 		    height: 16px;
-		    background: url(/images/link.png) no-repeat 0 center;
+		    background: url(/images/camp/copy.png) no-repeat 0 center;
 		    display: inline-block; 
-		}
+		} 
 		
 		.btn_jjim {
 			width: 32%;
@@ -69,7 +71,154 @@
 		    color: #fff;
 		}
 		
+		.tab {
+	        width: 800px;
+	        border-top: 1px solid gray;
+	        border-bottom: 1px solid gray;
+	        list-style: none; 
+	        display: flex;   
+	        padding: 0;
+	        margin: 0 auto 45px;
+	        background-color: gray;
+    	}
+    	
+    	.tab li {
+	        width: 200px;            /* 너비 */
+	        height: 50px;           /* 높이 */
+	        text-align: center;     /* 가로 가운데 정렬 */
+	        line-height: 50px;      /* 세로 가운데 정렬 */
+    	}
+    	
+    	.tab li:active {
+        height: 45px;  
+        background-color: white;
+    	}
+    
+	    .red {
+	    	color: red;
+	    }
+    
+    	.guide_tb th {
+		    padding: 15px 10px;
+		    line-height: 18px;
+		    font-weight: bold;
+		    font-size: 14px;
+		    color: #333;
+		    background-color: #f9f9fe;
+		    word-break: break-all;
+    	}
+	
+		.forest {
+		    position: relative;
+		    font-size: 14px;
+		    padding-left: 20px;
+		    color: #626262;
+			background: url(images/camp/forest.png) no-repeat 0 center;
+		}
+		.iconList {
+			float: left;
+		}
+		
+		.share {
+			list-style: none; 
+			display: flex;
+		}
+		.sns_type > ul {
+			margin:0;
+			padding-left:6px;
+		}
+		.sns_type > ul > li {
+			list-style: none;
+			
+		}
+		
+		.tag_p {
+			display: block;
+		    float: left;
+		    padding: 0 15px;
+		    border: 1px solid #fff;
+		    border-radius: 100px;
+		    text-align: center;
+		    font-size: 15px;
+		    color: #fff;
+		    margin-right: 5px; 
+		    margin-left: 5px;
+		}
+		
+		.tag_u {
+			color: #fff;
+			font-size: 15px;
+		}
+		
+		.underbar {
+			display: flex;
+		}
+		
+		.icon {
+			float: right;
+		}
+		
+		.pt {
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+		}
+		
+		.pic {
+			display: inline-flex; 
+			position:relative;
+			height: 50px;
+			margin-left: 30px;
+		}
+		
+		.txt {
+			display: block; 
+			position:absolute; top:50px;
+			text-align: center;
+			font-size: 10px;
+			width: 100%;
+		}
+		
+		.camp_item > ul {
+			word-break:break-all;
+			
+		}
+		
+		.camp_item > ul > li {
+			list-style: none;
+		}
+		
+		
+		
+		
 	</style>
+	
+	<script>
+	
+		$(document).ready(function(){
+			clip();
+		});
+		
+		function clip() {
+			$('#copy').click(function(){
+				
+				
+				// input에 담긴 데이터를 선택
+				var clipboard = $('#addr').attr('type', 'text');
+				
+				$('#addr').select();
+				
+				var copy = document.execCommand("Copy");
+				
+				$('#addr').attr('type', 'hidden');
+				
+				if(copy) {
+					alert("주소가 복사되었습니다."); 
+				}
+			});
+		}
+		
+	</script>
 
 <body>
 
@@ -83,60 +232,131 @@
 			<p class="lineIntro" th:text="${camp.lineIntro}"></p>
 		</div>
 		
-		<div class="icon">
-			<ul class="share">
-				<li class="sns">
-					<button type="button" class="sns_share">
-						<span class="skip">SNS 공유</span>
-					</button>
-					<div class="sns_share" style="display: none;">
-						<ul>
-							<li>
-								<button type="button" class="sns_list1">
-									<span class="skip">닫기</span>
-								</button>
-							</li>
-							<li>
-								<button type="button" class="sns_list2" onclick="fn_sendSns('facebook')">
-									<span class="skip">페이스북</span>
-								</button>
-							</li>
-							<li>
-								<button type="button" class="sns_list3" onclick="fn_sendSns('twitter')">
-									<span class="skip">트위터</span>
-								</button>
-							</li>
-							<li>
-								<button type="button" class="sns_list4" onclick="fn_sendSns('blog')">
-									<span class="skip">블로그</span>
-								</button>
-							</li>
-							<li>
-								<button type="button" class="sns_list5" onclick="fn_sendSns('kstory')">
-									<span class="skip">카카오스토리</span>
-								</button>
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="bookmark">
-					<a href="javascript:CreateBookmarkLink('', '현재페이지');" id="favorite" title="즐겨찾기">
-						<span class="skip">즐겨찾기</span>
-					</a>
-				</li>
-				<li class="link">
-					<a href="#" onclick="copy(this.href)">
-						<span class="skip">링크 복사하기</span>
-					</a>
-				</li>
-				<li class="print">
-					<a href="#none" onclick="printCamp()">
-						<span class="skip">인쇄하기</span>
-					</a>
-				</li>
-			</ul>
+		<hr>
+		
+		<div class="underbar">
+			<div class="tag">
+				<p class="tag_p">태그</p>
+				<ul class="tag_u">
+					<th:block th:each="lang : ${camp.themaEnvrnCl}">
+						<th:block th:if = "${#strings.isEmpty(lang)}" th:text="${lang}"></th:block>
+						<th:block th:unless = "${#strings.isEmpty(lang)} and ${!lang.startsWith(',')}" th:text="|#${lang.replaceAll(',',' #')}|"></th:block>
+					</th:block>
+				</ul>
+			</div>
+			
+			<div class="icon">
+				<ul class="share">
+					<li class="sns">
+						<button class="sns_share" onclick="fn_showHide()" style="background: none; border: none;">
+							<img src="images/camp/share.png" style="width: 32px; height: 32px;">
+						</button>
+						<div class="sns_type" style="display:none;">
+							<ul>
+								<li>
+									<img src="images/camp/back.png" class="sns_cancel" style="width: 32px; height: 32px;">
+								</li>
+								<li>
+									<img src="images/camp/facebook.png" class="sns_list1" onclick="fn_sendSns('facebook')" style="width: 32px; height: 32px;">
+								</li>
+								<li>
+									<img src="images/camp/twitter.png" class="sns_list2" onclick="fn_sendSns('twitter')" style="width: 32px; height: 32px;">
+								</li>
+								<li>
+									<img src="images/camp/kakaotalk.png" class="sns_list4" onclick="fn_sendSns('kakaotalk')" style="width: 32px; height: 32px;">
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="link">
+						<a href="" onclick="linkCopy()">
+							<img src="images/camp/url.png" style="width: 32px; height: 32px;">
+						</a>
+					</li>
+					<li class="print">
+						<a href="#printThis" onclick="printThis()">
+							<img src="images/camp/print.png" style="width: 32px; height: 32px;">
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
+		
 	</div>
+		
+	
+	<script>
+	
+		function fn_showHide() {
+			
+			$('.sns_type').hide();
+			
+			$('.sns_share').click(function(){
+				$('.sns_type').show();
+			});
+			
+			$('.sns_cancel').click(function(){
+				$('.sns_type').hide();
+			});
+			
+		}
+	
+		function fn_sendSns(sns) {
+			var method = "popup";
+			var thisUrl = document.URL;
+			var snsTitle = "캠핑장 공유";
+			if (sns == 'facebook') {
+				var url = "http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(thisUrl);
+				window.open(url, "", "width=486, height=286");
+			} else if (sns == 'twitter') {
+				var url = "http://twitter.com/share?url=" + encodeURIComponent(thisUrl) + "&text=" + encodeURIComponent(snsTitle);
+				window.open(url, "tweetPop", "width=486, height=286,scrollbars=yes");
+			} else if (sns == 'kakaotalk') {
+				Kakao.init('92939f8bc862108b29a394da4d1b8fbb');
+				
+				// SDK 초기화 여부를 판단합니다.
+				console.log(Kakao.isInitialized());
+				
+				// 카카오링크 버튼 생성
+				Kakao.Link.sendDefault({
+					// container: '.sns_list4', // HTML에서 작성한 ID값
+			        objectType: 'feed',
+			        content: {
+			        title: "캠핑장 공유", // 보여질 제목
+			        description: "공유할거삼", // 보여질 설명
+			        imageUrl: thisUrl, // 콘텐츠 URL
+			        link: {
+			            mobileWebUrl: thisUrl,
+			            webUrl: thisUrl
+			        }
+			        }
+				});
+				/* var url = "https://kakaotalk.com/share?url=" + encodeURIComponent(thisUrl);
+				window.open(url, "shareKakao", "width=400, height=500, resizable=yes"); */
+			}
+		}
+		
+		function linkCopy() {
+			
+				var url = '';
+				var textarea = document.createElement("textarea");
+				document.body.appendChild(textarea);
+				url = window.document.location.href;
+				textarea.value = url;
+				textarea.select();
+				document.execCommand("copy");
+				document.body.removeChild(textarea);
+				alert("URL이 복사되었습니다.");
+			
+		}
+		
+		function printThis() {
+			$("#content").printThis({
+				
+			});
+		}
+	
+	</script>
 	
 	<hr>
 		
@@ -146,7 +366,7 @@
 	
 	<section id="content" style="right: 0px">
 		<h2 class="skip">캠핑장 정보</h2>
-		<div id="contentBox">
+		<div id="contentBox1">
 			<div class="layout2">
 				<article>
 					<header class="campInfo">
@@ -162,8 +382,10 @@
 								<tbody>
 									<tr>
 										<th scope="col">주소</th>
-										<td th:text="${camp.addr1}">
-											<img th:src="/images/linkcopy.png" onclick="clip();">주소복사</a>
+										<td>
+											<span th:text="${camp.addr1}"></span>
+											<input type="hidden" id="addr" th:value="${camp.addr1}">
+											<img id="copy" src="images/camp/copy.png">
 										</td>
 									</tr>
 									<tr>
@@ -186,10 +408,12 @@
 										<th scope="col">홈페이지</th>
 										<td>
 											<a th:href="${camp.homepage}" target="_BLANK" title="새창열림">홈페이지 바로가기</a>
-											<i class="icon_link">
-												<span class="skip"></span>
-											</i>
+											<img src="images/camp/link.png">
 										</td>
+									</tr>
+									<tr>
+										<th scope="col">특징</th>
+										<td th:text="${camp.featureNm}"></td>
 									</tr>
 									<tr class="camp_tel">
 										<th scope="col">연락처</th>
@@ -201,13 +425,496 @@
 							</table>
 						</div>
 						<div>
-							<button class="btn_jjim" onclick="fn_jjim();">찜하기</button>
+							<button class="btn_jjim" >찜하기</button>
+							<span id="heart"></span>
+							<span id="jjim"></span>
+							<span id="cartCnt"></span>
 						</div>
+						<div th:if="${session.loginUser != null}">
+							<input type="hidden" id="loginUser" th:data-user="${session.loginUser.id}">
+						</div>
+						<script>
+							
+							// 함수 호출
+							$(function(){
+								fn_jjim();
+								fn_jjimCount();
+								fn_jjimCheck();
+							});
+							
+							function fn_jjimCheck() {
+								var loginUser = $('#loginUser').data('user');
+								var campNo = "[[${camp.campNo}]]";
+								$.ajax({
+									url: '/cart/getJjimCheck',
+									type: 'get',
+									data: 'campNo='+ campNo +'&id=' + loginUser,
+									dataType: 'json',
+									success: function(resData){
+										if(resData.count == 0) {
+											$('#heart').html('<img src="/images/camp/whiteheart.png" width="15px">');
+											$('#jjim').removeClass("jjim_checked");
+										} else {
+											$('#heart').html('<img src="/images/camp/redheart.png" width="15px">');
+											$('#jjim').addClass("jjim_checked");
+											
+										}
+									}
+								});
+							}
+							
+							function fn_jjimCount(){
+								var campNo = "[[${camp.campNo}]]";
+								$.ajax({
+									url: '/cart/getJjimCount',
+									type: 'get',
+									data: 'campNo=' + campNo,
+									dataType: 'json',
+									success: function(resData){
+										$('#cartCnt').text(resData.count + '개');
+									}
+								});
+							}
+						
+							function fn_jjim() {
+								$('.btn_jjim').click(function(){
+									// 로그인을 해야 "좋아요"를 누를 수 있다.
+									var loginUser = $('#loginUser').data('user');
+									var campNo = "[[${camp.campNo}]]";
+									console.log(loginUser);
+									if(loginUser == null) {
+										alert('해당 기능은 로그인이 필요합니다.');
+										return;
+									}
+									
+									// "좋아요" 선택/해제 상태에 따른 하트 변경
+									$('#jjim').toggleClass("jjim_checked");
+									if($('#jjim').hasClass("jjim_checked")) {
+										$('#heart').html('<img src="/images/camp/redheart.png" width="15px">');
+									} else {
+										$('#heart').html('<img src="/images/camp/whiteheart.png" width="15px">');
+									}
+									
+									// "좋아요" 처리
+									$.ajax({
+										url: '/cart/mark',
+										type: 'get',
+										data: 'campNo='+ campNo +'&id=' + loginUser,
+										dataType: 'json',
+										success: function(resData){
+											$('#cartCnt').text(resData.cartCnt + '개');
+											if(resData.insertSuccess) {
+												// alert('찜하기 성공?');
+												//fn_jjimCount();
+											}
+											if(resData.deleteSuccess){
+												// alert('찜풀기');
+											}
+										}
+									});
+								});
+							}
+						
+						</script>
+						
 					</header>
 				</article>
 			</div>
 		</div>
+			
+		<hr>
+		
+		<div class="white_bar">
+			<span class="skip">화이트바 줄 예정</span>
+		</div>
+
+		<div class="contentBox2">
+			<ul class="tab">
+				<li class="c_intro">
+					<a href="#intro" class="camp_intro">캠핑장 소개</a>
+				</li>
+				<li class="c_guide">
+					<a href="#guide" class="camp_guide">이용안내</a>
+				</li>
+				<li class="c_map">
+					<a href="#map" class="camp_map">위치 정보</a>
+				</li>
+				<li class="c_review">
+					<a href="#review" class="camp_review">캠핑 후기</a>
+				</li>
+				<li class="c_notice">
+					<a href="#notice" class="camp_notice">공지/이벤트</a>
+				</li>
+			</ul>
+		</div>
+		<div id="intro">
+			<h3>
+				<img src="images/camp/info.png">캠핑장 소개
+			</h3>
+			<p class="intro_txt">
+				<span th:text="${camp.intro}"></span>
+			</p>
+		</div>
+		
+		<hr>
+		
+		<div class="pt">
+			<h3>
+				<img src="images/camp/info.png">캠핑장 시설정보
+			</h3>
+			<div class="camp_item">
+				<ul>
+					<li>
+						<i class="items">
+							<th:block th:each=" lang : ${#strings.listSplit(camp.sbrsCl,',')}">
+								<th:block th:switch="${lang}">
+								<div class="pic" th:case="전기"><img src="/images/camp/electric.png" width="42px" height="42px" class="iconList"><div class="txt">전기</div></div>
+								<div class="pic" th:case="무선인터넷"><img src="/images/camp/wifi.png" width="42px" height="42px" class="iconList"><div class="txt">와이파이</div></div>
+								<div class="pic" th:case="장작판매"><img src="/images/camp/wood.png" width="42px" height="42px" class="iconList"><div class="txt">장작판매</div></div>
+								<div class="pic" th:case="온수"><img src="/images/camp/hot.png" width="42px" height="42px" class="iconList"><div class="txt">온수</div></div>
+								<div class="pic" th:case="물놀이장"><img src="/images/camp/pool.png" width="42px" height="42px" class="iconList"><div class="txt">물놀이장</div></div>
+								<div class="pic" th:case="놀이터"><img src="/images/camp/play.png" width="42px" height="42px" class="iconList"><div class="txt">놀이터</div></div>
+								<div class="pic" th:case="운동장"><img src="/images/camp/ground.png" width="42px" height="42px" class="iconList"><div class="txt">운동장</div></div>
+								<div class="pic" th:case="운동시설"><img src="/images/camp/dumbbell.png" width="42px" height="42px" class="iconList"><div class="txt">운동시설</div></div>
+								<div class="pic" th:case="산책로"><img src="/images/camp/path.png" width="42px" height="42px" class="iconList"><div class="txt">산책로</div></div>
+								<div class="pic" th:case="마트.편의점"><img src="/images/camp/store.png" width="42px" height="42px" class="iconList"><div class="txt">마트.편의점</div></div>
+								<th:block>
+							</th:block>
+						</i>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<hr>
+		
+		<h3>
+			<img src="images/camp/info.png">기타 주요시설
+		</h3>
+		<div>
+			<table class="camp_table">
+				<tbody class="camp_table_body">
+					<tr>
+						<th scope="col">캠핑장</th>
+						<td>
+							<ul>
+								<li th:text="|전체 면적: ${camp.allar}|"></li>
+								<li th:text="|인허가일자: ${camp.prmisnDe}|"></li>
+								<li th:text="|입지구분: ${camp.lctCl}|"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th scope="col">내부 시설</th>
+						<td>
+							<ul>
+								<li th:text="|캠핑장비 대여: ${camp.eqpmnLendCl}|"></li>
+								<li th:text="|글램핑 내부시설: ${camp.glampInnerFclty}|"></li>
+								<li th:text="|카라반 내부시설: ${camp.caravInnerFclty}|"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th scope="col">설치물 갯수</th>
+						<td>
+							<ul>
+								<li th:text="|화로대: ${camp.brazierCl}|"></li>
+								<li th:text="|화장실 개수: ${camp.toiletCo}|"></li>
+								<li th:text="|소화기 개수: ${camp.extshrCo}|"></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th scope="col">휴장기간</th>
+						<td>
+							<ul>
+								<li th:text="|휴무기간 시작일: ${camp.hvofBgnde}|"></li>
+								<li th:text="|휴무기간 종료일: ${camp.hvofEnddle}|"></li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<hr>
+		
+		<p class="notice">
+			<span class="caution">
+			" *BulMeong에 등록된 정보는 현장상황과 다소 다를 수 있으니 "
+			<span class="red">내부 시설, 설치물, 휴장기간</span>
+			"등 원활한 캠핑을 위해 꼭 필요한 사항은 해당 캠핑장에 미리 확인하시기 바랍니다."
+			</span>
+		</p>
+		
+		<hr>
+		
+		<div id="guide">
+			<h3>
+				<img src="images/camp/guide.png">일반 캠핑
+			</h3>
+			<div class="table_guide">
+				<table class="guide_tb">
+					<colgroup>
+						<col style="width: 20%">
+						<col style="width: 20%">
+						<col style="width: 20%">
+						<col style="width: 20%">
+						<col style="width: 20%">
+					</colgroup>
+					<thead>
+						<tr>
+							<th rowspan="2" scope="col">구분</th>
+							<th colspan="2" scope="colgroup">평상시</th>
+							<th colspan="2" scope="colgroup">성수기</th>
+						</tr>
+						<tr>
+							<th scope="col" class="gray">주중</th>
+							<th scope="col" class="gray">주말</th>
+							<th scope="col" class="gray">주중</th>
+							<th scope="col" class="gray">주말</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="col">일반</th>
+							<td data-cell-header="평상시 주중 : ">
+								40,000 ~ 50,000
+							</td>
+							<td data-cell-header="평상시 주말 : ">
+								50,000 ~ 60,000
+							</td>
+							<td data-cell-header="성수기 주중 : ">
+								60,000 ~ 70,000
+							</td>
+							<td data-cell-header="성수기 주말 : ">
+								60,000 ~ 70,000
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<h4 class="forest">※ 캠핑장 A구역: 데크 A1 ~ A6</h4>
+			<h4 class="forest">※ 캠핑장 B구역: 강돌 B1 ~ B4</h4>
+			<h4 class="forest">[캠핑장 A구역]</h4>
+			<h4 class="forest">- 데크크기 : 4.5M X 7.2M</h4>
+			<h4 class="forest">- A1 : 개인카라반, 트레일러, 차박겸용 사용가능 (개인카라반, 트레일러 사용 시 1일 10,000원 추가)</h4>
+			<h4 class="forest">- A2 ~ A6 : 일반데크</h4>
+			<h4 class="forest">- 1데크 기준 : 기준 인원 4인 / 최대 4인 (주차 1대/텐트 1동)</h4>
+			<h4 class="forest">(A구역 요금안내)</h4>
+			<h4 class="forest">- 비수기 (성수기, 준성수기 제외 날)</h4>
+			<h4 class="forest">주중 50,000원 / 주말 60,000원</h4>
+			<h4 class="forest">- 준성수기 (6월 ~ 9월)</h4>
+			<h4 class="forest">주중 60,000원 / 주말 65,000원</h4>
+			<h4 class="forest">- 성수기 (7월 중순 ~ 8월 중순)</h4>
+			<h4 class="forest">주중 70,000원 / 주말 70,000원</h4>
+			<h4 class="forest">[캠핑장B구역]</h4>
+			<h4 class="forest">- 사이트 크기 : 10M × 10M</h4>
+			<h4 class="forest">- 강돌 B1 : 개인카라반, 트레일러, 차박겸용 사용가능 (개인카라반, 트레일러 사용 시 1일 10,000원 추가)</h4>
+			<h4 class="forest">- 강돌 B2~ B4</h4>
+			<h4 class="forest">- 1사이트기준 : 기준인원 4인/최대 4인 (주차1대/텐트1동)</h4>
+			<h4 class="forest">(B구역요금안내)</h4>
+			<h4 class="forest">- 비수기 (성수기,준성수기 제외 날)</h4>
+			<h4 class="forest">주중 50,000원 / 주말 60,000원</h4>
+			<h4 class="forest">- 준성수기 (6월 ~ 9월)</h4>
+			<h4 class="forest">주중 60,000원 / 주말 65,000원</h4>
+			<h4 class="forest">- 성수기 (7월 중순 ~ 8월 중순)</h4>
+			<h4 class="forest">주중 70,000원 / 주말 70,000원</h4>
+			<h4 class="forest">[기타안내]</h4>
+			<h4 class="forest">- 숯+바베큐그릴대여 : 20,000원</h4>
+			<h4 class="forest">- 나무장작 : 11,000원 (개별화롯대와 비치된 화로받침대사용)</h4>
+			<h4 class="forest">- Giga-wifi 무료 이용 가능합니다</h4>
+			<h4 class="forest">- 전기사용 가능합니다 (고전력 전기제품 사용불가)</h4>
+			<h4 class="forest">- 수영장 운영합니다. (6월 ~ 9월)</h4>
+			<h4 class="forest">- 캠핑장A, B구역 : 한가족 다자녀(부모 2명, 자녀 3명 이상)인 경우 자녀 중 1명 무료(미성년자만 가능합니다.)</h4>
+			<h4 class="forest">자녀 무료일 경우만 최대 5명입니다.</h4>
+		
+			<hr>
+		
+			<h3>
+				<img src="images/camp/guide.png">글램핑
+			</h3>
+			
+			<div class="table_guide">
+				<table class="guide_tb">
+					<colgroup>
+						<col style="width: 20%">
+						<col style="width: 20%">
+						<col style="width: 20%">
+						<col style="width: 20%">
+						<col style="width: 20%">
+					</colgroup>
+					<thead>
+						<tr>
+							<th rowspan="2" scope="col">구분</th>
+							<th colspan="2" scope="colgroup">평상시</th>
+							<th colspan="2" scope="colgroup">성수기</th>
+						</tr>
+						<tr>
+							<th scope="col" class="gray">주중</th>
+							<th scope="col" class="gray">주말</th>
+							<th scope="col" class="gray">주중</th>
+							<th scope="col" class="gray">주말</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="col">글램핑</th>
+							<td data-cell-header="평상시 주중 : ">
+								80,000
+							</td>
+							<td data-cell-header="평상시 주말 : ">
+								100,000
+							</td>
+							<td data-cell-header="성수기 주중 : ">
+								150,000
+							</td>
+							<td data-cell-header="성수기 주말 : ">
+								150,000
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<h4 class="forest">※ 캐빈하우스(단독펜션) (기준2명/최대4명)</h4>
+			<h4 class="forest">(요금안내)</h4>
+			<h4 class="forest">- 비수기 (성수기,준성수기 제외 날)</h4>
+			<h4 class="forest">주중 90,000원 / 주말 110,000원</h4>
+			<h4 class="forest">- 준성수기 (6월 ~ 9월)</h4>
+			<h4 class="forest">주중 110,000원 / 주말 130,000원</h4>
+			<h4 class="forest">- 성수기 (7월 중순 ~ 8월 중순)</h4>
+			<h4 class="forest">주중 160,000원 / 주말 160,000원</h4>
+			<h4 class="forest">※ 기준 인원 초과 시 1명당 1일 10,000원 추가(24개월 미만 유아 무료)</h4>
+			<h4 class="forest">(기타안내)</h4>
+			<h4 class="forest">- 차량추가는 불가하오니 양해부탁드립니다 (주차1대가능)</h4>
+			<h4 class="forest">- 숯+바베큐그릴대여 : 20,000원</h4>
+			<h4 class="forest">- Giga-wifi 무료 이용가능 - 비치물품 : TV, 냉장고, 세탁기, 에어컨, 전자렌지, 전기밥솥, 취사/조리도구, 샴푸, 비누, 치약, 수건</h4>
+			<h4 class="forest">- 수영장 운영합니다. (6월 ~ 9월)</h4>
+			
+			<hr>
+			
+			<h3>
+				<img src="images/camp/info.png">안전 및 시설 배치도
+			</h3>
+			
+			<div>
+				<p><img src="images/camp/campinfo.png"></p>
+			</div>
+		</div>
+		
+		<hr>
+		
+		<div>
+			<h3>
+				<img src="images/camp/info.png">위치 정보
+			</h3>
+		</div>			
+		<div id="map">
+	
+			<input type="hidden"  id="mapY" th:value="${camp.mapY}" >
+			<input type="hidden"  id="mapX" th:value="${camp.mapX}" >
+			<input type="hidden"  id="facltNm" th:value="${camp.facltNm}">
+			<input type="hidden"  id="addr1" th:value="${camp.addr1}">
+			<div id="location" style="width:300px;height:300px;"></div>
+			<script>
+				var facltNm = $('#facltNm').val();
+				var addr1 = $('#addr1').val();
+				var mapY = $('#mapY').val();
+				var mapX = $('#mapX').val();
+			
+				var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+				var options = { //지도를 생성할 때 필요한 기본 옵션
+					center: new kakao.maps.LatLng(mapY, mapX),
+					level: 5 //지도의 레벨(확대, 축소 정도)
+				};
+	
+				var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+				
+				
+				// 지도에 추가된 지도타입정보를 가지고 있을 변수입니다
+				var currentTypeId;
+	
+				// 버튼이 클릭되면 호출되는 함수입니다
+				function setOverlayMapTypeId(maptype) {
+				    var changeMaptype;
+				    
+				    // maptype에 따라 지도에 추가할 지도타입을 결정합니다
+				    if (maptype === 'traffic') {            
+				        
+				        // 교통정보 지도타입
+				        changeMaptype = kakao.maps.MapTypeId.TRAFFIC;     
+				        
+				    } else if (maptype === 'roadview') {        
+				        
+				        // 로드뷰 도로정보 지도타입
+				        changeMaptype = kakao.maps.MapTypeId.ROADVIEW;    
+	
+				    } else if (maptype === 'terrain') {
+				        
+				        // 지형정보 지도타입
+				        changeMaptype = kakao.maps.MapTypeId.TERRAIN;    
+	
+				    } else if (maptype === 'use_district') {
+				        
+				        // 지적편집도 지도타입
+				        changeMaptype = kakao.maps.MapTypeId.USE_DISTRICT;           
+				    }
+				    
+				    // 이미 등록된 지도 타입이 있으면 제거합니다
+				    if (currentTypeId) {
+				        map.removeOverlayMapTypeId(currentTypeId);    
+				    }
+				    
+				    // maptype에 해당하는 지도타입을 지도에 추가합니다
+				    map.addOverlayMapTypeId(changeMaptype);
+				    
+				    // 지도에 추가된 타입정보를 갱신합니다
+				    currentTypeId = changeMaptype;        
+				}
+				
+				
+				// 마커가 표시될 위치입니다 
+				var markerPosition  = new kakao.maps.LatLng(mapY, mapX); 
+	
+				// 마커를 생성합니다
+				var marker = new kakao.maps.Marker({
+				    position: markerPosition
+				});
+	
+				// 마커가 지도 위에 표시되도록 설정합니다
+				marker.setMap(map);
+	
+				// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+				// marker.setMap(null); 
+				
+				var iwContent = '<div style="padding:5px; color: #626262;">'  + facltNm + '<br>' + addr1 + '</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+				    iwPosition = new kakao.maps.LatLng(33.450701, 126.570667); //인포윈도우 표시 위치입니다
+				
+				// 인포윈도우를 생성합니다
+				var infowindow = new kakao.maps.InfoWindow({
+				    position : iwPosition, 
+				    content : iwContent 
+				});
+				  
+				// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+				infowindow.open(map, marker); 
+			</script>
+		</div>
+	
+	<div>
+	
+		<p>
+		<button onclick="setOverlayMapTypeId('traffic')">교통정보 보기</button> 
+		<button onclick="setOverlayMapTypeId('roadview')">로드뷰 도로정보 보기</button> 
+		<button onclick="setOverlayMapTypeId('terrain')">지형정보 보기</button>
+		<button onclick="setOverlayMapTypeId('use_district')">지적편집도 보기</button>
+		</p>
+	</div>
+			
 	</section>
+	
 		
 </body>
 </html>

@@ -34,7 +34,7 @@ public class RequiredLoginAspect {
 		
 		// 세션
 		HttpSession session = request.getSession();
-		
+		System.out.println("aop : " + session.getAttribute("loginUser"));
 		// 로그인 여부 확인
 		if(session.getAttribute("loginUser") == null) {
 			

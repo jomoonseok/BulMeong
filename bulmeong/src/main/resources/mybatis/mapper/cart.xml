@@ -18,7 +18,7 @@
 		  FROM CAMP_CART
 		 WHERE CAMP_NO = #{campNo}
 	</select>
-
+	
 	<insert id="insertCart" parameterType="map">
 		INSERT INTO CAMP_CART
 			(CAMP_NO, ID)
