@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class FreeBoardCmtDTO {	
-	private int freeCmtNo, freeNo;
+	private int freeCmtNo, freeNo, freeSeq;
 	private String nickname, freeCmtContent, freeCmtCreateDate, freeCmtModifyDate, freeCmtIp;
 	private int freeCmtState, freeCmtDepth, freeGroupNo, freeGroupOrder;
 }

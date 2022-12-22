@@ -13,6 +13,29 @@
 
 		});
 		
+		function fn_login(){
+			if(window.sessionStorage.getitem('[[${session.loginUser}]]') == null){
+				console.log('안녕');
+			}
+			
+		}
+		
+		console.log('length : ' + '[[${session.loginUser}]]'.length);
+		console.log('typeof : ' + typeof '[[${session.loginUser}]]');
+		console.log('loginUser : ' + '[[${session.loginUser}]]');
+		
+		if('[[${session.loginUser}]]' != null){
+			console.log('로그인 안됨');
+		}
+		
+		if('[[${session.loginUser}]]' == ''){
+			console.log('로그인 안됨2');
+		}
+
+
+		
+		
+		
 		function goPage(page){ // page는 받는 이름...
 			
 			var dateColumn = $("#dateColumn option:selected").val();
@@ -25,16 +48,17 @@
 	</script>
 	
 	
-	<h3>자유게시판</h3>
 	
-<!-- 	<div th:if="${session.loginUser} != null"> -->
+	<h3>자유게시판</h3>
+
+	<div th:if="${session.loginUser} != null">
  		<input type="button" value="글쓰기" id="write">
-<!-- 	</div> -->
+	</div>
 
 	<table border="1">
 		<thead>
 			<tr>
-				<th>말머리</th>
+				<th>번호</th>
 				<th>제목</th>
 				<th>작성자</th>
 				<th>작성일</th>
@@ -42,9 +66,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="free : ${freeBoardList}">
+			<tr th:each="free , i : ${freeBoardList}">
 				<td th:text="${free.freeNo}"></td>
-				<td><a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="${free.freeTitle}"></a></td>
+				<td>
+					<a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="|${free.freeTitle} (${freeCmt[i.index]})|"></a>
+				</td>
 				<td th:text="${free.nickname}"></td>
 				<td th:text="${free.freeCreateDate}"></td>
 				<td th:text="${free.freeHit}"></td>
@@ -57,26 +83,23 @@
 		</tfoot>
 	</table>
 	
-
+<!-- 	<span id="comment_count"></span>개 -->
 	
 	
 	<div>
 	
 		<select id="dateColumn" name="dateColumn">
 			<option value="">전체기간</option>
-			<option value="ADAY">1일</option>
-			<option value="AWEEK">1주일</option>
-			<option value="AMONTH">1개월</option>
-			<option value="AYEAR">1년</option>
+			<option value="ADAY" th:selected="${dateColumn} == ADAY">1일</option>
+			<option value="AWEEK" th:selected="${dateColumn} == AWEEK">1주일</option>
+			<option value="AMONTH" th:selected="${dateColumn} == AMONTH">1개월</option>
+			<option value="AYEAR" th:selected="${dateColumn} == AYEAR">1년</option>
 		</select>
 		<select id="column" name="column">
 			<option value="FREE_TITLE" th:selected="${column} == FREE_TITLE">제목</option>
 			<option value="FREE_CONTENT"  th:selected="${column} == FREE_CONTENT">내용</option>
 			<option value="FREE_CONTENT_FREE_CONTENT" th:selected="${column} == FREE_CONTENT_FREE_CONTENT">제목 + 내용</option>
-			<option value="FREE_CONTENT_FREE_CMT_CONTENT" th:selected="${column} == FREE_CONTENT_FREE_CMT_CONTENT">내용 + 댓글</option>
 			<option value="NICKNAME" th:selected="${column} == NICKNAME">게시글 작성자</option>
-			<option value="FREE_CMT_CONTENT" th:selected="${column} == FREE_CMT_CONTENT">댓글</option>
-			<option value="FREE_CMT_NICKNAME" th:selected="${column} == FREE_CMT_NICKNAME">댓글 작성자</option>
 		</select>
 		<input type="text" id="query" name="query" th:value=${query}>
 		<button th:onclick="goPage(1)">검색</button>

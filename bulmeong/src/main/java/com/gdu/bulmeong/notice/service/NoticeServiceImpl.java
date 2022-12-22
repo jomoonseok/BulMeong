@@ -77,7 +77,6 @@ public class NoticeServiceImpl implements NoticeService {
 		model.addAttribute("noticeList", noticeMapper.selectNoticeListByMap(map));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/notice/list"));
-		
 	}
 	
 	// 이미지 저장

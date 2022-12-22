@@ -1,7 +1,5 @@
 package com.gdu.bulmeong.freeboard.service;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +11,9 @@ public interface FreeBoardService {
 
 	// 1. CRUD 기능
 	public void getFreeList(Model model);
+	
+//	public int getCmtCountByList(int freeNo);
+	
 	public int increseFreeBoardHit(int freeNo);
 	public void addFreeBoard(HttpServletRequest request, HttpServletResponse response);
 	public FreeBoardDTO getFreeBoardByNo(int freeNo);

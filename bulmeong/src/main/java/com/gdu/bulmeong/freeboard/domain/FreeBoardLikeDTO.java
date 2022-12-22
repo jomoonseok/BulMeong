@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class FreeBoardDTO {
+public class FreeBoardLikeDTO {
 	private int freeNo;
-	private String nickname, freeTitle, freeContent, freeCreateDate, freeModifiyDate, freeIp;
-	private int freeHit;
-
-
+	private String nickname;
 }
