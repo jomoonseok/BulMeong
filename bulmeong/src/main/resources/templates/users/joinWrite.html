@@ -82,26 +82,26 @@
 		$('#pw').keyup(function(){
 			
 			// 입력한 비밀번호
-			let pwValue = $(this).val();
+			//let pwValue = $(this).val();
 			
 			// 정규식(8~20자, 소문자+대문자+숫자+특수문자8종(!@#$%^&*) 3개 이상 조합)
-			let regPw = /^[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+			//let regPw = /^[0-9a-zA-Z!@#$%^&*]{8,20}$/;
 			
 			// 3개 이상 조합 확인
-			let validatePw = /[0-9]/.test(pwValue)        // 숫자가 있으면 true, 없으면 false
+			/*let validatePw = /[0-9]/.test(pwValue)        // 숫자가 있으면 true, 없으면 false
 			               + /[a-z]/.test(pwValue)        // 소문자가 있으면 true, 없으면 false
 			               + /[A-Z]/.test(pwValue)        // 대문자가 있으면 true, 없으면 false
 			               + /[!@#$%^&*]/.test(pwValue);  // 특수문자가 있으면 true, 없으면 false
-			
+			*/
 			// 정규식 및 3개 이상 조합 검사
-			if(regPw.test(pwValue) == false || validatePw < 3){
+			/*if(regPw.test(pwValue) == false || validatePw < 3){
 				$('#msg_pw').text('8~20자의 소문자, 대문자, 숫자, 특수문자(!@#$%^&*)를 3개 이상 조합해야 합니다.');
 				pwPass = false;
 			} else {
 				$('#msg_pw').text('사용 가능한 비밀번호입니다.');
 				pwPass = true;
-			}
-			               
+			}*/
+			pwPass = true;               
 		});  // keyup
 		
 	}  // fn_pwCheck
