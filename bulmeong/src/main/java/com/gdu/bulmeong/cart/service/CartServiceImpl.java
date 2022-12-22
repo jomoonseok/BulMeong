@@ -50,10 +50,11 @@ public class CartServiceImpl implements CartService {
 		Map<String, Object> result = new HashMap<>();
 		System.out.println("map :" + map);
 		if (cartMapper.selectUserCartCount(map) == 0) {  // 해당 게시물의 "좋아요"를 처음 누른 상태
-			result.put("isSuccess", cartMapper.insertCart(map) == 1);  // 신규 삽입			
+			result.put("insertSuccess", cartMapper.insertCart(map) == 1);  // 신규 삽입			
 		} else {
-			result.put("isSuccess", cartMapper.deleteCart(map) == 1);  // 기존 정보 삭제		
+			result.put("deleteSuccess", cartMapper.deleteCart(map) == 1);  // 기존 정보 삭제		
 		}
+		result.put("cartCnt", cartMapper.selectCampCartCount(campNo));
 		return result;
 	}
 	

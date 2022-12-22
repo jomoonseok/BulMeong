@@ -226,7 +226,7 @@
 	      	    		}
 	      	    		tent_div += '<div id="category" data-category = "' + tent.tentCategory + '">텐트 구분 : ' + tent.tentCategory + '</div>'; 
 	      	    		tent_div += '<div>최대 인원 : ' + tent.tentMaxCount + '</div>'; 
-	      	    		tent_div += '<div>이용 금액 : ' + tent.tentSum + '</div>';
+	      	    		tent_div += '<div>이용 금액 : ' + tent.tentSum.toLocaleString() + '</div>';
 	      	    		
 	      	    		if(tent.tentState == 0) {
 		      	    		tent_div += '<div id="div_reserve"><input type="submit" class="btn_reserve" value="예약하기" data-tentname="' + tent.tentName+ '"  data-tentno="' + tent.tentNo + '" data-count="' + tent.tentMaxCount + '" onclick="fn_reserve(this)"  ></div></div>'; 
@@ -346,7 +346,7 @@
 		<div id="reserve_container">
 			<div class="left_side"><hr>
 				<div style="text-align: center">여행정보 입력</div><hr>
-				<span style="color: red; ">* 달력에 마우스를 드래그하여 날짜를 선택하고 인원수를 입력해주세요.</span><br>
+				<span style="color: red; ">* 달력에 마우스를 드래그하여 숙박일을 선택하고 인원수를 입력해주세요.</span><br>
 				숙박일 <input type="text"  readonly="readonly" id="reserveBeginDate" name="reserveBeginDate" class="DATE">
 				퇴실일 <input type="text" readonly="readonly" id="reserveEndDate" name="reserveEndDate" class="DATE">
 				일정 <input type="text" readonly="readonly" id="reserveDate" name="reserveDate" class="DATE">

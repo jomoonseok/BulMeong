@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('QNA목록')}"></head>
 <style>
-	
+	.blind {
+		display: none;
+	}
 </style>
 <body>
 
@@ -33,16 +35,46 @@
 	</script>
 	-->
 	
-	<script language="javascript">
-		function fn_qnaWritePopup() {
-			popup = window.open('/popup','qnaWritePopup','width=500,height=700,left=700,top=170,scrollbars=yes,resizable=yes');
-		}
-	</script>
-	
+<!-- 	<script>
+ 		function fn_qnaWritePopup() {
+ 			window.open('/popup','popup','width=500,height=700,left=700,top=170,scrollbars=yes,resizable=yes');
+ 		}
+</script> -->
 	<div>
-		<input type="button" value="문의하기" onclick="fn_qnaWritePopup();">
+		<input type="button" value="문의하기" id="btn_qnaWrite">
 		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
 	</div>
+	
+	<script th:inline="javascript">
+	
+        var parentIpt = document.getElementById('parent_ipt');
+        var btn_qnaWrite = document.getElementById('btn_qnaWrite');
+        var childWindow = null;
+        function openChildWindow(url, name) {
+            const windowWidth = 500;
+            const windowHeight = 700;
+            const left = 700;
+            const top = 170;
+            const features = 'width=' + windowWidth + 'px,height=' + windowHeight + 'px,left=' + left + 'px,top=' + top + 'px';
+            if(childWindow == null || childWindow.closed) {
+                childWindow = open(url, name, features);
+            }
+
+       	}
+        
+        btn_qnaWrite.onclick = function(event){
+        	openChildWindow('/popup', 'popup');
+        }
+        
+        function setChildValue(qnaTitle, qnaContent){
+
+            document.getElementById("${qna.qnaTitle}").value = qnaTitle;
+            document.getElementById("${qna.qnaContent}").value = qnaContent;
+
+      	}
+       
+    </script>
+	
 	
 	
 		
@@ -54,7 +86,6 @@ if(noShowPopup != 'true') { -->
 	
 	<hr>
 	
-	<div>
 		<table border="1">
 			<thead>
 				<tr>
@@ -74,50 +105,57 @@ if(noShowPopup != 'true') { -->
 						<td>
 							<span th:if="${qna.depth} eq 0">미답변</span>
 							<span th:if="${qna.depth} eq 1">답변완료</span>
-							</th:block>
 						</td>
 						<td>
-<!-- 							<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">state==1을 어디서 보내줄지 -->
-<!-- 								<div>삭제된 질문 (클릭도 막아버리기)</div> -->
-<!-- 								<div>	 -->
-<!-- 									<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
-<!-- 										<input type="button" value="답변하기"> -->
-<!-- 									</div> -->
+							<th:block th:if="${qna.qnaState} eq 1">
+								<div th:text="${qna.qnaTitle}" id="btn_blindToggle"></div>
+								<div th:text="${qna.qnaContent}" class="blind">
+									<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+										<input type="button" value="답변하기">
+									</div>
+								</div>
+							</th:block>
+							
+							<th:block th:if="${qna.qnaState} eq 2">
+								<div th:if="${session.loginUser} != null and ${session.loginUser.id} == ${qna.id}">
+									<span th:text="${qna.qnaTitle}"></span>
+									<div th:text="${qna.qnaContent}" class="">
+										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+											<input type="button" value="답변하기">
+										</div>
+									</div>
+								</div>
+								
+								<div th:if="${session.loginUser} != null and ${session.loginUser.id} != ${qna.id}">
+									<span>비밀글입니다</span>
+								</div>
+<!-- 								<div th:if="${session.loginUser} == null"> -->
+<!-- 									<span>비밀글입니다</span> -->
 <!-- 								</div> -->
-<!-- 							</th:block> -->
-<!-- 							<th:block th:if="${qna.qnaState == 1}"> -->
-								<span th:utext="@{qna.qnaTitle}"></span>	
-<!-- 								<div>${qna.qnaContent} -->
-<!-- 									<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
-<!-- 										<input type="button" value="답변하기"> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</th:block> -->
-<!-- 							<th:block th:if="${qna.qnaState == 2}">비밀글 -->
-<!-- 								<div th:if="${session.loginUser.id} == qna.id}"> -->
-<!-- 									${qna.qnaTitle} -->
-<!-- 									<div>${qna.qnaContent} -->
-<!-- 										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
-<!-- 											<input type="button" value="답변하기"> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 								<div th:if="{session,loginUser.id != qna.id}"> -->
-<!-- 									비밀글임 (클릭도 막아버리기) -->
-<!-- 								</div> -->
-<!-- 							</th:block>	 -->
+							</th:block>
+							
+							<th:block th:if="${qna.qnaState} eq 0">
+								<div>삭제된글입니다.</div>
+							</th:block>
+							
 						</td>
-<!-- 						<td th:text="${qna.id}"></td> -->
+						<td th:utext=${qna.id}></td>
 <!-- 						<td th:text="$(#dates.fomat(qna.qnaCreateDate,'yyyy/M/d))" ></td> -->
-<!-- 						<td th:text="${qna.qnaCreateDate}"></td> -->
+						<td th:utext=${qna.qnaCreateDate}></td>
 						
 <!-- 						<th:block th:if="${loginUser == 'admin'}"> -->
 <!-- 							<td><input type="button" value="답변달기" id="btn_reply_qna"></td> -->
 <!-- 						</th:block> -->
-					</tr>
 <!-- 					<th:block th:if="${qna.qnaState == 0}"> -->
 <!-- 						<div>삭제됐음</div> -->
 <!-- 					</th:block> -->
+						<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+							<td>
+								<input type="button" value="답변">/
+								<input type="button" value="삭제">
+							</td>
+						</th:block>
+					</tr>
 				</th:block>
 			</tbody>
 			<tfoot>
@@ -126,7 +164,6 @@ if(noShowPopup != 'true') { -->
 				</tr>
 			</tfoot>
 		</table>
-	</div>
 
 </body>
 </html>

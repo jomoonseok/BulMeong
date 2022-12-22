@@ -43,6 +43,8 @@ public class QnaServiceImpl implements QnaService {
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
 		
+		System.out.println(map);
+		
 		// DB에서 목록 가져오기
 		List<QnaDTO> qnaList = qnaMapper.selectQnaList(map);
 		

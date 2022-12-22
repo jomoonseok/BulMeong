@@ -25,7 +25,7 @@
 			 </if>
 			 <if test="sessionId != null">
 			 	AND SESSION_ID = #{sessionId}
-			 	AND SESSION_LIMIT_DATE > DATE_FORMAT(NOW(), '%y/%m/%d');
+			 	AND 1 = (SESSION_LIMIT_DATE > DATE_FORMAT(NOW(), '%Y/%m/%d'))
 			 </if>
 			 <if test="name != null">
 			 	AND NAME = #{name}
@@ -51,10 +51,17 @@
 	</select>
 	
 	<!-- 아이디 중복체크3 탈퇴유저 -->
-	<select id="selectRetireUserById" parameterType="String" resultType="RetireUsersDTO">
+	<select id="selectRetireUserByMap" parameterType="Map" resultType="RetireUsersDTO">
 		SELECT ID
 		  FROM USERS_RETIRE
-		 WHERE ID = #{id}
+		 <where>
+			 <if test="id != null">
+			 	ID = #{id}
+			 </if>
+			 <if test="nickname != null">
+			 	AND NICKNAME = #{nickname}
+			 </if>
+		 </where>
 	</select>
 	
 	<!-- 일반회원가입 -->
@@ -62,7 +69,7 @@
 		INSERT INTO USERS
 			(ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, AGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
 		VALUES
-			(#{id}, #{nickname}, #{pw}, #{name}, #{mobile}, #{gender}, #{birthYear}, #{birthDay}, #{postCode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, DATE_FORMAT(NOW(), '%y/%m/%d'), #{agreeCode}, NULL, NULL, NULL, #{email}, (DATE_FORMAT(NOW(), '%Y') - #{birthYear} + 1), DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'))
+			(#{id}, #{nickname}, #{pw}, #{name}, #{mobile}, #{gender}, #{birthYear}, #{birthDay}, #{postCode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, DATE_FORMAT(NOW(), '%y/%m/%d'), #{agreeCode}, NULL, NULL, NULL, #{email}, NULL, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'))
 	</insert>
 	
 	<!-- 로그인 기록(ACCESS_LOG) 남기기 -->
@@ -93,9 +100,9 @@
 	<!-- 회원탈퇴2 : RETIRE_USERS 테이블에 추가 -->
 	<insert id="insertRetireUser" parameterType="RetireUsersDTO">
 		INSERT INTO USERS_RETIRE
-			(ID, JOIN_DATE, RETIRE_DATE)
+			(ID, NICKNAME, JOIN_DATE, RETIRE_DATE)
 		VALUES
-			(#{id}, #{joinDate}, DATE_FORMAT(NOW(), '%y/%m/%d'))
+			(#{id}, #{nickname}, #{joinDate}, DATE_FORMAT(NOW(), '%y/%m/%d'))
 	</insert>
 	
 	<!-- 로그인 유지를 위한 SESSION_ID/SESSION_LIMIT_DATE 업데이트 -->
@@ -147,11 +154,11 @@
 	<delete id="deleteUserForSleep">
 		DELETE
 		  FROM USERS
-		 WHERE ID = (SELECT DISTINCT TMP_ID
+		 WHERE ID = (SELECT TMP_ID
 		               FROM (SELECT U.ID TMP_ID
 							   FROM USERS U LEFT OUTER JOIN USERS_ACCESS A
 								 ON U.ID = A.ID
-							  WHERE DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), A.LAST_LOGIN_DATE) >= 12
+							  WHERE DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), A.LAST_LOGIN_DATE) >= 365
 							     OR (DATEDIFF(DATE_FORMAT(NOW(), '%y/%m/%d'), U.JOIN_DATE) >= 12 AND A.LAST_LOGIN_DATE IS NULL)) A)
 	</delete>
 	
@@ -166,15 +173,23 @@
 	<insert id="insertRestoreUser" parameterType="String">
 		INSERT INTO USERS(USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
 			(SELECT USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE
-			   FROM SLEEP_USERS
+			   FROM USERS_SLEEP
 			  WHERE ID = #{id})
 	</insert>
 	
 	<!-- 휴면복원2 : 복원할 회원을 SLEEP_USERS 테이블에서 삭제 -->
 	<delete id="deleteSleepUser" parameterType="String">
 		DELETE
-		  FROM SLEEP_USERS
+		  FROM USERS_SLEEP
 		 WHERE ID = #{id}
 	</delete>
+	
+	<!-- 네이버아이디로그인 회원가입 -->
+	<insert id="insertNaverUser" parameterType="UsersDTO">
+		INSERT INTO USERS
+			(ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
+		VALUES
+			(#{id}, #{nickname}, #{pw}, #{name}, #{mobile}, #{gender}, #{birthYear}, #{birthDay}, DATE_FORMAT(NOW(), '%y/%m/%d'), #{agreeCode}, #{snsType}, NULL, NULL, #{email}, #{profileImage}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'))
+	</insert>
 	
 </mapper>
