@@ -824,13 +824,13 @@ public class UsersServiceImpl implements UsersService {
 			String profileImage = "";
 			System.out.println("imageIsNull : " + profile.isNull("profile_image"));
 			if(profile.isNull("profile_image")){
-				profileImage = "/images/basic_profileImage.png";
+				profileImage = "/images/userimage/basic_profileImage.png";
 			} else{
 				profileImage = profile.getString("profile_image");
 			};
 			System.out.println("if 처리후 image : " + profileImage);
 			
-			profileImage = profileImage.equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png") ? "/images/basic_profileImage.png" : profileImage;
+			profileImage = profileImage.equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png") ? "/images/userimage/basic_profileImage.png" : profileImage;
 			
 			System.out.println("기본 프로필인지 아닌지 : " + profileImage);
 			
@@ -1014,7 +1014,9 @@ public class UsersServiceImpl implements UsersService {
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest) {
 		MultipartFile multipartFile = multipartRequest.getFile("image");
 		
-		return null;
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		return result;
 	}
 	
 	 

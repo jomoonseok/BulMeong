@@ -24,6 +24,11 @@ public class UsersController {
 	@Autowired 
 	private UsersService usersService;
 	
+	/*@GetMapping("/")
+	public String index() {
+		return "index";
+	}*/
+	
 	@GetMapping("/users/agree")
 	public String agree() {
 		return "users/agree";
@@ -135,14 +140,34 @@ public class UsersController {
 		return "users/mypage";
 	}
 	
+	@GetMapping("/users/modify")
+	public String requiredLogin_modifyInfo() {
+		return "users/modifyInfo";
+	}
+	
 	@PostMapping("/users/modify/pw")
 	public void requiredLogin_modifyPw(HttpServletRequest request, HttpServletResponse response) {
 		usersService.modifyPassword(request, response);
 	}
 	
-	@PostMapping("/users/modify")
+	@PostMapping("/users/modify/info")
 	public void modify(HttpServletRequest request, HttpServletResponse response) {
 		usersService.modifyUser(request, response);
+	}
+	
+	@GetMapping("/users/jjim")
+	public String requiredLogin_jjim() {
+		return "users/jjim";
+	}
+	
+	@GetMapping("/users/board/list")
+	public String requiredLogin_boardList() {
+		return "users/boardList";
+	}
+	
+	@GetMapping("/users/reserve")
+	public String requiredLogin_reserve() {
+		return "users/reserve";
 	}
 	
 	@GetMapping("/users/sleep/display")
@@ -190,13 +215,13 @@ public class UsersController {
 	public String modifyProfileImage() {
 		return "users/profile";
 	}
-	/*
+	
 	@ResponseBody
-	@GetMapping(value="/users/changeImage", produces="application/json")
+	@PostMapping(value="/users/changeImage", produces="application/json")
 	public Map<String, Object> changeImage(MultipartHttpServletRequest multipartRequest){
-		return usersService.saveImage;
+		return usersService.saveImage(multipartRequest);
 	}
-	*/
+	
 	@PostMapping("users/modify/profile")
 	public void modifyProfile(HttpServletRequest request, HttpServletResponse response) {
 		

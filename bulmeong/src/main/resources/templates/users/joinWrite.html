@@ -10,7 +10,7 @@
 		fn_nameCheck();
 		fn_nicknameCheck();
 		fn_mobileCheck();
-		fn_birthmonth();
+		fn_birth();
 		fn_emailCheck();
 		fn_join();
 		fn_home();
@@ -23,6 +23,9 @@
 	var namePass = false;
 	var nicknamePass = false;
 	var mobilePass = false;
+	//var yearPass = false;
+	//var monthPass = false;
+	//var datePass = false;
 	var authCodePass = false;
 	
 	// 1. 아이디 중복체크 & 정규식
@@ -210,7 +213,8 @@
 	
 	
 	// 7. 생년월일(월)
-	function fn_birthmonth(){
+	function fn_birth(){
+		
 		var month = '<option value="">월</option>';
 		for(let m = 1; m<=12; m++){
 			if(m < 10){
@@ -220,6 +224,7 @@
 			}
 		}
 		$('#birthmonth').append(month);
+		
 	}
 	
 	// 8. 이메일
@@ -431,10 +436,19 @@
 		
 		<!-- 생년월일 -->
 		<div>
-			<label for="birthyear">생년월일</label>
-			<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" >
-			<select name="birthmonth" id="birthmonth"></select>
-			<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일" >
+			<label for="birthyear">생년월일 필수</label>
+			<div>
+				<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" >
+				<span id="msg_year"></span>
+			</div>
+			<div>
+				<select name="birthmonth" id="birthmonth"></select>
+				<span id="msg_month"></span>
+			</div>
+			<div>
+				<input type="text" id="birthdate" name="birthdate" maxlength="2" size="2" placeholder="일" >
+				<span id="msg_date"></span>
+			</div>
 		</div>
 		
 		<div>
