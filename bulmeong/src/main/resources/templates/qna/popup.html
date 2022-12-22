@@ -1,25 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('QNA목록')}"></head>
-<style>
-	
-</style>
-<body>
-    
-    <div>
-        <label for="qnaTitle">제목</label>
-        <input type="text" id="qnaTitle" placeholder="제목을 입력해주세요.">
-    </div>
-    <div>
-        <label for="qnaContent">내용</label><br>
-        <textarea rows="40" cols="76" id="qnaContent" placeholder="내용을 입력하세요."></textarea>
-    </div>
-    <div class="footer">
-        <input type="button" id="btn_done" value="작성완료">
-        <input type="reset" value="작성초기화">
-        <input type="button" id="btn_popupClose" value="닫기">
-    </div>
-    <script th:inline="javascript">
+<script th:inline="javascript">
+
+	$(document).ready(function(){
+		
         var parentIpt = document.getElementById('qnaTitle');
         var parentIpt = document.getElementById('qnaContent');
 
@@ -41,9 +26,37 @@
 			opener.setChildValue(qnaTitle, qnaContent);
 			window.close();
 		}
+		
+		$('#frm_write').submit(function(event){
+			if($('#noticeTitle').val() == ''){
+				alert('제목을 입력하세요.');
+				event.preventDefault();
+				return;
+			}
+		});
+		
+	});
         
     </script>
 
+<body>
+    
+    <form id="frm_writePop" th:object="${qna}" th:action="@{/qna/add}" method="post">
+	    <div>
+	        <label for="qnaTitle">제목</label>
+	        <input type="text" id="qnaTitle" placeholder="제목을 입력해주세요.">
+	    </div>
+	    <div>
+	        <label for="qnaContent">내용</label><br>
+	        <textarea rows="40" cols="76" id="qnaContent" placeholder="내용을 입력하세요."></textarea>
+	    </div>
+	    <div class="footer">
+	        <input type="button" id="btn_done" value="작성완료">
+	        <input type="reset" value="작성초기화">
+	        <input type="button" id="btn_popupClose" value="닫기">
+	    </div>
+    </form>
+    
 </body>
 <!-- <body> -->
 	

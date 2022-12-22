@@ -13,7 +13,4 @@ public class CartDTO {
 	private int campNo;
 	private String id;
 	
-	// 추가?
-	private int price;
-	private int mod;
 }

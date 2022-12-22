@@ -12,6 +12,9 @@ public interface FreeBoardMapper {
 	
 	// 1. CRUD 기능
 	public int selectFreeListCount();
+	
+//	public int selectCmtCountByList(int freeNo);
+	
 	public List<FreeBoardDTO> selectFreeListByMap(Map<String, Object> map);
 	public int updateHit(int freeNo);
 	public int insertFreeBoard(FreeBoardDTO freeBoard);
@@ -21,8 +24,8 @@ public interface FreeBoardMapper {
 	
 	// 2. 검색 기능
 	public int selectFindFreeboardsCount(Map<String, Object> map);
-	public List<FreeBoardDTO> selectFindFreeboard(Map<String, Object> map);
+
 	
-	// 3. 이전글 다음글
-	public int prevNextBoard(int freeNo);
+
+	
 }

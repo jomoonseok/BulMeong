@@ -11,15 +11,15 @@ public interface FreeBoardService {
 
 	// 1. CRUD 기능
 	public void getFreeList(Model model);
+	
+//	public int getCmtCountByList(int freeNo);
+	
 	public int increseFreeBoardHit(int freeNo);
 	public void addFreeBoard(HttpServletRequest request, HttpServletResponse response);
 	public FreeBoardDTO getFreeBoardByNo(int freeNo);
 	public void modifyFreeBoard(HttpServletRequest request, HttpServletResponse response);
 	public void removeFreeBoard(HttpServletRequest request, HttpServletResponse response);
 	
-	// 2. 검색 기능
-	public void findFreeobard(HttpServletRequest request, Model model);
 	
-	// 3. 이전글 다음글
-	public FreeBoardDTO findPrevNextBoard(HttpServletRequest request, HttpServletResponse response);
+	
 }

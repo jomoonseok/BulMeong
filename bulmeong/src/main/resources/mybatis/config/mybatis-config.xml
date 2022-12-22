@@ -13,6 +13,8 @@
 	<typeAliases>
 		<typeAlias type="com.gdu.bulmeong.freeboard.domain.FreeBoardDTO" alias="FreeBoardDTO" />
 		<typeAlias type="com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO" alias="FreeBoardCmtDTO" />
+		<typeAlias type="com.gdu.bulmeong.freeboard.domain.FreeBoardLikeDTO" alias="FreeBoardLikeDTO" />
+		<typeAlias type="com.gdu.bulmeong.review.domain.ReviewBoardDTO" alias="ReviewBoardDTO" />
 
 		<typeAlias type="com.gdu.bulmeong.qna.domain.QnaDTO" alias="QnaDTO" />
 		<typeAlias type="com.gdu.bulmeong.faq.domain.FaqDTO" alias="FaqDTO" />
@@ -23,6 +25,7 @@
 		<typeAlias type="com.gdu.bulmeong.pay.domain.PayDTO" alias="PayDTO" />
 		<typeAlias type="com.gdu.bulmeong.reserve.domain.TentDTO" alias="TentDTO" />
 		<typeAlias type="com.gdu.bulmeong.reserve.domain.ReserveDTO" alias="ReserveDTO" />
+		<typeAlias type="com.gdu.bulmeong.reserve.domain.ReservedDTO" alias="ReservedDTO" />
 		<typeAlias type="com.gdu.bulmeong.cart.domain.CartDTO" alias="CartDTO" />
 
 		<typeAlias type="com.gdu.bulmeong.users.domain.UsersDTO" alias="UsersDTO" />

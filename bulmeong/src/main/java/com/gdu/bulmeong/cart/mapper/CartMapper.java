@@ -1,10 +1,13 @@
 package com.gdu.bulmeong.cart.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.Map;
 
-import com.gdu.bulmeong.cart.domain.CartDTO;
+import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface CartMapper {
-	public void addCart(CartDTO cart);
+	public int selectUserCartCount(Map<String, Object> map);
+	public int selectCampCartCount(int campNo); 
+	public int insertCart(Map<String, Object> map);
+	public int deleteCart(Map<String, Object> map);
 }

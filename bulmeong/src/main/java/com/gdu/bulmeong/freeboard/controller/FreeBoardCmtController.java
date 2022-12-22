@@ -3,6 +3,7 @@ package com.gdu.bulmeong.freeboard.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +33,9 @@ public class FreeBoardCmtController {
 	
 	@ResponseBody
 	@GetMapping(value="/freecomment/list", produces="application/json")
-	public Map<String, Object> list(HttpServletRequest request){
-		return freeBoardCmtService.getCmtList(request);
+	public Map<String, Object> list(HttpServletRequest request, Model model){
+		model.addAttribute("request", request);
+		return freeBoardCmtService.getCmtList(model);
 	}
 	
 	@ResponseBody
@@ -48,18 +50,18 @@ public class FreeBoardCmtController {
 		return freeBoardCmtService.removeCmt(freeCmtNo);
 	}
 	
+	@ResponseBody
+	@PostMapping(value="/freecomment/modify", produces="application/json")
+	public Map<String, Object> modify(FreeBoardCmtDTO freeComment){
+		return freeBoardCmtService.modifyCmt(freeComment);
+	}
 	
+	@ResponseBody
+	@PostMapping(value="/freecomment/reply/add", produces="application/json")
+	public Map<String, Object> addReply(FreeBoardCmtDTO freeCmtReply){
+		return freeBoardCmtService.addReply(freeCmtReply);
+	}
 	
-		
-		
-	
-		
-	
-	
-	
-	
-	
-	
-	
+
 	
 }

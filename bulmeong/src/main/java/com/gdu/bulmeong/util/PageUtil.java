@@ -3,7 +3,6 @@ package com.gdu.bulmeong.util;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
-import lombok.Setter;
 
 
 @Component
@@ -30,6 +29,7 @@ public class PageUtil {
 		
 		// begin, end 계산
 		begin = (page - 1) * recordPerPage + 1;
+
 		end = begin + recordPerPage - 1;
 		if(end > totalRecord) {
 			end = totalRecord;
@@ -49,6 +49,39 @@ public class PageUtil {
 		}
 		
 	}
+	
+	
+	// 자유게시판 검색기능
+	public void setSearchPageUtil(int page, int totalRecord, int recordPerPage) {
+		
+		// page, totalRecord 필드 저장
+		this.page = page;
+		this.totalRecord = totalRecord;
+		this.recordPerPage = recordPerPage;
+		
+		// begin, end 계산
+		begin = page == 1 ? (page - 1) * (recordPerPage + 1) : (page - 1) * (recordPerPage) ;
+
+		end = begin + recordPerPage - 1;
+		if(end > totalRecord) {
+			end = totalRecord;
+		}
+		
+		// totalPage 계산
+		totalPage = totalRecord / recordPerPage;
+		if(totalRecord % recordPerPage != 0) {
+			totalPage++;
+		}
+		
+		// beginPage, endPage 계산
+		beginPage = ((page - 1) / pagePerBlock) * pagePerBlock + 1;
+		endPage = beginPage + pagePerBlock - 1;
+		if(endPage > totalPage) {
+			endPage = totalPage;
+		}
+		
+	}	
+	
 	
 	public String getPaging(String path) {
 		
@@ -77,4 +110,35 @@ public class PageUtil {
 		
 	}
 	
+	
+	// 자유게시판 검색기능
+	public String getSearchPaging(String path) {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		// 이전블록 : 1block이 아니면 이전블록이 있다
+		if(beginPage != 1) {
+			//sb.append("<a href=\"" + path + "?page=" + (beginPage-1) + "\">◀</a>");
+			sb.append("<a onclick=goPage(" +(beginPage-1) +")>◀</a>");
+		}
+		
+		// 페이지번호 : 현재 페이지는 링크가 없다
+		for(int p = beginPage; p <= endPage; p++) {
+			if(p == page) {
+				sb.append("<a onClick=\"goPage(" + p +")\">" + p + "</a>");
+			} else {
+				sb.append("<a onClick=\"goPage(" + p +")\">" + p + "</a>");
+				//sb.append("<a href=\"" + path + "?page=" + p + "\">" + p + "</a>");
+			}
+		}
+		
+		// 다음블록 : 마지막 블록이 아니면 다음블록이 있다
+		if(endPage != totalPage) {
+			//b.append("<a href=\"" + path + "?page=" + (endPage+1) + "\">▶</a>");
+			sb.append("<a onclick=goPage(" +(beginPage+1) +")>▶</a>");
+		}
+		
+		return sb.toString();
+		
+	}
 }

@@ -1,10 +1,16 @@
 @charset "EUC-KR";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
+
+
+/* https://fontawesome.com/icons */
+
 
 .blind {
 	display: none;
 }
 
-.cmt_Create_Date {
+
+.cmt_create_date {
 	color: rgb(127, 127, 127);
 	font-size: 12px;
 }
