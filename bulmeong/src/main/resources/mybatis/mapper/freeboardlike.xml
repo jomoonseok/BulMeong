@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.bulmeong.freeboard.mapper.FreeBoardLikeMapper">
+
+	<!-- 1. 좋아요 카운트 -->
+	<select id="selectUserLikeCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_LIKE
+		 WHERE FREE_NO = #{freeNo}
+		   AND NICKNAME = #{nickname}
+	</select>
+	
+	<!-- 2. 좋아요 선택 -->
+	<select id="selectLikeCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_LIKE
+		 WHERE FREE_NO = #{freeNo}
+	</select>
+
+	<!-- 3. 좋아요 추가 -->
+	<insert id="insertLike" parameterType="map">
+		INSERT INTO FREE_LIKE
+			(NICKNAME, FREE_NO)
+		VALUES
+			(#{nickname}, #{freeNo})
+	</insert>
+	
+	<!-- 4. 좋아요 삭제 -->
+	<delete id="deleteLike" parameterType="map">
+		DELETE
+		  FROM FREE_LIKE
+		 WHERE FREE_NO = #{freeNo}
+		   AND NICKNAME = #{nickname}
+	</delete>
+	
+
+	
+	
+
+	
+	
+</mapper>

@@ -23,6 +23,7 @@
 			
 			// 3. 게시글 수정
 			$('#btn_edit').click(function(){
+
 				$('#frm_btn').attr('action', '/freeboard/edit');
 				$('#frm_btn').submit();
 			});
@@ -50,6 +51,11 @@
 			fn_switchModifyArea();
 			fn_addCommentReply()
 			fn_switchModifyAreaCancle();
+			
+			// # 좋아요 관련 # //
+// 			fn_likeCheck();
+// 			fn_likeCount();
+// 			fn_pressLike();
 
 			// 1. 댓글 갯수
 			function fn_commentCount(){
@@ -80,12 +86,12 @@
 							if(comment.freeCmtDepth == 0){
 								div += '<div>';
 							} else if(comment.freeCmtDepth > 0) {	
-								for (var i = 0; i < comment.freeCmtDepth; i++){
+								for (var i = 0; i < comment.freeCmtDepth; i++){								
 									div += '<div style="margin-left:40px;">';
 								}
 							}
 							
-							// State가 0일 때(일반 댓글)
+							// State가 1일 때(일반 댓글)
 							if(comment.freeCmtState == 1) {
 								
 								div += '<div style="display: inline-block;">';
@@ -97,21 +103,15 @@
 								div += '<span class="cmt_content">' + comment.freeCmtContent; + '</span>'
 								div += '</div>'
 								div += '</div>'
-								
-								// 로그인한 유저만 수정/삭제
-								// if( '${loginUser.id}' == comment.id) {
-								// div += '<input type="button" value="삭제" class="button_reply btn_comment_remove" data-free_comment_no="' + comment.freeCmtNo + '">';
-								
-								
-				
+							
+							// Depth가 0일 때(삭제 댓글)
 							} else {
 								if(comment.freeCmtDepth == 0) {
 									div += '<div>삭제된 댓글입니다.</div>';
 								} else {
 									div += '<div>삭제된 답글입니다.</div>';
 								}
-							}
-								
+							}	
 								
 							if(comment.freeCmtState == 1) {
 								
@@ -128,16 +128,19 @@
 								div += '<input type="button" value="취소" class="btn_cmt_modify_cancle">';		
 								div += '</form>'
 								div += '</div>'
-								// 수정 버튼
-								div += '<span>'
-								div += '<input type="button" value="수정" class="btn_cmt_modify">';
 								
+								// sessionUser와 댓글작성자가 같으면 수정, 삭제 기능
+								if('[[${session.loginUser}]]' != null){
+									var nickname = $('#nickname').val();
+									if(comment.nickname == nickname) {
+										div += '<span>'
+										div += '<input type="button" value="수정" class="btn_cmt_modify">';
+										div += '<input type="button" value="삭제" class="btn_cmt_remove" data-free_cmt_no="' + comment.freeCmtNo + '">';
+										div += '</span>'
+									}
+								}
 								
-								// 삭제 버튼
-								div += '<input type="button" value="삭제" class="btn_cmt_remove" data-free_cmt_no="' + comment.freeCmtNo + '">';
-								div += '</span>'
 							}
-								
 								
 								
 							if(comment.freeCmtState == 1) {									
@@ -151,7 +154,7 @@
 								div += '<input type="hidden" name="freeNo" value="' + comment.freeNo + '">';
 								div += '<input type="hidden" name="freeCmtDepth" value="' + comment.freeCmtDepth + '">';
 								div += '<input type="hidden" name="freeGroupOrder" value="' + comment.freeGroupOrder + '">';
-								div += '<input type="hidden" name="freeGroupNo" value="' + comment.freeCmtNo + '">';
+								div += '<input type="hidden" name="freeGroupNo" value="' + comment.freeGroupNo + '">';
 								// hidden
 								div += '<input type="text" class="btn_reply_area" name="freeCmtContent" placeholder="답글 추가...">';
 								div += '<input type="button" value="답글" class="button_reply btn_reply_add">';				
@@ -159,9 +162,7 @@
 								div += '</div>';
 								div += '</div>';	
 							}
-							
-
-							
+						
 							div += '<div>';
 							moment.locale('ko-KR');
 							div += '</div>';
@@ -170,63 +171,44 @@
 							$('#comment_list').append('<div style="border-bottom: 1px dotted gray;"></div>');
 
 						});
-						// 페이징
-						$('#paging').empty();
-						var pageUtil = resData.pageUtil;
-						var paging = '';
-						if(pageUtil.beginPage != 1) {
-							paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
-						}
-						for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
-							if(p == $('#page').val()){
-								paging += '<strong style="color: rgb(0, 159, 71); border: solid 1px #e5e5e5;">' + p + '</strong>';
-							} else {
-								paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
-							}
-						}
-						if(pageUtil.endPage != pageUtil.totalPage){
-							paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
-						}
-						$('#paging').append(paging);
+					// 원래 페이징
 					}
 						
 				});
 			}
 			
-			// 답글 토글 버튼
+			// 3. 답글 토글 버튼
 			function fn_switchReplyArea() {
-				$(document).on('click', '.btn_cmt_area', function() {
-					$(this).next().toggleClass('blind');  //f12로 찾긔
+				$(document).on('click', '.btn_cmt_area', function() {				
+					$(this).next().toggleClass('blind');
 					
 				});
 			}
 			
-			// 수정 토글 버튼
+			// 4. 수정 토글 버튼
 			function fn_switchModifyArea() {
 				$(document).on('click', '.btn_cmt_modify', function(){
-					$(this).parent().prev().toggleClass('blind');
-					//$(this).parent().prev().children('.freeCmtContent').hide;
-					$('.cmt_content').hide();
-					$('.btn_cmt_modify').hide();
-					$('.btn_cmt_remove').hide();							
+					$(this).parent().prev().toggleClass('blind'); // 1. 수정할 input 박스 생성
+					$(this).hide();								  // 2. 수정버튼 hide
+					$(this).next().hide();						  // 3. 삭제버튼 hide
+					$(this).parent().prev().prev().children().next().children().toggleClass('blind'); // 4. content hide	
 				});
 				
 			}
 			
-			// 수정 토글 버튼 취소
+			// 5. 수정 토글 버튼 취소
 			function fn_switchModifyAreaCancle() {
 				$(document).on('click', '.btn_cmt_modify_cancle', function(){
-					$(this).parent().parent().toggleClass('blind');
-					$('.cmt_content').show();
-					$('.btn_cmt_modify').show();
-					$('.btn_cmt_remove').show();	
+					$(this).parent().parent().toggleClass('blind');	// 1. input 박스 삭제
+					$(this).parent().parent().next().children().show(); // 2. 수정, 삭제버튼 show					
+					$(this).parent().parent().prev().children().next().children().show();
+					fn_commentList();
 							
 				});
 				
 			}
-			
 
-			// 5. 페이지 버튼
+			// 6. 페이지 버튼
 			function fn_changePage(){
 				$(document).on('click', '.enable_link', function(){
 					$('#page').val( $(this).data('page') );
@@ -234,7 +216,7 @@
 				});
 			}
 			
-			// 4. 댓글 추가
+			// 7. 댓글 추가
 			$('#btn_add_comment').click(function(){
 				if($('#content').val() == ''){
 					alert('댓글을 입력하세요.');
@@ -252,13 +234,15 @@
 							fn_commentList();
 							fn_commentCount();
 						}
+					}, error: function(){
+						alert('세션이 만료되었습니다.');
+						location.replace('/users/login/form');
 					}
+						
 				});
-			});
+			});				
 			
-			
-			
-			// 댓글 수정
+			// 8. 댓글 수정
 			function fn_modifyComment(){
 				$(document).on('click', '.btn_cmt_run_modify', function(){
 					
@@ -287,11 +271,9 @@
 					
 				
 				});
-			}
-	
+			}			
 			
-			
-			// 댓글 삭제
+			// 9. 댓글 삭제
 			function fn_removeComment(){
 				$(document).on('click', '.btn_cmt_remove', function(){
 					if(confirm('삭제된 댓글은 복구할 수 없습니다. 댓글을 삭제할까요?')){
@@ -315,7 +297,7 @@
 				});
 			}
 			
-			// 댓글의 답글 추가
+			// 10. 댓글의 답글 추가
 			function fn_addCommentReply(){
 				$(document).on('click', '.btn_reply_add', function(){
 					if($(this).prev().val() == ''){
@@ -333,27 +315,62 @@
 								fn_commentCount();
 								fn_commentList();
 							}
+						}, error: function(){
+							alert('세션이 만료되었습니다.');
+							location.replace('/users/login/form');
 						}
 					}); // ajax		
 				});
 				
 			}
 			
+			// # 좋아요 관련 # //
+// 			function fn_goodCheck() { 
+// 				$.ajax({
+// 					url: '/like/getlikeCheck',
+// 					type: 'get',
+// 					data: 'freeNo=[[${free.freeNo}]]&nickname=[[${loginUser}]]',
+// 					dataType: 'json',
+// 					success: function(resData){
+// 						if (resData.count == 0) {
+// 							$('#thumns_up').html('<img src="../resources/images/whiteheart.png" width="15px">');
+// 							$('#like').removeClass("like_checked");
+// 						} else {
+// 							$('#thumns_up').html('<img src="../resources/images/redheart.png" width="15px">');
+// 							$('#like').addClass("like_checked");
+// 						}
+// 					}
+// 				});
+// 			}
 			
 			
+			// # 좋아요 관련 끝 # //
 
 			// # 게시글 버튼 관련 # //
-
+			
+			// 1. 상단으로 창 이동
 			$('#btn_top').click(function(){
 				window.scrollTo({ top: 0, behavior: "smooth" });
 			});
 			
-			// # 게시글 버튼 끝 # //
-
 			
+			// 2. 댓글 창 이동
+			$('#move_cmt').click(function(){
+				var location = $('#h2_cmt').offset().top;
+				console.log(location);
+				
+				window.scrollTo({ top: location, behavior: "smooth" });
+			});
+			
+			// # 게시글 버튼 끝 # //
 			
 		});
 	</script>
+	
+	<!-- session이랑 loginUser가 같다면 nickname 값 넘겨주기 -->
+	<div th:if="${session.loginUser} != null">
+		<input type="hidden" id="nickname" th:value="${session.loginUser.nickname}">
+	</div>
 	
 	<!-- 1. 게시판 상단 버튼 -->
 	<div>
@@ -377,26 +394,22 @@
 	<hr>
 	
 	<div th:utext="${free.freeContent}"></div>
-	
-	
-	
-	<hr>
 
-	
-	
-	
-	
-	
+	<div th:text="${freeCmt}"></div>
+
+	<hr>
+	좋아요
 	
 	<!-- 3. 댓글 추가 -->
-	<h2>댓글</h2>
+	<h2 id="h2_cmt">댓글</h2>
 	<div>
-		<form id="frm_add_comment">
+		<form id="frm_add_comment" th:if="${session.loginUser} != null">
 			<div class="add_comment">
 				<div class="add_comment_input">
-					<input type="text" name="freeCmtContent" id="content" size="50" placeholder="댓글을 작성하려면 로그인을 해야합니다.">
 					<span class="add_comment_btn">
+						<input type="text" name="freeCmtContent" id="content" size="50" placeholder="댓글을 입력해주세요.">
 						<input type="button" value="등록" id="btn_add_comment">
+ 							<input type="hidden" name="freeGroupNo" th:value="0">
 					</span>
 				</div>
 			</div>
@@ -416,33 +429,38 @@
 		<div id="comment_list"></div>
 		<div id="paging" class="paging"></div>
 	</div>
-	<input type="hidden" id="page" value="1">
 	
 
  	
 
-	
-	
-	
-	
+
 	<!-- 4. 게시판 하단 버튼 -->
 	<div>
 		<form id="frm_btn" method="post">
 			<input type="hidden" name="freeNo" th:value="${free.freeNo}">
+			<input type="hidden" name="nickname" th:value="${free.nickname}">
 			<input type="button" value="글쓰기" id="btn_write">
 			<input type="button" value="목록" th:onclick="|location.href='@{/freeboard/list}'|">
-			<input type="button" value="수정" id="btn_edit">
-			<input type="button" value="삭제" id="btn_remove">
+			<span th:if="${session.loginUser} != null and ${free.nickname == session.loginUser.nickname}">
+				<input type="button" value="수정" id="btn_edit">
+				<input type="button" value="삭제" id="btn_remove">
+			</span>
 			<input type="button" value="TOP" id="btn_top">
 		</form>	
 	</div>
 
-	
-	
-	
-	
-	
-	 
+
+<!-- 	<div> -->
+<!-- 		<div th:each="comment , i : ${freeCmtList}"> -->
+<!-- 			<div style="display: inline-block;"> -->
+<!-- 				<span><strong th:text="${comment.nickname}"></strong></span> -->
+<!-- 				<span class="cmt_create_date" th:text="${comment.freeCmtCreateDate}"></span>&nbsp; -->
+<!-- 				<div class="cmt_content_area"> -->
+<!-- 					<span class="cmt_content" th:text="${comment.freeCmtContent}"></span> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div>  -->
 
 
 </body>

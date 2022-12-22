@@ -38,6 +38,7 @@ spring:
             enable: true
 
 
+
 # mybatis
 mybatis:
   config-location: mybatis/config/mybatis-config.xml
