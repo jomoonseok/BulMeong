@@ -27,6 +27,10 @@
 			window.close();
 		}
 		
+		$('#btn_popupClose').click(function(){
+			window.close();
+		});
+		
 		$('#frm_write').submit(function(event){
 			if($('#noticeTitle').val() == ''){
 				alert('제목을 입력하세요.');

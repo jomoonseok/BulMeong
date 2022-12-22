@@ -6,10 +6,44 @@
 		display: none;
 	}
 </style>
+<script th:inline="javascript">
+	
+	$(document).ready(function(){
+		
+        var parentIpt = document.getElementById('parent_ipt');
+        var btn_qnaWrite = document.getElementById('btn_qnaWrite');
+        var childWindow = null;
+        function openChildWindow(url, name) {
+            const windowWidth = 500;
+            const windowHeight = 700;
+            const left = 700;
+            const top = 170;
+            const features = 'width=' + windowWidth + 'px,height=' + windowHeight + 'px,left=' + left + 'px,top=' + top + 'px';
+            if(childWindow == null || childWindow.closed) {
+                childWindow = open(url, name, features);
+            }
+
+       	}
+        
+        btn_qnaWrite.onclick = function(event){
+        	openChildWindow('/popup', 'popup');
+        }
+        
+        function setChildValue(qnaTitle, qnaContent){
+
+            document.getElementById("${qna.qnaTitle}").value = qnaTitle;
+            document.getElementById("${qna.qnaContent}").value = qnaContent;
+
+      	}
+	
+	});
+	
+</script>
 <body>
 
 	
 	<header th:replace="~{layout/header::header_layout}"></header>
+	
 	<!--
 	<div>
 		<input type="button" value="문의하기" id="btn_write">
@@ -41,39 +75,12 @@
  		}
 </script> -->
 	<div>
+		<h2>Q&A</h2>
 		<input type="button" value="문의하기" id="btn_qnaWrite">
 		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
 	</div>
 	
-	<script th:inline="javascript">
 	
-        var parentIpt = document.getElementById('parent_ipt');
-        var btn_qnaWrite = document.getElementById('btn_qnaWrite');
-        var childWindow = null;
-        function openChildWindow(url, name) {
-            const windowWidth = 500;
-            const windowHeight = 700;
-            const left = 700;
-            const top = 170;
-            const features = 'width=' + windowWidth + 'px,height=' + windowHeight + 'px,left=' + left + 'px,top=' + top + 'px';
-            if(childWindow == null || childWindow.closed) {
-                childWindow = open(url, name, features);
-            }
-
-       	}
-        
-        btn_qnaWrite.onclick = function(event){
-        	openChildWindow('/popup', 'popup');
-        }
-        
-        function setChildValue(qnaTitle, qnaContent){
-
-            document.getElementById("${qna.qnaTitle}").value = qnaTitle;
-            document.getElementById("${qna.qnaContent}").value = qnaContent;
-
-      	}
-       
-    </script>
 	
 	
 	
@@ -118,9 +125,9 @@ if(noShowPopup != 'true') { -->
 							
 							<th:block th:if="${qna.qnaState} eq 2">
 								<div th:if="${session.loginUser} != null and ${session.loginUser.id} == ${qna.id}">
-									<span th:text="${qna.qnaTitle}"></span>
-									<div th:text="${qna.qnaContent}" class="">
-										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+									<div th:text="${qna.qnaTitle}"></div>
+									<div th:text="${qna.qnaContent}" class="blind">
+										<div th:if="${sessio n.loginUser} != null and ${session.loginUser.id} == 'admin'">
 											<input type="button" value="답변하기">
 										</div>
 									</div>
