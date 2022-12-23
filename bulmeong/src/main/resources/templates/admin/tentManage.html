@@ -38,7 +38,7 @@
                         <div class="nav">
                             <a class="nav-link" href="/admin">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                현황
+                                메인 화면
                             </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -64,8 +64,8 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="/admin/campManage">캠핑장 관리</a>
-                                            <a class="nav-link" href="/admin/tentManage">텐트 관리</a>
+                                            <a class="nav-link" href="login.html">캠핑장 관리</a>
+                                            <a class="nav-link" href="register.html">텐트 관리</a>
                                             <a class="nav-link" href="password.html">예약 관리</a>
                                         </nav>
                                     </div>
@@ -98,45 +98,37 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">bulmeong Admin</li>
                         </ol>
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">캠핑장API DB에 저장</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="/getCamp"></a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                텐트 현황
                             </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">캠핑장DB 초기화</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="/removeCamp">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">텐트 초기데이터 DB에 저장</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple" style="width:1500px;">
+                                    <thead>
+                                        <tr style="text-align: center;">
+                                            <th>캠핑장번호</th>
+                                            <th>캠핑장명</th>
+                                            <th>텐트번호</th>
+                                            <th>텐트이름</th>
+                                            <th>텐트사진</th>
+                                            <th>텐트구분</th>
+                                            <th>최대수용인원</th>
+                                            <th>예약일?</th>
+                                            <th>텐트금액</th>
+                                            <th>텐트상태</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tentTblBody">
+                                    </tbody>
+                                    <tfoot>
+                                    	<tr>
+                                    		<td id="paging"></td>
+                                    	</tr>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
-                        
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -153,7 +145,85 @@
                 </footer>
             </div>
         </div>
+        <input type="hidden" id="page" value="1">
         
+       	<script>
+       	
+       		$(function() {
+       			fn_changePage();
+       			fn_getList();
+       		})
+       	
+       		function fn_getList() {
+       			
+	       		$.ajax({
+	       			
+	       			type: 'post',
+	       			url: '/admin/getAllTent',
+	       			data: 'page=' + $('#page').val(),
+	       			success: function(resData) {
+	       				console.log(resData);
+	       				$('#tentTblBody').empty();
+	       				$.each(resData.tentList, function(i, tent) {
+	       					var tentDiv = '<tr class="tent_tr" style="font-size: 15px; text-align: center;">';
+	       					tentDiv += '<td>' + tent.campNo + '</td>'
+	       					tentDiv += '<td>' + tent.facltNm + '</td>'
+	       					tentDiv += '<td>' + tent.tentNo + '</td>'
+	       					tentDiv += '<td>' + tent.tentName + '</td>'
+	       					tentDiv += '<td><img src="' + tent.tentImage + '" style="width=70px; height:50px;"></img></td>'
+	       					tentDiv += '<td>' + tent.tentCategory + '</td>'
+	       					tentDiv += '<td>' + tent.tentMaxCount + '</td>'
+	       					tentDiv += '<td>' + tent.tentReserveDay + '</td>'
+	       					tentDiv += '<td>' + tent.tentSum + '</td>'
+	       					tentDiv += '<td>' + tent.tentState + '</td>'
+	       					tentDiv += '</tr>';
+	       					
+	       					$('#tentTblBody').append(tentDiv);
+	       					
+	       				});
+	       				
+	       				$('#paging').empty();
+	    				var pageUtil = resData.pageUtil;
+	    				var paging = '';
+	    				// 이전 블록
+	    				if(pageUtil.beginPage != 1) {
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+	    				}
+	    				// 페이지번호
+	    				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+	    					if(p == $('#page').val()){
+	    						paging += '<strong>' + p + '</strong>';
+	    					} else {
+	    						paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
+	    					}
+	    				}
+	    				// 다음 블록
+	    				if(pageUtil.endPage != pageUtil.totalPage){
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+	    				}
+	    				$('#paging').append(paging);
+	
+	
+	       				
+	       			},
+	       			error: function(jqXHR) {
+	       				
+	       			}
+	       						
+	       			
+	       		})
+       		}
+       		
+       		function fn_changePage(){
+				$(document).on('click', '.enable_link', function(){
+					$('#page').val( $(this).data('page') );
+					fn_getList();
+				});
+			}
+       		
+       		
+       		
+       	</script>
         
         
         

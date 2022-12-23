@@ -157,7 +157,7 @@ public class CampServiceImpl implements CampService {
 	@Override
 	public void addCampInfoToDb(HttpServletResponse response) {
 		
-		campMapper.deleteCampApi();  // 캠프 데이터 전부 삭제 (초기화용)
+//		campMapper.deleteCampApi();  // 캠프 데이터 전부 삭제 (초기화용)
 		
 		List<CampDTO> campList = parseCampInfo();
 		CampDTO camp = new CampDTO();
@@ -209,12 +209,33 @@ public class CampServiceImpl implements CampService {
 		result.put("pageUtil", pageUtil);
 		result.put("campCount", campCount);
 		
-		
-		
-
-		
 		return result;
 	}
+	
+	@Override
+	public void deleteAllCamp(HttpServletResponse response) {
+		int result = 0;
+		result = campMapper.deleteCampApi();
+		try {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(result > 1) {
+				out.println("<script>");
+				out.println("alert('실행결과 : 성공')");
+				out.println("location.href='/'");
+				out.println("</script>");
+			} else {
+				out.println("<script>");
+				out.println("alert('실행결과 : 오류')");
+				out.println("history.back()");
+				out.println("</script>");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	@Override
 	public Map<String, Object> getCampListOption(HttpServletRequest request) {

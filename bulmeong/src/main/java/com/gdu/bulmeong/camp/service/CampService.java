@@ -20,4 +20,5 @@ public interface CampService {
 	public Map<String, Object> getCampListOption(HttpServletRequest request); 
 	
 	public void getDetailList(HttpServletRequest request, Model model);
+	public void deleteAllCamp(HttpServletResponse response);
 }

@@ -11,4 +11,24 @@
 		  FROM USERS
 	</select>
 	
+	<select id="selectAllCampAdmin" parameterType="Map" resultType="CampDTO">
+	 	SELECT A.ROW_NUM, A.CAMP_NO, A.facltNm, A.intro, A.lineIntro, A.featureNm, A.sbrsCl, A.firstImageUrl, A.themaEnvrnCl, A.eqpmnLendCl, A.tourEraCl, A.induty, A.allar, A.operPdCl, A.hvofBgnde, A.hvofEnddle, A.prmisnDe, A.operDeCl, A.toiletCo, A.extshrCo, A.brazierCl, A.glampInnerFclty, A.caravInnerFclty, A.lctCl, A.addr1, A.doNm, A.sigunguNm, A.addr2, A.zipcode, A.mapX, A.mapY, A.homepage, A.tel, A.createdtime, A.modifiedtime, A.jjim, A.sum
+	 	  FROM (SELECT ROW_NUMBER() OVER(ORDER BY CAMP_NO <!-- ORDER BY "modifiedtime" DESC -->) AS ROW_NUM, CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime, jjim, sum 
+	 	          FROM CAMP) A
+	 	 LIMIT #{begin}, #{end}
+	 </select>
+	
+	<select id="selectAllTentCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM CAMP_TENT
+	</select>
+	
+	<select id="selectAllTentAdmin" parameterType="Map" resultType="AdminTentDTO">
+		SELECT CCT.ROW_NUM, CCT.CAMP_NO, CCT.facltNm, CCT.TENT_NO, CCT.TENT_CATEGORY, CCT.TENT_NAME, CCT.TENT_MAX_COUNT, CCT.TENT_RESERVE_DAY, CCT.TENT_SUM, CCT.TENT_STATE, CCT.TENT_IMAGE
+  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY CAMP_NO) AS ROW_NUM, C.CAMP_NO, C.facltNm, CT.TENT_NO, CT.TENT_CATEGORY, CT.TENT_NAME, CT.TENT_MAX_COUNT, CT.TENT_RESERVE_DAY, CT.TENT_SUM, CT.TENT_STATE, CT.TENT_IMAGE
+                  FROM CAMP AS C JOIN CAMP_TENT CT
+		            ON C.CAMP_NO = CT.CAMP_NO) CCT
+         LIMIT #{begin}, #{end}
+	</select>
+	
 </mapper>
