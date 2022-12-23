@@ -20,7 +20,7 @@ public class FreeBoardLikeServiceImpl implements FreeBoardLikeService {
 	@Override
 	public Map<String, Object> getLikeCheck(HttpServletRequest request) {
 		int freeNo = Integer.parseInt(request.getParameter("freeNo"));
-		int nickname = Integer.parseInt(request.getParameter("nickname"));
+		String nickname = request.getParameter("nickname");
 		Map<String, Object> map = new HashMap<>();
 		map.put("freeNo", freeNo);
 		map.put("nickname", nickname);
@@ -40,7 +40,7 @@ public class FreeBoardLikeServiceImpl implements FreeBoardLikeService {
 	@Override
 	public Map<String, Object> mark(HttpServletRequest request) {
 		int freeNo = Integer.parseInt(request.getParameter("freeNo"));
-		int nickname = Integer.parseInt(request.getParameter("nickname"));
+		String nickname = request.getParameter("nickname");
 		Map<String, Object> map = new HashMap<>();
 		map.put("freeNo", freeNo);
 		map.put("nickname", nickname);

@@ -52,10 +52,13 @@
 			fn_addCommentReply()
 			fn_switchModifyAreaCancle();
 			
+			// # 댓글 관련 변수
+			var nickname = $('#nickname').val(); // 세션에 로그인 한 유저 닉네임
+			
 			// # 좋아요 관련 # //
 			fn_likeCheck();
-// 			fn_likeCount();
-// 			fn_pressLike();
+ 			fn_likeCount();
+ 			fn_pressLike();
 
 			// 1. 댓글 갯수
 			function fn_commentCount(){
@@ -131,7 +134,7 @@
 								
 								// sessionUser와 댓글작성자가 같으면 수정, 삭제 기능
 								if('[[${session.loginUser}]]' != null){
-									var nickname = $('#nickname').val();
+									
 									if(comment.nickname == nickname) {
 										div += '<span>'
 										div += '<input type="button" value="수정" class="btn_cmt_modify">';
@@ -251,8 +254,6 @@
 							freeCmtContent : $(this).prev().val(),
 							freeCmtNo      : $(this).prev().prev().val()
 					}
-
-					console.log(objParams);
 					
 					$.ajax({
 						type: 'post',
@@ -260,12 +261,19 @@
 						data: objParams,
 						dataType: 'json',
 						success: function(resData){
-							if(resData.isModify){
+							if(resData.isModify){	
 								alert('댓글이 수정되었습니다.');
 								fn_commentList();
 								fn_commentCount();
 							}
+
+						}, error: function(jqXHR){
 							
+							alert(jqXHR.message);
+							// alert('세션이 만료되었습니다.');
+
+
+							// location.replace('/users/login/form');
 						}
 					});
 					
@@ -324,27 +332,81 @@
 				
 			}
 			
-			// 11. url 복사
+		
 
 			
 			// # 좋아요 관련 # //
-			function fn_likeCheck() { 
+			function fn_likeCheck() {
 				$.ajax({
-					url: '/like/getlikeCheck',
+					url: '/like/getLikeCheck',
 					type: 'get',
-					data: 'freeNo=[[${free.freeNo}]]&nickname=[[${session.loginUser.nickname}]]',
+					data: 'freeNo=[[${free.freeNo}]]&nickname=' + nickname,
 					dataType: 'json',
 					success: function(resData){
-						if (resData.count == 0) {
-							$('#heart').html('<img src="../../static/images/heart/heart_on.png" width="15px">');
+						if (resData.likeCount == 0) {
+							$('#heart').html('<img src="/images/camp/whiteheart.png" width="15px">');
 							$('#like').removeClass("like_checked");
 						} else {
-							$('#heart').html('<img src="../../static/images/heart/heart_off.png" width="15px">');
+							$('#heart').html('<img src="/images/camp/redheart.png" width="15px">');
 							$('#like').addClass("like_checked");
 						}
 					}
 				});
-			}	
+			}
+			
+			function fn_likeCount(){
+				$.ajax({
+					url: '/like/getLikeCount',
+					type: 'get',
+					data: 'freeNo=[[${free.freeNo}]]',
+					dataType: 'json',
+					success: function(resData){
+						$('#like_count').empty();
+						$('#like_count').text(resData.count + '개');
+					}
+				});
+			}
+			
+			// "좋아요" 누른 경우
+			function fn_pressLike(){
+				$('#lnk_like').click(function(){
+					
+					// 로그인을 해야 "좋아요"를 누를 수 있다.
+					if(nickname == null){
+						alert('로그인한 사용자만 이용할 수 있습니다.');
+						return;
+					}
+					// 셀프 좋아요 방지
+					if(nickname == '[[${free.nickname}]]') {
+						alert('본인의 게시글에서는 "좋아요"를 누를 수 없습니다.');
+						return;
+					}
+					// "좋아요" 선택/해제 상태에 따른 하트 변경
+					$('#like').toggleClass("like_checked");
+					if ($('#like').hasClass("like_checked")) {
+						$('#heart').html('<img src="/images/camp/redheart.png" width="15px">');
+					} else {
+						$('#heart').html('<img src="/images/camp/whiteheart.png" width="15px">');
+					}
+					// "좋아요" 처리
+					$.ajax({
+						url: '/like/mark',
+						type: 'get',
+						data: 'freeNo=[[${free.freeNo}]]&nickname=' + nickname,
+						dataType: 'json',
+						success: function(resData){
+							if(resData.isSuccess) {
+								fn_likeCount();							
+							}
+						}
+					});
+				});
+			}
+			
+			
+			
+			
+			
 			// # 좋아요 관련 끝 # //
 
 			// # 게시글 버튼 관련 # //
@@ -358,8 +420,7 @@
 			// 2. 댓글 창 이동
 			$('#move_cmt').click(function(){
 				var location = $('#h2_cmt').offset().top;
-				console.log(location);
-				
+				console.log(location);		
 				window.scrollTo({ top: location, behavior: "smooth" });
 			});
 			
@@ -402,7 +463,7 @@
 	
 	<div>
 		<div>
-			<span th:text="${free.nickname}"></span>
+			<span th:text="${free.nickname}" id="writer_nickname"></span>
 			<span th:text="${free.freeCreateDate}"></span>
 			<span id="move_cmt">댓글</span><br>
 			<span><a href="" onclick="linkCopy()">URL 복사</a></span>
@@ -420,11 +481,11 @@
 	<hr>
 	
 	<a id="lnk_like">
-		<span id="heart"></span><span id="like">좋아요</span><span id="like_count"></span>
+		<span id="heart"></span>&nbsp;<span id="like"></span><span id="like_count"></span>
 	</a>
 	
-	<img th:src="@{/images/camp/whiteheart.png}" width="15px">
-	<img th:src="@{/images/camp/redheart.png}" width="15px">
+<!-- 	<img th:src="@{/images/camp/whiteheart.png}" width="15px"> -->
+<!-- 	<img th:src="@{/images/camp/redheart.png}" width="15px"> -->
 	
 	
 	

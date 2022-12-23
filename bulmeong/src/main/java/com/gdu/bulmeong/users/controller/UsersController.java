@@ -151,7 +151,7 @@ public class UsersController {
 	}
 	
 	@PostMapping("/users/modify/info")
-	public void modify(HttpServletRequest request, HttpServletResponse response) {
+	public void requiredLogin_modify(HttpServletRequest request, HttpServletResponse response) {
 		usersService.modifyUser(request, response);
 	}
 	

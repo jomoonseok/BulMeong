@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
 import com.gdu.bulmeong.freeboard.domain.FreeBoardDTO;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
+import com.gdu.bulmeong.freeboard.mapper.FreeBoardLikeMapper;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.PageUtil;
@@ -33,6 +33,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	private FreeBoardCmtMapper freeBoardCmtMapper;
 	
 	@Autowired
+	private FreeBoardLikeMapper freeBoardLikeMapper;
+	
+	@Autowired
 	private PageUtil pageUtil;
 	
 	@Autowired
@@ -44,57 +47,63 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		Map<String, Object> modelMap = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
 
-		// 1-1. 검색기능(파라미터 받아오기)
+		// 1-1. [검색기능] 파라미터 받아오기
 		String dateColumn = request.getParameter("dateColumn");
 		String column = request.getParameter("column");
 		String query = request.getParameter("query");
 		
-		// 1-2. 검색기능(파라미터 받아서 map에 넣기)
+		// 1-2. [검색기능] 파라미터 받아서 map에 넣기
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("dateColumn", dateColumn);
 		map.put("column", column);
 		map.put("query", query);
 		
-		// 1-3. model에 검색기능 값 넣어주기
+		// 1-3. [검색기능] model에 검색기능 값 넣어주기
 		model.addAttribute("dateColumn", dateColumn);
 		model.addAttribute("column", column);
 		model.addAttribute("query", query);
 		
 		 
-		// 2-1. 페이징 처리('0'일 경우 1페이지로 가기)
+		// 2-1. [페이징] '0'일 경우 1페이지로 가기
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
 		int totalRecord = freeBoardMapper.selectFindFreeboardsCount(map);
 		
-		// 2-2. 표시할 페이지 수
+		// 2-2. [페이징] 표시할 페이지 수
 		int recordPerPage = 10;
 		pageUtil.setSearchPageUtil(page, totalRecord, recordPerPage);
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
-		// 2-3. model에 값 넣어주기
+		// 2-3. [페이징] model에 값 넣어주기
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 		model.addAttribute("paging", pageUtil.getSearchPaging(request.getContextPath() + "/freeboard/list"));
 		
 		
-		// 3-1. freeBoardDTO 받아오기 (Mapper에서)
+		// 3-1. [게시글 리스트] freeBoardDTO 받아오기 (Mapper에서)
 		List<FreeBoardDTO> freeBoard = freeBoardMapper.selectFreeListByMap(map);
 		
-		// 3-2. model에 freeBoard 값 넣어주기
+		// 3-2. [게시글 리스트] model에 freeBoard 값 넣어주기
 		model.addAttribute("freeBoardList", freeBoard);
 		
-		// 3-3.
+		// 4-1. [게시글 댓글수, 좋아요] 
 		List<Integer> freeNo = new ArrayList<Integer>();
 		List<Integer> cmtCount = new ArrayList<Integer>();
 		for(int i = 0; i < freeBoard.size(); i++) {
 			freeNo.add(freeBoard.get(i).getFreeNo());
 			cmtCount.add(freeBoardCmtMapper.selectCmtCount(freeNo.get(i)));
 		}
+		List<Integer> freelike = new ArrayList<Integer>();
+		for(int i = 0; i < freeBoard.size(); i++) {
+			freeNo.add(freeBoard.get(i).getFreeNo());
+			freelike.add(freeBoardLikeMapper.selectLikeCount(freeNo.get(i)));
+		}
 
-		// 3-4. model에 댓글수 넣어주기
+		// 4-2. [게시글 댓글수, 좋아요] model에 넣어주기 
 		model.addAttribute("freeCmt", cmtCount);
+		model.addAttribute("freelike", freelike);
 
 		
 		
@@ -113,18 +122,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		HttpSession session = request.getSession();
 		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
-		
 		String nickname = loginUser.getNickname();
-		
-		/**************************************************************************************/
-		/***********************************수정필요합니다*************************************/
-		/**************************************************************************************/
-		// String nickname = "관리자";
-		/**************************************************************************************/
-		/***********************************수정필요합니다*************************************/
-		/**************************************************************************************/
-		
-
 		String freeTitle = request.getParameter("freeTitle");
 		String freeContent = request.getParameter("freeContent");
 		String freeIp = request.getRemoteAddr();
@@ -135,9 +133,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 				.freeContent(freeContent)
 				.freeIp(freeIp)
 				.build();
-		
-		
-		
+
 		int result = freeBoardMapper.insertFreeBoard(freeBoard);
 			
 		try {

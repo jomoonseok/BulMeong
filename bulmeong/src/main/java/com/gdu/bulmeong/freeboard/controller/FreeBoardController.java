@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.bulmeong.freeboard.service.FreeBoardCmtService;
+import com.gdu.bulmeong.freeboard.service.FreeBoardLikeService;
 import com.gdu.bulmeong.freeboard.service.FreeBoardService;
 
 @Controller
@@ -21,6 +22,9 @@ public class FreeBoardController {
 	
 	@Autowired
 	private FreeBoardCmtService freeBoardCmtService;
+	
+	@Autowired
+	private FreeBoardLikeService freeBoardlikeServcie;
 	
 	
 	// 1. CRUD 기능
