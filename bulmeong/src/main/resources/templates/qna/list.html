@@ -11,8 +11,11 @@
 	$(document).ready(function(){
 		
 		$('#qnaqna').click(function(){
-			//event.preventDefault();
-			$('#toggle_area').toggleClass('blind');
+			event.preventDefault();
+		});
+		
+		$('.btn_contentToggle').click(function(){
+			$(this).next().toggleClass('blind');			
 		})
 		
 // 		function GetShow(){
@@ -133,10 +136,11 @@ if(noShowPopup != 'true') { -->
 									<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
 								</div>
 								<div id="toggle_area" class="blind">
-									<div th:text="${qna.qnaContent}">
-										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-											<input type="button" value="답변하기">
-										</div>
+									<span th:text="${qna.qnaTitle}"></span><br>
+									<span th:text="${qna.qnaContent}"></span>
+<!-- 									<div th:text="${qna.qnaContent}"> -->
+									<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+										<input type="button" value="답변하기">
 									</div>
 								</div>
 							</th:block>
@@ -145,14 +149,13 @@ if(noShowPopup != 'true') { -->
 								<div th:if="${session.loginUser} != null and ${session.loginUser.id} == ${qna.id} or ${session.loginUser.id} == 'admin'">
 									<div class="btn_contentToggle">
 										<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
-										<div id="toggle_area" class="blind">
-											<span th:text="${qna.qnaTitle}"></span><br>
-											<span th:text="${qna.qnaContent}"></span>
-										</div>
-										<div th:text="${qna.qnaContent}" class="blind">
-											<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-												<input type="button" value="답변하기">
-											</div>
+									</div>
+									<div id="toggle_area" class="blind">
+										<span th:text="${qna.qnaTitle}"></span><br>
+										<span th:text="${qna.qnaContent}"></span>
+<!-- 										<div th:text="${qna.qnaContent}" class="blind"> -->
+										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+											<input type="button" value="답변하기">
 										</div>
 									</div>
 								</div>
