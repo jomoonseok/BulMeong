@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import com.gdu.bulmeong.qna.domain.QnaDTO;
 import com.gdu.bulmeong.qna.mapper.QnaMapper;
 import com.gdu.bulmeong.util.PageUtil;
+import com.gdu.bulmeong.util.SecurityUtil;
 
 
 
@@ -26,6 +27,7 @@ public class QnaServiceImpl implements QnaService {
 	@Autowired
 	private PageUtil pageUtil;
 	
+	// 리스트
 	@Override
 	public void findQnaList(HttpServletRequest request, Model model) {
 
@@ -54,5 +56,28 @@ public class QnaServiceImpl implements QnaService {
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 		
 	}
+	/*
+	// 질문추가
+	@Override
+	public int addQuestion(HttpServletRequest request) {
+		//String writer = SecurityUtil.sha256();
+		return 0;
+	}
 	
+	
+	// 답변추가
+	@Override
+	public int addAnswer(HttpServletRequest requestu) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
+	// 삭제
+	@Override
+	public int removeNotice(int qnaNO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	*/
 }

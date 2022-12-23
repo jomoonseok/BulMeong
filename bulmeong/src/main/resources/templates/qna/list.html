@@ -10,6 +10,20 @@
 	
 	$(document).ready(function(){
 		
+		$('#qnaqna').click(function(){
+			//event.preventDefault();
+			$('#toggle_area').toggleClass('blind');
+		})
+		
+// 		function GetShow(){
+// 			var con = document.getElementById("qnaqna");
+// 			if(con.style.display =="none"){
+// 				con.style.display == "block";
+// 			} else {
+// 				con.style.display == "none";
+// 			}
+// 		}
+		
         var parentIpt = document.getElementById('parent_ipt');
         var btn_qnaWrite = document.getElementById('btn_qnaWrite');
         var childWindow = null;
@@ -115,24 +129,33 @@ if(noShowPopup != 'true') { -->
 						</td>
 						<td>
 							<th:block th:if="${qna.qnaState} eq 1">
-								<div th:text="${qna.qnaTitle}" id="btn_contentToggle"></div>
-								<div th:text="${qna.qnaContent}" class="blind">
-									<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-										<input type="button" value="답변하기">
+								<div class="btn_contentToggle">
+									<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
+								</div>
+								<div id="toggle_area" class="blind">
+									<div th:text="${qna.qnaContent}">
+										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+											<input type="button" value="답변하기">
+										</div>
 									</div>
 								</div>
 							</th:block>
 							
 							<th:block th:if="${qna.qnaState} eq 2">
 								<div th:if="${session.loginUser} != null and ${session.loginUser.id} == ${qna.id} or ${session.loginUser.id} == 'admin'">
-									<div th:text="${qna.qnaTitle}" id="btn_contentToggle"></div>
-									<div th:text="${qna.qnaContent}" class="blind">
-										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-											<input type="button" value="답변하기">
+									<div class="btn_contentToggle">
+										<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
+										<div id="toggle_area" class="blind">
+											<span th:text="${qna.qnaTitle}"></span><br>
+											<span th:text="${qna.qnaContent}"></span>
+										</div>
+										<div th:text="${qna.qnaContent}" class="blind">
+											<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+												<input type="button" value="답변하기">
+											</div>
 										</div>
 									</div>
 								</div>
-								
 								<div th:if="${session.loginUser} != null and ${session.loginUser.id} != ${qna.id} and ${session.loginUser.id} != 'admin'">
 									<div>비밀글입니다</div>
 								</div>
