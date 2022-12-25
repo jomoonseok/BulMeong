@@ -102,21 +102,31 @@
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 텐트 현황
+                                <span style="float:right;">
+                                	<input type="button" value="텐트 등록" onclick="fn_tentAdd()">
+                                </span>
                             </div>
+                            
+                            <script>
+                            	function fn_tentAdd() {
+                            		window.open("/admin/addTent", "_blank", "width=500,height=600");
+                            	}
+                            </script>
+                            
+                            
+                            
                             <div class="card-body">
-                                <table id="datatablesSimple" style="width:1500px;">
+                                <table id="datatablesSimple" style="width:1200px; table-layout: fixed;">
                                     <thead>
                                         <tr style="text-align: center;">
-                                            <th>캠핑장번호</th>
-                                            <th>캠핑장명</th>
                                             <th>텐트번호</th>
+                                            <th>캠핑장명</th>
                                             <th>텐트이름</th>
                                             <th>텐트사진</th>
                                             <th>텐트구분</th>
                                             <th>최대수용인원</th>
-                                            <th>예약일?</th>
                                             <th>텐트금액</th>
-                                            <th>텐트상태</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tentTblBody">
@@ -162,26 +172,29 @@
 	       			url: '/admin/getAllTent',
 	       			data: 'page=' + $('#page').val(),
 	       			success: function(resData) {
-	       				console.log(resData);
+	       				$('.breadcrumb-item.active').text('텐트 현황 : ' + resData.tentCount + '개');
 	       				$('#tentTblBody').empty();
 	       				$.each(resData.tentList, function(i, tent) {
-	       					var tentDiv = '<tr class="tent_tr" style="font-size: 15px; text-align: center;">';
-	       					tentDiv += '<td>' + tent.campNo + '</td>'
-	       					tentDiv += '<td>' + tent.facltNm + '</td>'
+	       					var tentDiv = '<tr class="tent_tr" style="font-size: 12px; text-align: center; height:auto;">';
 	       					tentDiv += '<td>' + tent.tentNo + '</td>'
+	       					tentDiv += '<td>' + tent.facltNm + '</td>'
 	       					tentDiv += '<td>' + tent.tentName + '</td>'
 	       					tentDiv += '<td><img src="' + tent.tentImage + '" style="width=70px; height:50px;"></img></td>'
+	       					switch(tent.tentCategory) {
+		      	    		case 0: tent.tentCategory = '글램핑'; break;
+		      	    		case 1: tent.tentCategory = '카라반'; break;
+		      	    		case 2: tent.tentCategory = '일반야영장'; break;
+		      	    		case 3: tent.tentCategory = '자동차야영장';
+	      	    			}
 	       					tentDiv += '<td>' + tent.tentCategory + '</td>'
 	       					tentDiv += '<td>' + tent.tentMaxCount + '</td>'
-	       					tentDiv += '<td>' + tent.tentReserveDay + '</td>'
 	       					tentDiv += '<td>' + tent.tentSum + '</td>'
-	       					tentDiv += '<td>' + tent.tentState + '</td>'
+	       					tentDiv += '<td><input type="button" value="변경하기" class="btn_modify" data-tentno="'+ tent.tentNo +'" data-facltnm="' + tent.facltNm + '" onclick="fn_modifyTent(this)"></td>'
 	       					tentDiv += '</tr>';
 	       					
 	       					$('#tentTblBody').append(tentDiv);
 	       					
 	       				});
-	       				
 	       				$('#paging').empty();
 	    				var pageUtil = resData.pageUtil;
 	    				var paging = '';
@@ -221,7 +234,10 @@
 				});
 			}
        		
-       		
+       		function fn_modifyTent(e) {
+       			console.log($(e).data('facltnm'));
+   				window.open("/admin/modify?tentNo=" + $(e).data('tentno') + "&facltNm=" + $(e).data('facltnm'), "_blank", "width=500,height=600")
+       		}
        		
        	</script>
         

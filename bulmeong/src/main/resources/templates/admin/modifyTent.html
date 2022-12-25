@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('텐트 수정')}"></head>
+<body>
+	<script th:inline="javascript">
+		$(function() {
+			$('#TENT_CATEGORY').val($('#tentCategory').val()).prop("selected",true);
+		})
+	</script>
+	
+	<h3 style="text-align: center;">텐트 수정 화면</h3>
+	<form method="post" th:action="@{/admin/add}" enctype="multipart/form-data" >
+		<div>
+			캠핑장명 
+			<input type="text" th:value="${tent.facltNm}" readonly>
+		</div>
+		<div>
+			텐트 이름 <input type="text" name="TENT_NAME" id="TENT_NAME" th:value="${tent.tentName}">
+		</div>
+		<div>
+			텐트 구분
+			<input type="hidden" id="tentCategory" th:value="${tent.tentCategory}">
+			<select name="TENT_CATEGORY" id="TENT_CATEGORY" th:value="${tent.tentCategory}">
+				<option value="">선택</option>
+				<option value="0">1_글램핑</option>
+				<option value="1">2_카라반</option>
+				<option value="2">3_일반야영장</option>
+				<option value="3">4_자동차야영장</option>
+			</select>
+		</div>
+		<div>
+			최대 수용인원 <input type="text" name="TENT_MAX_COUNT" id="TENT_MAX_COUNT" th:value="${tent.tentMaxCount}">
+		</div>
+		<div>
+			텐트 금액 <input type="text" name="TENT_SUM" id="TENT_SUM" th:value="${tent.tentSum}">
+		</div>
+		<div>
+			텐트 사진 <input type="file" name="TENT_IMAGE" id="TENT_IMAGE" multiple="multiple">
+		</div>
+		<img th:src="${tent.tentImage}" style="width:50px; height:50px;">
+		<div>
+			<input type="submit" value="등록">
+			<input type="reset" value="취소">
+		</div>
+	</form>
+</body>
+</html>

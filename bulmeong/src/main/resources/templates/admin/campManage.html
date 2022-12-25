@@ -104,16 +104,16 @@
                                 캠핑장 현황
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
+                                <table id="datatablesSimple" style="width:1200px; height:500px;">
                                     <thead>
-                                        <tr style="text-align: center;">
+                                        <tr style="font-size: 12px; text-align: center;">
                                             <th>번호</th>
                                             <th>야영장명</th>
                                             <th>주소</th>
                                             <th>홈페이지</th>
                                             <th>전화번호</th>
-                                            <th>등록일</th>
-                                            <th>수정일</th>
+                                            <th>등록일시</th>
+                                            <th>수정일시</th>
                                         </tr>
                                     </thead>
                                     <tbody id="campTblBody">
@@ -160,8 +160,9 @@
 	       			data: 'page=' + $('#page').val(),
 	       			success: function(resData) {
 	       				$('#campTblBody').empty();
+	       				$('.breadcrumb-item.active').text('캠핑장 현황 : ' + resData.campCount + '개');
 	       				$.each(resData.campList, function(i, camp) {
-	       					var campDiv = '<tr class="camp_tr" style="font-size: 15px; text-align: center;">';
+	       					var campDiv = '<tr class="camp_tr" style="font-size: 12px; text-align: center;">';
 	       					campDiv += '<td>' + camp.campNo + '</td>';
 	       					campDiv += '<td>' + camp.facltNm + '</td>';
 	       					campDiv += '<td>' + camp.addr1 + '</td>';

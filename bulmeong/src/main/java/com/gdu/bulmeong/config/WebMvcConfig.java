@@ -26,6 +26,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/load/image/**")
 			.addResourceLocations("//");
+		registry.addResourceHandler("/load/tent/**")
+			.addResourceLocations("file:///C:/bulmeongImage/tent/");
 	}
 	/*
 	@Override
