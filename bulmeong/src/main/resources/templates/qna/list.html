@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('QNA목록')}"></head>
-<style>
-	.blind {
-		display: none;
-	}
-</style>
+<link th:href="@{/css/qna.css}" rel="stylesheet" />
 <script th:inline="javascript">
 	
 	$(document).ready(function(){
@@ -91,25 +87,17 @@
  			window.open('/popup','popup','width=500,height=700,left=700,top=170,scrollbars=yes,resizable=yes');
  		}
 </script> -->
-	<div>
-		<h2>Q&A</h2>
+	<h2>Q&A</h2>
+	<div class="css_btn_qnaWrite">
 		<input type="button" value="문의하기" id="btn_qnaWrite">
+	</div>
+	
+	<div class="css_my_qnaList">
 		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
 	</div>
 	
-	
-	
-	
-	
-		
-		
-<!-- 		
-if(noShowPopup != 'true') { -->
-<!-- 			window.open('${contextPath}/view/popup', 'pop', 'width=400,height=410,top=100,left=500,menubar=no,history=no'); -->
-<!-- 		} -->
-	
 	<hr>
-	
+	<div class="css_tableWrap">
 		<table border="1">
 			<thead>
 				<tr>
@@ -131,7 +119,7 @@ if(noShowPopup != 'true') { -->
 							<span th:if="${qna.depth} eq 1">답변완료</span>
 						</td>
 						<td>
-							<th:block th:if="${qna.qnaState} eq 1">
+							<th:block th:if="${qna.qnaState == 1}">
 								<div class="btn_contentToggle">
 									<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
 								</div>
@@ -198,6 +186,6 @@ if(noShowPopup != 'true') { -->
 				</tr>
 			</tfoot>
 		</table>
-
+	</div>
 </body>
 </html>

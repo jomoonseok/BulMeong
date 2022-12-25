@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,10 @@ import com.gdu.bulmeong.qna.mapper.QnaMapper;
 import com.gdu.bulmeong.util.PageUtil;
 import com.gdu.bulmeong.util.SecurityUtil;
 
+import lombok.AllArgsConstructor;
 
 
+@AllArgsConstructor
 @Service
 public class QnaServiceImpl implements QnaService {
 	
@@ -26,6 +29,9 @@ public class QnaServiceImpl implements QnaService {
 	
 	@Autowired
 	private PageUtil pageUtil;
+	
+	@Autowired
+	public SecurityUtil securityUtil;
 	
 	// 리스트
 	@Override
@@ -44,6 +50,7 @@ public class QnaServiceImpl implements QnaService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		System.out.println(map);
 		
@@ -51,33 +58,73 @@ public class QnaServiceImpl implements QnaService {
 		List<QnaDTO> qnaList = qnaMapper.selectQnaList(map);
 		
 		// 뷰로 보낼 모델(데이터)
+		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("qnaList", qnaList);
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/qna/list"));
+		model.addAttribute("paging", pageUtil.getPaging("/qna/list.html"));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 		
 	}
-	/*
+	
 	// 질문추가
+	@Transactional
 	@Override
 	public int addQuestion(HttpServletRequest request) {
-		//String writer = SecurityUtil.sha256();
-		return 0;
+		
+		String id = request.getParameter("id");
+		String qnaTitle = securityUtil.preventXSS(request.getParameter("qnaTitle"));
+		String qnaContent = securityUtil.preventXSS(request.getParameter("qnaContent"));
+		String qnaIp = request.getRemoteAddr();
+		
+		QnaDTO qna = new QnaDTO();
+		qna.setId(id);
+		qna.setQnaTitle(qnaTitle);
+		qna.setQnaContent(qnaContent);
+		qna.setQnaIp(qnaIp);
+		
+		int result = 0;
+		int insertResult = qnaMapper.insertQuestion(qna);
+		if(insertResult == 1) {
+			result = qnaMapper.updateGroupNo(qna);
+		}
+		
+		return result;
 	}
 	
 	
 	// 답변추가
+	@Transactional
 	@Override
-	public int addAnswer(HttpServletRequest requestu) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addAnswer(HttpServletRequest request) {
+		
+		String id = request.getParameter("id");
+		String qnaTitle = securityUtil.preventXSS(request.getParameter("qnaTitle"));
+		String qnaContent = securityUtil.preventXSS(request.getParameter("qnaContent"));
+		String qnaIp = request.getRemoteAddr();
+		
+		int depth = Integer.parseInt(request.getParameter("depth"));
+		int qnaGroupNo = Integer.parseInt(request.getParameter("qnaGroupNo"));
+		
+		QnaDTO qna = new QnaDTO();
+		qna.setDepth(depth);
+		qna.setQnaGroupNo(qnaGroupNo);
+		
+		qnaMapper.updatePreviousAnswer(qna);
+		
+		QnaDTO answer = new QnaDTO();
+		answer.setId(id);
+		answer.setQnaContent(qnaContent);
+		answer.setQnaIp(qnaIp);
+		answer.setDepth(depth + 1);
+		answer.setQnaGroupNo(qnaGroupNo);
+		
+		return qnaMapper.insertAnswer(answer);
 	}
 	
 	
 	// 삭제
 	@Override
-	public int removeNotice(int qnaNO) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int removeQna(int qnaNO) {
+		return qnaMapper.deleteQna(qnaNO);
 	}
-	*/
+	
 }
