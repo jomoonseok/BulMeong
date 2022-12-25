@@ -9,7 +9,7 @@ import com.gdu.bulmeong.users.service.UsersService;
 
 @EnableScheduling
 @Component
-public class SleepUserScheduler {
+public class SleepUserMailScheduler {
 
 	@Autowired
 	private UsersService usersService;
@@ -17,7 +17,7 @@ public class SleepUserScheduler {
 	// 매일 새벽 1시	@Scheduled(cron="0 0 1 * * *")
 	@Scheduled(cron = "0 0 1 * * *")  
 	public void execute() {
-		usersService.sleepUserHandle();
+		usersService.sleepUserMail();
 	}
 	
 }

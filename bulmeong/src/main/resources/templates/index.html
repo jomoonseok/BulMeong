@@ -12,9 +12,12 @@
 		<a th:href="@{/admin}">관리자 전용</a>
 	</div>
 	
-	<!-- 로그인이 된 상태 -->
+	<!-- 로그인이 된 상태 ${#temporals.format(날짜,'패턴')} --> 
 	<div th:if="${session.loginUser != null}">
-		<div style="border:solid 1px black; width:300px; text-align:center">
+		<div th:text="${#temporals.format(#temporals.createNow(), 'yy/MM/dd')}"></div>
+		<div th:text="${session.loginUser.pwModifyDate}"></div>
+		<div th:text="${session.loginUser.pwModifyDate > #temporals.format(#temporals.createNow(), 'yy/MM/dd')}"></div>
+   		<div style="border:solid 1px black; width:300px; text-align:center">
 			<a th:href="@{/users/profile}"><img th:src=${session.loginUser.profileImage} width="38px" style="border:1px solid black;"></a>
 			<span th:text="|${session.loginUser.nickname}님 반갑습니다.|"></span>
 			<br>

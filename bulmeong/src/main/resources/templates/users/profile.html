@@ -56,14 +56,9 @@
 				// 첨부 가능한 파일의 최대 크기
 				let maxSize = 1024 * 1024 * 1;  // 1MB
 				let files = this.files;
-				console.log(files[0].size / 1024);
-				/*
-				for (var i = 0; i < files.length; i++) {
-	                console.log(files[i].name + " has a size of "
-	                + files[i].size + " Bytes");
-	            }
-				*/
+				
 				$('#fileSize').text(files[0].size / 1024);
+				
 				// 크기 체크
 				if(files.size > maxSize){
 					alert('1MB 이하의 파일만 첨부할 수 있습니다.');
@@ -71,13 +66,20 @@
 					return;
 				}
 				
+				let data = new FormData($('#form_test')[0]);
+				
 				$.ajax({
 					type: 'post',
+					enctype: 'multipart/form-data',
 					url: '/users/changeImage',
-					data: 'image=' + $('#image').val(),
+					data: data,
+					contentType : false,
+					processData : false,
 					dataType: 'json',
 					success: function(resData){
-						$('#profileImage').prop('scr', resData.image);
+						if(resData.isProfileImage){
+							$('#profileImage').prop('src', resData.path);
+						}
 					}
 				}); // ajax
 			}); // change
@@ -102,7 +104,8 @@
 	
 	<h1>프로필 수정</h1>
 	
-	<form th:action="@{users/modify/profile}" method="post" enctype="multipart/form-data">
+	<form th:action="@{users/modify/profile}" method="post" enctype="multipart/form-data" id="form_test">
+		<!-- <input type="hidden" id="id" th:value="${session.loginUser.id}"> -->
 		<table border="1">
 			<tbody>
 				<tr>

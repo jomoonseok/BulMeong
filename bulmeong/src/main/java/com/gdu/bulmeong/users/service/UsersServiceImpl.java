@@ -1,6 +1,7 @@
 package com.gdu.bulmeong.users.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -10,8 +11,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -26,12 +33,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.bulmeong.users.domain.ProfileImageDTO;
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.users.mapper.UsersMapper;
 import com.gdu.bulmeong.util.JavaMailUtil;
+import com.gdu.bulmeong.util.MyFileUtil;
 import com.gdu.bulmeong.util.SecurityUtil;
+
+import oracle.sql.DATE;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -44,6 +55,9 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Autowired
 	private JavaMailUtil javaMailUtil;
+	
+	@Autowired
+	private MyFileUtil myFileUtil;
 	
 	@Override
 	public Map<String, Object> isReduceId(String id) {
@@ -301,9 +315,35 @@ public class UsersServiceImpl implements UsersService {
 				usersMapper.insertAccessLog(id);
 			}
 			
+			
+			
 			// 이동 (로그인페이지 이전 페이지로 되돌아가기)
 			try {
+				SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd");
+				Date pmd = format.parse(loginUser.getPwModifyDate());
+				
+				//LocalDate pmd = LocalDate.parse(loginUser.getPwModifyDate(), DateTimeFormatter.ofPattern("yy/MM/dd"));
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(pmd);
+				cal.add(Calendar.DATE, 90);
+				System.out.println(cal.getTime());
+				 // 현재 날짜 구하기
+		        LocalDate now = LocalDate.now();
+		        /*
+		        // 포맷 정의
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
+		 
+		        // 포맷 적용
+		        String formatedNow = now.format(formatter);
+		        Date date = format.parse(formatedNow);
+		        */
+				//cal.before(formatedNow);
+				//cal.after(formatedNow);
+				System.out.println(cal.before(now));
+				System.out.println(cal.after(now));
 				response.sendRedirect(url);
+			} catch(ParseException e) {
+				e.printStackTrace();
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
@@ -586,6 +626,18 @@ public class UsersServiceImpl implements UsersService {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	
+	@Override
+	public void sleepUserMail() {
+		List<UsersDTO> expectedUsers = usersMapper.selectSleepExpectedUser();
+		
+		for(int i=0; i < expectedUsers.size(); i++) {
+			String email = expectedUsers.get(i).getEmail();
+			javaMailUtil.sendJavaMail(email, "[Application] 휴면 안내", "회원님은 한 달 후 휴면 처리됩니다. 휴면 처리되지 않으시려면 로그인해 주세요.");
+		}
 	}
 	
 	
@@ -1013,9 +1065,66 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Override
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest) {
-		MultipartFile multipartFile = multipartRequest.getFile("image");
+		
+		UsersDTO user = (UsersDTO)multipartRequest.getSession().getAttribute("loginUser");
+		String id = user.getId();
+		
+		MultipartFile image = multipartRequest.getFile("image");
+		
+		int attachResult;
+		if(image.getSize() == 0) {  // 첨부가 없는 경우 (files 리스트에 [MultipartFile[field="files", filename=, contentType=application/octet-stream, size=0]] 이렇게 저장되어 있어서 files.size()가 1이다.
+			attachResult = 1;
+		} else {
+			attachResult = 0;
+		}
 		
 		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			// 첨부가 있는지 점검
+			if(image != null && image.isEmpty() == false) {  // 둘 다 필요함
+				
+				// 원래 이름
+				String origin = image.getOriginalFilename();
+				origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+				
+				// 저장할 이름
+				String filesystem = myFileUtil.getFilename(origin);
+				
+				// 저장할 경로
+				String path = myFileUtil.getTodayPath();
+				//String path = myFileUtil.getTodayPath();
+				
+				// 저장할 경로 만들기
+				File dir = new File(path);
+				if(dir.exists() == false) {
+					dir.mkdirs();
+				}
+				
+				// 첨부할 File 객체
+				File file = new File(dir, filesystem);
+				
+				// 첨부파일 서버에 저장(업로드 진행)
+				image.transferTo(file);
+
+				// ProfileImageDTO 생성
+				ProfileImageDTO profileImage = ProfileImageDTO.builder()
+						.path(path)
+						.origin(origin)
+						.filesystem(filesystem)
+						.id(id)
+						.build();
+				
+				// DB에 ProfileImageDTO 저장
+				attachResult += usersMapper.insertProfileImage(profileImage);
+				result.put("isProfileImage", attachResult > 0);
+				result.put("path", path);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(attachResult);
 
 		return result;
 	}

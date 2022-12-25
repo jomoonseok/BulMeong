@@ -24,6 +24,7 @@ public interface UsersService {
 	public Map<String, Object> confirmPassword(HttpServletRequest request);
 	public void modifyPassword(HttpServletRequest request, HttpServletResponse response);
 	public void modifyUser(HttpServletRequest request, HttpServletResponse response);
+	public void sleepUserMail();
 	public void sleepUserHandle();
 	public SleepUsersDTO getSleepUserById(String id);
 	public void restoreUser(HttpServletRequest request, HttpServletResponse response);

@@ -260,7 +260,7 @@
 			let month = $('#birthdate').parent().prev().children().val();
 			console.log(month);
 			switch(month){
-			case "02" : now.getFullYear() / 4 == 0 ? monthDate = 29 : monthDate = 28; break;
+			case "02" : now.getFullYear() % 4 > 0 ? monthDate = 29 : monthDate = 28; break;
 			case "04" :
 			case "06" :
 			case "09" :

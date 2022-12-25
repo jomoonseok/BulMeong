@@ -151,7 +151,7 @@ public class UsersController {
 	}
 	
 	@PostMapping("/users/modify/info")
-	public void modify(HttpServletRequest request, HttpServletResponse response) {
+	public void requiredLogin_modify(HttpServletRequest request, HttpServletResponse response) {
 		usersService.modifyUser(request, response);
 	}
 	
@@ -171,12 +171,12 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/sleep/display")
-	public String sleepDisplay() {
+	public String requiredLogin_sleepDisplay() {
 		return "users/sleep";
 	}
 	
 	@PostMapping("/users/restore")
-	public void restore(HttpServletRequest request, HttpServletResponse response) {
+	public void requiredLogin_restore(HttpServletRequest request, HttpServletResponse response) {
 		usersService.restoreUser(request, response);
 	}
 	
@@ -212,7 +212,7 @@ public class UsersController {
 	
 	
 	@GetMapping("/users/profile")
-	public String modifyProfileImage() {
+	public String requiredLogin_modifyProfileImage() {
 		return "users/profile";
 	}
 	
@@ -223,7 +223,7 @@ public class UsersController {
 	}
 	
 	@PostMapping("users/modify/profile")
-	public void modifyProfile(HttpServletRequest request, HttpServletResponse response) {
+	public void requiredLogin_modifyProfile(HttpServletRequest request, HttpServletResponse response) {
 		
 	}
 	

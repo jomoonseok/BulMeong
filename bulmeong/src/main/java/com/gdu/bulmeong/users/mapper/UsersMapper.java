@@ -1,9 +1,11 @@
 package com.gdu.bulmeong.users.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gdu.bulmeong.users.domain.ProfileImageDTO;
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
@@ -22,10 +24,12 @@ public interface UsersMapper {
 	public int updateSessionInfo(UsersDTO user);
 	public int updateUserPassword(UsersDTO user);
 	public int updateUser(UsersDTO user);
+	public List<UsersDTO> selectSleepExpectedUser();
 	public int insertSleepUser();
 	public int deleteUserForSleep();
 	public SleepUsersDTO selectSleepUserById(String id);
 	public int insertRestoreUser(String id);
 	public int deleteSleepUser(String id);
 	public int insertNaverUser(UsersDTO user);
+	public int insertProfileImage(ProfileImageDTO profileImage);
 }

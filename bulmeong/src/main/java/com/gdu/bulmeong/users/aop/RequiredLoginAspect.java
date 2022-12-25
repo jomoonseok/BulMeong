@@ -20,7 +20,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class RequiredLoginAspect {
 
-	@Pointcut("execution(* com.gdu.bulmeong.users.controller.*Controller.requiredLogin_*(..))")
+	//@Pointcut("execution(* com.gdu.bulmeong.users.controller.*Controller.requiredLogin_*(..))")
+	@Pointcut("execution(* com.gdu.bulmeong.*.controller.*Controller.requiredLogin_*(..))")
 	public void requiredLogin() { }
 	
 	@Before("requiredLogin()")  // 포인트컷 실행 전에 requiredLogin() 메소드 수행
