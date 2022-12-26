@@ -34,11 +34,13 @@ public class ReserveServiceImpl implements ReserveService {
 		int campNo = Integer.parseInt(request.getParameter("campNo"));
 		String reserveBeginDate = request.getParameter("reserveBeginDate");
 		String reserveEndDate = request.getParameter("reserveEndDate");
+		int reserveDate = Integer.parseInt(request.getParameter("reserveDate"));
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("campNo", campNo);
 		map.put("reserveBeginDate", reserveBeginDate);
 		map.put("reserveEndDate", reserveEndDate);
+		map.put("reserveDate", reserveDate);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("tentList", reserveMapper.selectAllTentByCampNo(campNo));
@@ -109,6 +111,8 @@ public class ReserveServiceImpl implements ReserveService {
 		map.put("reserveSum", reserveSum);
 		
 		int result = reserveMapper.insertReserve(map);
+		
+		
 		
 		PrintWriter out = null;
 		try {

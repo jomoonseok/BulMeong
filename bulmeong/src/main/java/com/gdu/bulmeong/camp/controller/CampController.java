@@ -26,6 +26,11 @@ public class CampController {
 		campService.addCampInfoToDb(response);
 	}
 	
+	@GetMapping("/removeCamp")
+	public void deleteCamp(HttpServletResponse response) {
+		campService.deleteAllCamp(response);
+	}
+	
 	@GetMapping("/camp")
 	public String camp() {
 		return "camp/camp_list";

@@ -101,37 +101,27 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                회원 현황
+                                캠핑장 현황
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple" style="width:1200px">
+                                <table id="datatablesSimple" style="width:1200px; height:500px;">
                                     <thead>
                                         <tr style="font-size: 12px; text-align: center;">
                                             <th>번호</th>
-                                            <th>사진</th>
-                                            <th>아이디</th>
-                                            <th>이름</th>
-                                            <th>닉네임</th>
-                                            <th>이메일</th>
-                                            <th>전화번호</th>
-                                            <th>성별</th>
-                                            <th>나이</th>
-                                            <th>생년월일</th>
-                                            <th>우편번호</th>
+                                            <th>야영장명</th>
                                             <th>주소</th>
-                                            <th>지번주소</th>
-                                            <th>상세주소</th>
-                                            <th>기타주소</th>
-                                            <th>가입일자</th>
-                                            <th>동의코드</th>
-                                            <th>sns타입</th>
-                                            <th>비밀번호<br>수정일</th>
-                                            <th>개인정보<br>수정일</th>
+                                            <th>홈페이지</th>
+                                            <th>전화번호</th>
+                                            <th>등록일시</th>
+                                            <th>수정일시</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="usersTblBody">
+                                    <tbody id="campTblBody">
                                     </tbody>
                                     <tfoot>
+                                    	<tr>
+                                    		<td id="paging"></td>
+                                    	</tr>
                                     </tfoot>
                                 </table>
                             </div>
@@ -152,48 +142,79 @@
                 </footer>
             </div>
         </div>
+        <input type="hidden" id="page" value="1">
         
        	<script>
-       		$.ajax({
-       			
-       			type: 'post',
-       			url: '/admin/getAllUser',
-       			success: function(resData) {
-       				console.log(resData);
-       				$('.breadcrumb-item.active').text('유저 조회결과 : ' + resData.usersCount + '명');
-       				$.each(resData.users, function(i, users) {
-       					
-       					var usersDiv = '<tr style="font-size: 10px; text-align: center;">';
-       					usersDiv += '<td>' + users.usersNo + '</td>';
-       					usersDiv += '<td><img src="' + users.profileImage + '"></img></td>';
-       					usersDiv += '<td>' + users.id + '</td>';
-       					usersDiv += '<td>' + users.name + '</td>';
-       					usersDiv += '<td>' + users.nickname + '</td>';
-       					usersDiv += '<td>' + users.email + '</td>';
-       					usersDiv += '<td>' + users.mobile + '</td>';
-       					usersDiv += '<td>' + users.gender + '</td>';
-       					usersDiv += '<td>' + users.age + '</td>';
-       					usersDiv += '<td>' + users.birthYear + users.birthDay + '</td>';
-       					usersDiv += '<td>' + users.postCode + '</td>';
-       					usersDiv += '<td>' + users.roadAddress + '</td>';
-       					usersDiv += '<td>' + users.jibunAddress + '</td>';
-       					usersDiv += '<td>' + users.detailAddress + '</td>';
-       					usersDiv += '<td>' + users.extraAddress + '</td>';
-       					usersDiv += '<td>' + users.joinDate + '</td>';
-       					usersDiv += '<td>' + users.agreeCode + '</td>';
-       					usersDiv += '<td>' + users.snsType + '</td>';
-       					usersDiv += '<td>' + users.pwModifyDate + '</td>';
-       					usersDiv += '<td>' + users.infoModifyDate + '</td>';
-       					$('#usersTblBody').append(usersDiv);
-       					
-       				});
-       				
-       				
-       			},error(jqXHR) {
-       				console.log(jqXHR);
-       			}
-       			
+       	
+       		$(function() {
+       			fn_changePage();
+       			fn_getList();
        		})
+       	
+       		function fn_getList() {
+       			
+	       		$.ajax({
+	       			
+	       			type: 'post',
+	       			url: '/admin/getAllCamp',
+	       			data: 'page=' + $('#page').val(),
+	       			success: function(resData) {
+	       				$('#campTblBody').empty();
+	       				$('.breadcrumb-item.active').text('캠핑장 현황 : ' + resData.campCount + '개');
+	       				$.each(resData.campList, function(i, camp) {
+	       					var campDiv = '<tr class="camp_tr" style="font-size: 12px; text-align: center;">';
+	       					campDiv += '<td>' + camp.campNo + '</td>';
+	       					campDiv += '<td>' + camp.facltNm + '</td>';
+	       					campDiv += '<td>' + camp.addr1 + '</td>';
+	       					campDiv += '<td>' + camp.homepage + '</td>';
+	       					campDiv += '<td>' + camp.tel + '</td>';
+	       					campDiv += '<td>' + camp.createdtime + '</td>';
+	       					campDiv += '<td>' + camp.modifiedtime + '</td>';
+	       					$('#campTblBody').append(campDiv);
+	       					
+	       				});
+	       				
+	       				$('#paging').empty();
+	    				var pageUtil = resData.pageUtil;
+	    				var paging = '';
+	    				// 이전 블록
+	    				if(pageUtil.beginPage != 1) {
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+	    				}
+	    				// 페이지번호
+	    				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+	    					if(p == $('#page').val()){
+	    						paging += '<strong>' + p + '</strong>';
+	    					} else {
+	    						paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
+	    					}
+	    				}
+	    				// 다음 블록
+	    				if(pageUtil.endPage != pageUtil.totalPage){
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+	    				}
+	    				$('#paging').append(paging);
+	
+	
+	       				
+	       			},
+	       			error: function(jqXHR) {
+	       				
+	       			}
+	       						
+	       			
+	       		})
+       		}
+       		
+       		function fn_changePage(){
+				$(document).on('click', '.enable_link', function(){
+					$('#page').val( $(this).data('page') );
+					fn_getList();
+				});
+			}
+       		
+       		
+       		
        	</script>
         
         

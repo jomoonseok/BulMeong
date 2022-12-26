@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('텐트 등록')}"></head>
+<body>
+	
+	<script>
+		$(function(){
+			fn_getFacltNm();
+		});
+	</script>
+	
+	<script>
+		function fn_getFacltNm() {
+			$.ajax({
+				type: 'post',
+				url: '/admin/getFacltNm',
+				success: function(resData) {
+					console.log(resData);
+					var selectFacltNm = '<option value="">선택</option>';
+					$.each(resData.camp, function(i, camp) {
+						selectFacltNm += '<option value="'+ camp.campNo +'">' + camp.campNo + '_' + camp.facltNm + '</option>';
+					})
+					$('#facltNm').append(selectFacltNm);
+				}
+				
+			})	
+		}
+	</script>
+		
+	<h3 style="text-align: center;">텐트 등록 화면</h3>
+	<form method="post" th:action="@{/admin/add}" enctype="multipart/form-data" >
+		<div>
+			캠핑장명 
+			<select name="campNo" id="facltNm">  <!-- 캠핑장 번호로 받아옴 -->
+			</select>
+		</div>
+		<div>
+			텐트 이름 <input type="text" name="TENT_NAME" id="TENT_NAME">
+		</div>
+		<div>
+			텐트 구분
+			<select name="TENT_CATEGORY" id="TENT_CATEGORY">
+				<option value="">선택</option>
+				<option value="0">1_글램핑</option>
+				<option value="1">2_카라반</option>
+				<option value="2">3_일반야영장</option>
+				<option value="3">4_자동차야영장</option>
+			</select>
+		</div>
+		<div>
+			최대 수용인원 <input type="text" name="TENT_MAX_COUNT" id="TENT_MAX_COUNT">
+		</div>
+		<div>
+			텐트 금액 <input type="text" name="TENT_SUM" id="TENT_SUM">
+		</div>
+		<div>
+			텐트 사진 <input type="file" name="TENT_IMAGE" id="TENT_IMAGE" multiple="multiple">
+		</div>
+		<div>
+			사진 목록
+		</div>
+		<div>
+			<input type="submit" value="등록">
+			<input type="reset" value="취소">
+		</div>
+	</form>
+</body>
+</html>

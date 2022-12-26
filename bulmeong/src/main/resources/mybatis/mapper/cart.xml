@@ -32,5 +32,20 @@
 		 WHERE CAMP_NO = #{campNo}
 		   AND ID = #{id}
 	</delete>
+	
+	<update id="updateIncreaseCampJjim" parameterType="int">
+		UPDATE CAMP
+		   SET jjim = jjim + 1
+		 WHERE CAMP_NO = #{campNo}
+	</update>
+
+	<update id="updateDecreaseCampJjim" parameterType="int">
+		UPDATE CAMP
+		   SET jjim = jjim - 1
+		 WHERE CAMP_NO = #{campNo}
+	</update>
+	
+	
+	
 	 
 </mapper>
