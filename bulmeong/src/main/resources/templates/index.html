@@ -14,11 +14,41 @@
 	
 	<!-- 로그인이 된 상태 --> 
 	<div th:if="${session.loginUser != null}">
+		<div th:if="${session.pwModifyDate <= 0}">
+			<script>
+				$(function(){
+					showPopUp();
+				});
+			
+				function showPopUp() {
+					//창 크기 지정
+					var width = 500;
+					var height = 500;
+					
+					//pc화면기준 가운데 정렬
+					var left = (window.screen.width / 2) - (width/2);
+					var top = (window.screen.height / 4);
+					
+			    	//윈도우 속성 지정
+					var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
+					
+			    	//연결하고싶은url
+			    	const url = "/users/popUp";
+	
+					//등록된 url 및 window 속성 기준으로 팝업창을 연다.
+					window.open(url, "hello popup", windowStatus);
+				}
+			</script>
+		</div>
    		<div style="border:solid 1px black; width:300px; text-align:center">
-			<div th:if="${pwModifyDate <= 0}">
-				비밀번호 변경한지 90일이 지났습니다.
-			</div>
-			<a th:href="@{/users/profile}"><img th:src=${session.loginUser.profileImage} width="38px" style="border:1px solid black;"></a>
+			<a th:href="@{/users/profile}">
+				<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}">
+					<img th:src="${session.loginUser.profileImage}" width="38px" style="border:1px solid black;">
+				</span>
+				<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
+					<img th:src="|/load/profileImage/${session.loginUser.profileImage}|" width="38px" style="border:1px solid black;">
+				</span>
+			</a>
 			<span th:text="|${session.loginUser.nickname}님 반갑습니다.|"></span>
 			<br>
 			<br>

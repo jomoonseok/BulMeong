@@ -204,8 +204,13 @@ public class UsersController {
 	
 	@ResponseBody
 	@PostMapping(value="/users/sendTemporaryPassword", produces="application/json")  // 이메일로 임시비번 전송
-	public  Map<String, Object> memberSendEmailTemporaryPassword(UsersDTO user) {
+	public Map<String, Object> memberSendEmailTemporaryPassword(UsersDTO user) {
 		return usersService.sendTemporaryPassword(user);
+	}
+	
+	@GetMapping("/users/popUp")
+	public String pw() {
+		return "users/pwPopUp";
 	}
 	
 	
@@ -222,9 +227,9 @@ public class UsersController {
 		return usersService.saveImage(multipartRequest);
 	}
 	
-	@PostMapping("users/modify/profile")
-	public void requiredLogin_modifyProfile(HttpServletRequest request, HttpServletResponse response) {
-		
+	@PostMapping("/users/modify/profile")
+	public void requiredLogin_modifyProfile(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+		usersService.modifyProfile(multipartRequest, response);
 	}
 	
 	

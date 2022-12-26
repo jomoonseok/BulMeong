@@ -41,4 +41,5 @@ public interface UsersService {
 	public Map<String, Object> sendTemporaryPassword(UsersDTO user);
 	
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest);
+	public void modifyProfile(MultipartHttpServletRequest multipartRequest, HttpServletResponse response);
 }

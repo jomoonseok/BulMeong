@@ -6,6 +6,7 @@
 		$(function(){
 			fn_nicknameCheck();
 			fn_changeImage();
+			fn_cancel();
 		});
 		
 		var nicknamePass = true;
@@ -77,13 +78,17 @@
 					processData : false,
 					dataType: 'json',
 					success: function(resData){
-						if(resData.isProfileImage){
-							$('#profileImage').prop('src', resData.path);
-						}
+						$('#profileImage').prop('src', '/load/profileImagePreview/' + resData.filesystem);
 					}
 				}); // ajax
 			}); // change
 		} // function
+		
+		function fn_cancel(){
+			$('#btn_cancel').click(function(){
+				location.href='/';
+			});
+		}
 		
 	</script>
 	<style>
@@ -104,18 +109,29 @@
 	
 	<h1>프로필 수정</h1>
 	
-	<form th:action="@{users/modify/profile}" method="post" enctype="multipart/form-data" id="form_test">
+	<form th:action="@{/users/modify/profile}" method="post" enctype="multipart/form-data" id="form_test">
 		<!-- <input type="hidden" id="id" th:value="${session.loginUser.id}"> -->
 		<table border="1">
 			<tbody>
 				<tr>
 					<td>프로필 이미지</td>
 					<td>
-						<img id="profileImage" th:src=${session.loginUser.profileImage} width="100px" >
+						<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}" th:text="기본">
+							<img id="profileImage" th:src="${session.loginUser.profileImage}" width="100px" style="border:1px solid black;">
+						</span>
+						<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
+							<img id="profileImage" th:src="|/load/profileImage/${session.loginUser.profileImage}|" width="100px" style="border:1px solid black;">
+						</span>
 						<div>
 							<label for="image" class="image">사진변경</label>
 							<input type="file" id="image" name="image" accept="image/png, image/jpeg" style="display:none">
-							<!-- <input type="file" id="image" name="image" accept="image/png, image/jpeg"> -->
+						</div>
+						<div>
+							<label for="remove" class="image">삭제</label>
+							<input type="button" id="remove" style="display:none" onclick="
+								$('#image').val('');
+								$('#profileImage').prop('src', '/images/userimage/basic_profileImage.png');
+							">
 						</div>
 						<span id="fileSize"></span>
 					</td>
@@ -125,10 +141,9 @@
 					<td>
 						<!-- 닉네임 -->
 						<div>
-							
 							<input type="text" name="nickname" id="nickname" th:value="${session.loginUser.nickname}">
-							<span id="msg_nickname"></span>
 						</div>
+							<span id="msg_nickname"></span>
 					</td>
 				</tr>
 			</tbody>

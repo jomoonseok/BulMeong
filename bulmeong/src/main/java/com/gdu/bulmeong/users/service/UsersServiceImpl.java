@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Matcher;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -327,6 +329,7 @@ public class UsersServiceImpl implements UsersService {
 		        Date now = format.parse(date);
 		        System.out.println("날짜 계산 : " + cal.getTime().compareTo(now));
 		        model.addAttribute("pwModifyDate", cal.getTime().compareTo(now));
+		        request.getSession().setAttribute("pwModifyDate", cal.getTime().compareTo(now));
 				response.sendRedirect(url);
 			} catch(ParseException e) {
 				e.printStackTrace();
@@ -1057,13 +1060,6 @@ public class UsersServiceImpl implements UsersService {
 		
 		MultipartFile image = multipartRequest.getFile("image");
 		
-		int attachResult;
-		if(image.getSize() == 0) {  // 첨부가 없는 경우 (files 리스트에 [MultipartFile[field="files", filename=, contentType=application/octet-stream, size=0]] 이렇게 저장되어 있어서 files.size()가 1이다.
-			attachResult = 1;
-		} else {
-			attachResult = 0;
-		}
-		
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			// 첨부가 있는지 점검
@@ -1076,9 +1072,9 @@ public class UsersServiceImpl implements UsersService {
 				// 저장할 이름
 				String filesystem = myFileUtil.getFilename(origin);
 				
+				String sep = Matcher.quoteReplacement(File.separator);
 				// 저장할 경로
-				String path = myFileUtil.getTodayPath();
-				//String path = myFileUtil.getTodayPath();
+				String path = "C:" + sep + "bulmeongImage" + sep + "profileImagePreview";
 				
 				// 저장할 경로 만들기
 				File dir = new File(path);
@@ -1091,28 +1087,103 @@ public class UsersServiceImpl implements UsersService {
 				
 				// 첨부파일 서버에 저장(업로드 진행)
 				image.transferTo(file);
-
-				// ProfileImageDTO 생성
-				ProfileImageDTO profileImage = ProfileImageDTO.builder()
-						.path(path)
-						.origin(origin)
-						.filesystem(filesystem)
-						.id(id)
-						.build();
 				
-				// DB에 ProfileImageDTO 저장
-				attachResult += usersMapper.insertProfileImage(profileImage);
-				result.put("isProfileImage", attachResult > 0);
-				result.put("path", path);
+				result.put("filesystem", filesystem);
 			}
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		System.out.println(attachResult);
-
 		return result;
+	}
+	
+	
+	
+	@Override
+	public void modifyProfile(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+		
+		
+		MultipartFile image = multipartRequest.getFile("image");
+		String nickname = multipartRequest.getParameter("nickname");
+		
+		UsersDTO loginUser = (UsersDTO)multipartRequest.getSession().getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		int attachResult;
+		if(image.getSize() == 0) {  
+			attachResult = 1;
+		} else {
+			attachResult = 0;
+		}
+		
+		try {
+			// 첨부가 있는지 점검
+			if(image != null && image.isEmpty() == false) {  // 둘 다 필요함
+				
+				// 원래 이름
+				String origin = image.getOriginalFilename();
+				origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+				
+				// 저장할 이름
+				String filesystem = myFileUtil.getFilename(origin);
+				
+				String sep = Matcher.quoteReplacement(File.separator);
+				// 저장할 경로
+				String path = "C:" + sep + "bulmeongImage" + sep + "profileImage";
+				
+				// 저장할 경로 만들기
+				File dir = new File(path);
+				if(dir.exists() == false) {
+					dir.mkdirs();
+				}
+				
+				// 첨부할 File 객체
+				File file = new File(dir, filesystem);
+				
+				// 첨부파일 서버에 저장(업로드 진행)
+				image.transferTo(file);
+				
+				// UsersDTO 생성
+				UsersDTO user = UsersDTO.builder()
+						.id(id)
+						.nickname(nickname)
+						.profileImage(filesystem)
+						.build();
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("id", id);
+				
+				
+				// DB에 UsersDTO 저장
+				attachResult += usersMapper.updateProfile(user);
+				
+				UsersDTO updateUser = usersMapper.selectUserByMap(map);
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				if(attachResult > 0) {
+					
+					multipartRequest.getSession().setAttribute("loginUser", updateUser);
+					
+					out.println("<script>");
+					out.println("alert('프로필이 수정되었습니다.');");
+					out.println("location.href='/'");
+					out.println("</script>");
+				} else {
+					out.println("<script>");
+					out.println("alert('프로필 수정에 실패했습니다.');");
+					out.println("history.back();");
+					out.println("</script>");
+				}
+				out.close();
+				
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	 

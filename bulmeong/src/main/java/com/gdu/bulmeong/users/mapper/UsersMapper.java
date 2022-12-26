@@ -31,5 +31,6 @@ public interface UsersMapper {
 	public int insertRestoreUser(String id);
 	public int deleteSleepUser(String id);
 	public int insertNaverUser(UsersDTO user);
-	public int insertProfileImage(ProfileImageDTO profileImage);
+	public int updateProfile(UsersDTO user);
+	//public int insertProfileImage(ProfileImageDTO profileImage);
 }

@@ -201,11 +201,10 @@
 			(#{id}, #{nickname}, #{pw}, #{name}, #{mobile}, #{gender}, #{birthYear}, #{birthDay}, DATE_FORMAT(NOW(), '%y/%m/%d'), #{agreeCode}, #{snsType}, NULL, NULL, #{email}, #{profileImage}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'))
 	</insert>
 	
-	<insert id="insertProfileImage" parameterType="ProfileImageDTO">
-		INSERT INTO PROFILE_IMAGE
-			(PATH, ORIGIN, FILESYSTEM, ID)
-		VALUES
-			(#{path}, #{origin}, #{filesystem}, #{id})
-	</insert>
+	<update id="updateProfile" parameterType="UsersDTO">
+		UPDATE USERS
+		   SET NICKNAME = #{nickname}, PROFILE_IMAGE = #{profileImage}
+		 WHERE ID = #{id} 
+	</update>
 	
 </mapper>
