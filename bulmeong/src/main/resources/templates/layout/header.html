@@ -133,7 +133,26 @@
 </head>
 <body>
 	<header th:fragment="header_layout">
-		<h1><a th:href="@{/}">BulMeong</a></h1>
+		<a th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="250px"></a>
+		
+			<!-- 로그인이 안 된 상태 -->
+	<div th:if="${session.loginUser == null}">
+		<a th:href="@{/users/agree}">회원가입</a>
+		<a th:href="@{/users/login/form}">로그인</a>
+		<a th:href="@{/admin}">관리자 전용</a>
+	</div>
+	
+	<!-- 로그인이 된 상태 -->
+	<div th:if="${session.loginUser != null}">
+		<div style="border:solid 1px black; width:300px; text-align:center">
+			<a th:href="@{/users/profile}"><img th:src=${session.loginUser.profileImage} width="38px" style="border:1px solid black;"></a>
+			<span th:text="|${session.loginUser.nickname}님 반갑습니다.|"></span>
+			<br>
+			<br>
+			<a th:href="@{/users/logout}">로그아웃</a>
+		</div>
+	</div>
+		
 		
 		<ul id="navigation">
 			<li><a th:href="@{/camp}">캠핑예약</a></li>
@@ -160,6 +179,9 @@
 				</ul>
 			</li>
 		</ul>
+		
+
+	</div>
 	</header>	
 </body>
 </html>

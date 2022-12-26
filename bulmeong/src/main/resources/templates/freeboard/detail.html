@@ -88,10 +88,11 @@
 							// Depth가 0일 때()
 							if(comment.freeCmtDepth == 0){
 								div += '<div>';
-							} else if(comment.freeCmtDepth > 0) {	
-								for (var i = 0; i < comment.freeCmtDepth; i++){								
-									div += '<div style="margin-left:40px;">';
-								}
+							} else if(comment.freeCmtDepth > 0) {
+								var margin = comment.freeCmtDepth * 40;
+								// for (var i = 0; i < comment.freeCmtDepth; i++){
+								div += '<div style="margin-left:'+margin+'px;">';
+								// }
 							}
 							
 							// State가 1일 때(일반 댓글)
@@ -168,7 +169,7 @@
 						
 							div += '<div>';
 							moment.locale('ko-KR');
-							div += '</div>';
+							div += (comment.freeCmtDepth == 0 && comment.cmtCnt > 0 ? '<button>더보기</button></div>' : '</div>');
 
 							$('#comment_list').append(div);
 							$('#comment_list').append('<div style="border-bottom: 1px dotted gray;"></div>');
@@ -268,12 +269,8 @@
 							}
 
 						}, error: function(jqXHR){
-							
-							alert(jqXHR.message);
-							// alert('세션이 만료되었습니다.');
-
-
-							// location.replace('/users/login/form');
+							alert('세션이 만료되었습니다.');
+							location.replace('/users/login/form');
 						}
 					});
 					
@@ -480,6 +477,7 @@
 
 	<hr>
 	
+	<!-- 좋아요 -->
 	<a id="lnk_like">
 		<span id="heart"></span>&nbsp;<span id="like"></span><span id="like_count"></span>
 	</a>
