@@ -57,26 +57,37 @@
         height: 100%;   /* 부모 요소 li와 같은 높이 */
     }
     #navigation > li:hover {
-        height: 47px;   /* height와 border값을 합쳐서 원래 크기 50px을 만듬 */
+        height: 50px;   /* height와 border값을 합쳐서 원래 크기 50px을 만듬 */
         border-bottom: 3px solid #71C285;
     }
     #navigation > li:hover > a {
         color: #71C285;
+        visibility: visible;
     }
     
-    #navigation > li > ul {
-    	display: none;
+    #navigation > li > div > ul {
     	position: absolute;
 		font-size:14px;
 		opacity: 0.8;
 		list-style: none; 
-        line-height: 50px;
-		
+        line-height: 50px;		
     }
 
-    #navigation:hover > li > ul {
-    	display: block;
-    }
+/*     #navigation:hover > li .mega-box { */
+/*     	visibility: visible; */
+/*     } */
+    
+/*     .mega-box { */
+/*      	visibility: hidden; */
+		
+		
+/*     } */
+    
+/*     .mega-box > ul > li { */
+/*     	width: 140px; */
+/* 		margin: 0 auto; */
+/*     	text-align: center; */
+/*     } */
     
     
     .login-box {
@@ -188,30 +199,166 @@
 
 	
 	
-	<ul id="navigation">
-		<li><a th:href="@{/camp}">캠핑예약</a></li>
-		<li><a th:href="@{/freeboard/list}">캠핑커뮤니티</a>
-			<ul>
-				<li><a th:href="@{/freeboard/list}">자유게시판</a></li>
-				<li><a th:href="@{/reviewboard/list}">리뷰게시판</a></li>
-			</ul>
-		</li>
-		<li><a th:href="@{/qna/list}">고객센터</a>
-			<ul>
-				<li><a th:href="@{/qna/list}">QnA</a></li>
-				<li><a th:href="@{/notice/list}">공지사항</a></li>
-				<li><a th:href="@{/faq/list}">FAQ</a></li>
-			</ul>
-		</li>
-		<li><a th:href="@{/users/mypage}">마이페이지</a>
-			<ul>
-				<li><a th:href="@{/users/modify}">회원정보변경</a></li>
-				<li><a th:href="@{/users/jjim}">찜목록</a></li>
-				<li><a th:href="@{/users/board/list}">내가 쓴 글</a></li>
-				<li><a th:href="@{/users/reserve}">예약 내역</a></li>
-			</ul>
-		</li>
-	</ul>
+<!-- 	<ul id="navigation"> -->
+<!-- 		<li><a th:href="@{/camp}">캠핑예약</a></li> -->
+<!-- 		<li><a th:href="@{/freeboard/list}">캠핑커뮤니티</a> -->
+<!-- 		<div class="mega-box"> -->
+<!-- 			<ul> -->
+<!-- 				<li><a th:href="@{/freeboard/list}">자유게시판</a></li> -->
+<!-- 				<li><a th:href="@{/reviewboard/list}">리뷰게시판</a></li> -->
+<!-- 			</ul> -->
+<!-- 		</div> -->
+<!-- 		</li> -->
+<!-- 		<li><a th:href="@{/qna/list}">고객센터</a> -->
+<!-- 		<div class="mega-box"> -->
+<!-- 			<ul> -->
+<!-- 				<li><a th:href="@{/qna/list}">QnA</a></li> -->
+<!-- 				<li><a th:href="@{/notice/list}">공지사항</a></li> -->
+<!-- 				<li><a th:href="@{/faq/list}">FAQ</a></li> -->
+<!-- 			</ul> -->
+<!-- 		</div> -->
+<!-- 		</li> -->
+<!-- 		<li><a th:href="@{/users/mypage}">마이페이지</a> -->
+<!-- 		<div class="mega-box"> -->
+<!-- 			<ul> -->
+<!-- 				<li><a th:href="@{/users/modify}">회원정보변경</a></li> -->
+<!-- 				<li><a th:href="@{/users/jjim}">찜목록</a></li> -->
+<!-- 				<li><a th:href="@{/users/board/list}">내가 쓴 글</a></li> -->
+<!-- 				<li><a th:href="@{/users/reserve}">예약 내역</a></li> -->
+<!-- 			</ul> -->
+<!-- 		</div> -->
+<!-- 		</li> -->
+<!-- 	</ul> -->
+<style>
+	nav {
+	   width:  100%;
+	   z-index: 999;
+	   height: 65px;
+	   line-height: 65px;
+	   
+	}
+	
+	nav .wrapper {
+	   max-width: 1250px;
+	   padding: 0 30px;
+	   margin: auto;
+	   display: flex;
+	   align-items: center;
+	   justify-content: space-between;
+	}
+	
+	.wrapper .logo a {
+	   text-decoration: none;
+	   font-weight: 600;
+	}
+	.wrapper .nav-links {
+	   display: inline-flex;
+	}
+	
+	.nav-links > li {
+	   text-decoration: none;
+	   list-style: none;
+	}
+	.nav-links > li > a {
+	   font-size: 13px;
+	   font-weight: 500;
+	   padding:  9px 15px;
+	   border-radius: 5px;
+	   transition: all 0.3s ease;
+	
+	
+	}
+	.nav-links > li:hover > a {
+	   outline: 1px solid black;
+	}
+	
+	.nav-links:hover > li > .mega-box {
+	   opacity: 1;
+	   visibility: visible;
+	   background: rgba(113, 194, 133, 0.9);
+	   transition: all 0.5s ease;
+	}
+	
+	.mega-box {
+	   position: absolute;
+	   width: 100%;
+	   left: 0;
+	   visibility: hidden;
+	
+	}
+	.mega-box .content {
+	   
+	   padding: 25px 20px;
+	   display: flex;
+	   width: auto;
+	   justify-content: space-between;
+	}
+	.content .row {
+	   width: calc(25% - 30px);
+	   line-height: 45px;
+	}
+	
+	.mega-links > li {
+		list-style: none;
+	}
+	
+	
+	.row .mega-links > li > a {
+	   padding: 0 20px;
+	   
+	   font-size: 13px;
+	
+	} 
+</style>
+
+
+   <nav>
+      <div class="wrapper">
+         <ul class="nav-links">
+            <li><a th:href="@{/camp}">캠핑예약</a></li>
+            <li><a th:href="@{/freeboard/list}">캠핑커뮤니티</a>
+            <div class="mega-box">
+               <div class="content">
+                  <div class="row">
+                  <div>캠핑예약</div>
+                     <ul class="mega-links">
+                     </ul>
+                  </div>
+                  <div class="row">
+                  <div>캠핑커뮤니티</div>
+                     <ul class="mega-links">
+                        <li><a th:href="@{/freeboard/list}">자유게시판</a></li>
+                        <li><a th:href="@{/reviewboard/list}">리뷰게시판</a></li>
+                     </ul>
+                  </div>
+                  <div class="row">
+                  <div>고객센터</div>
+                     <ul class="mega-links">
+                        <li><a th:href="@{/qna/list}">QnA</a></li>
+                        <li><a th:href="@{/notice/list}">공지사항</a></li>
+                         <li><a th:href="@{/faq/list}">FAQ</a></li>
+                     </ul>
+                  </div>
+                  <div class="row">
+                  <div>마이페이지</div>
+                     <ul class="mega-links">
+                         <li><a th:href="@{/users/modify}">회원정보변경</a></li>
+                         <li><a th:href="@{/users/jjim}">찜목록</a></li>
+                         <li><a th:href="@{/users/board/list}">내가 쓴 글</a></li>
+                         <li><a th:href="@{/users/reserve}">예약 내역</a></li>
+                     </ul>
+                  </div>               
+               </div>
+            </div>
+            </li>
+            <li><a th:href="@{/qna/list}">고객센터</a></li>
+            <li><a th:href="@{/users/mypage}">마이페이지</a></li>
+         </ul>
+      </div>
+   </nav>
+
+
+
 			
 
 	</header>	
