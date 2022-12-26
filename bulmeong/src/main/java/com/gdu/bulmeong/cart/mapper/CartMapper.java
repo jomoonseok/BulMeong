@@ -10,4 +10,6 @@ public interface CartMapper {
 	public int selectCampCartCount(int campNo); 
 	public int insertCart(Map<String, Object> map);
 	public int deleteCart(Map<String, Object> map);
+	public int updateIncreaseCampJjim(int campNo);
+	public int updateDecreaseCampJjim(int campNo);
 }

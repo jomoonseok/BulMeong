@@ -101,37 +101,40 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                회원 현황
+                                텐트 현황
+                                <span style="float:right;">
+                                	<input type="button" value="텐트 등록" onclick="fn_tentAdd()">
+                                </span>
                             </div>
+                            
+                            <script>
+                            	function fn_tentAdd() {
+                            		window.open("/admin/addTent", "_blank", "width=500,height=600");
+                            	}
+                            </script>
+                            
+                            
+                            
                             <div class="card-body">
-                                <table id="datatablesSimple" style="width:1200px">
+                                <table id="datatablesSimple" style="width:1200px; table-layout: fixed;">
                                     <thead>
-                                        <tr style="font-size: 12px; text-align: center;">
-                                            <th>번호</th>
-                                            <th>사진</th>
-                                            <th>아이디</th>
-                                            <th>이름</th>
-                                            <th>닉네임</th>
-                                            <th>이메일</th>
-                                            <th>전화번호</th>
-                                            <th>성별</th>
-                                            <th>나이</th>
-                                            <th>생년월일</th>
-                                            <th>우편번호</th>
-                                            <th>주소</th>
-                                            <th>지번주소</th>
-                                            <th>상세주소</th>
-                                            <th>기타주소</th>
-                                            <th>가입일자</th>
-                                            <th>동의코드</th>
-                                            <th>sns타입</th>
-                                            <th>비밀번호<br>수정일</th>
-                                            <th>개인정보<br>수정일</th>
+                                        <tr style="text-align: center;">
+                                            <th>텐트번호</th>
+                                            <th>캠핑장명</th>
+                                            <th>텐트이름</th>
+                                            <th>텐트사진</th>
+                                            <th>텐트구분</th>
+                                            <th>최대수용인원</th>
+                                            <th>텐트금액</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="usersTblBody">
+                                    <tbody id="tentTblBody">
                                     </tbody>
                                     <tfoot>
+                                    	<tr>
+                                    		<td id="paging"></td>
+                                    	</tr>
                                     </tfoot>
                                 </table>
                             </div>
@@ -152,48 +155,90 @@
                 </footer>
             </div>
         </div>
+        <input type="hidden" id="page" value="1">
         
        	<script>
-       		$.ajax({
-       			
-       			type: 'post',
-       			url: '/admin/getAllUser',
-       			success: function(resData) {
-       				console.log(resData);
-       				$('.breadcrumb-item.active').text('유저 조회결과 : ' + resData.usersCount + '명');
-       				$.each(resData.users, function(i, users) {
-       					
-       					var usersDiv = '<tr style="font-size: 10px; text-align: center;">';
-       					usersDiv += '<td>' + users.usersNo + '</td>';
-       					usersDiv += '<td><img src="' + users.profileImage + '"></img></td>';
-       					usersDiv += '<td>' + users.id + '</td>';
-       					usersDiv += '<td>' + users.name + '</td>';
-       					usersDiv += '<td>' + users.nickname + '</td>';
-       					usersDiv += '<td>' + users.email + '</td>';
-       					usersDiv += '<td>' + users.mobile + '</td>';
-       					usersDiv += '<td>' + users.gender + '</td>';
-       					usersDiv += '<td>' + users.age + '</td>';
-       					usersDiv += '<td>' + users.birthYear + users.birthDay + '</td>';
-       					usersDiv += '<td>' + users.postCode + '</td>';
-       					usersDiv += '<td>' + users.roadAddress + '</td>';
-       					usersDiv += '<td>' + users.jibunAddress + '</td>';
-       					usersDiv += '<td>' + users.detailAddress + '</td>';
-       					usersDiv += '<td>' + users.extraAddress + '</td>';
-       					usersDiv += '<td>' + users.joinDate + '</td>';
-       					usersDiv += '<td>' + users.agreeCode + '</td>';
-       					usersDiv += '<td>' + users.snsType + '</td>';
-       					usersDiv += '<td>' + users.pwModifyDate + '</td>';
-       					usersDiv += '<td>' + users.infoModifyDate + '</td>';
-       					$('#usersTblBody').append(usersDiv);
-       					
-       				});
-       				
-       				
-       			},error(jqXHR) {
-       				console.log(jqXHR);
-       			}
-       			
+       	
+       		$(function() {
+       			fn_changePage();
+       			fn_getList();
        		})
+       	
+       		function fn_getList() {
+       			
+	       		$.ajax({
+	       			
+	       			type: 'post',
+	       			url: '/admin/getAllTent',
+	       			data: 'page=' + $('#page').val(),
+	       			success: function(resData) {
+	       				$('.breadcrumb-item.active').text('텐트 현황 : ' + resData.tentCount + '개');
+	       				$('#tentTblBody').empty();
+	       				$.each(resData.tentList, function(i, tent) {
+	       					var tentDiv = '<tr class="tent_tr" style="font-size: 12px; text-align: center; height:auto;">';
+	       					tentDiv += '<td>' + tent.tentNo + '</td>'
+	       					tentDiv += '<td>' + tent.facltNm + '</td>'
+	       					tentDiv += '<td>' + tent.tentName + '</td>'
+	       					tentDiv += '<td><img src="' + tent.tentImage + '" style="width=70px; height:50px;"></img></td>'
+	       					switch(tent.tentCategory) {
+		      	    		case 0: tent.tentCategory = '글램핑'; break;
+		      	    		case 1: tent.tentCategory = '카라반'; break;
+		      	    		case 2: tent.tentCategory = '일반야영장'; break;
+		      	    		case 3: tent.tentCategory = '자동차야영장';
+	      	    			}
+	       					tentDiv += '<td>' + tent.tentCategory + '</td>'
+	       					tentDiv += '<td>' + tent.tentMaxCount + '</td>'
+	       					tentDiv += '<td>' + tent.tentSum + '</td>'
+	       					tentDiv += '<td><input type="button" value="변경하기" class="btn_modify" data-tentno="'+ tent.tentNo +'" data-facltnm="' + tent.facltNm + '" onclick="fn_modifyTent(this)"></td>'
+	       					tentDiv += '</tr>';
+	       					
+	       					$('#tentTblBody').append(tentDiv);
+	       					
+	       				});
+	       				$('#paging').empty();
+	    				var pageUtil = resData.pageUtil;
+	    				var paging = '';
+	    				// 이전 블록
+	    				if(pageUtil.beginPage != 1) {
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+	    				}
+	    				// 페이지번호
+	    				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+	    					if(p == $('#page').val()){
+	    						paging += '<strong>' + p + '</strong>';
+	    					} else {
+	    						paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
+	    					}
+	    				}
+	    				// 다음 블록
+	    				if(pageUtil.endPage != pageUtil.totalPage){
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+	    				}
+	    				$('#paging').append(paging);
+	
+	
+	       				
+	       			},
+	       			error: function(jqXHR) {
+	       				
+	       			}
+	       						
+	       			
+	       		})
+       		}
+       		
+       		function fn_changePage(){
+				$(document).on('click', '.enable_link', function(){
+					$('#page').val( $(this).data('page') );
+					fn_getList();
+				});
+			}
+       		
+       		function fn_modifyTent(e) {
+       			console.log($(e).data('facltnm'));
+   				window.open("/admin/modify?tentNo=" + $(e).data('tentno') + "&facltNm=" + $(e).data('facltnm'), "_blank", "width=500,height=600")
+       		}
+       		
        	</script>
         
         

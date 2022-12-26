@@ -33,6 +33,9 @@
 		<typeAlias type="com.gdu.bulmeong.users.domain.SleepUsersDTO" alias="SleepUsersDTO" />
 		<typeAlias type="com.gdu.bulmeong.users.domain.UsersAccessDTO" alias="UsersAccessDTO" />
 		<typeAlias type="com.gdu.bulmeong.users.domain.ProfileImageDTO" alias="ProfileImageDTO" />
+		
+		<typeAlias type="com.gdu.bulmeong.admin.domain.AdminTentDTO" alias="AdminTentDTO" />
+
 
 	</typeAliases>
 

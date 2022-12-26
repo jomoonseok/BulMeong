@@ -58,7 +58,7 @@ public class ReserveController {
 	 
 	 
 	 @GetMapping("/reserve/pay") 
-	 public String reserve_pay(HttpServletRequest request, Model model) { 
+	 public String requiredLogin_reserve_pay(HttpServletRequest request, Model model) { 
 		 reserveService.getInfoReserve(request, model); 
 		 return "reserve/pay"; 
 	 }

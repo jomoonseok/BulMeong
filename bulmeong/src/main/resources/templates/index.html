@@ -225,7 +225,6 @@
 			success: function(resData) {
 				
 				$.each(resData.jjim, function(i, jjim) {
-					console.log(jjim.campNo);
 					var jjimBoard = '<tr>';
 					jjimBoard += '<td>' + ++i + '</td>';
 					jjimBoard += '<td><a href="/detail?campNo=' + jjim.campNo + '">' + jjim.facltNm + '</a></td>';
