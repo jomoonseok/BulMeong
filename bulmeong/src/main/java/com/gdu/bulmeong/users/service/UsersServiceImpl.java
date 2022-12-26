@@ -13,8 +13,6 @@ import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +28,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -41,8 +40,6 @@ import com.gdu.bulmeong.users.mapper.UsersMapper;
 import com.gdu.bulmeong.util.JavaMailUtil;
 import com.gdu.bulmeong.util.MyFileUtil;
 import com.gdu.bulmeong.util.SecurityUtil;
-
-import oracle.sql.DATE;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -279,7 +276,7 @@ public class UsersServiceImpl implements UsersService {
 	
 	
 	@Override
-	public void login(HttpServletRequest request, HttpServletResponse response) {
+	public void login(HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 파라미터
 		String url = request.getParameter("url");
 		String id = request.getParameter("id");
@@ -322,25 +319,14 @@ public class UsersServiceImpl implements UsersService {
 				SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd");
 				Date pmd = format.parse(loginUser.getPwModifyDate());
 				
-				//LocalDate pmd = LocalDate.parse(loginUser.getPwModifyDate(), DateTimeFormatter.ofPattern("yy/MM/dd"));
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(pmd);
 				cal.add(Calendar.DATE, 90);
-				System.out.println(cal.getTime());
-				 // 현재 날짜 구하기
-		        LocalDate now = LocalDate.now();
-		        /*
-		        // 포맷 정의
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
-		 
-		        // 포맷 적용
-		        String formatedNow = now.format(formatter);
-		        Date date = format.parse(formatedNow);
-		        */
-				//cal.before(formatedNow);
-				//cal.after(formatedNow);
-				System.out.println(cal.before(now));
-				System.out.println(cal.after(now));
+				Date currentTime = new Date();
+				String date = format.format(currentTime);
+		        Date now = format.parse(date);
+		        System.out.println("날짜 계산 : " + cal.getTime().compareTo(now));
+		        model.addAttribute("pwModifyDate", cal.getTime().compareTo(now));
 				response.sendRedirect(url);
 			} catch(ParseException e) {
 				e.printStackTrace();

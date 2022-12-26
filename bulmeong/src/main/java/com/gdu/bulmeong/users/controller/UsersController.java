@@ -90,8 +90,8 @@ public class UsersController {
 	}
 	
 	@PostMapping("/users/login")
-	public void login(HttpServletRequest request, HttpServletResponse response) {
-		usersService.login(request, response);
+	public void login(HttpServletRequest request, HttpServletResponse response, Model model) {
+		usersService.login(request, response, model);
 	}
 	
 	@GetMapping("/users/naver/login")
