@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartRequest;
 
 public interface AdminService {
 
@@ -17,4 +16,6 @@ public interface AdminService {
 	public Map<String, Object> getCampcampNofacltNm();
 	public void uploadTent(MultipartHttpServletRequest request, HttpServletResponse response);
 	public void modifyTent(HttpServletRequest request, Model model);
+	public void changeTent(MultipartHttpServletRequest request, HttpServletResponse response);
+	public Map<String, Object> removeTent(HttpServletRequest request);
 }

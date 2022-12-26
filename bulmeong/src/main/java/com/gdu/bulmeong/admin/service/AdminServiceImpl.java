@@ -118,15 +118,21 @@ public class AdminServiceImpl implements AdminService {
 		
 		for(MultipartFile multipartFile : TENT_IMAGE) {
 			try {
-				if(multipartFile != null && multipartFile.isEmpty() == false) {
-
+				if(multipartFile != null && multipartFile.isEmpty() == false || multipartFile.getSize() >= 0) {
+					
 					String origin = multipartFile.getOriginalFilename();
 					origin = origin.substring(origin.lastIndexOf("\\") + 1);
 					
 					String filesystem = myFileUtil.getFilename(origin);
 					
 					String sep = Matcher.quoteReplacement(File.separator);
-					String path = "C:" + sep + "bulmeongImage" + sep + "tent";
+					String path = "";
+					
+					if(multipartFile.getSize() == 0) {
+						filesystem = "/images/tent/default_tent.png";
+					} else {
+						path = "C:" + sep + "bulmeongImage" + sep + "tent";
+					}
 					
 					File dir = new File(path);
 					if(dir.exists() == false) {
@@ -138,7 +144,7 @@ public class AdminServiceImpl implements AdminService {
 					multipartFile.transferTo(file);
 					
 					AdminTentDTO tent = AdminTentDTO.builder()
-							.campNo(CAMP_NO).tentName(TENT_NAME).tentCategory(TENT_CATEGORY).tentMaxCount(TENT_MAX_COUNT).tentSum(TENT_SUM).tentImage("/load/tent/" + filesystem).build();
+							.campNo(CAMP_NO).tentName(TENT_NAME).tentCategory(TENT_CATEGORY).tentMaxCount(TENT_MAX_COUNT).tentSum(TENT_SUM).tentImage(filesystem).tentOrigin(origin).build();
 					
 					int result = adminMapper.insertTent(tent);
 					
@@ -148,11 +154,13 @@ public class AdminServiceImpl implements AdminService {
 					if(result > 0) {
 						out.println("<script>");
 						out.println("alert('업로드 되었습니다.');");
+						out.println("opener.parent.location.reload()");
 						out.println("window.close()");
 						out.println("</script>");
 					}  else {
 						out.println("<script>");
 						out.println("alert('업로드 실패했습니다.');");
+						out.println("opener.parent.location.reload()");
 						out.println("window.close();");
 						out.println("</script>");
 					}
@@ -174,6 +182,96 @@ public class AdminServiceImpl implements AdminService {
 		tent.setFacltNm(facltNm);
 		
 		model.addAttribute("tent", tent);
+	}
+	
+	@Override
+	public void changeTent(MultipartHttpServletRequest request, HttpServletResponse response) {
+		int TENT_NO = Integer.parseInt(request.getParameter("tentNo"));
+		String TENT_NAME = request.getParameter("TENT_NAME");
+		int TENT_CATEGORY = Integer.parseInt(request.getParameter("TENT_CATEGORY"));
+		int TENT_MAX_COUNT = Integer.parseInt(request.getParameter("TENT_MAX_COUNT"));
+		int TENT_SUM = Integer.parseInt(request.getParameter("TENT_SUM"));
+		List<MultipartFile> TENT_IMAGE = request.getFiles("TENT_IMAGE");
+		
+		int imageResult = 0;
+		if(TENT_IMAGE.get(0).getSize() == 0) {
+			imageResult = 1;
+		} else {
+			imageResult = 0;
+		}
+		
+		for(MultipartFile multipartFile : TENT_IMAGE) {
+			try {
+				if(multipartFile != null && multipartFile.isEmpty() == false || multipartFile.getSize() >= 0) {
+				
+					String origin = multipartFile.getOriginalFilename();
+					origin = origin.substring(origin.lastIndexOf("\\") + 1);
+					
+					String filesystem = myFileUtil.getFilename(origin);
+					
+					String sep = Matcher.quoteReplacement(File.separator);
+					String path = "C:" + sep + "bulmeongImage" + sep + "tent";
+					
+					File dir = new File(path);
+					if(dir.exists() == false) {
+						dir.mkdirs();
+					}
+					
+					File file = new File(dir, filesystem);
+					
+					multipartFile.transferTo(file);
+					
+					AdminTentDTO tent = AdminTentDTO.builder()
+							.tentNo(TENT_NO).tentName(TENT_NAME).tentCategory(TENT_CATEGORY).tentMaxCount(TENT_MAX_COUNT).tentSum(TENT_SUM).tentImage(filesystem).tentOrigin(origin).build();
+					
+					
+					int result = adminMapper.updateTentByTentNo(tent);
+					
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					if(result > 0) {
+						out.println("<script>");
+						out.println("alert('수정 되었습니다.');");
+						out.println("opener.parent.fn_getList()");
+						out.println("window.close()");
+						out.println("</script>");
+					}  else {
+						out.println("<script>");
+						out.println("alert('수정 실패했습니다.');");
+						out.println("opener.parent.fn_getList()");
+						out.println("window.close();");
+						out.println("</script>");
+					}
+					out.close();
+				}
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+	public Map<String, Object> removeTent(HttpServletRequest request) {
+		
+		int tentNo = Integer.parseInt(request.getParameter("tentNo"));
+		int result = adminMapper.deleteTentByTentNo(tentNo);
+		boolean isDelete;
+		String alertMsg = "";
+		
+		Map<String, Object> map = new HashMap<>();
+		if(result > 0) {
+			isDelete = true;
+			alertMsg = "삭제 되었습니다.";
+		} else {
+			isDelete = false;
+			alertMsg = "삭제 실패했습니다.";
+		}
+		
+		map.put("isDelete", isDelete);
+		map.put("alertMsg", alertMsg);
+		return map;
 	}
 	
 }
