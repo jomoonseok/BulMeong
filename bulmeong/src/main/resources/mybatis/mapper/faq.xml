@@ -22,7 +22,7 @@
 		INSERT INTO FAQ
 			(FAQ_TITLE, FAQ_CONTENT, FAQ_CREATE_DATE)
 		VALUES
-			(#{faqTitle}, #{faqContent}, NOW())
+			(#{faqTitle}, #{faqContent}, DATE_FORMAT(NOW(), '%y-%m-%d'))
 	</insert>
 	
 </mapper>

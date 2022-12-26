@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <head th:replace="~{layout/header::head('QNA목록')}"></head>
 <script th:inline="javascript">
 	$(function(){
 		fn_AddQuestion();
+		fn_closePopup();
+		
 	});
 		
 //         var parentIpt = document.getElementById('qnaTitle');
@@ -28,34 +31,32 @@
 // 			window.close();
 // 		}
 		function fn_AddQuestion(){
-			$('#form_bbs_add').submit(function(event){
-				if($('#id').val() == '') {
-					alert('게시글을 작성하려면 로그인을 해야 합니다.');
-					event.preventDefault();
-					return;
-				} else if($('#qnaTitle').val() == ''){
+			$('#frm_writePop').submit(function(event){
+				
+				if($('#qnaTitle').val() == ''){
 					alert('제목을 작성하세요.');
 					$('#qnaTitle').focus();
 					event.preventDefault();
 					return;
-				} else if($('#qnaContent').val() == ''){
-					alert('내용을 작성하세요.');
 				}
 			});
 		}
 		
+		function fn_closePopup(){
+			$('#btn_popupClose').click(function(){
+				window.close();
+			});
+		}
 		
-		$('#btn_popupClose').click(function(){
-			window.close();
-		});
-		
-		$('#frm_writePop').submit(function(event){
-			if($('#qnaTitle').val() == ''){
-				alert('제목을 입력하세요.');
-				event.preventDefault();
-				return;
-			}
-		});
+// 		function fn_submitPopup(){	
+// 			$('#btn_popupSubmit').submit(function(){
+// 				if($('#noticeTitle').val() == ''){
+// 					alert('제목을 입력하세요.');
+// 					event.preventDefault();
+// 					return;
+// 				}
+// 			})
+// 		}
         
 </script>
 
@@ -68,17 +69,18 @@
 		</div>
 	    <div class="css_writeWrap">
 	        <label for="qnaTitle">제목</label>
-	        <input type="text" id="qnaTitle" placeholder="제목을 입력해주세요.">
+	        <input type="text" id="qnaTitle" name="qnaTitle" placeholder="제목을 입력해주세요.">
 	    </div>
 	    <div class="css_writeWrap">
 	        <label for="qnaContent">내용</label><br>
-	        <textarea rows="35" cols="60" id="qnaContent" placeholder="내용을 입력하세요."></textarea>
+	        <textarea rows="20" cols="60" id="qnaContent" name="qnaContent" placeholder="내용을 입력하세요."></textarea>
 	    </div>
-	    <div>
-	    	<input type="checkbox">비밀글
-	    </div>
+	    <div class="form-check form-switch">
+  			<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+ 			 <label class="form-check-label" for="flexSwitchCheckDefault">비밀글</label>
+		</div>
 	    <div class="footer">
-	        <input type="submit" value="작성완료">
+	        <input type="submit" value="작성완료" id="btn_popupSubmit">
 	        <input type="reset" value="작성초기화">
 	        <input type="button" id="btn_popupClose" value="닫기">
 	    </div>

@@ -1,6 +1,7 @@
 package com.gdu.bulmeong.qna.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,21 +37,21 @@ public class QnaController {
 	}
 	
 	@PostMapping("/qna/add")
-	public String questionAdd(HttpServletRequest request) {
-		qnaService.addQuestion(request);
-		return "redirect:/qna/list.html";
+	public void questionAdd(HttpServletRequest request, HttpServletResponse response) {
+		qnaService.addQuestion(request, response);
+		
 	}
 
 	@PostMapping("/qna/remove")
 	public String qnaRemove(@RequestParam("qnaNo") int qnaNo) {
 		qnaService.removeQna(qnaNo);
-		return "redirect:/qna/list.html";
+		return "redirect:/qna/list";
 	}
 	
 	@PostMapping("/qna/aswer/add")
 	public String answerAdd(HttpServletRequest request) {
 		qnaService.addAnswer(request);
-		return "redirect:/qna/list.html";
+		return "redirect:/qna/list";
 	}
 	
 }

@@ -29,9 +29,9 @@
 	<!-- Question 추가 -->
 	<insert id="insertQuestion" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="qnaNo">
 		INSERT INTO QNA
-			(ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, DEPTH)
+			(ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
 		VALUES
-			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{qnaIp}, 0)
+			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 1, #{qnaIp}, #{qnaGroupNo}, 0)
 	</insert>
 	
 	<!-- QNA_GROUP_NO 증가 -->
@@ -52,14 +52,14 @@
 		INSERT INTO QNA
 			(ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, DEPTH)
 		VALUES
-			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), 1, #{qnaIp}, 1)
+			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 1, #{qnaIp}, 1)
 	</insert>
 	
-	<update id="deleteQna" parameterType="int">
-		UPDATE QNA
-		   SET QNA_STATE = 0
+	<delete id="deleteQna" parameterType="int">
+		DELETE
+		  FROM QNA
 		 WHERE QNA_NO = #{qnaNo}
-	</update>
+	</delete>
 	
 	
 	
