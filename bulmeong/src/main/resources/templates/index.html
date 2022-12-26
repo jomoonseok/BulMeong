@@ -5,24 +5,6 @@
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	<!-- 로그인이 안 된 상태 -->
-	<div th:if="${session.loginUser == null}">
-		<a th:href="@{/users/agree}">회원가입</a>
-		<a th:href="@{/users/login/form}">로그인</a>
-		<a th:href="@{/admin}">관리자 전용</a>
-	</div>
-	
-	<!-- 로그인이 된 상태 -->
-	<div th:if="${session.loginUser != null}">
-		<div style="border:solid 1px black; width:300px; text-align:center">
-			<a th:href="@{/users/profile}"><img th:src=${session.loginUser.profileImage} width="38px" style="border:1px solid black;"></a>
-			<span th:text="|${session.loginUser.nickname}님 반갑습니다.|"></span>
-			<br>
-			<br>
-			<a th:href="@{/users/logout}">로그아웃</a>
-		</div>
-	</div>
-	
 	
 	
 </head>
@@ -198,7 +180,8 @@
 	</script>
 	
 	<div class="jjimListArea">
-		<table class="jjimList" border="1" style="text-align: center;">
+		찜 캠핑장 TOP 10
+		<table class="jjimList table" style="text-align: center;">
 			<thead>
 				<tr>
 					<td>순위</td>
@@ -208,7 +191,6 @@
 				</tr>
 			</thead>
 			<tbody id="tbody_jjim">
-				<div>찜 캠핑장 TOP 10</div>
 			</tbody>
 		</table>
 	</div>

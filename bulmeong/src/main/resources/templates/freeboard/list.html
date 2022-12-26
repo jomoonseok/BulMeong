@@ -1,10 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <head th:replace="~{layout/header::head('[BulMeong] 자유게시판')}"></head>
 <body>
 
-	<header th:replace="~{layout/header::header_layout}"></header>
+<header th:replace="~{layout/header::header_layout}"></header>
+<style>
+
+
+	#query {
+		border: 1px solid gray;
+		border-radius: 15px;
+		padding: 11px;
+		margin: 8px;
+		width: 400px;
+		height : 40px;
+	}
+	
+	#query:focus {
+		
+	   	border: 0.5px solid rgba(113, 194, 133);
+	   	border-radius: 15px;
+ 	   	outline: 0.5px solid rgba(113, 194, 133);
+		outline-style: none;
+	   	padding: 11px;
+	   	margin: 8px;
+	   	width: 400px;  	
+		height : 40px;
+	   	background-color: rgba(113, 194, 133, 0.1);
+	}
+	
+	.search {
+		width: 100px;
+		height : 40px;
+		border: none;
+		outline: 1px solid rgb(204, 75, 76);
+		border-radius: 15px;
+		background: rgb(255, 255, 255);
+		color: rgb(204, 75, 76);
+		font-size: 16px;
+	}
+	
+	.search:hover {
+		width: 100px;
+		height : 40px;
+		border: none;
+		border-radius: 15px;
+		background: rgb(204, 75, 76);
+		color: rgb(255, 255, 255);
+		font-size: 16px;
+	}
+		
+	</style>
 	
 	<script>
 		$(document).ready(function(){
@@ -81,7 +127,7 @@
 			<option value="NICKNAME" th:selected="${column} == NICKNAME">게시글 작성자</option>
 		</select>
 		<input type="text" id="query" name="query" th:value=${query} class="form-control" style="width: 50%; display: inline-block;">
-		<button class="btn btn-outline-danger" th:onclick="goPage(1)">검색</button>
+		<button class="search" th:onclick="goPage(1)">검색</button>
 
 	</div>
 

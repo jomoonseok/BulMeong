@@ -5,6 +5,75 @@
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
+	<style>
+ 		.cmt_content_style { 
+ 			margin: 10px; 
+ 			background-color: rgba(113, 194, 133, 0.1); 
+ 			border: none; 
+ 			border-radius: 15px; 
+ 			display: block; 
+ 			padding: 10px; 
+ 		}
+		
+		
+		.cmt_content_nickname_style {
+			border: 1px solid;
+			padding: 5px;
+			margin: 5px;
+			background: rgba(113, 194, 133, 0.2);
+			border: none;
+			border-radius: 15px;
+		}
+		
+		.cmt_content {
+			padding-left: 10px;
+ 			color: rgb(55, 62, 72); 
+		}
+		
+		#content {		
+			outline: 1px solid gray;
+			border: none;
+			border-radius: 15px;		
+			padding: 11px;
+			margin: 8px;
+			width: 400px;
+			height : 40px;
+		}
+		#content:focus {		
+		   	border: 0.5px solid rgba(113, 194, 133);
+		   	border: none;
+		   	border-radius: 15px;		
+		   	outline: 0.5px solid rgba(113, 194, 133);		   	   	
+		   	padding: 11px;
+		   	margin: 8px;
+		   	width: 400px;		   	
+			height : 40px;
+		}
+		
+		#btn_add_comment {
+			width: 70px;
+			height : 40px;
+			border: none;
+			outline: 1px solid rgb(204, 75, 76);
+			border-radius: 15px;
+			background: rgb(255, 255, 255);
+			color: rgb(204, 75, 76);
+			font-size: 16px;
+		}
+		
+		#btn_add_comment:hover {
+			width: 70px;
+			height : 40px;
+			border: none;
+			border-radius: 15px;
+			background: rgb(204, 75, 76);
+			color: rgb(255, 255, 255);
+			font-size: 16px;
+		}
+		
+
+		
+	</style>
 	
 	<script>
 	
@@ -98,8 +167,8 @@
 							// State가 1일 때(일반 댓글)
 							if(comment.freeCmtState == 1) {
 								
-								div += '<div style="display: inline-block;">';
-								div += '<span><strong>' + comment.nickname + '</strong></span>';
+								div += '<div class="cmt_content_style" style="display: inline-block;">';
+								div += '<span class="cmt_content_nickname_style"><strong>' + comment.nickname + '</strong></span>';
 								div += '&nbsp;';
 								div += '<span class="cmt_create_date">' + comment.freeCmtCreateDate + '</span>';
 								div += '&nbsp;';
@@ -439,9 +508,9 @@
 			alert("URL이 복사되었습니다.");
 	
 		}
+		</script>
 		
 		
-	</script>
 	
 	<!-- session이랑 loginUser가 같다면 nickname 값 넘겨주기 -->
 	<div th:if="${session.loginUser} != null">
