@@ -15,6 +15,34 @@
 	font-size: 12px;
 }
 
+h3 {
+	display: block;
+	width: 80%;
+	margin: auto;
+	margin-bottom: 10px;
+}
+
+/* 글쓰기 버튼 */
+.writer_btn {
+	display: block;
+	margin: auto;
+	width: 80%;
+}
+
+#write {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	margin-bottom: 10px;
+	font-size: 13px;
+	padding: 1% 2%;
+}
+#write:hover {
+	background-color: rgba(204, 75, 76); 
+	transition-duration: 0.3s;
+	color: white;
+}
 
 table {
 	border: 1px #a39485 solid;
@@ -73,10 +101,7 @@ thead > tr > th:nth-of-type(5) {
 	width: 15%;
 }
 
-tbody > tr:last-of-type {
-	border: 1px #a39485 solid;
-	border-radius: 5px;
-}
+
 
 thead > tr > th:nth-of-type(6) {
 	width: 10%;
@@ -88,15 +113,19 @@ tbody > tr > td {
 tbody > tr > td:nth-of-type(2) {
 	text-align: left;
 }
-  
-
 tfoot > tr > td {
 	text-align: center;
+	letter-spacing:10px;
+}
+tfoot > tr > td > a{
+	cursor: pointer;
+	margin: 5px;
 }
 
 .out_div_search {
 	display: block;
 	text-align: center;
+	margin-top: 3%;
 }
 
 .in_div_search {
@@ -157,6 +186,7 @@ tfoot > tr > td {
 	height : 32px;
 	border: none;
 	border-radius: 15px;
+	outline: 1px solid rgb(204, 75, 76);
 	background: rgb(204, 75, 76);
 	color: rgb(255, 255, 255);
 	font-size: 12px;
@@ -166,6 +196,7 @@ tfoot > tr > td {
 	height : 32px;
 	border: none;
 	border-radius: 15px;
+	outline: 1px solid rgb(204, 75, 76);
 	background: rgb(204, 75, 76);
 	color: rgb(255, 255, 255);
 	font-size: 12px;

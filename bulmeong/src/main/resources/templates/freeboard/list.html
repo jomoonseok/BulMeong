@@ -28,8 +28,8 @@
 
 	<h3>자유게시판</h3>
 
-	<div th:if="${session.loginUser} != null">
- 		<input type="button" class="btn btn-outline-danger" value="글쓰기" id="write">
+	<div th:if="${session.loginUser} != null" class="writer_btn">
+ 		<input type="button" value="글쓰기" id="write">
 	</div>
 
 	<table>
