@@ -3,6 +3,7 @@
 <head th:replace="~{layout/header::head('약관 동의')}"></head>
 <head>
 	<style>
+		/*
 		.blind {
 			display: none;
 		}
@@ -15,6 +16,7 @@
 		.lbl_checked {
 			background-image: url(/images/userimage/check.png);
 		}
+		*/
 		.div_all {
 			width:460px;
 			margin: 0 auto;
@@ -36,6 +38,7 @@
 			border-radius: 7px;
 			border: none;
 			background-color: rgb(3, 199, 90);
+			/*background-color: rgb(113, 194, 133);*/
 			color: white;
 		}
 		
@@ -44,7 +47,7 @@
 			height: 50px;
 			border-radius: 7px;
 			border: none;
-			background-color: rgb(142, 142, 142);
+     		background-color: rgb(142, 142, 142);
 			color: white;
 		}
 		
@@ -158,6 +161,6 @@
 			</div>
 		</form>
 	</div>
-	<!-- <footer th:replace="~{layout/footer::footer_layout}"></footer> -->
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>
