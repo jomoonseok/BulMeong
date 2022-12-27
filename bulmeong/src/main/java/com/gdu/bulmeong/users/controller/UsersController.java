@@ -90,8 +90,8 @@ public class UsersController {
 	}
 	
 	@PostMapping("/users/login")
-	public void login(HttpServletRequest request, HttpServletResponse response) {
-		usersService.login(request, response);
+	public void login(HttpServletRequest request, HttpServletResponse response, Model model) {
+		usersService.login(request, response, model);
 	}
 	
 	@GetMapping("/users/naver/login")
@@ -151,7 +151,7 @@ public class UsersController {
 	}
 	
 	@PostMapping("/users/modify/info")
-	public void modify(HttpServletRequest request, HttpServletResponse response) {
+	public void requiredLogin_modify(HttpServletRequest request, HttpServletResponse response) {
 		usersService.modifyUser(request, response);
 	}
 	
@@ -171,12 +171,12 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/sleep/display")
-	public String sleepDisplay() {
+	public String requiredLogin_sleepDisplay() {
 		return "users/sleep";
 	}
 	
 	@PostMapping("/users/restore")
-	public void restore(HttpServletRequest request, HttpServletResponse response) {
+	public void requiredLogin_restore(HttpServletRequest request, HttpServletResponse response) {
 		usersService.restoreUser(request, response);
 	}
 	
@@ -204,15 +204,20 @@ public class UsersController {
 	
 	@ResponseBody
 	@PostMapping(value="/users/sendTemporaryPassword", produces="application/json")  // 이메일로 임시비번 전송
-	public  Map<String, Object> memberSendEmailTemporaryPassword(UsersDTO user) {
+	public Map<String, Object> memberSendEmailTemporaryPassword(UsersDTO user) {
 		return usersService.sendTemporaryPassword(user);
+	}
+	
+	@GetMapping("/users/popUp")
+	public String pw() {
+		return "users/pwPopUp";
 	}
 	
 	
 	
 	
 	@GetMapping("/users/profile")
-	public String modifyProfileImage() {
+	public String requiredLogin_modifyProfileImage() {
 		return "users/profile";
 	}
 	
@@ -222,9 +227,9 @@ public class UsersController {
 		return usersService.saveImage(multipartRequest);
 	}
 	
-	@PostMapping("users/modify/profile")
-	public void modifyProfile(HttpServletRequest request, HttpServletResponse response) {
-		
+	@PostMapping("/users/modify/profile")
+	public void requiredLogin_modifyProfile(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+		usersService.modifyProfile(multipartRequest, response);
 	}
 	
 	
