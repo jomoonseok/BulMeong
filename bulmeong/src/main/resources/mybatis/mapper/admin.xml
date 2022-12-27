@@ -38,15 +38,29 @@
 	
 	<insert id="insertTent" parameterType="AdminTentDTO">
 		INSERT INTO CAMP_TENT
-			(CAMP_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_RESERVE_DAY, TENT_SUM, TENT_STATE, TENT_IMAGE)
+			(CAMP_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_RESERVE_DAY, TENT_SUM, TENT_STATE, TENT_IMAGE, TENT_ORIGIN)
 		VALUES
-    		(#{campNo}, #{tentCategory}, #{tentName}, #{tentMaxCount}, NULL, #{tentSum}, 0, #{tentImage});
+    		(#{campNo}, #{tentCategory}, #{tentName}, #{tentMaxCount}, NULL, #{tentSum}, 0, #{tentImage}, #{tentOrigin});
 	</insert>
 	
 	<select id="selectTentByTentNo" parameterType="int" resultType="AdminTentDTO">
-		SELECT CAMP_NO, TENT_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_RESERVE_DAY, TENT_SUM, TENT_STATE, TENT_IMAGE
+		SELECT CAMP_NO, TENT_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_SUM, TENT_STATE, TENT_IMAGE, TENT_ORIGIN
 		  FROM CAMP_TENT
 		 WHERE TENT_NO = #{tentNo}
 	</select>
+	
+	<update id="updateTentByTentNo" parameterType="AdminTentDTO">
+		UPDATE CAMP_TENT
+		   SET TENT_CATEGORY = #{tentCategory}, TENT_NAME = #{tentName}, TENT_MAX_COUNT = #{tentMaxCount}, TENT_SUM = #{tentSum}, TENT_IMAGE = #{tentImage}, TENT_ORIGIN = #{tentOrigin}
+		 WHERE TENT_NO = #{tentNo}
+	</update>
+	
+	<delete id="deleteTentByTentNo" parameterType="int">
+		DELETE 
+		  FROM CAMP_TENT
+		 WHERE TENT_NO = #{tentNo}
+	</delete>
+	
+	
 	
 </mapper>

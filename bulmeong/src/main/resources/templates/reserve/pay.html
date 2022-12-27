@@ -90,8 +90,12 @@
 				<input type="hidden" name="tentNo" th:value="${tent.tentNo}">
 				<input type="hidden" name="id" th:value="${loginUser.id}">
 				<div>텐트 정보</div><hr>
-				<div>
-					<img th:src="${tent.tentImage}" style="width:200px; height:133px"> 
+				
+				<div th:if="${tent.tentImage == '/images/tent/default_tent.png'}">
+					<img th:src="@{${tent.tentImage}}" style="width:200px; height:133px;">
+				</div>
+				<div th:unless="${tent.tentImage == '/images/tent/default_tent.png'}">
+					<img th:src="@{|/load/tent/${tent.tentImage}|}" style="width:200px; height:133px;">
 				</div>
 				<div>
 					텐트 종류 <input type="text" id="strCategory" readonly th:value="${strCategory}"> 
