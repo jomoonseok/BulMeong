@@ -1,0 +1,172 @@
+@charset "EUC-KR";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
+
+
+/* https://fontawesome.com/icons */
+
+
+.blind {
+	display: none;
+}
+
+
+.cmt_create_date {
+	color: rgb(127, 127, 127);
+	font-size: 12px;
+}
+
+
+table {
+	border: 1px #a39485 solid;
+	font-size: .9em;
+	box-shadow: 0 2px 5px rgba(0,0,0,.25);
+	width: 80%;
+	border-collapse: collapse;
+	border-radius: 5px;
+	overflow: hidden;
+	margin: auto;
+}
+
+th {
+	text-align: center;
+}
+  
+thead {
+	font-weight: bold;
+	color: #fff;
+	background: rgba(113, 194, 133);
+}
+  
+td, th {
+	padding: 1em .5em;
+	vertical-align: middle;
+}
+  
+td {
+	border-bottom: 1px solid rgba(0,0,0,.1);
+	background: #fff;
+}
+
+a {
+	color: #73685d;
+}
+
+
+
+thead > tr > th:first-of-type {
+	width: 10%;
+}
+
+thead > tr > th:nth-of-type(2) {
+	width: 50%;
+}
+
+thead > tr > th:nth-of-type(3) {
+	width: 5%;
+}
+
+thead > tr > th:nth-of-type(4) {
+	width: 15%;
+}
+
+thead > tr > th:nth-of-type(5) {
+	width: 15%;
+}
+
+tbody > tr:last-of-type {
+	border: 1px #a39485 solid;
+	border-radius: 5px;
+}
+
+thead > tr > th:nth-of-type(6) {
+	width: 10%;
+}
+
+tbody > tr > td {
+	text-align: center;
+}
+tbody > tr > td:nth-of-type(2) {
+	text-align: left;
+}
+  
+
+tfoot > tr > td {
+	text-align: center;
+}
+
+.out_div_search {
+	display: block;
+	text-align: center;
+}
+
+.in_div_search {
+	width: 80%;
+  	margin: auto;
+}
+
+#query {
+	border: 1px solid gray;
+	border-radius: 15px;
+	padding: 11px;
+	margin: 8px;
+	width: 50%;
+	height : 32px;
+	display: inline-block;
+}
+
+#query:focus {
+   	border: 1px solid rgba(113, 194, 133);
+   	border-radius: 15px;
+	outline: none;
+   	padding: 11px;
+   	margin: 8px;
+   	width: 50%;  	
+	height : 32px;
+   	background-color: rgba(113, 194, 133, 0.1);
+}
+
+
+
+#dateColumn {
+	width: 10%;
+	display: inline-block;
+	font-size: 12px;
+	border: 1px solid gray;
+}
+#column {
+	width: 10%;
+	display: inline-block;
+	font-size: 12px;
+	border: 1px solid gray;
+}
+
+
+.search {
+	width: 7%;
+	height : 32px;
+	border: none;
+	outline: 1px solid rgb(204, 75, 76);
+	border-radius: 15px;
+	background: rgb(255, 255, 255);
+	color: rgb(204, 75, 76);
+	font-size: 12px;
+}
+
+.search:hover {
+	width: 7%;
+	height : 32px;
+	border: none;
+	border-radius: 15px;
+	background: rgb(204, 75, 76);
+	color: rgb(255, 255, 255);
+	font-size: 12px;
+}
+.search:active {
+	width: 7%;
+	height : 32px;
+	border: none;
+	border-radius: 15px;
+	background: rgb(204, 75, 76);
+	color: rgb(255, 255, 255);
+	font-size: 12px;
+}
