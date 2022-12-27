@@ -5,67 +5,6 @@
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	<!-- 홈화면 -->
-    <!-- Swiper -->
-    <div class="swiper-overflow-container" style="width:70%">
-		<div class="swiper_html">
-    		<div class="swiper_body">
-    			<div class="swiper-container mySwiper">
-    			<hr><div>여행테마별 캠핑장</div>
-       			<div class="swiper-wrapper"></div>
-      			<div class="swiper-pagination"></div>
-    			</div>
-   			</div>
-		</div>
-	</div>
-    
- 	 <!-- Initialize Swiper -->
- 	 <!-- 캠핑장 리스트 -->
-  	<script>
-  	
-  		function fn_swiper() {
-  			var swiper = new Swiper('.mySwiper', {
-  	      		slidesPerView: 3,
-  	      		slidesPerColumn: 2,
-  	      		spaceBetween: 30,
-  	      		slidesOffsetBefore: 20,
-  	      	  	slidesOffsetAfter: 20,
-  	      		pagination: {
-  	        		el: '.swiper-pagination',
-  	        		clickable: true,
-  	      		},
-  	    	});
-  		}
-  		
-  		$.ajax({
-  			type: 'get',
-  			url: '/index/listIndex',
-  			success: function(resData) {
-  				/* var rand = [];
-  				for(let i=0; i < 10; i++) {
-	  				rand.push( Math.floor(((Math.random() * resData.camp.length) + 1)) );
-  				}
-  				var set = new Set(rand);
-  				var uniqueRand = [...rand]; */
-  				
-  				$.each(resData.camp, function(i, camp) {
-  					if(camp.themaEnvrnCl != '') {
-		  				var campDiv = '<div class="swiper-slide">';
-		  				campDiv += '<div><img src ="' + camp.firstImageUrl + '" style="width:175px; height:116px"><img><div>';
-		  				campDiv += '<div style="font-size:4px">' + camp.facltNm + '<div>';
-	  					if(!camp.themaEnvrnCl.startsWith(',')) {
-	  						campDiv += '<div style="font-size:4px">' + '#' + camp.themaEnvrnCl.replaceAll(',',' #'); + '<div>';
-	  					} 
-	  					
-		  				$('.swiper-wrapper').append(campDiv);
-		  				
-  					}
-  				})
-  				fn_swiper();
-  			}
-  		})
-  		
-  	</script>
   	
   	<div id="weatherArea">
 	 	<div class="xyLoaction">
@@ -217,6 +156,67 @@
 		
 	</script>
 	
+	<!-- 홈화면 -->
+    <!-- Swiper -->
+    <div class="swiper-overflow-container" style="width:70%">
+		<div class="swiper_html">
+    		<div class="swiper_body">
+    			<div class="swiper-container mySwiper">
+    			<hr><div>여행테마별 캠핑장</div>
+       			<div class="swiper-wrapper"></div>
+      			<div class="swiper-pagination"></div>
+    			</div>
+   			</div>
+		</div>
+	</div>
+    
+ 	 <!-- Initialize Swiper -->
+ 	 <!-- 캠핑장 리스트 -->
+  	<script>
+  	
+  		function fn_swiper() {
+  			var swiper = new Swiper('.mySwiper', {
+  	      		slidesPerView: 3,
+  	      		slidesPerColumn: 2,
+  	      		spaceBetween: 30,
+  	      		slidesOffsetBefore: 20,
+  	      	  	slidesOffsetAfter: 20,
+  	      		pagination: {
+  	        		el: '.swiper-pagination',
+  	        		clickable: true,
+  	      		},
+  	    	});
+  		}
+  		
+  		$.ajax({
+  			type: 'get',
+  			url: '/index/listIndex',
+  			success: function(resData) {
+  				/* var rand = [];
+  				for(let i=0; i < 10; i++) {
+	  				rand.push( Math.floor(((Math.random() * resData.camp.length) + 1)) );
+  				}
+  				var set = new Set(rand);
+  				var uniqueRand = [...rand]; */
+  				
+  				$.each(resData.camp, function(i, camp) {
+  					if(camp.themaEnvrnCl != '') {
+		  				var campDiv = '<div class="swiper-slide">';
+		  				campDiv += '<div><img src ="' + camp.firstImageUrl + '" style="width:175px; height:116px"><img><div>';
+		  				campDiv += '<div style="font-size:4px">' + camp.facltNm + '<div>';
+	  					if(!camp.themaEnvrnCl.startsWith(',')) {
+	  						campDiv += '<div style="font-size:4px">' + '#' + camp.themaEnvrnCl.replaceAll(',',' #'); + '<div>';
+	  					} 
+	  					
+		  				$('.swiper-wrapper').append(campDiv);
+		  				
+  					}
+  				})
+  				fn_swiper();
+  			}
+  		})
+  		
+  	</script>
 	
 	
 </body>

@@ -1,8 +1,15 @@
 @charset "EUC-KR";
+/* 1. 글꼴 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-
+/* 2. 아이콘사이트 */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
+ 
 * {
 	font-family: 'Noto Sans KR', sans-serif;
+}
+
+div {
+	box-sizing: border-box;
 }
 
 /* https://fontawesome.com/icons */
