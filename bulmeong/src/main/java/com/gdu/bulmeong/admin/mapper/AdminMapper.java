@@ -20,4 +20,6 @@ public interface AdminMapper {
 	public List<Map<String, Object>> selectCampcampNofacltNm();
 	public int insertTent(AdminTentDTO tent);
 	public AdminTentDTO selectTentByTentNo(int tentNo);
+	public int updateTentByTentNo(AdminTentDTO tent);
+	public int deleteTentByTentNo(int tentNo);
 }

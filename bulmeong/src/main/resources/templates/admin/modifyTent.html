@@ -9,10 +9,11 @@
 	</script>
 	
 	<h3 style="text-align: center;">텐트 수정 화면</h3>
-	<form method="post" th:action="@{/admin/add}" enctype="multipart/form-data" >
+	<form method="post" th:action="@{/admin/change}" enctype="multipart/form-data" >
 		<div>
 			캠핑장명 
-			<input type="text" th:value="${tent.facltNm}" readonly>
+			<input type="hidden" name="tentNo" th:value="${tent.tentNo}">
+			<input type="text" name="facltNm" th:value="${tent.facltNm}" readonly>
 		</div>
 		<div>
 			텐트 이름 <input type="text" name="TENT_NAME" id="TENT_NAME" th:value="${tent.tentName}">
@@ -37,10 +38,18 @@
 		<div>
 			텐트 사진 <input type="file" name="TENT_IMAGE" id="TENT_IMAGE" multiple="multiple">
 		</div>
-		<img th:src="${tent.tentImage}" style="width:50px; height:50px;">
+		<div>
+			<div th:if="${tent.tentImage == '/images/tent/default_tent.png'}">
+				<img th:src="@{${tent.tentImage}}" style="width:50px; height:50px;">
+			</div>
+			<div th:unless="${tent.tentImage == '/images/tent/default_tent.png'}">
+				<img th:src="@{|/load/tent/${tent.tentImage}|}" style="width:50px; height:50px;">
+			</div>
+			<span th:text="${tent.tentOrigin}"></span>
+		</div>
 		<div>
 			<input type="submit" value="등록">
-			<input type="reset" value="취소">
+			<input type="button" value="취소" onclick="window.close()">
 		</div>
 	</form>
 </body>

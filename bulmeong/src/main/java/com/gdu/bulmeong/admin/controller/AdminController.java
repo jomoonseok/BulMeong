@@ -89,6 +89,17 @@ public class AdminController {
 		return "/admin/modifyTent";
 	}
 	
+	@PostMapping("/admin/change")
+	public void changeTent(MultipartHttpServletRequest request, HttpServletResponse response) {
+		adminService.changeTent(request, response);
+	}
+	
+	@ResponseBody
+	@PostMapping("/admin/remove")
+	public Map<String, Object> removeTent(HttpServletRequest request) {
+		return adminService.removeTent(request);
+	}
+	
 	
 	
 }

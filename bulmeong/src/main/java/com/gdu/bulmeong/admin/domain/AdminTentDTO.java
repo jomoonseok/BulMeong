@@ -17,6 +17,7 @@ public class AdminTentDTO {
 	private int tentNo;
 	private String tentName;
 	private String tentImage;
+	private String tentOrigin;
 	private int tentCategory;
 	private int tentMaxCount;
 	private String tentReserveDay;
