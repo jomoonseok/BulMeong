@@ -5,6 +5,75 @@
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
+	<style>
+ 		.cmt_content_style { 
+ 			margin: 10px; 
+ 			background-color: rgba(113, 194, 133, 0.1); 
+ 			border: none; 
+ 			border-radius: 15px; 
+ 			display: block; 
+ 			padding: 10px; 
+ 		}
+		
+		
+		.cmt_content_nickname_style {
+			border: 1px solid;
+			padding: 5px;
+			margin: 5px;
+			background: rgba(113, 194, 133, 0.2);
+			border: none;
+			border-radius: 15px;
+		}
+		
+		.cmt_content {
+			padding-left: 10px;
+ 			color: rgb(55, 62, 72); 
+		}
+		
+		#content {		
+			outline: 1px solid gray;
+			border: none;
+			border-radius: 15px;		
+			padding: 11px;
+			margin: 8px;
+			width: 400px;
+			height : 40px;
+		}
+		#content:focus {		
+		   	border: 0.5px solid rgba(113, 194, 133);
+		   	border: none;
+		   	border-radius: 15px;		
+		   	outline: 0.5px solid rgba(113, 194, 133);		   	   	
+		   	padding: 11px;
+		   	margin: 8px;
+		   	width: 400px;		   	
+			height : 40px;
+		}
+		
+		#btn_add_comment {
+			width: 70px;
+			height : 40px;
+			border: none;
+			outline: 1px solid rgb(204, 75, 76);
+			border-radius: 15px;
+			background: rgb(255, 255, 255);
+			color: rgb(204, 75, 76);
+			font-size: 16px;
+		}
+		
+		#btn_add_comment:hover {
+			width: 70px;
+			height : 40px;
+			border: none;
+			border-radius: 15px;
+			background:1 rgb(204, 75, 76);
+			color: rgb(255, 255, 255);
+			font-size: 16px;
+		}
+		
+
+		
+	</style>
 	
 	<script>
 	
@@ -52,10 +121,13 @@
 			fn_addCommentReply()
 			fn_switchModifyAreaCancle();
 			
+			// # 댓글 관련 변수
+			var nickname = $('#nickname').val(); // 세션에 로그인 한 유저 닉네임
+			
 			// # 좋아요 관련 # //
-// 			fn_likeCheck();
-// 			fn_likeCount();
-// 			fn_pressLike();
+			fn_likeCheck();
+ 			fn_likeCount();
+ 			fn_pressLike();
 
 			// 1. 댓글 갯수
 			function fn_commentCount(){
@@ -85,17 +157,18 @@
 							// Depth가 0일 때()
 							if(comment.freeCmtDepth == 0){
 								div += '<div>';
-							} else if(comment.freeCmtDepth > 0) {	
-								for (var i = 0; i < comment.freeCmtDepth; i++){								
-									div += '<div style="margin-left:40px;">';
-								}
+							} else if(comment.freeCmtDepth > 0) {
+								var margin = comment.freeCmtDepth * 40;
+								// for (var i = 0; i < comment.freeCmtDepth; i++){
+								div += '<div style="margin-left:'+margin+'px;">';
+								// }
 							}
 							
 							// State가 1일 때(일반 댓글)
 							if(comment.freeCmtState == 1) {
 								
-								div += '<div style="display: inline-block;">';
-								div += '<span><strong>' + comment.nickname + '</strong></span>';
+								div += '<div class="cmt_content_style" style="display: inline-block;">';
+								div += '<span class="cmt_content_nickname_style"><strong>' + comment.nickname + '</strong></span>';
 								div += '&nbsp;';
 								div += '<span class="cmt_create_date">' + comment.freeCmtCreateDate + '</span>';
 								div += '&nbsp;';
@@ -131,7 +204,7 @@
 								
 								// sessionUser와 댓글작성자가 같으면 수정, 삭제 기능
 								if('[[${session.loginUser}]]' != null){
-									var nickname = $('#nickname').val();
+									
 									if(comment.nickname == nickname) {
 										div += '<span>'
 										div += '<input type="button" value="수정" class="btn_cmt_modify">';
@@ -165,7 +238,7 @@
 						
 							div += '<div>';
 							moment.locale('ko-KR');
-							div += '</div>';
+							div += (comment.freeCmtDepth == 0 && comment.cmtCnt > 0 ? '<button>더보기</button></div>' : '</div>');
 
 							$('#comment_list').append(div);
 							$('#comment_list').append('<div style="border-bottom: 1px dotted gray;"></div>');
@@ -251,8 +324,6 @@
 							freeCmtContent : $(this).prev().val(),
 							freeCmtNo      : $(this).prev().prev().val()
 					}
-
-					console.log(objParams);
 					
 					$.ajax({
 						type: 'post',
@@ -260,12 +331,15 @@
 						data: objParams,
 						dataType: 'json',
 						success: function(resData){
-							if(resData.isModify){
+							if(resData.isModify){	
 								alert('댓글이 수정되었습니다.');
 								fn_commentList();
 								fn_commentCount();
 							}
-							
+
+						}, error: function(jqXHR){
+							alert('세션이 만료되었습니다.');
+							location.replace('/users/login/form');
 						}
 					});
 					
@@ -324,24 +398,79 @@
 				
 			}
 			
+		
+
+			
 			// # 좋아요 관련 # //
-// 			function fn_goodCheck() { 
-// 				$.ajax({
-// 					url: '/like/getlikeCheck',
-// 					type: 'get',
-// 					data: 'freeNo=[[${free.freeNo}]]&nickname=[[${loginUser}]]',
-// 					dataType: 'json',
-// 					success: function(resData){
-// 						if (resData.count == 0) {
-// 							$('#thumns_up').html('<img src="../resources/images/whiteheart.png" width="15px">');
-// 							$('#like').removeClass("like_checked");
-// 						} else {
-// 							$('#thumns_up').html('<img src="../resources/images/redheart.png" width="15px">');
-// 							$('#like').addClass("like_checked");
-// 						}
-// 					}
-// 				});
-// 			}
+			function fn_likeCheck() {
+				$.ajax({
+					url: '/like/getLikeCheck',
+					type: 'get',
+					data: 'freeNo=[[${free.freeNo}]]&nickname=' + nickname,
+					dataType: 'json',
+					success: function(resData){
+						if (resData.likeCount == 0) {
+							$('#heart').html('<img src="/images/camp/whiteheart.png" width="15px">');
+							$('#like').removeClass("like_checked");
+						} else {
+							$('#heart').html('<img src="/images/camp/redheart.png" width="15px">');
+							$('#like').addClass("like_checked");
+						}
+					}
+				});
+			}
+			
+			function fn_likeCount(){
+				$.ajax({
+					url: '/like/getLikeCount',
+					type: 'get',
+					data: 'freeNo=[[${free.freeNo}]]',
+					dataType: 'json',
+					success: function(resData){
+						$('#like_count').empty();
+						$('#like_count').text(resData.count + '개');
+					}
+				});
+			}
+			
+			// "좋아요" 누른 경우
+			function fn_pressLike(){
+				$('#lnk_like').click(function(){
+					
+					// 로그인을 해야 "좋아요"를 누를 수 있다.
+					if(nickname == null){
+						alert('로그인한 사용자만 이용할 수 있습니다.');
+						return;
+					}
+					// 셀프 좋아요 방지
+					if(nickname == '[[${free.nickname}]]') {
+						alert('본인의 게시글에서는 "좋아요"를 누를 수 없습니다.');
+						return;
+					}
+					// "좋아요" 선택/해제 상태에 따른 하트 변경
+					$('#like').toggleClass("like_checked");
+					if ($('#like').hasClass("like_checked")) {
+						$('#heart').html('<img src="/images/camp/redheart.png" width="15px">');
+					} else {
+						$('#heart').html('<img src="/images/camp/whiteheart.png" width="15px">');
+					}
+					// "좋아요" 처리
+					$.ajax({
+						url: '/like/mark',
+						type: 'get',
+						data: 'freeNo=[[${free.freeNo}]]&nickname=' + nickname,
+						dataType: 'json',
+						success: function(resData){
+							if(resData.isSuccess) {
+								fn_likeCount();							
+							}
+						}
+					});
+				});
+			}
+			
+			
+			
 			
 			
 			// # 좋아요 관련 끝 # //
@@ -357,15 +486,31 @@
 			// 2. 댓글 창 이동
 			$('#move_cmt').click(function(){
 				var location = $('#h2_cmt').offset().top;
-				console.log(location);
-				
+				console.log(location);		
 				window.scrollTo({ top: location, behavior: "smooth" });
 			});
 			
 			// # 게시글 버튼 끝 # //
 			
 		});
-	</script>
+		
+		// url 복사
+		function linkCopy() {
+		
+			var url = '';
+			var textarea = document.createElement("textarea");
+			document.body.appendChild(textarea);
+			url = window.document.location.href;
+			textarea.value = url;
+			textarea.select();
+			document.execCommand("copy");
+			document.body.removeChild(textarea);
+			alert("URL이 복사되었습니다.");
+	
+		}
+		</script>
+		
+		
 	
 	<!-- session이랑 loginUser가 같다면 nickname 값 넘겨주기 -->
 	<div th:if="${session.loginUser} != null">
@@ -384,12 +529,14 @@
 	
 	<div>
 		<div>
-			<span th:text="${free.nickname}"></span>
+			<span th:text="${free.nickname}" id="writer_nickname"></span>
 			<span th:text="${free.freeCreateDate}"></span>
 			<span id="move_cmt">댓글</span><br>
-			<span>URL 복사</span>
+			<span><a href="" onclick="linkCopy()">URL 복사</a></span>
+			
 		</div>
 	</div>
+
 	
 	<hr>
 	
@@ -398,7 +545,16 @@
 	<div th:text="${freeCmt}"></div>
 
 	<hr>
-	좋아요
+	
+	<!-- 좋아요 -->
+	<a id="lnk_like">
+		<span id="heart"></span>&nbsp;<span id="like"></span><span id="like_count"></span>
+	</a>
+	
+<!-- 	<img th:src="@{/images/camp/whiteheart.png}" width="15px"> -->
+<!-- 	<img th:src="@{/images/camp/redheart.png}" width="15px"> -->
+	
+	
 	
 	<!-- 3. 댓글 추가 -->
 	<h2 id="h2_cmt">댓글</h2>
@@ -431,7 +587,7 @@
 	</div>
 	
 
- 	
+
 
 
 	<!-- 4. 게시판 하단 버튼 -->

@@ -50,9 +50,10 @@ public class FreeBoardCmtController {
 		return freeBoardCmtService.removeCmt(freeCmtNo);
 	}
 	
+	
 	@ResponseBody
 	@PostMapping(value="/freecomment/modify", produces="application/json")
-	public Map<String, Object> modify(FreeBoardCmtDTO freeComment){
+	public Map<String, Object> requiredLoginAjax_modify(FreeBoardCmtDTO freeComment){
 		return freeBoardCmtService.modifyCmt(freeComment);
 	}
 	
