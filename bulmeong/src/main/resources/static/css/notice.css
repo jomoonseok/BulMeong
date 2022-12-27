@@ -11,35 +11,36 @@
 
 /* list.html */
 	body {
-		width: 80%;
+		width: 70%;
 		margin: auto;
-		border: 1px #a39485 solid;
+/* 		border: 1px #a39485 solid; */
 	}
 
 	.css_title {
-		width: 90%;
-		border: 1px #a39485 solid;
+/* 		width: 90%; */
+/* 		border: 1px #a39485 solid; */
 		text-align: left;
 		font-size: 25px;
+		font-weight: 650;
 		margin: 10px auto 10px auto;
 	}
 	
 	.css_outer {
-		border: 1px #a39485 solid;
-		width: 90%;
-		margin: 10px auto 10px auto;
+/* 		border: 1px #a39485 solid; */
+		width: 100%;
+		margin: 10px auto 10px 0;
 	}
 	
     .css_btn_noticeWrite {
-    	border: 1px #a39485 solid;
-    	margin: center;
+/*     	margin: center; */
     	width: 150px;
     	height: 28px;
     	border: 1px #CC4B4C solid;
     	border-radius:7px;
     	text-align: center;
     	text-color: rgba(204, 75, 76);
-    	
+    	float: right;
+    	margin-bottom: 10px;
     }
     
     .css_btn_noticeWrite:hover { 
@@ -64,7 +65,7 @@
       border: 1px #a39485 solid;
       font-size: .9em;
       box-shadow: 0 2px 5px rgba(0,0,0,.25);
-      width: 90%;
+      width: 100%;
       border-collapse: collapse;
       border-radius: 5px;
       overflow: hidden;
@@ -132,3 +133,5 @@
    tfoot > tr > td {
       text-align: center;
    }
+
+   

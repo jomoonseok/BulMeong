@@ -58,7 +58,7 @@ public class NoticeServiceImpl implements NoticeService {
 		// 페이지 파라미터
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
-		int recordPerPage = 5;
+		int recordPerPage = 10;
 				
 		// 전체 공지 개수
 		int totalRecord = noticeMapper.selectNoticeListCount();

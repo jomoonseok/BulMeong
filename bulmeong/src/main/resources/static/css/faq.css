@@ -1,11 +1,143 @@
 @charset "UTF-8";
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
+body {
+	width: 70%;
+	margin: auto;
+/* 	border: 1px #a39485 solid; */
+}
+/* list.html */
+.css_main_title_wrap {
+/* 	border: 1px #a39485 solid; */	
+}
+
+.css_main_title {
+/* 	border: 1px #a39485 solid; */
+	font-size: 30px;
+	margin-left: 10px;
+}
+
+.css_sub_title {
+/* 	border: 1px #a39485 solid; */
+	margin-left: 10px;
+}
+
+.css_faq_box{
+	height: 80px;
+	margin-top: 40px;
+	background-color: #f8f8f9;
+	font-size: 18px;
+	text-align: center;
+}
+
+.css_faq_box > p {
+	margin-top: 10px;
+}
+	
+#btn_faqWrite {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	margin-bottom: 10px;
+	float: right;
+}
+
+table {
+	width: 95%;
+}
+
+
+#btn_faqWrite:hover{
+	background-color: rgba(204, 75, 76); 
+    transition-duration: 0.3s;
+    color: white;
+}
+
+.css_table_wrap {
+	width:100%;
+/* 	border: 1px #a39485 solid; */
+}
+
+.css_fqaNo_blind {
+	
+	visibility:hidden
+	
+}
+
 .blind {
 	display: none;
 }
 
 #toggle_area {
-	background-color: #e9e9e9;
+	
 	font-size:13px;
 }
+
+.btn_contentToggle {
+	width: 100%;
+	margin: 3px;
+	
+	font-weight: bold;
+}
+
+.css_font1 {
+	font-family: 'Dosis', sans-serif;
+	font-size: 40px;
+	font-weight: bold;
+	color: #CC4B4C;
+}
+
+.css_faq_title {
+	font-size: 18px;
+	color: #545454;
+	width: 100%;
+}
+
+hr {
+	width: 100%;
+}
+
+.css_btn {
+	display: inline;
+/* 	border: 1px #a39485 solid; */
+	float:right;
+}
+
+.fa-solid{
+	margin-top: 20px;
+}
+
+.css_font2 {
+	font-family: 'Dosis', sans-serif;
+	font-size: 32px;
+	font-weight: bold;
+	padding-left: 30px;
+	color: #545454;
+}
+
+.css_answer {
+/* 	padding: 10px; */
+	background-color: #f8f8f9;
+	width: 100%;
+}
+
+.css_inline{
+	display: inline;
+}
+
+.css_faq_content {
+	font-size: 17px;
+	text-align: center;
+	margin-left: 10px;
+}
+
+table > td {
+	width: 100%;
+}
+
+tfoot > tr > td {
+   text-align: center;
+   width: 100%;
+}
+

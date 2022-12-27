@@ -2,6 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('FAQ')}"></head>
 <link th:href="@{/css/faq.css}" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@500&display=swap" rel="stylesheet">
 <script th:inline="javascript">
 	$(function(){
 		$('#btn_faqWrite').click(function(){
@@ -9,7 +12,7 @@
 		});
 		
 		$('.btn_contentToggle').click(function(){
-			$(this).next().toggleClass('blind');			
+			$(this).next().next().toggleClass('blind');			
 		});
 
 	});
@@ -17,40 +20,50 @@
 <body>	
 	<header th:replace="~{layout/header::header_layout}"></header>
 
-	<h3>faq</h3>
+	<div class="css_main_title_wrap">
+		<span class="css_main_title">FAQ</span><br>
+		<span class="css_sub_title">자주하는 질문</span>
+	</div>
 	
 	<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
 		<input type="button" id="btn_faqWrite" value="새글작성">
 	</div>
 	
-	<div>
-		<table border="1">
+	<div class="css_faq_box">
+		<p>"FAQ를 통해서 원하시는 답변을 쉽고 빠르게 찾아보세요"<p>
+	</div>
+	
+	<div class="css_table_wrap">
+		<table>
 			<thead>
 				<tr>
-					<td>순번</td>
-					<td>제목 + 내용</td>
+					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="faq:${faqList}">
 					<tr>
-						<td th:text="${faq.faqNo}"></td>
+						<td>
+							<div class="css_fqaNo_blind" th:text="${faq.faqNo}"></div>
+						</td>
 						<td>
 							<div class="btn_contentToggle">
-								<span th:text="${faq.faqTitle}"></span>
-								<i class="fa-thin fa-circle-chevron-down"></i>
+								<span class="css_font1">Q.</span>
+								<span th:text="${faq.faqTitle}" class="css_faq_title"></span>
+								<div class="css_btn"><i class="fa-solid fa-caret-down fa-2x"></i></div>
+<!-- 								<i class="fa-thin fa-circle-chevron-down"></i> -->
 							</div>
-							<div id="toggle_area" class="blind">
-								<span th:text="${faq.faqContent}"></span>
-								<i class="fa-thin fa-circle-chevron-up"></i>
+							<hr>
+							<div id="toggle_area" class="blind css_answer">
+								<span class="css_font2 css_inline">A .</span>
+									
+									<span th:text="${faq.faqContent}" class="css_faq_content"></span>
+
+<!-- 								<i class="fa-thin fa-circle-chevron-up"></i> -->
 							</div>
 						</td>
-						<td>
-							<div id="toggle_area" class="blind">
-								
-							</div>
-							
-						</td>
+
 					</tr>
 				</th:block>
 			</tbody>
@@ -61,6 +74,6 @@
 			</tfoot>
 		</table>
 	</div>
-<!-- 	<footer th:replace="~{layout/footer::footer_layout}"></footer> -->
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>
