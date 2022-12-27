@@ -44,7 +44,6 @@ public class RequiredLoginAspect {
 
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
-
 			out.println("<script>");
 			out.println("if(confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?')){");
 			out.println("location.href='/users/login/form';");
