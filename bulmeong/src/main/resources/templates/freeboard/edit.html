@@ -59,8 +59,8 @@
 	    			<textarea name="freeContent" id="content" th:text="${free.freeContent}"></textarea>
 				</div>
 				<div>
-					<button class="button">수정</button>
-					<input type="button" value="목록" id="btn_list" th:onclick="|location.href='@{/freeboard/list}'|">
+					<button class="btn btn-danger">수정</button>
+					<input class="btn btn-danger" type="button" value="목록" id="btn_list" th:onclick="|location.href='@{/freeboard/list}'|">
 				</div>
 			</form>
 		</div>
@@ -69,6 +69,6 @@
 	
 		
 
-
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>
