@@ -5,76 +5,6 @@
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
-	<style>
- 		.cmt_content_style { 
- 			margin: 10px; 
- 			background-color: rgba(113, 194, 133, 0.1); 
- 			border: none; 
- 			border-radius: 15px; 
- 			display: block; 
- 			padding: 10px; 
- 		}
-		
-		
-		.cmt_content_nickname_style {
-			border: 1px solid;
-			padding: 5px;
-			margin: 5px;
-			background: rgba(113, 194, 133, 0.2);
-			border: none;
-			border-radius: 15px;
-		}
-		
-		.cmt_content {
-			padding-left: 10px;
- 			color: rgb(55, 62, 72); 
-		}
-		
-		#content {		
-			outline: 1px solid gray;
-			border: none;
-			border-radius: 15px;		
-			padding: 11px;
-			margin: 8px;
-			width: 400px;
-			height : 40px;
-		}
-		#content:focus {		
-		   	border: 0.5px solid rgba(113, 194, 133);
-		   	border: none;
-		   	border-radius: 15px;		
-		   	outline: 0.5px solid rgba(113, 194, 133);		   	   	
-		   	padding: 11px;
-		   	margin: 8px;
-		   	width: 400px;		   	
-			height : 40px;
-		}
-		
-		#btn_add_comment {
-			width: 70px;
-			height : 40px;
-			border: none;
-			outline: 1px solid rgb(204, 75, 76);
-			border-radius: 15px;
-			background: rgb(255, 255, 255);
-			color: rgb(204, 75, 76);
-			font-size: 16px;
-		}
-		
-		#btn_add_comment:hover {
-			width: 70px;
-			height : 40px;
-			border: none;
-			border-radius: 15px;
-			background:1 rgb(204, 75, 76);
-			color: rgb(255, 255, 255);
-			font-size: 16px;
-		}
-		
-
-		
-	</style>
-	
 	<script>
 	
 		$(document).ready(function(){
@@ -485,7 +415,7 @@
 			
 			// 2. 댓글 창 이동
 			$('#move_cmt').click(function(){
-				var location = $('#h2_cmt').offset().top;
+				var location = $('#btn_comment_list').offset().top;
 				console.log(location);		
 				window.scrollTo({ top: location, behavior: "smooth" });
 			});
@@ -519,79 +449,79 @@
 	
 	<!-- 1. 게시판 상단 버튼 -->
 	<div>
-		<input type="button" value="목록" id="btn_list">
+		<i class="fa-solid fa-angles-left" id="btn_list"> 목록</i>		
 	</div>
 	
-	<a th:href="@{/freeboard/list}">자유게시판</a>
+	
 	
 	<!-- 2. 게시글 내용 -->
-	<h3 th:text="${free.freeTitle}"></h3>
-	
-	<div>
-		<div>
-			<span th:text="${free.nickname}" id="writer_nickname"></span>
-			<span th:text="${free.freeCreateDate}"></span>
-			<span id="move_cmt">댓글</span><br>
-			<span><a href="" onclick="linkCopy()">URL 복사</a></span>
+	<div class="out_board_box">
+		<div class="in_board_box">
+			<div class="title_box">
+				<span class="freeTitle" th:text="${free.freeTitle}"></span>		
+			</div>
+			<div style="margin: 1%">
+				<img th:src="@{/images/freeboard/writer.png}" width="19px">
+				<span th:text="${free.nickname}" id="writer_nickname"></span>
+				<span id="move_cmt"><i class="fa-regular fa-comment-dots"></i> 댓글</span><br>
+				<img th:src="@{/images/freeboard/calendar.png}" width="19px">
+				<span id="date_css" th:text="${free.freeCreateDate}"></span>
+				<span><a id="url_css" href="" onclick="linkCopy()">URL 복사</a></span>
+			</div>
+		
 			
+			<hr>
+			
+			<div id="board_content" th:utext="${free.freeContent}"></div>
+		
+			<div th:text="${freeCmt}"></div>
+		
+			<hr>
+			
+			<!-- 3. 좋아요 -->
+			<div class="like_box">
+				<a id="lnk_like">
+					<span id="heart"></span>&nbsp;<span id="like"></span><span id="like_count"></span>
+				</a>
+			</div>
+		
+			
+			<!-- 4. 댓글 카운트 -->
+			<div class="cmt_cnt_box">
+				<span id="btn_comment_list">
+					<i class="fa-regular fa-comment-dots"></i>&nbsp;댓글
+					<span id="comment_count"></span>개
+				</span>
+			</div>
+			
+			
+			<!-- 5. 댓글 추가 -->
+			<div>
+				<form id="frm_add_comment" th:if="${session.loginUser} != null">
+					<div class="add_comment">
+						<div class="add_comment_input">
+							<input type="text" name="freeCmtContent" id="content" placeholder="댓글을 입력해주세요.">
+							<input type="button" value="등록" id="btn_add_comment">
+	 						<input type="hidden" name="freeGroupNo" th:value="0">
+						</div>
+					</div>
+					<input type="hidden" name="freeNo" th:value="${free.freeNo}">
+				</form>
+			</div>	
+			
+			
+			<hr>
+			<!-- 6. 댓글 내용 -->
+			<div id="comment_area">
+				<div id="comment_list"></div>
+				<div id="paging" class="paging"></div>
+			</div>
 		</div>
 	</div>
 
-	
-	<hr>
-	
-	<div th:utext="${free.freeContent}"></div>
 
-	<div th:text="${freeCmt}"></div>
-
-	<hr>
-	
-	<!-- 좋아요 -->
-	<a id="lnk_like">
-		<span id="heart"></span>&nbsp;<span id="like"></span><span id="like_count"></span>
-	</a>
-	
-<!-- 	<img th:src="@{/images/camp/whiteheart.png}" width="15px"> -->
-<!-- 	<img th:src="@{/images/camp/redheart.png}" width="15px"> -->
-	
-	
-	
-	<!-- 3. 댓글 추가 -->
-	<h2 id="h2_cmt">댓글</h2>
-	<div>
-		<form id="frm_add_comment" th:if="${session.loginUser} != null">
-			<div class="add_comment">
-				<div class="add_comment_input">
-					<span class="add_comment_btn">
-						<input type="text" name="freeCmtContent" id="content" size="50" placeholder="댓글을 입력해주세요.">
-						<input type="button" value="등록" id="btn_add_comment">
- 							<input type="hidden" name="freeGroupNo" th:value="0">
-					</span>
-				</div>
-			</div>
-			<input type="hidden" name="freeNo" th:value="${free.freeNo}">
-		</form>
-	</div>	
-	
-	<!-- 4. 댓글 내용 -->
-	<span id="btn_comment_list">
-		<i class="fa-regular fa-comment-dots"></i>&nbsp;댓글
-		<span id="comment_count"></span>개
-	</span>
-	
-	<hr>
-	
-	<div id="comment_area">
-		<div id="comment_list"></div>
-		<div id="paging" class="paging"></div>
-	</div>
-	
-
-
-
-
-	<!-- 4. 게시판 하단 버튼 -->
-	<div>
+	<!-- 6. 게시판 하단 버튼 -->
+	<div class="footer_btn_group">
 		<form id="frm_btn" method="post">
 			<input type="hidden" name="freeNo" th:value="${free.freeNo}">
 			<input type="hidden" name="nickname" th:value="${free.nickname}">
