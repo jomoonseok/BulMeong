@@ -116,7 +116,7 @@
 				<tr>
 					<td>프로필 이미지</td>
 					<td>
-						<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}" th:text="기본">
+						<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}">
 							<img id="profileImage" th:src="${session.loginUser.profileImage}" width="100px" style="border:1px solid black;">
 						</span>
 						<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
