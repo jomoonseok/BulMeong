@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 import javax.servlet.http.Cookie;
@@ -34,7 +33,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.gdu.bulmeong.users.domain.ProfileImageDTO;
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
@@ -1106,18 +1104,24 @@ public class UsersServiceImpl implements UsersService {
 		
 		MultipartFile image = multipartRequest.getFile("image");
 		String nickname = multipartRequest.getParameter("nickname");
-		
+		String removeCheck = multipartRequest.getParameter("removeCheck");
+		System.out.println(removeCheck);
+		System.out.println(image);
+		System.out.println(image != null);
+		System.out.println(image.isEmpty() == false);
 		UsersDTO loginUser = (UsersDTO)multipartRequest.getSession().getAttribute("loginUser");
 		String id = loginUser.getId();
-		
+		String filesystem = loginUser.getProfileImage();
+		/*
 		int attachResult;
 		if(image.getSize() == 0) {  
 			attachResult = 1;
 		} else {
 			attachResult = 0;
 		}
-		
+		*/
 		try {
+			
 			// 첨부가 있는지 점검
 			if(image != null && image.isEmpty() == false) {  // 둘 다 필요함
 				
@@ -1126,9 +1130,10 @@ public class UsersServiceImpl implements UsersService {
 				origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
 				
 				// 저장할 이름
-				String filesystem = myFileUtil.getFilename(origin);
+				filesystem = myFileUtil.getFilename(origin);
 				
 				String sep = Matcher.quoteReplacement(File.separator);
+				
 				// 저장할 경로
 				String path = "C:" + sep + "bulmeongImage" + sep + "profileImage";
 				
@@ -1143,42 +1148,45 @@ public class UsersServiceImpl implements UsersService {
 				
 				// 첨부파일 서버에 저장(업로드 진행)
 				image.transferTo(file);
-				
-				// UsersDTO 생성
-				UsersDTO user = UsersDTO.builder()
-						.id(id)
-						.nickname(nickname)
-						.profileImage(filesystem)
-						.build();
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("id", id);
-				
-				
-				// DB에 UsersDTO 저장
-				attachResult += usersMapper.updateProfile(user);
-				
-				UsersDTO updateUser = usersMapper.selectUserByMap(map);
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				
-				if(attachResult > 0) {
-					
-					multipartRequest.getSession().setAttribute("loginUser", updateUser);
-					
-					out.println("<script>");
-					out.println("alert('프로필이 수정되었습니다.');");
-					out.println("location.href='/'");
-					out.println("</script>");
-				} else {
-					out.println("<script>");
-					out.println("alert('프로필 수정에 실패했습니다.');");
-					out.println("history.back();");
-					out.println("</script>");
-				}
-				out.close();
-				
+			} else if(removeCheck.equals("check")){
+				filesystem = "/images/userimage/basic_profileImage.png";
 			}
+			System.out.println(filesystem);
+			// UsersDTO 생성
+			UsersDTO user = UsersDTO.builder()
+					.id(id)
+					.nickname(nickname)
+					.profileImage(filesystem)
+					.build();
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", id);
+			
+			
+			// DB에 UsersDTO 저장
+			int attachResult = usersMapper.updateProfile(user);
+			
+			UsersDTO updateUser = usersMapper.selectUserByMap(map);
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(attachResult > 0) {
+				
+				multipartRequest.getSession().setAttribute("loginUser", updateUser);
+				
+				out.println("<script>");
+				out.println("alert('프로필이 수정되었습니다.');");
+				out.println("location.href='/'");
+				out.println("</script>");
+			} else {
+				out.println("<script>");
+				out.println("alert('프로필 수정에 실패했습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+			}
+			out.close();
+				
+			
 			
 		} catch(Exception e) {
 			e.printStackTrace();
