@@ -28,6 +28,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.addResourceLocations("//");
 		registry.addResourceHandler("/load/tent/**")
 			.addResourceLocations("file:///C:/bulmeongImage/tent/");
+		registry.addResourceHandler("/load/profileImagePreview/**")
+		.addResourceLocations("file:///C:/bulmeongImage/profileImagePreview/");
+		registry.addResourceHandler("/load/profileImage/**")
+		.addResourceLocations("file:///C:/bulmeongImage/profileImage/");
 	}
 	/*
 	@Override

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MyFileUtil {
+	
+	// 경로 구분자
+	private String sep = Matcher.quoteReplacement(File.separator);
 
 	// 파일명 : UUID값을 사용
 	// 경로명 : 현재 날짜를 디렉터리로 생성해서 사용
@@ -36,15 +39,14 @@ public class MyFileUtil {
 		return UUID.randomUUID().toString().replaceAll("\\-", "") + "." + extension;
 		
 	}
-	
+
 	// 오늘 경로
 	public String getTodayPath() {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		String sep = Matcher.quoteReplacement(File.separator);
-		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
+		return "/storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);  // 루트/storage
 	}
 	
 	// 어제 경로
@@ -54,8 +56,17 @@ public class MyFileUtil {
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		String sep = Matcher.quoteReplacement(File.separator);
-		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
+		return "/storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);  // 루트/storage
+	}
+	
+	// 임시 경로
+	public String getTempPath() {
+		return "/storage" + sep + "temp";
+	}
+	
+	// 써머노트 이미지 경로
+	public String getSummernotePath() {
+		return "/storage" + sep + "summernote";
 	}
 	
 	// 1~9 => 01~09

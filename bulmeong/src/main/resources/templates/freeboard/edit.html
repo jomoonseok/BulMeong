@@ -10,6 +10,34 @@
 	
 		$(document).ready(function(){
 		
+			$('#content').summernote({
+				width: 800,
+				height: 400,
+				lang: 'ko-KR',
+				toolbar: [
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['height', ['height']]
+				]
+			});
+	
+	
+			$('#btn_list').click(function(){
+				if(confirm('게시글이 저장되지 않았습니다. 정말 돌아가시겠습니까?')){
+					location.href = '/freeboard/list';
+				}	
+			});
+			
+			$('#frm_write').submit(function(event){
+				if($('#title').val() == ''){
+					alert('제목을 작성해주세요.');
+					event.preventDefault();
+					return;
+				}
+			});
 			
 		});
 		
@@ -17,8 +45,27 @@
 	
 	
 	
-
-수정페이지!
+		<div>		
+			<form id="frm_write" method="post" th:action="@{/freeboard/modify}">
+			
+				<input type="hidden" name="freeNo" th:value="${free.freeNo}">
+			
+				<div>
+					<label for="title">제목</label>
+					<input type="text" name="freeTitle" id="title" th:value="${free.freeTitle}">
+				</div>
+				<div>
+					<label for="content">내용</label>
+	    			<textarea name="freeContent" id="content" th:text="${free.freeContent}"></textarea>
+				</div>
+				<div>
+					<button class="button">수정</button>
+					<input type="button" value="목록" id="btn_list" th:onclick="|location.href='@{/freeboard/list}'|">
+				</div>
+			</form>
+		</div>
+		
+		
 	
 		
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class UsersAccess {
+public class UsersAccessDTO {
 	private String id;
 	private String lastLoginDate;
 }

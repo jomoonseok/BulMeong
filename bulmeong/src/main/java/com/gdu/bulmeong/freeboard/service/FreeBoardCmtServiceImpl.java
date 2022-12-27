@@ -1,5 +1,6 @@
 package com.gdu.bulmeong.freeboard.service;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,6 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAdd", freeBoardCmtMapper.insertCmt(freeCmt) == 1);
 		
-		System.out.println("result : " + result);
 		return result;
 	}
 	
@@ -108,8 +108,9 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	
 	@Override
 	public Map<String, Object> modifyCmt(FreeBoardCmtDTO freeCmt) {
+
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("isModify", freeBoardCmtMapper.updateCmt(freeCmt) == 1);
+		result.put("isModify", freeBoardCmtMapper.updateCmt(freeCmt) == 1);			
 
 		return result;
 	}
@@ -149,9 +150,7 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		freeCmtReply.setFreeCmtDepth(freeCmtDepth + 1);
 		freeCmtReply.setFreeGroupNo(freeGroupNo);
 		freeCmtReply.setFreeGroupOrder(freeGroupOrder + 1);
-		
-		System.out.println("freeCmtReply : " + freeCmtReply);
-		
+				
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAddReply", freeBoardCmtMapper.insertCmtReply(freeCmtReply) == 1);
 

@@ -10,7 +10,20 @@
 		
 	</script>
 	
-리스트!
+	<h3>Review 게시판</h3>
+	
+	<div th:if="${session.loginUser} != null">
+ 		<input type="button" value="글쓰기" id="write">
+	</div>
+	
+	<div th:each="review : ${reviewBoardList}">
+		<span th:text="${review.reviewNo}"></span>
+		<span th:text="${review.reviewTitle}"></span>
+		<span th:text="${review.reviewHit}"></span>
+		<span th:text="${review.reviewStar}"></span>
+		<span th:text="${review.reviewCreateDate}"></span>
+	</div>
+	
 	
 
 

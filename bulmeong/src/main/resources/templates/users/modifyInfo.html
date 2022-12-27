@@ -14,6 +14,7 @@
 			fn_nameCheck();
 			fn_mobileCheck();
 			fn_birthmonth();
+			fn_birth();
 			fn_emailCheck();
 			fn_modify();
 			fn_cancel();
@@ -87,6 +88,9 @@
 		// 일반정보 수정
 		var namePass = true;
 		var mobilePass = true;
+		var yearPass = false;
+		var monthPass = false;
+		var datePass = false;
 		var emailPass = true;
 		
 		function fn_nameCheck(){
@@ -133,6 +137,55 @@
 				}
 			}
 			$('#birthmonth').append(month);
+		}
+		
+		function fn_birth(){
+			var now = new Date();
+			$('#birthyear').keyup(function(){
+				let yearValue = $('#birthyear').val();
+				
+				let regYear = /^[12][0-9]{3}$/;
+				
+				if(yearValue != '' && yearValue >= 1900 && yearValue <= now.getFullYear() && regYear.test(yearValue) == true){
+					$('#msg_year').text('');
+					yearPass = true;
+				} else {
+					$('#msg_year').text('생년월일을 다시 확인해주세요');
+					yearPass = false;
+					return;
+				}
+			});
+			
+			$('#birthmonth').change(function(){
+				monthPass = true;
+			});
+			
+			
+			
+			$('#birthdate').keyup(function(){
+				let dateValue = $('#birthdate').val();
+				let regDate = /^[1-3][0-9]$/;
+				let monthDate = '';
+				let month = $('#birthdate').parent().prev().children().val();
+				console.log(month);
+				switch(month){
+				case "02" : now.getFullYear() / 4 == 0 ? monthDate = 29 : monthDate = 28; break;
+				case "04" :
+				case "06" :
+				case "09" :
+				case "11" :monthDate = 30; break;
+				default : monthDate = 31;
+				}
+				console.log(monthDate);
+				if(dateValue != '' && dateValue <= monthDate && regDate.test(dateValue) == true){
+					$('#msg_date').text('');
+					datePass = true;
+				} else {
+					$('#msg_date').text('생년월일을 다시 확인해주세요');
+					datePass = false;
+				}
+			});
+			
 		}
 		
 		function fn_emailCheck(){
@@ -287,8 +340,11 @@
 					<label for="birthyear">생년월일</label>
 					<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" th:value="${session.loginUser.birthYear}">
 					<select name="birthmonth" id="birthmonth"></select>
-					<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일"> <!-- DB -->
+					<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일" th:value="${#strings.substring({session.loginUser.birthDay},3,5)}"> <!-- DB -->
 				</div>
+				<script>
+					$(function(){$('#birthmonth').children().val("[[${#strings.substring({session.loginUser.birthDay},1,3)}]]").prop('selected', true)});
+				</script>
 
 				<!-- 주소 -->
 				<div>

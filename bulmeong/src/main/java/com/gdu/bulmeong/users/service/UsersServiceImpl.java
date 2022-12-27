@@ -1,6 +1,7 @@
 package com.gdu.bulmeong.users.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -10,10 +11,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,14 +30,17 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.bulmeong.users.domain.ProfileImageDTO;
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.users.mapper.UsersMapper;
 import com.gdu.bulmeong.util.JavaMailUtil;
+import com.gdu.bulmeong.util.MyFileUtil;
 import com.gdu.bulmeong.util.SecurityUtil;
 
 @Service
@@ -45,6 +54,9 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Autowired
 	private JavaMailUtil javaMailUtil;
+	
+	@Autowired
+	private MyFileUtil myFileUtil;
 	
 	@Override
 	public Map<String, Object> isReduceId(String id) {
@@ -266,7 +278,7 @@ public class UsersServiceImpl implements UsersService {
 	
 	
 	@Override
-	public void login(HttpServletRequest request, HttpServletResponse response) {
+	public void login(HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 파라미터
 		String url = request.getParameter("url");
 		String id = request.getParameter("id");
@@ -302,9 +314,25 @@ public class UsersServiceImpl implements UsersService {
 				usersMapper.insertAccessLog(id);
 			}
 			
+			
+			
 			// 이동 (로그인페이지 이전 페이지로 되돌아가기)
 			try {
+				SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd");
+				Date pmd = format.parse(loginUser.getPwModifyDate());
+				
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(pmd);
+				cal.add(Calendar.DATE, 90);
+				Date currentTime = new Date();
+				String date = format.format(currentTime);
+		        Date now = format.parse(date);
+		        System.out.println("날짜 계산 : " + cal.getTime().compareTo(now));
+		        model.addAttribute("pwModifyDate", cal.getTime().compareTo(now));
+		        request.getSession().setAttribute("pwModifyDate", cal.getTime().compareTo(now));
 				response.sendRedirect(url);
+			} catch(ParseException e) {
+				e.printStackTrace();
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
@@ -587,6 +615,18 @@ public class UsersServiceImpl implements UsersService {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	
+	@Override
+	public void sleepUserMail() {
+		List<UsersDTO> expectedUsers = usersMapper.selectSleepExpectedUser();
+		
+		for(int i=0; i < expectedUsers.size(); i++) {
+			String email = expectedUsers.get(i).getEmail();
+			javaMailUtil.sendJavaMail(email, "[Application] 휴면 안내", "회원님은 한 달 후 휴면 처리됩니다. 휴면 처리되지 않으시려면 로그인해 주세요.");
+		}
 	}
 	
 	
@@ -1014,11 +1054,136 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Override
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest) {
-		MultipartFile multipartFile = multipartRequest.getFile("image");
+		
+		UsersDTO user = (UsersDTO)multipartRequest.getSession().getAttribute("loginUser");
+		String id = user.getId();
+		
+		MultipartFile image = multipartRequest.getFile("image");
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-
+		try {
+			// 첨부가 있는지 점검
+			if(image != null && image.isEmpty() == false) {  // 둘 다 필요함
+				
+				// 원래 이름
+				String origin = image.getOriginalFilename();
+				origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+				
+				// 저장할 이름
+				String filesystem = myFileUtil.getFilename(origin);
+				
+				String sep = Matcher.quoteReplacement(File.separator);
+				// 저장할 경로
+				String path = "C:" + sep + "bulmeongImage" + sep + "profileImagePreview";
+				
+				// 저장할 경로 만들기
+				File dir = new File(path);
+				if(dir.exists() == false) {
+					dir.mkdirs();
+				}
+				
+				// 첨부할 File 객체
+				File file = new File(dir, filesystem);
+				
+				// 첨부파일 서버에 저장(업로드 진행)
+				image.transferTo(file);
+				
+				result.put("filesystem", filesystem);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		return result;
+	}
+	
+	
+	
+	@Override
+	public void modifyProfile(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+		
+		
+		MultipartFile image = multipartRequest.getFile("image");
+		String nickname = multipartRequest.getParameter("nickname");
+		
+		UsersDTO loginUser = (UsersDTO)multipartRequest.getSession().getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		int attachResult;
+		if(image.getSize() == 0) {  
+			attachResult = 1;
+		} else {
+			attachResult = 0;
+		}
+		
+		try {
+			// 첨부가 있는지 점검
+			if(image != null && image.isEmpty() == false) {  // 둘 다 필요함
+				
+				// 원래 이름
+				String origin = image.getOriginalFilename();
+				origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+				
+				// 저장할 이름
+				String filesystem = myFileUtil.getFilename(origin);
+				
+				String sep = Matcher.quoteReplacement(File.separator);
+				// 저장할 경로
+				String path = "C:" + sep + "bulmeongImage" + sep + "profileImage";
+				
+				// 저장할 경로 만들기
+				File dir = new File(path);
+				if(dir.exists() == false) {
+					dir.mkdirs();
+				}
+				
+				// 첨부할 File 객체
+				File file = new File(dir, filesystem);
+				
+				// 첨부파일 서버에 저장(업로드 진행)
+				image.transferTo(file);
+				
+				// UsersDTO 생성
+				UsersDTO user = UsersDTO.builder()
+						.id(id)
+						.nickname(nickname)
+						.profileImage(filesystem)
+						.build();
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("id", id);
+				
+				
+				// DB에 UsersDTO 저장
+				attachResult += usersMapper.updateProfile(user);
+				
+				UsersDTO updateUser = usersMapper.selectUserByMap(map);
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				if(attachResult > 0) {
+					
+					multipartRequest.getSession().setAttribute("loginUser", updateUser);
+					
+					out.println("<script>");
+					out.println("alert('프로필이 수정되었습니다.');");
+					out.println("location.href='/'");
+					out.println("</script>");
+				} else {
+					out.println("<script>");
+					out.println("alert('프로필 수정에 실패했습니다.');");
+					out.println("history.back();");
+					out.println("</script>");
+				}
+				out.close();
+				
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	 
