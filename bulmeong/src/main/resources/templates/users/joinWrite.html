@@ -248,7 +248,9 @@
 		});
 		
 		$('#birthmonth').change(function(){
-			monthPass = true;
+			if($(this).val() != ''){
+				monthPass = true;
+			}
 		});
 		
 		
@@ -260,6 +262,7 @@
 			let month = $('#birthdate').parent().prev().children().val();
 			console.log(month);
 			switch(month){
+			case "" : $('#birthdate').prop('readonly', 'true');
 			case "02" : now.getFullYear() % 4 > 0 ? monthDate = 29 : monthDate = 28; break;
 			case "04" :
 			case "06" :
@@ -395,7 +398,11 @@
 				alert('닉네임을 확인하세요.');
 				event.preventDefault();
 				return;
-			}else if(mobilePass == false){
+			} else if(yearPass == false || monthPass == false || datePass == false){
+				alert('생년월일을 확인하세요.');
+				event.preventDefault();
+				return;	
+			} else if(mobilePass == false){
 				alert('휴대전화번호를 확인하세요.');
 				event.preventDefault();
 				return;
@@ -419,8 +426,8 @@
 </head>
 <body>
 
-	<header th:replace="~{layout/header::header_layout}"></header>
-	
+	<a th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="200px" style="margin: 10px"></a>
+
 	<h1>회원가입</h1>
 	
 	<div>* 표시는 필수 입력사항입니다.</div>
@@ -436,13 +443,16 @@
 		<!-- 아이디 -->
 		<div>
 			<label for="id">아이디*</label>
+		</div>
+		<div>
 			<input type="text" name="id" id="id">
 			<span id="msg_id"></span>
 		</div>
-		
 		<!-- 비밀번호 -->
 		<div>
 			<label for="pw">비밀번호*</label>
+		</div>
+		<div>
 			<input type="password" name="pw" id="pw">
 			<span id="msg_pw"></span>
 		</div>
@@ -450,6 +460,8 @@
 		<!-- 비밀번호 재확인 -->
 		<div>
 			<label for="re_pw">비밀번호 확인*</label>
+		</div>
+		<div>
 			<input type="password" id="re_pw">
 			<span id="msg_re_pw"></span>
 		</div>
@@ -457,6 +469,8 @@
 		<!-- 이름 -->
 		<div>
 			<label for="name">이름*</label>
+		</div>
+		<div>
 			<input type="text" name="name" id="name">
 			<span id="msg_name"></span>
 		</div>
@@ -464,6 +478,8 @@
 		<!-- 닉네임 -->
 		<div>
 			<label for="nickname">닉네임*</label>
+		</div>
+		<div>
 			<input type="text" name="nickname" id="nickname">
 			<span id="msg_nickname"></span>
 		</div>
@@ -471,6 +487,8 @@
 		<!-- 휴대전화 -->
 		<div>
 			<label for="mobile">휴대전화*</label>
+		</div>
+		<div>
 			<input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요." maxlength="11" >
 			<span id="msg_mobile"></span>
 		</div>
@@ -478,30 +496,32 @@
 		<!-- 성별 -->
 		<div>
 			<span>성별*</span>
+		</div>
+		<div>
+			<select name="gender">
+				<option value="NO">선택 안함
+				<option value="M">남자
+				<option value="F">여자
+			</select>
+		</div>
+		<!-- <div>
 			<input type="radio" name="gender" id="none" value="NO" checked="checked">
 			<label for="none">선택 안함</label>
 			<input type="radio" name="gender" id="male" value="M">
 			<label for="male">남자</label>
 			<input type="radio" name="gender" id="female" value="F">
 			<label for="female">여자</label>
-		</div>
+		</div> -->
 		
 		<!-- 생년월일 -->
 		<div>
-			<label for="birthyear">생년월일 필수</label>
+			<label for="birthyear">생년월일*</label>
 			<div>
 				<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" >
-				<span id="msg_year"></span>
-			</div>
-			<div>
 				<select name="birthmonth" id="birthmonth"></select>
-				<span id="msg_month"></span>
-			</div>
-			<div>
 				<input type="text" id="birthdate" name="birthdate" maxlength="2" size="2" placeholder="일" >
-				<span id="msg_date"></span>
-				<span id="msg_value"></span>
 			</div>
+				<span id="msg_birth"></span>
 		</div>
 		
 		<div>
