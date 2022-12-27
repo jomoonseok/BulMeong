@@ -84,50 +84,57 @@
 		<h1>약관 동의하기</h1>
 		
 		<form id="frm_agree" th:action="@{/users/join/write}" method="get">
-			<div>
-				<input type="checkbox" id="check_all" class="blind">
-				<label for="check_all" class="lbl_all">모두 동의</label>
+			<div class="form-check form-switch" style="display: inline-block;">
+				<input type="checkbox" id="check_all" class="form-check-input" role="switch">
+				<label for="check_all" class="orm-check-label">모두 동의</label>
 			</div>
-			
-			
 			<div>
-				<input type="checkbox" id="service" class="check_one blind">
-				<label for="service" class="lbl_one">이용약관 동의(필수)</label> <!-- checkbox는 체크하면 name과 value 없어도 넘어간다. -->
+			
+				<div class="form-check form-switch" style="display: inline-block;">
+					<input type="checkbox" id="service" class="check_one form-check-input" role="switch">
+					<label for="service" class="orm-check-label">이용약관 동의(필수)</label> <!-- checkbox는 체크하면 name과 value 없어도 넘어간다. -->
+				</div>
 				<div>
 					<textarea readonly>이용약관</textarea>
 				</div>
-			</div>
 			
-			<div>
-				<input type="checkbox" id="privacy" class="check_one blind">
-				<label for="privacy" class="lbl_one">개인정보수집 동의(필수)</label>
+				<div class="form-check form-switch" style="display: inline-block;">
+					<input type="checkbox" id="privacy" class="check_one form-check-input" role="switch">
+					<label for="privacy" class="orm-check-label">개인정보수집 동의(필수)</label>
+				</div>
 				<div>
 					<textarea readonly>개인정보수집</textarea>
 				</div>
-			</div>
-			
-			<div>
-				<input type="checkbox" id="location" class="check_one blind" name="location"> <!-- checkbox는 체크 안 하면 안 넘어간다. -->
-				<label for="location" class="lbl_one">위치정보수집 동의(선택)</label>
+		
+				<div class="form-check form-switch" style="display: inline-block;">
+					<input type="checkbox" id="location" class="check_one form-check-input" role="switch" name="location"> <!-- checkbox는 체크 안 하면 안 넘어간다. -->
+					<label for="location" class="form-check-label">위치정보수집 동의(선택)</label>
+				</div>
 				<div>
 					<textarea readonly>위치정보수집</textarea>
 				</div>
+			<!--  
+			<div class="form-check form-switch" style="display: inline-block;">
+				<input type="checkbox" id="promotion" class="check_one blind form-check-input" role="switch" name="promotion">
+				<label for="promotion" class="lbl_one form-check-label">마케팅 동의(선택)</label>
+				<div>
+					<textarea readonly>이건 나중에 생각하자</textarea>
+				</div>
 			</div>
-			
-			<div>
-				<input type="checkbox" id="promotion" class="check_one blind" name="promotion">
-				<label for="promotion" class="lbl_one">마케팅 동의(선택)</label>
+			-->
+				<div class="form-check form-switch" style="display: inline-block;">
+					<input type="checkbox" id="promotion" class="check_one form-check-input" role="switch" name="promotion">
+					<label for="promotion" class="form-check-label">마케팅 동의(선택)</label>
+				</div>
 				<div>
 					<textarea readonly>이건 나중에 생각하자</textarea>
 				</div>
 			</div>
 			
-			
 			<div>
 				<input type="button" value="취소" onclick="history.back();">
 				<button>다음</button>
 			</div>
-			
 		</form>
 	</div>
 	
