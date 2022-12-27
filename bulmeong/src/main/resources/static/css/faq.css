@@ -2,13 +2,13 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
 body {
+/* 	border: 1px #a39485 solid; */
 	width: 70%;
 	margin: auto;
-/* 	border: 1px #a39485 solid; */
 }
 /* list.html */
 .css_main_title_wrap {
-/* 	border: 1px #a39485 solid; */	
+/* 	border: 1px #a39485 solid;	 */
 }
 
 .css_main_title {
@@ -22,16 +22,18 @@ body {
 	margin-left: 10px;
 }
 
-.css_faq_box{
+.css_faq_box {
 	height: 80px;
 	margin-top: 40px;
+	margin-bottom: 20px;
 	background-color: #f8f8f9;
-	font-size: 18px;
-	text-align: center;
 }
 
-.css_faq_box > p {
-	margin-top: 10px;
+.css_faq_box_inner {
+	padding-top: 25px;
+	text-align: center;
+	margin: auto;
+	font-size: 18px;
 }
 	
 #btn_faqWrite {
@@ -44,9 +46,12 @@ body {
 }
 
 table {
-	width: 95%;
+	width: 100%;
 }
 
+ thead > tr > th:first-of-type {
+    width: 0%;
+ }
 
 #btn_faqWrite:hover{
 	background-color: rgba(204, 75, 76); 
@@ -55,14 +60,12 @@ table {
 }
 
 .css_table_wrap {
-	width:100%;
 /* 	border: 1px #a39485 solid; */
+	width:100%;
 }
 
 .css_fqaNo_blind {
-	
 	visibility:hidden
-	
 }
 
 .blind {
@@ -70,38 +73,48 @@ table {
 }
 
 #toggle_area {
-	
 	font-size:13px;
 }
 
 .btn_contentToggle {
 	width: 100%;
-	margin: 3px;
-	
 	font-weight: bold;
 }
 
 .css_font1 {
+/* 	border: 1px #a39485 solid; */
 	font-family: 'Dosis', sans-serif;
-	font-size: 40px;
+	font-size: 30px;
 	font-weight: bold;
 	color: #CC4B4C;
+	display: inline;
+	
 }
 
 .css_faq_title {
 	font-size: 18px;
 	color: #545454;
 	width: 100%;
+	padding-bottom: 30px;
 }
 
 hr {
-	width: 100%;
+	width: 98%;
+	margin-right: 3px;
 }
 
 .css_btn {
-	display: inline;
 /* 	border: 1px #a39485 solid; */
+	display: inline;
 	float:right;
+}
+
+.css_btn > i {
+/* 	border: 1px #a39485 solid; */
+	display: inline;
+	float:right;
+	margin-top: 10px;
+	margin-right: 20px;
 }
 
 .fa-solid{
@@ -109,27 +122,27 @@ hr {
 }
 
 .css_font2 {
+/* 	border: 1px #a39485 solid; */
 	font-family: 'Dosis', sans-serif;
 	font-size: 32px;
 	font-weight: bold;
-	padding-left: 30px;
+	margin-left: 20px;
+	margin-top: 10px;
 	color: #545454;
+	display: inline;
 }
 
 .css_answer {
 /* 	padding: 10px; */
 	background-color: #f8f8f9;
-	width: 100%;
-}
-
-.css_inline{
-	display: inline;
+	width: 98%;
+	margin-right: 10px;
 }
 
 .css_faq_content {
 	font-size: 17px;
 	text-align: center;
-	margin-left: 10px;
+	margin-left: 5px;
 }
 
 table > td {
@@ -139,5 +152,6 @@ table > td {
 tfoot > tr > td {
    text-align: center;
    width: 100%;
+   font-size: 20px;
 }
 

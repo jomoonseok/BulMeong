@@ -25,12 +25,14 @@
 		<span class="css_sub_title">자주하는 질문</span>
 	</div>
 	
-	<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-		<input type="button" id="btn_faqWrite" value="새글작성">
+	<div class="css_faq_box">
+		<div class="css_faq_box_inner">"FAQ를 통해서 원하시는 답변을 쉽고 빠르게 찾아보세요"</div>
 	</div>
 	
-	<div class="css_faq_box">
-		<p>"FAQ를 통해서 원하시는 답변을 쉽고 빠르게 찾아보세요"<p>
+	<hr>
+	
+	<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+		<input type="button" id="btn_faqWrite" value="새글작성">
 	</div>
 	
 	<div class="css_table_wrap">
@@ -49,14 +51,14 @@
 						</td>
 						<td>
 							<div class="btn_contentToggle">
-								<span class="css_font1">Q.</span>
+								<div class="css_font1">Q.</div>
 								<span th:text="${faq.faqTitle}" class="css_faq_title"></span>
 								<div class="css_btn"><i class="fa-solid fa-caret-down fa-2x"></i></div>
 <!-- 								<i class="fa-thin fa-circle-chevron-down"></i> -->
 							</div>
 							<hr>
 							<div id="toggle_area" class="blind css_answer">
-								<span class="css_font2 css_inline">A .</span>
+								<div class="css_font2">A .</div>
 									
 									<span th:text="${faq.faqContent}" class="css_faq_content"></span>
 

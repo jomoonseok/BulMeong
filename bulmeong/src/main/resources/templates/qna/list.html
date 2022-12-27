@@ -116,16 +116,25 @@
  			window.open('/popup','popup','width=500,height=700,left=700,top=170,scrollbars=yes,resizable=yes');
  		}
 </script> -->
-	<h2>Q&A</h2>
-	<div class="css_btn_qnaWrite">
-		<input type="button" value="문의하기" id="btn_qnaWrite">
+	<div class="css_main_title_wrap">
+		<span class="css_main_title">Q&A</span><br>
+		<span class="css_sub_title">1:1 문의하기</span>
 	</div>
+	
+	<div class="css_qna_box">
+		<div class="css_qna_box_inner">"Q&A를 통해서 궁금한 것을 물어보세요!"</div>
+	</div>
+	
+	<hr>
 	
 	<div class="css_my_qnaList">
 		<input type="button" value="내가 작성한 Q&A" id="my_qnaList">
 	</div>
 	
-	<hr>
+	<div class="css_btn_qnaWrite">
+		<input type="button" value="문의하기" id="btn_qnaWrite">
+	</div>
+	
 	<div class="css_tableWrap">
 		<table border="1">
 			<thead>
@@ -136,14 +145,14 @@
 					<th>작성일</th>
 <!-- 					loginUser가 관리자일때만 보이게 -->
 					<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-						<th>삭제</th>
+						<th class="blind">삭제</th>
 					</th:block>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="qna:${qnaList}">
 					<tr>	
-						<td>
+						<td class="css_qna_depth">
 							<span th:if="${qna.depth} eq 0">미답변</span>
 							<span th:if="${qna.depth} eq 1">답변완료</span>
 						</td>
@@ -153,8 +162,9 @@
 									<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
 								</div>
 								<div id="toggle_area" class="blind">
-									<span th:text="${qna.qnaTitle}"></span><br>
-									<span th:text="${qna.qnaContent}"></span>
+									<hr>
+<!-- 									<span th:text="${qna.qnaTitle}" class="css_qna_title"></span><br> -->
+									<span th:text="${qna.qnaContent}" class="css_qna_content"></span>
 <!-- 									<div th:text="${qna.qnaContent}"> -->
 									<div th:if="${session.loginUser != null} and ${session.loginUser.id == 'admin'}">
 										<form id="frm_answer_add" method="post" th:action="@{/qna/answer/add}">
@@ -163,6 +173,7 @@
 											<input type="button" id="btn_submitAnswer" value="작성완료" class="blind">
 										</form>
 									</div>
+									<hr>
 								</div>
 							</th:block>
 							
@@ -172,20 +183,23 @@
 										<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
 									</div>
 									<div id="toggle_area" class="blind">
-										<span th:text="${qna.qnaTitle}"></span><br>
-										<span th:text="${qna.qnaContent}"></span>
+										<hr>
+<!-- 										<span th:text="${qna.qnaTitle}" class="css_qna_title"></span><br> -->
+										<span th:text="${qna.qnaContent}" class="css_qna_content"></span>
+										
 <!-- 										<div th:text="${qna.qnaContent}" class="blind"> -->
 										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-<!-- 											<form id="frm_answer_add" method="post" th:action="@{/qna/answer/add}"> -->
-<!-- 												<textarea id="writeAnswer" rows="10" cols="30" class="blind"></textarea> -->
-<!-- 												<input type="button" id="btn_writeAnswer" value="답변하기"> -->
-<!-- 												<input type="button" id="btn_submitAnswer" value="작성완료" class="blind"> -->
-<!-- 											</form> -->
+											<form id="frm_answer_add" method="post" th:action="@{/qna/answer/add}">
+												<textarea id="writeAnswer" rows="10" cols="30" class="blind"></textarea>
+												<input type="button" id="btn_writeAnswer" value="답변하기">
+												<input type="button" id="btn_submitAnswer" value="작성완료" class="blind">
+											</form>
 										</div>
+										<hr>
 									</div>
 								</div>
 								<div th:if="${session.loginUser} != null and ${session.loginUser.id} != ${qna.id} and ${session.loginUser.id} != 'admin'">
-									<div>비밀글입니다</div>
+									<div class="css_qna_lock">비밀글입니다</div>
 								</div>
 <!--  								<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'"> -->
 <!--  									<div th:text="${qna.qnaTitle}" id="btn_contentToggle"></div> -->
@@ -193,16 +207,16 @@
 <!--  								</div> -->
 							</th:block>
 						</td>
-						<td th:utext=${qna.id}></td>
+						<td th:utext=${qna.id} class="css_qna_id"></td>
 <!-- 						<td th:text="$(#dates.fomat(qna.qnaCreateDate,'yyyy/M/d))" ></td> -->
-						<td th:utext=${qna.qnaCreateDate}></td>
+						<td th:utext=${qna.qnaCreateDate} class="css_qna_createDate"></td>
 						
 <!-- 						<th:block th:if="${loginUser == 'admin'}"> -->
 <!-- 							<td><input type="button" value="답변달기" id="btn_reply_qna"></td> -->
 <!-- 						</th:block> -->
 					
 						
-						<td>
+						<td class="blind">
 							<div th:if="${session.loginUser != null} and ${session.loginUser.id == 'admin'}">
 								<form method="post" th:action="@{/qna/remove}">
 									<input type="hidden" name="qnaNo" th:value="${qna.qnaNo}">

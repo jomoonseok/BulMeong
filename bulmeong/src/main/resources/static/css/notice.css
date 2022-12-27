@@ -10,128 +10,145 @@
 }
 
 /* list.html */
-	body {
-		width: 70%;
-		margin: auto;
-/* 		border: 1px #a39485 solid; */
-	}
+body {
+	width: 70%;
+	margin: auto;
+/* 	border: 1px #a39485 solid; */
+}
 
-	.css_title {
-/* 		width: 90%; */
-/* 		border: 1px #a39485 solid; */
-		text-align: left;
-		font-size: 25px;
-		font-weight: 650;
-		margin: 10px auto 10px auto;
-	}
+.css_main_title {
+/* 	border: 1px #a39485 solid; */
+	font-size: 30px;
+}
+
+.css_sub_title {
+/* 	border: 1px #a39485 solid; */
+	color: grey;
+}
+
+.css_notice_box {
+	height: 80px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	background-color: #f8f8f9;
+}
+
+.css_notice_box_inner {
+	padding-top: 25px;
+	text-align: center;
+	margin: auto;
+	font-size: 18px;
+}
 	
-	.css_outer {
+.css_outer {
 /* 		border: 1px #a39485 solid; */
-		width: 100%;
-		margin: 10px auto 10px 0;
-	}
-	
-    .css_btn_noticeWrite {
-/*     	margin: center; */
-    	width: 150px;
-    	height: 28px;
-    	border: 1px #CC4B4C solid;
-    	border-radius:7px;
-    	text-align: center;
-    	text-color: rgba(204, 75, 76);
-    	float: right;
-    	margin-bottom: 10px;
-    }
-    
-    .css_btn_noticeWrite:hover { 
-    	background-color: rgba(204, 75, 76); 
-    	transition-duration: 0.3s;
-    	text-color: white;
-    }
-    
-    .css_btn_noticeWrite > a {
-    	color: #CC4B4C;
-    }
-    
-	.css_btn_noticeWrite > a:visited {
-		color: #CC4B4C;
-	}
-	
-	.css_btn_noticeWrite > a:hover {
-		color: white;
-	}
+	width: 100%;
+	margin: 10px auto 10px 0;
+}
 
-   table {
-      border: 1px #a39485 solid;
-      font-size: .9em;
-      box-shadow: 0 2px 5px rgba(0,0,0,.25);
-      width: 100%;
-      border-collapse: collapse;
-      border-radius: 5px;
-      overflow: hidden;
-      margin: auto;
-   }
+.css_btn_noticeWrite {
+/*  margin: center; */
+	width: 150px;
+	height: 28px;
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	text-align: center;
+	text-color: rgba(204, 75, 76);
+	float: right;
+	margin-bottom: 10px;
+}
+   
+.css_btn_noticeWrite:hover { 
+	background-color: rgba(204, 75, 76); 
+	transition-duration: 0.3s;
+	text-color: white;
+}
+   
+.css_btn_noticeWrite > a {
+	color: #CC4B4C;
+}
+   
+.css_btn_noticeWrite > a:visited {
+	color: #CC4B4C;
+}
 
-   th {
-      text-align: center;
-   }
-     
-   thead {
-      font-weight: bold;
-      color: #fff;
-      background: rgba(113, 194, 133);
-   }
-     
-   td, th {
-      padding: 1em .5em;
-      vertical-align: middle;
-   }
-     
-   td {
-      border-bottom: 1px solid rgba(0,0,0,.1);
-      background: #fff;
-   }
-   
-   td a:hover { color: rgba(113, 194, 133); }
-   
-   a {
-      color: #73685d;
-   }
-   
-   
-   
-   thead > tr > th:first-of-type {
-      width: 20%;
-   }
-   
-   thead > tr > th:nth-of-type(2) {
-      width: 50%;
-   }
-   
-   thead > tr > th:nth-of-type(3) {
-      width: 5%;
-   }
-   
-   thead > tr > th:nth-of-type(4) {
-      width: 15%;
-   }
-   
-   thead > tr > th:nth-of-type(5) {
-      width: 15%;
-   }
-   
-   tbody > tr:last-of-type {
-      border: 1px #a39485 solid;
-      border-radius: 5px;
-   }
-   
-   thead > tr > th:nth-of-type(6) {
-      width: 10%;
-   }
-     
+.css_btn_noticeWrite > a:hover {
+	color: white;
+}
 
-   tfoot > tr > td {
-      text-align: center;
-   }
+table {
+   border: 1px #a39485 solid;
+   font-size: .9em;
+   box-shadow: 0 2px 5px rgba(0,0,0,.25);
+   width: 100%;
+   border-collapse: collapse;
+   border-radius: 5px;
+   overflow: hidden;
+   margin: auto;
+}
+
+th {
+   text-align: center;
+}
+  
+thead {
+   font-weight: bold;
+   color: #fff;
+   background: rgba(113, 194, 133);
+}
+  
+td, th {
+   padding: 1em .5em;
+   vertical-align: middle;
+}
+  
+td {
+   border-bottom: 1px solid rgba(0,0,0,.1);
+   background: #fff;
+}
+
+td a:hover {
+	color: rgba(113, 194, 133);
+}
+
+a {
+   color: #73685d;
+}
+  
+thead > tr > th:first-of-type {
+   width: 20%;
+}
+
+thead > tr > th:nth-of-type(2) {
+   width: 50%;
+}
+
+thead > tr > th:nth-of-type(3) {
+   width: 5%;
+}
+
+thead > tr > th:nth-of-type(4) {
+   width: 15%;
+}
+
+thead > tr > th:nth-of-type(5) {
+   width: 15%;
+}
+
+tbody > tr:last-of-type {
+   border: 1px #a39485 solid;
+   border-radius: 5px;
+}
+
+thead > tr > th:nth-of-type(6) {
+   width: 10%;
+}
+  
+
+tfoot > tr > td {
+   text-align: center;
+   width: 100%;
+   font-size: 20px;
+}
 
    

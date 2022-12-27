@@ -9,18 +9,23 @@
 	
  	<header th:replace="~{layout/header::header_layout}"></header>
 	
-
-	
-	<div class="css_title">
-		<span>공지사항</span>
+	<div class="css_main_title_wrap">
+		<span class="css_main_title">공지사항</span><br>
+		<span class="css_sub_title">1:1 문의하기</span>
 	</div>
-	
+
+	<div class="css_notice_box">
+		<div class="css_notice_box_inner">"공지사항을 통해서 홈페이지 소식을 확인하세요!"</div>
+	</div>
+
+	<hr>
 
 	<div class="css_outer">
 		<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'" class="css_btn_noticeWrite">
 			<a th:href="@{/notice/write}" class="css_text_noticeWrite">공지사항 작성하기</a>
 		</div>
 	</div>
+	
 
 	<div>
 		<table>
