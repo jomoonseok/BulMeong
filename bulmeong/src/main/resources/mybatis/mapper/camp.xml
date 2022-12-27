@@ -56,4 +56,14 @@
 	 	 WHERE CAMP_NO = #{campNo}
 	 </select>
 	 
+	 <select id="selectTentByCampNo" parameterType="int" resultType="TentDTO">
+	 	SELECT TENT_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_SUM, TENT_STATE, TENT_IMAGE, jjim
+  		  FROM CAMP C INNER JOIN CAMP_TENT CT
+    		ON C.CAMP_NO = CT.CAMP_NO
+ 		 WHERE C.CAMP_NO = #{campNo};
+	 </select>
+	 
+	 
+	 
+	 
 </mapper>

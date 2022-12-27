@@ -235,9 +235,21 @@
 			filter: invert(47%) sepia(95%) saturate(529%) hue-rotate(342deg) brightness(98%) contrast(102%);
 		}
 		
-		
-		
-		
+		.scale {
+		  transform: scale(1);
+		  -webkit-transform: scale(1);
+		  -moz-transform: scale(1);
+		  -ms-transform: scale(1);
+		  -o-transform: scale(1);
+		  transition: all 0.3s ease-in-out;   /* 부드러운 모션을 위해 추가*/
+		}
+		.scale:hover {
+		  transform: scale(1.2);
+		  -webkit-transform: scale(1.2);
+		  -moz-transform: scale(1.2);
+		  -ms-transform: scale(1.2);
+		  -o-transform: scale(1.2);
+		}
 		
 	</style>
 	
@@ -705,156 +717,45 @@
 			
 			<hr>
 			
-			<div id="guide">
+			<div id="tentInfo">
 				<h3>
-					※일반 캠핑
+					<img src="images/camp/info.png">텐트 사진
 				</h3>
-				<div class="table_guide">
-					<table class="guide_tb">
-						<colgroup>
-							<col style="width: 20%">
-							<col style="width: 20%">
-							<col style="width: 20%">
-							<col style="width: 20%">
-							<col style="width: 20%">
-						</colgroup>
-						<thead>
-							<tr>
-								<th rowspan="2" scope="col">구분</th>
-								<th colspan="2" scope="colgroup">평상시</th>
-								<th colspan="2" scope="colgroup">성수기</th>
-							</tr>
-							<tr>
-								<th scope="col" class="gray">주중</th>
-								<th scope="col" class="gray">주말</th>
-								<th scope="col" class="gray">주중</th>
-								<th scope="col" class="gray">주말</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="col">일반</th>
-								<td data-cell-header="평상시 주중 : ">
-									40,000 ~ 50,000
-								</td>
-								<td data-cell-header="평상시 주말 : ">
-									50,000 ~ 60,000
-								</td>
-								<td data-cell-header="성수기 주중 : ">
-									60,000 ~ 70,000
-								</td>
-								<td data-cell-header="성수기 주말 : ">
-									60,000 ~ 70,000
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				
+				<div class="tentImg" style="display: grid; grid-template-columns: repeat(5, 300px); column-gap: 30px; row-gap: 30px;">
+					
+					<th:block th:each="tent : ${tent}">
+					<div>
+						<div class="scale" th:if="${tent.tentImage == '/images/tent/default_tent.png'}">
+							<img th:src="${tent.tentImage}" style="width:300px; height:200px;  margin-bottom: 10px;">
+						</div>
+						<div class="scale" th:unless="${tent.tentImage == '/images/tent/default_tent.png'}">
+							<img th:src="|/load/tent/${tent.tentImage}|" style="width:300px; height:200px;   margin-bottom: 10px;">
+						</div>
+						<!-- <div th:text="|텐트이름 : ${tent.tentName}|"></div>
+						<th:block th:switch="${tent.tentCategory}">
+							<div class="ctg" th:case="0"><div th:text="글램핑"></div></div>
+							<div class="ctg" th:case="1"><div th:text="카라반"></div></div>
+							<div class="ctg" th:case="2"><div th:text="일반야영장"></div></div>
+							<div class="ctg" th:case="3"><div th:text="자동차야영장"></div></div>
+						<th:block>
+						<div th:text="|최대수용인원 : ${tent.tentMaxCount}명|"></div>
+						<div th:text="|금액 : ${tent.tentSum}원|"></div> -->
+					</div>
+					</th:block>
+					
 				</div>
+			</div>
 				
-				<h4 class="forest">※ 캠핑장 A구역: 데크 A1 ~ A6</h4>
-				<h4 class="forest">※ 캠핑장 B구역: 강돌 B1 ~ B4</h4>
-				<h4 class="forest">[캠핑장 A구역]</h4>
-				<h4 class="forest">- 데크크기 : 4.5M X 7.2M</h4>
-				<h4 class="forest">- A1 : 개인카라반, 트레일러, 차박겸용 사용가능 (개인카라반, 트레일러 사용 시 1일 10,000원 추가)</h4>
-				<h4 class="forest">- A2 ~ A6 : 일반데크</h4>
-				<h4 class="forest">- 1데크 기준 : 기준 인원 4인 / 최대 4인 (주차 1대/텐트 1동)</h4>
-				<h4 class="forest">(A구역 요금안내)</h4>
-				<h4 class="forest">- 비수기 (성수기, 준성수기 제외 날)</h4>
-				<h4 class="forest">주중 50,000원 / 주말 60,000원</h4>
-				<h4 class="forest">- 준성수기 (6월 ~ 9월)</h4>
-				<h4 class="forest">주중 60,000원 / 주말 65,000원</h4>
-				<h4 class="forest">- 성수기 (7월 중순 ~ 8월 중순)</h4>
-				<h4 class="forest">주중 70,000원 / 주말 70,000원</h4>
-				<h4 class="forest">[캠핑장B구역]</h4>
-				<h4 class="forest">- 사이트 크기 : 10M × 10M</h4>
-				<h4 class="forest">- 강돌 B1 : 개인카라반, 트레일러, 차박겸용 사용가능 (개인카라반, 트레일러 사용 시 1일 10,000원 추가)</h4>
-				<h4 class="forest">- 강돌 B2~ B4</h4>
-				<h4 class="forest">- 1사이트기준 : 기준인원 4인/최대 4인 (주차1대/텐트1동)</h4>
-				<h4 class="forest">(B구역요금안내)</h4>
-				<h4 class="forest">- 비수기 (성수기,준성수기 제외 날)</h4>
-				<h4 class="forest">주중 50,000원 / 주말 60,000원</h4>
-				<h4 class="forest">- 준성수기 (6월 ~ 9월)</h4>
-				<h4 class="forest">주중 60,000원 / 주말 65,000원</h4>
-				<h4 class="forest">- 성수기 (7월 중순 ~ 8월 중순)</h4>
-				<h4 class="forest">주중 70,000원 / 주말 70,000원</h4>
-				<h4 class="forest">[기타안내]</h4>
-				<h4 class="forest">- 숯+바베큐그릴대여 : 20,000원</h4>
-				<h4 class="forest">- 나무장작 : 11,000원 (개별화롯대와 비치된 화로받침대사용)</h4>
-				<h4 class="forest">- Giga-wifi 무료 이용 가능합니다</h4>
-				<h4 class="forest">- 전기사용 가능합니다 (고전력 전기제품 사용불가)</h4>
-				<h4 class="forest">- 수영장 운영합니다. (6월 ~ 9월)</h4>
-				<h4 class="forest">- 캠핑장A, B구역 : 한가족 다자녀(부모 2명, 자녀 3명 이상)인 경우 자녀 중 1명 무료(미성년자만 가능합니다.)</h4>
-				<h4 class="forest">자녀 무료일 경우만 최대 5명입니다.</h4>
-			
-				<hr>
-			
-				<h3>
-					※글램핑
-				</h3>
+			<hr>
 				
-				<div class="table_guide">
-					<table class="guide_tb">
-						<colgroup>
-							<col style="width: 20%">
-							<col style="width: 20%">
-							<col style="width: 20%">
-							<col style="width: 20%">
-							<col style="width: 20%">
-						</colgroup>
-						<thead>
-							<tr>
-								<th rowspan="2" scope="col">구분</th>
-								<th colspan="2" scope="colgroup">평상시</th>
-								<th colspan="2" scope="colgroup">성수기</th>
-							</tr>
-							<tr>
-								<th scope="col" class="gray">주중</th>
-								<th scope="col" class="gray">주말</th>
-								<th scope="col" class="gray">주중</th>
-								<th scope="col" class="gray">주말</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="col">글램핑</th>
-								<td data-cell-header="평상시 주중 : ">
-									80,000
-								</td>
-								<td data-cell-header="평상시 주말 : ">
-									100,000
-								</td>
-								<td data-cell-header="성수기 주중 : ">
-									150,000
-								</td>
-								<td data-cell-header="성수기 주말 : ">
-									150,000
-								</td>
-							</tr>
-						</tbody>
-					</table>
+			<div id="guide">	
+				<div>
+					<h3>
+						<img src="images/camp/info.png">안전 및 시설 배치도
+					</h3>
 				</div>
-				
-				<h4 class="forest">※ 캐빈하우스(단독펜션) (기준2명/최대4명)</h4>
-				<h4 class="forest">(요금안내)</h4>
-				<h4 class="forest">- 비수기 (성수기,준성수기 제외 날)</h4>
-				<h4 class="forest">주중 90,000원 / 주말 110,000원</h4>
-				<h4 class="forest">- 준성수기 (6월 ~ 9월)</h4>
-				<h4 class="forest">주중 110,000원 / 주말 130,000원</h4>
-				<h4 class="forest">- 성수기 (7월 중순 ~ 8월 중순)</h4>
-				<h4 class="forest">주중 160,000원 / 주말 160,000원</h4>
-				<h4 class="forest">※ 기준 인원 초과 시 1명당 1일 10,000원 추가(24개월 미만 유아 무료)</h4>
-				<h4 class="forest">(기타안내)</h4>
-				<h4 class="forest">- 차량추가는 불가하오니 양해부탁드립니다 (주차1대가능)</h4>
-				<h4 class="forest">- 숯+바베큐그릴대여 : 20,000원</h4>
-				<h4 class="forest">- Giga-wifi 무료 이용가능 - 비치물품 : TV, 냉장고, 세탁기, 에어컨, 전자렌지, 전기밥솥, 취사/조리도구, 샴푸, 비누, 치약, 수건</h4>
-				<h4 class="forest">- 수영장 운영합니다. (6월 ~ 9월)</h4>
-				
-				<hr>
-				
-				<h3>
-					<img src="images/camp/info.png">안전 및 시설 배치도
-				</h3>
-				
+			
 				<div>
 					<p><img src="images/camp/campinfo.png"></p>
 				</div>
@@ -863,10 +764,13 @@
 			<hr>
 			
 			<div>
-				<h3>
-					<img src="images/camp/info.png">위치 정보
-				</h3>
+				<div>
+					<h3>
+						<img src="images/camp/info.png">위치 정보
+					</h3>
+				</div>
 			</div>			
+			
 			<div id="map">
 		
 				<input type="hidden"  id="mapY" th:value="${camp.mapY}" >

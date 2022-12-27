@@ -27,7 +27,7 @@
 		console.log(id);
 		fn_getList();
 		fn_changePage();
-		/* fn_getListOption(); */
+		fn_getListOption();
 		fn_reserve();
 		fn_detail();
 		
@@ -107,7 +107,7 @@
 		});
 	}
 
-	/* function fn_getListOption() {
+	function fn_getListOption() {
 		fn_btnInit();
 		$('#btn_query, #btn_search').on('click', function() {  // 묶어놓은 거 풀 생각하기
 
@@ -167,7 +167,7 @@
 			});
 		});
 	}
- */
+ 
 	function fn_btnInit() {
 		$('#btn_query').on('click', function() {
 			$('#doNm').val('');

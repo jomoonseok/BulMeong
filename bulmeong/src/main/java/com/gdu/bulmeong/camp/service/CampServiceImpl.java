@@ -262,7 +262,7 @@ public class CampServiceImpl implements CampService {
 	public void getDetailList(HttpServletRequest request, Model model) {
 		int campNo = Integer.parseInt(request.getParameter("campNo"));
 		model.addAttribute("camp", campMapper.selectCampByNo(campNo));
-		
+		model.addAttribute("tent", campMapper.selectTentByCampNo(campNo));
 	}
 	
 	

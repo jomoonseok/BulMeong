@@ -107,33 +107,31 @@ public class AdminServiceImpl implements AdminService {
 		int TENT_CATEGORY = Integer.parseInt(request.getParameter("TENT_CATEGORY"));
 		int TENT_MAX_COUNT = Integer.parseInt(request.getParameter("TENT_MAX_COUNT"));
 		int TENT_SUM = Integer.parseInt(request.getParameter("TENT_SUM"));
-		List<MultipartFile> TENT_IMAGE = request.getFiles("TENT_IMAGE");
+		MultipartFile TENT_IMAGE = request.getFile("TENT_IMAGE");
 		
 		int imageResult = 0;
-		if(TENT_IMAGE.get(0).getSize() == 0) {
+		if(TENT_IMAGE.getSize() == 0) {
 			imageResult = 1;
 		} else {
 			imageResult = 0;
 		}
 		
-		for(MultipartFile multipartFile : TENT_IMAGE) {
-			try {
-				if(multipartFile != null && multipartFile.isEmpty() == false || multipartFile.getSize() >= 0) {
+		try {
+			if(TENT_IMAGE != null && TENT_IMAGE.isEmpty() == false || TENT_IMAGE.getSize() >= 0) {
+				
+				String origin = TENT_IMAGE.getOriginalFilename();
+				origin = origin.substring(origin.lastIndexOf("\\") + 1);
+				
+				String filesystem = myFileUtil.getFilename(origin);
+				
+				String sep = Matcher.quoteReplacement(File.separator);
+				String path = "";
+				
+				if(TENT_IMAGE.getSize() == 0) {
+					filesystem = "/images/tent/default_tent.png";
 					
-					String origin = multipartFile.getOriginalFilename();
-					origin = origin.substring(origin.lastIndexOf("\\") + 1);
-					
-					String filesystem = myFileUtil.getFilename(origin);
-					
-					String sep = Matcher.quoteReplacement(File.separator);
-					String path = "";
-					
-					if(multipartFile.getSize() == 0) {
-						filesystem = "/images/tent/default_tent.png";
-					} else {
-						path = "C:" + sep + "bulmeongImage" + sep + "tent";
-					}
-					
+				} else {
+					path = "C:" + sep + "bulmeongImage" + sep + "tent";
 					File dir = new File(path);
 					if(dir.exists() == false) {
 						dir.mkdirs();
@@ -141,35 +139,35 @@ public class AdminServiceImpl implements AdminService {
 					
 					File file = new File(dir, filesystem);
 					
-					multipartFile.transferTo(file);
-					
-					AdminTentDTO tent = AdminTentDTO.builder()
-							.campNo(CAMP_NO).tentName(TENT_NAME).tentCategory(TENT_CATEGORY).tentMaxCount(TENT_MAX_COUNT).tentSum(TENT_SUM).tentImage(filesystem).tentOrigin(origin).build();
-					
-					int result = adminMapper.insertTent(tent);
-					
-					response.setContentType("text/html; charset=UTF-8");
-					PrintWriter out = response.getWriter();
-					
-					if(result > 0) {
-						out.println("<script>");
-						out.println("alert('업로드 되었습니다.');");
-						out.println("opener.parent.location.reload()");
-						out.println("window.close()");
-						out.println("</script>");
-					}  else {
-						out.println("<script>");
-						out.println("alert('업로드 실패했습니다.');");
-						out.println("opener.parent.location.reload()");
-						out.println("window.close();");
-						out.println("</script>");
-					}
-					out.close();
+					TENT_IMAGE.transferTo(file);
 				}
 				
-			} catch(Exception e) {
-				e.printStackTrace();
+				AdminTentDTO tent = AdminTentDTO.builder()
+						.campNo(CAMP_NO).tentName(TENT_NAME).tentCategory(TENT_CATEGORY).tentMaxCount(TENT_MAX_COUNT).tentSum(TENT_SUM).tentImage(filesystem).tentOrigin(origin).build();
+				
+				int result = adminMapper.insertTent(tent);
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				if(result > 0) {
+					out.println("<script>");
+					out.println("alert('업로드 되었습니다.');");
+					out.println("opener.parent.location.reload()");
+					out.println("window.close()");
+					out.println("</script>");
+				}  else {
+					out.println("<script>");
+					out.println("alert('업로드 실패했습니다.');");
+					out.println("opener.parent.location.reload()");
+					out.println("window.close();");
+					out.println("</script>");
+				}
+				out.close();
 			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 		
 	}
@@ -191,27 +189,31 @@ public class AdminServiceImpl implements AdminService {
 		int TENT_CATEGORY = Integer.parseInt(request.getParameter("TENT_CATEGORY"));
 		int TENT_MAX_COUNT = Integer.parseInt(request.getParameter("TENT_MAX_COUNT"));
 		int TENT_SUM = Integer.parseInt(request.getParameter("TENT_SUM"));
-		List<MultipartFile> TENT_IMAGE = request.getFiles("TENT_IMAGE");
+		MultipartFile TENT_IMAGE = request.getFile("TENT_IMAGE");
 		
 		int imageResult = 0;
-		if(TENT_IMAGE.get(0).getSize() == 0) {
+		if(TENT_IMAGE.getSize() == 0) {
 			imageResult = 1;
 		} else {
 			imageResult = 0;
 		}
 		
-		for(MultipartFile multipartFile : TENT_IMAGE) {
-			try {
-				if(multipartFile != null && multipartFile.isEmpty() == false || multipartFile.getSize() >= 0) {
+		try {
+			if(TENT_IMAGE != null && TENT_IMAGE.isEmpty() == false || TENT_IMAGE.getSize() >= 0) {
+			
+				String origin = TENT_IMAGE.getOriginalFilename();
+				origin = origin.substring(origin.lastIndexOf("\\") + 1);
 				
-					String origin = multipartFile.getOriginalFilename();
-					origin = origin.substring(origin.lastIndexOf("\\") + 1);
+				String filesystem = myFileUtil.getFilename(origin);
+				
+				String sep = Matcher.quoteReplacement(File.separator);
+				String path = "";
+				
+				if(TENT_IMAGE.getSize() == 0) {
+					filesystem = "/images/tent/default_tent.png";
 					
-					String filesystem = myFileUtil.getFilename(origin);
-					
-					String sep = Matcher.quoteReplacement(File.separator);
-					String path = "C:" + sep + "bulmeongImage" + sep + "tent";
-					
+				} else {
+					path = "C:" + sep + "bulmeongImage" + sep + "tent";
 					File dir = new File(path);
 					if(dir.exists() == false) {
 						dir.mkdirs();
@@ -219,36 +221,36 @@ public class AdminServiceImpl implements AdminService {
 					
 					File file = new File(dir, filesystem);
 					
-					multipartFile.transferTo(file);
-					
-					AdminTentDTO tent = AdminTentDTO.builder()
-							.tentNo(TENT_NO).tentName(TENT_NAME).tentCategory(TENT_CATEGORY).tentMaxCount(TENT_MAX_COUNT).tentSum(TENT_SUM).tentImage(filesystem).tentOrigin(origin).build();
-					
-					
-					int result = adminMapper.updateTentByTentNo(tent);
-					
-					response.setContentType("text/html; charset=UTF-8");
-					PrintWriter out = response.getWriter();
-					
-					if(result > 0) {
-						out.println("<script>");
-						out.println("alert('수정 되었습니다.');");
-						out.println("opener.parent.fn_getList()");
-						out.println("window.close()");
-						out.println("</script>");
-					}  else {
-						out.println("<script>");
-						out.println("alert('수정 실패했습니다.');");
-						out.println("opener.parent.fn_getList()");
-						out.println("window.close();");
-						out.println("</script>");
-					}
-					out.close();
+					TENT_IMAGE.transferTo(file);
 				}
 				
-			} catch(Exception e) {
-				e.printStackTrace();
+				AdminTentDTO tent = AdminTentDTO.builder()
+						.tentNo(TENT_NO).tentName(TENT_NAME).tentCategory(TENT_CATEGORY).tentMaxCount(TENT_MAX_COUNT).tentSum(TENT_SUM).tentImage(filesystem).tentOrigin(origin).build();
+				
+				
+				int result = adminMapper.updateTentByTentNo(tent);
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				if(result > 0) {
+					out.println("<script>");
+					out.println("alert('수정 되었습니다.');");
+					out.println("opener.parent.fn_getList()");
+					out.println("window.close()");
+					out.println("</script>");
+				}  else {
+					out.println("<script>");
+					out.println("alert('수정 실패했습니다.');");
+					out.println("opener.parent.fn_getList()");
+					out.println("window.close();");
+					out.println("</script>");
+				}
+				out.close();
 			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

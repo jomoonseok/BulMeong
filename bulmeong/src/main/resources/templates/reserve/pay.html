@@ -6,7 +6,69 @@
     <script th:src='@{fakeLoader.js-master/dist/fakeLoader.min.js}'></script> -->
     
     <style>
-    
+    	@charset "EUC-KR";
+		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+		@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
+		 
+		* {
+		   font-family: 'Noto Sans KR', sans-serif;
+		}
+		
+		div {
+		   box-sizing: border-box;
+		}
+
+		/* https://fontawesome.com/icons */
+    	
+    	* {
+    		text-align: center;
+    		vertical-align: middle;
+    		padding-bottom: 5px;
+    	}
+    	
+    	input[type="text"] {
+    		border: none;
+    		width: 400px;
+    		border-radius: 10px;
+    	}
+    	
+    	#pay_container {
+    		width: 700px;
+    		background-color: #FAEFEF;
+    		display: inline-block;
+    		border-radius: 30px;
+    	}
+    	
+    	span {
+    		padding-right: 20px;
+    	}
+    	
+    	input[type="button"] {
+    		width: 100px;
+			height : 40px;
+			border: none;
+			border-radius: 20px;
+			background: rgb(204, 75, 76);
+			color: rgb(255, 255, 255);
+			font-size: 13px;
+    	}
+    	
+    	input[type="button"]:hover {
+		width: 100px;
+		height : 40px;
+		border: none;
+		border-radius: 20px;
+		background: rgb(204, 75, 76, 0.8);
+		color: rgb(255, 255, 255);
+		font-size: 13px;
+	}
+	
+		hr {
+			background-color: white;
+			height: 5px;
+			border:0;
+		}
+    	
     </style>
     
     <script th:inline="javascript">
@@ -17,7 +79,6 @@
     		// 함수 호출
 			pay();    		
 	   		fn_close();
-	    	console.log($('#reserveBeginDate').val());
     		
     	});
     	
@@ -65,7 +126,25 @@
 			
 		}
     	
-    	
+    	function fn_mobileCheck(){
+    		
+    		$('#mobile').change(function(){
+    			
+    			// 입력한 휴대전화
+    			let mobileValue = $(this).val();
+    			
+    			// 휴대전화 정규식(010으로 시작, 하이픈 없이 전체 10~11자)
+    			let regMobile = /^010[0-9]{7,8}$/;
+    			
+    			// 정규식 검사
+    			if(regMobile.test(mobileValue) == false){
+    				alert('전화번호를 확인하세요.');
+    				mobilePass = false;
+    			}
+    			
+    		});  // keyup
+    		
+    	}  // fn_mobileCheck
     	
 		
     	
@@ -88,8 +167,8 @@
 			<div id="tent_info">
 				<input type="hidden" name="campNo" th:value="${camp.campNo}">
 				<input type="hidden" name="tentNo" th:value="${tent.tentNo}">
-				<input type="hidden" name="id" th:value="${loginUser.id}">
-				<div>텐트 정보</div><hr>
+				<input type="hidden" name="id" th:value="${loginUser.id}"><br>
+				<div><h5 style="height: 12px;">텐트 정보</h5></div><hr>
 				
 				<div th:if="${tent.tentImage == '/images/tent/default_tent.png'}">
 					<img th:src="@{${tent.tentImage}}" style="width:200px; height:133px;">
@@ -98,72 +177,48 @@
 					<img th:src="@{|/load/tent/${tent.tentImage}|}" style="width:200px; height:133px;">
 				</div>
 				<div>
-					텐트 종류 <input type="text" id="strCategory" readonly th:value="${strCategory}"> 
+					<span>텐트 종류</span><input type="text" id="strCategory" readonly th:value="${strCategory}"> 
 				</div>
 				<div>
-					텐트명 <input type="text" id="tentName" readonly th:value="${tent.tentName}"> 
+					<span style="padding-right: 41px;">텐트명</span><input type="text" id="tentName" readonly th:value="${tent.tentName}"> 
 				</div>
 				<div>
-					텐트 금액 <input type="text" id="tentSum" readonly th:value="${tent.tentSum}"> 
+					<span>텐트 금액</span><input type="text" id="tentSum" readonly th:value="${tent.tentSum}"> 
 				</div>
-				<div th:if="${tent.tentCategory} == '0'">
-					<div th:text="|내부시설 : ${camp.glampInnerFclty}|"></div>
-				</div>
-				<div th:if="${tent.tentCategory} == '1'">
-					<div th:text="|내부시설 : ${camp.caravInnerFclty}|"></div>
-				</div>
-			</div>
-			
-			<hr>
-			
-			<div id="use_info">
-				<div>이용 안내</div><hr>
-				<div>
-					<ul>
-						<li>기본 캠핑 매너를 지켜주세요.</li>
-						<li>예약 손님 외에는 캠핑장 내 시설 사용을 금지합니다.</li>
-						<li>퇴실 시 기본 정리정돈 쓰레기 분리수거, 식기류 반납 부탁드립니다.</li>
-						<li>귀중품 분실 시 책임은 본인에게 있습니다.</li>
-						<li>텐트 내 화기사용 및 흡연은 강제퇴실 사유입니다.</li>
-						<li>글램핑장 내부 모든 지역은 금연구역입니다.</li>
-					</ul>
-					
-				</div>
-				
 			</div>
 			
 			<hr>
 			
 			<div id="reserve_info">
-				<div>예약 정보</div><hr>
+				<div><h5 style="height: 12px;">예약 정보</h5></div><hr>
 				<div>
-					예약자명 <input type="text" id="reserveName" name="reserveName" th:value="${loginUser.name}">
+					<span>예약자명</span><input type="text" id="reserveName" name="reserveName" th:value="${loginUser.name}">
 				</div>
 				<div>
-					전화번호 <input type="text" id="mobile" th:value="${loginUser.mobile}">
+					<span>전화번호</span><input type="text" id="mobile" th:value="${loginUser.mobile}">
 				</div>
 				<div>
-					상품명 <input type="text" id="productName" readonly th:value="${camp.facltNm + '_' + tent.tentName}"> 
+					<span style="padding-right: 36px;">상품명</span><input type="text" id="productName" readonly th:value="${camp.facltNm + '_' + tent.tentName}"> 
 				</div>
 				<div>
-					예약인원 <input type="text" id="reserveCount" name="reserveCount" readonly th:value="${reserveCount}"> 
+					<span>예약인원</span><input type="text" id="reserveCount" name="reserveCount" readonly th:value="${reserveCount}"> 
 				</div>
 				<div>
 					<input type="hidden" id="reserveBeginDate" name="reserveBeginDate" th:value="${reserveBeginDate}">
 					<input type="hidden" id="reserveEndDate" name="reserveEndDate" th:value="${reserveEndDate}">
-					예약일   <input type="text" id="reserveBeginEndDate" readonly th:value="${reserveBeginEndDate}"> 
+					<span style="padding-right: 36px;">예약일</span><input type="text" id="reserveBeginEndDate" readonly th:value="${reserveBeginEndDate}"> 
 				</div>
 				<div>
-					숙박일정 <input type="text" id="reserveDate" readonly th:value="${reserveDate}"> 
+					<span>숙박일정</span><input type="text" id="reserveDate" readonly th:value="${reserveDate}"> 
 				</div>
 				<div>
-					합계금액 <input type="text" id="reserveSum" name="reserveSum" readonly th:value="${tent.tentSum * reserveCount * reserveDate2}"> 
+					<span>합계금액</span><input type="text" id="reserveSum" name="reserveSum" readonly th:value="${#numbers.formatInteger(tent.tentSum * reserveCount * reserveDate2, 0, 'COMMA')}"> 
 				</div>
 			</div>
 			
 			<hr>
 			
-			<div>
+			<div style="padding-bottom: 19px;">
 				<input type="button" value="결제하기" id="btn_pay">
 				<input type="button" value="취소하기" id="btn_close">
 			</div>
