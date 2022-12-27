@@ -111,6 +111,17 @@
 	    	font-weight: bold;
 	    }
 	    
+	    .guide_tb {
+	    	border-collapse: collapse;
+	    	border: 1px solid gray;
+	    	text-align: center;
+	    }
+	    
+	    .guide_tb td {
+	    	border: 1px solid gray; 
+	    	padding: 5px;
+	    }
+	    
     	.guide_tb th {
 		    padding: 15px 10px;
 		    line-height: 18px;
@@ -119,6 +130,11 @@
 		    color: #333;
 		    background-color: #f9f9fe;
 		    word-break: break-all;
+		    border: 1px solid gray; 
+    	}
+    	
+    	.table {
+    		border: none;
     	}
 	
 		.forest {
@@ -133,17 +149,24 @@
 		}
 		
 		.share {
+			position:relative;
+			
 			list-style: none; 
 			display: flex;
 			padding-right:6px;
 		}
+		
+		#list {
+			background-color: #D0D1D0;
+			border-radius: 10px;
+		}
+		
 		.sns_type > ul {
 			margin:0;
-			padding-left:6px;
+			padding-left: 0px;
 		}
 		.sns_type > ul > li {
 			list-style: none;
-			
 		}
 		
 		.tag_p {
@@ -273,23 +296,21 @@
 				
 				<div class="icon">
 					<ul class="share">
-						<li class="sns">
-							<button class="sns_share" onclick="fn_showHide()" style="background: none; border: none;">
-								<img class="imghead" src="images/camp/share.png" style="width: 32px; height: 32px;">
-							</button>
-							<div class="sns_type" style="display:none;">
+						<li id="list">
+							<img src="images/camp/share.png" style="cursor:pointer; width: 32px; height: 32px;" class="imghead" id="sns_share" onclick="fn_toggleImg()">
+							<div class="sns_type" style="display:none; z-index: 2">
 								<ul>
 									<li>
-										<img src="images/camp/back.png" class="sns_cancel imghead" style="width: 32px; height: 32px;">
+										<img src="images/camp/back.png" class="sns_cancel imghead" id="back" style="width: 32px; height: 32px; display: none;">
+									</li> 
+									<li>
+										<img src="images/camp/facebook.png" class="sns_list1" onclick="fn_sendSns('facebook')" style="width: 32px; height: 32px; cursor:pointer;">
 									</li>
 									<li>
-										<img src="images/camp/facebook.png" class="sns_list1" onclick="fn_sendSns('facebook')" style="width: 32px; height: 32px;">
+										<img src="images/camp/twitter.png" class="sns_list2" onclick="fn_sendSns('twitter')" style="width: 32px; height: 32px; cursor:pointer;">
 									</li>
 									<li>
-										<img src="images/camp/twitter.png" class="sns_list2" onclick="fn_sendSns('twitter')" style="width: 32px; height: 32px;">
-									</li>
-									<li>
-										<img src="images/camp/kakaotalk.png" class="sns_list4" onclick="fn_sendSns('kakaotalk')" style="width: 32px; height: 32px;">
+										<img src="images/camp/kakaotalk.png" class="sns_list4" onclick="fn_sendSns('kakaotalk')" style="width: 32px; height: 32px; cursor:pointer;">
 									</li>
 								</ul>
 							</div>
@@ -312,19 +333,24 @@
 		
 		<script>
 		
-			function fn_showHide() {
-				
-				$('.sns_type').hide();
-				
-				$('.sns_share').click(function(){
-					$('.sns_type').show();
-				});
-				
-				$('.sns_cancel').click(function(){
-					$('.sns_type').hide();
-				});
-				
+			var cnt = 1;
+			function fn_toggleImg() {
+				var share = document.getElementById("sns_share");
+				var back = document.getElementById("back");
+				if(cnt%2==1){
+					share.src="images/camp/back.png";
+					back.src="images/camp/share.png";
+				} else {
+					back.src="images/camp/back.png";
+					share.src="images/camp/share.png";
+				}
+				cnt++;
 			}
+			
+			$("#sns_share").click(function(){
+				$('.sns_type').toggle('.sns_cancel'); 
+			}); 
+	
 		
 			function fn_sendSns(sns) {
 				var method = "popup";

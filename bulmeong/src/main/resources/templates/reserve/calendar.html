@@ -213,7 +213,11 @@
       	    			
     	    			tentMaxCount[i] = tent.tentMaxCount;
     	    			tent_div += '<div style="float:left;">';
-	      	    		tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
+    	    			if(tent.tentImage == "/images/tent/default_tent.png") {
+		      	    		tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
+    	    			} else {
+    	    				tent_div += '<div><img src="/load/tent/' + tent.tentImage + '" width="200px" height="133px"></img></div>';
+    	    			}
 	      	    		tent_div += '</div>';
 	      	    		tent_div += '<div style="float:left;">';
 	      	    		tent_div += '<div>텐트 이름 : ' + tent.tentName + '</div>'; 

@@ -116,10 +116,10 @@
                             
                             
                             <div class="card-body">
-                                <table id="datatablesSimple" style="width:1200px; table-layout: fixed;">
+                                <table id="datatablesSimple" style="width:1400px;">
                                     <thead>
                                         <tr style="text-align: center;">
-                                            <th>텐트번호</th>
+                                            <th>캠핑장번호</th>
                                             <th>캠핑장명</th>
                                             <th>텐트이름</th>
                                             <th>텐트사진</th>
@@ -176,10 +176,14 @@
 	       				$('#tentTblBody').empty();
 	       				$.each(resData.tentList, function(i, tent) {
 	       					var tentDiv = '<tr class="tent_tr" style="font-size: 12px; text-align: center; height:auto;">';
-	       					tentDiv += '<td>' + tent.tentNo + '</td>'
+	       					tentDiv += '<td>' + tent.campNo + '</td>'
 	       					tentDiv += '<td>' + tent.facltNm + '</td>'
 	       					tentDiv += '<td>' + tent.tentName + '</td>'
-	       					tentDiv += '<td><img src="' + tent.tentImage + '" style="width=70px; height:50px;"></img></td>'
+	       					if(tent.tentImage == "/images/tent/default_tent.png") {
+	       						tentDiv += '<td><img src="' + tent.tentImage + '" style="width=70px; height:50px;"></img></td>';
+	       					} else {
+		       					tentDiv += '<td><img src="/load/tent/' + tent.tentImage + '" style="width=70px; height:50px;"></img></td>';
+	       					}
 	       					switch(tent.tentCategory) {
 		      	    		case 0: tent.tentCategory = '글램핑'; break;
 		      	    		case 1: tent.tentCategory = '카라반'; break;
@@ -188,8 +192,9 @@
 	      	    			}
 	       					tentDiv += '<td>' + tent.tentCategory + '</td>'
 	       					tentDiv += '<td>' + tent.tentMaxCount + '</td>'
-	       					tentDiv += '<td>' + tent.tentSum + '</td>'
+	       					tentDiv += '<td>' + tent.tentSum.toLocaleString() + '</td>'
 	       					tentDiv += '<td><input type="button" value="변경하기" class="btn_modify" data-tentno="'+ tent.tentNo +'" data-facltnm="' + tent.facltNm + '" onclick="fn_modifyTent(this)"></td>'
+	       					tentDiv += '<td><input type="button" value="삭제하기" class="btn_remove" data-tentno="'+ tent.tentNo +'" data-facltnm="' + tent.facltNm + '" onclick="fn_removeTent(this)"></td>'
 	       					tentDiv += '</tr>';
 	       					
 	       					$('#tentTblBody').append(tentDiv);
@@ -235,8 +240,20 @@
 			}
        		
        		function fn_modifyTent(e) {
-       			console.log($(e).data('facltnm'));
    				window.open("/admin/modify?tentNo=" + $(e).data('tentno') + "&facltNm=" + $(e).data('facltnm'), "_blank", "width=500,height=600")
+       		}
+       		
+       		function fn_removeTent(e) {
+       			$.ajax({
+       				type: 'post',
+       				url: '/admin/remove',
+       				data: "tentNo=" + $(e).data('tentno'), 
+       				success: function(resData) {
+       					alert(resData.alertMsg);
+       					fn_getList();
+       				}
+       				
+       			})
        		}
        		
        	</script>
