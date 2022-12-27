@@ -14,26 +14,26 @@ import com.gdu.bulmeong.freeboard.service.FreeBoardLikeService;
 @Controller
 public class FreeBoardLikeController {
 
-//	@Autowired
-//	private FreeBoardLikeService FreeLikeService;
-//	
-//	@ResponseBody
-//	@GetMapping(value="/like/getLikeCheck", produces="application/json")
-//	public Map<String, Object> getLikeCheck(HttpServletRequest request) {
-//		return FreeLikeService.getLikeCheck(request);
-//	}
-//	
-//	@ResponseBody
-//	@GetMapping(value="/like/getLikeCount", produces="application/json")
-//	public Map<String, Object> getLikeCount(int freeNo) {
-//		return FreeLikeService.getLikeCount(freeNo);
-//	}
-//	
-//	@ResponseBody
-//	@GetMapping(value="/like/mark", produces="application/json")
-//	public Map<String, Object> mark(HttpServletRequest request) {
-//		return FreeLikeService.mark(request);
-//	}
+	@Autowired
+	private FreeBoardLikeService freeLikeService;
+	
+	@ResponseBody
+	@GetMapping(value="/like/getLikeCheck", produces="application/json")
+	public Map<String, Object> getLikeCheck(HttpServletRequest request) {
+		return freeLikeService.getLikeCheck(request);
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/like/getLikeCount", produces="application/json")
+	public Map<String, Object> getLikeCount(int freeNo) {
+		return freeLikeService.getLikeCount(freeNo);
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/like/mark", produces="application/json")
+	public Map<String, Object> mark(HttpServletRequest request) {
+		return freeLikeService.mark(request);
+	}
 
 	
 

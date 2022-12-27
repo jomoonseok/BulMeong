@@ -101,12 +101,12 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                DataTable
+                                회원 현황
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
+                                <table id="datatablesSimple" style="width:1200px">
                                     <thead>
-                                        <tr>
+                                        <tr style="font-size: 12px; text-align: center;">
                                             <th>번호</th>
                                             <th>사진</th>
                                             <th>아이디</th>
@@ -116,7 +116,7 @@
                                             <th>전화번호</th>
                                             <th>성별</th>
                                             <th>나이</th>
-                                            <th>출생년월</th>
+                                            <th>생년월일</th>
                                             <th>우편번호</th>
                                             <th>주소</th>
                                             <th>지번주소</th>
@@ -125,8 +125,8 @@
                                             <th>가입일자</th>
                                             <th>동의코드</th>
                                             <th>sns타입</th>
-                                            <th>비밀번호수정일</th>
-                                            <th>개인정보수정일</th>
+                                            <th>비밀번호<br>수정일</th>
+                                            <th>개인정보<br>수정일</th>
                                         </tr>
                                     </thead>
                                     <tbody id="usersTblBody">
@@ -160,10 +160,10 @@
        			url: '/admin/getAllUser',
        			success: function(resData) {
        				console.log(resData);
-       				
+       				$('.breadcrumb-item.active').text('유저 조회결과 : ' + resData.usersCount + '명');
        				$.each(resData.users, function(i, users) {
        					
-       					var usersDiv = '<tr>';
+       					var usersDiv = '<tr style="font-size: 10px; text-align: center;">';
        					usersDiv += '<td>' + users.usersNo + '</td>';
        					usersDiv += '<td><img src="' + users.profileImage + '"></img></td>';
        					usersDiv += '<td>' + users.id + '</td>';
@@ -189,6 +189,8 @@
        				});
        				
        				
+       			},error(jqXHR) {
+       				console.log(jqXHR);
        			}
        			
        		})

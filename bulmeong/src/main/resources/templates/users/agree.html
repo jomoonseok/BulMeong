@@ -15,6 +15,12 @@
 		.lbl_checked {
 			background-image: url(/images/userimage/check.png);
 		}
+		.div_all {
+			text-align: center;
+			border: solid black 1px;
+			width:50%;
+			margin: 0 auto;
+		}
 	</style>
 	<script>
 		$(function(){
@@ -74,7 +80,7 @@
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 
-	<div>
+	<div class="div_all">
 		<h1>약관 동의하기</h1>
 		
 		<form id="frm_agree" th:action="@{/users/join/write}" method="get">
@@ -83,7 +89,6 @@
 				<label for="check_all" class="lbl_all">모두 동의</label>
 			</div>
 			
-			<hr>
 			
 			<div>
 				<input type="checkbox" id="service" class="check_one blind">
@@ -117,7 +122,6 @@
 				</div>
 			</div>
 			
-			<hr>
 			
 			<div>
 				<input type="button" value="취소" onclick="history.back();">
