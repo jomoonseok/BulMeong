@@ -126,29 +126,22 @@
 				data: {query:$('#query').val(), doNm:$('#doNm').val(), induty:$('#induty').val(), themaEnvrnCl:$('#themaEnvrnCl').val()},
 				dataType: 'json',
 				success: function(resData) {
-					console.log(resData);
 					$('#camp_list').empty();
 					$.each(resData.campList, function(i, camp){
-
 						if(camp.firstImageUrl == null) {
 							camp.firstImageUrl = 'https://www.foodsafetykorea.go.kr/residue/assets/_new/img/noimage.gif';   // 이미지가 없으면 이미지 지정해주기
 						}
-
-						var camp_div = '<div class="camp_div">';
-						camp_div += '<div><img class="camp_img" src=' + camp.firstImageUrl + '></img></div>';
-						camp_div += '<div>' + camp.facltNm + '</div>';
-						camp_div += '<div>' + camp.intro + '</div>';
-						camp_div += '<div>' + camp.campNo + '</div>';
-						camp_div += '<div>' + camp.addr1 + '</div>';
-						camp_div += '<div>' + camp.sbrsCl + '</div>';
-						camp_div += '<div>' + camp.tel + '</div>';
-						camp_div += '<div id="lnk_jjim"><span id="heart"></span><span id="jjim">찜</span><span id="jjim_count"></span></div>';
-						camp_div += '<div><input type="button" class="btn_detail" data-campNo="' + camp.campNo + '" value="상세보기" </div>';
-						camp_div += '<div><input type="button" class="btn_reserve" data-campNo="' + camp.campNo + '" value="예약하기" </div>';
+						
+						var camp_div = '<div class="camp_div" style="padding: 20px;">';
+						camp_div += '<div class="img" style="padding-right: 30px;"><img class="camp_img" src=' + camp.firstImageUrl + '></img></div>';
+						camp_div += '<div class="txt" style="padding: 15px 0;">'
+						camp_div += '<div class="name" style="font-size: 20px; font-weight: bold;"><a href="/detail?campNo=' + camp.campNo + '">' + camp.facltNm + '</a></div>';
+						camp_div += '<div>' + camp.lineIntro + '</div><br>';
+						camp_div += '<div><img src="images/camp/place.png" style="width: 20px; height: 20px;"> ' + camp.addr1 + '</div>';
+						camp_div += '<div><img src="images/camp/call.png" style="width: 20px; height: 20px;"> ' + camp.tel + '</div>';
+						camp_div += '<div class="lnk_jjim"><img src="images/camp/redheart.png" style="width: 20px; height: 20px;"><span> ' + camp.jjim + '개</span></div>';
 						$('#camp_list').append(camp_div);
-					});
-
-					// 옵션 검색 시 페이징 처리는 아직 구현안됨.
+					}); 
 
 					$('#paging').empty();
 					var pageUtil = resData.pageUtil;
@@ -160,7 +153,7 @@
 					// 페이지번호
 					for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
 						if(p == $('#page').val()){
-							paging += '<strong>' + p + '</strong>';
+							paging += '<strong class="p">' + p + '</strong>';
 						} else {
 							paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
 						}
@@ -170,8 +163,8 @@
 						paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
 					}
 					$('#paging').append(paging);
-					$('#title').append('<h1>캠핑장 검색 목록 : ' + resData.campCount + '개</h1>');
 
+					$('#title').html('<h1>캠핑장 전체 목록 : <span style="color: #CC4B4C; font-weight: bold;">' + resData.campCount + '개</span></h1>');
 				}
 			});
 		});
