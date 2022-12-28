@@ -13,14 +13,13 @@
 #btn_list {
 	cursor: pointer;
 	display: block;
-	width: 80%;
+	width: 70%;
 	margin: auto;
 	font-size: 13px;
 }
 #btn_list:hover {
 	cursor: pointer;
 	display: block;
-	width: 80%;
 	margin: auto;
 	font-size: 13px;
 	color: rgba(113, 194, 133);
@@ -28,7 +27,6 @@
 #btn_list:active {
 	cursor: pointer;
 	display: block;
-	width: 80%;
 	margin: auto;
 	font-size: 13px;
 	color: rgba(0, 0, 0);
@@ -44,11 +42,12 @@
 	border: 1px rgb(255, 255, 255) solid;
 	font-size: 13px;
 	box-shadow: 0 2px 5px rgba(0,0,0,.25);
-	width: 80%;
+	width: 70%;
 	border-collapse: collapse;
 	border-radius: 15px;
 	overflow: hidden;
 	margin: auto;
+
 }
 .title_box {
 	background: rgba(113, 194, 133);
@@ -80,8 +79,8 @@
 
 /* 3. 좋아요 */
 .like_box {
-	margin: 1%;
 	display: inline;
+	cursor: pointer;
 }
 
 /* 4. 댓글 카운트 */
@@ -142,6 +141,15 @@
 
 /* 7. 댓글 */
 
+.comment_image {
+	width: 50px;
+	border: 1px solid white;
+	border-radius: 15px;
+	height: 50px;
+	outline: 1px solid rgb(127, 127, 127);
+	margin-left: 15px;
+}
+
 .cmt_create_date {
 	color: rgb(127, 127, 127);
 	font-size: 12px;
@@ -176,11 +184,11 @@
 
 .cmt_content {
 	padding: 5%;
-	margin-left: 3%;
 	color: rgb(55, 62, 72);
 	background: rgb(0, 0, 0, 0.1);
 	display: block;
 	border-radius: 10px;
+	width: auto;
 }
 
 
@@ -191,6 +199,7 @@
 	border: none;
 	transition: all 0.4s;
 }
+
 .btn_cmt_area:hover {
 	margin-left: 35px;
 	background: none;
@@ -246,12 +255,54 @@
 	margin-left: 1%;
 }
 
+/* 삭제된 댓글 스타일 */
+.remove_style {
+	margin: 1% 0;
+}
+
+/* 수정 인풋 */
+.frm_cmt_modify {
+	
+	
+}
+
 /* 8. 하단 버튼 */
 
 .footer_btn_group {
 	display: block;
 	margin: auto;
-	margin-top: 3%;
-	width: 80%;
+	margin-top: 1%;
+	width: 70%;
+
 }
+
+
+.footer_btn_group input {
+	border: 1px #CC4B4C solid;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	font-size: 12px;
+	padding: 6px 18px;
+	margin-right:-5px;
+}
+
+.footer_btn_group input:hover {
+	background-color: rgba(204, 75, 76); 
+	transition-duration: 0.3s;
+	color: white;	
+}
+
+.footer_btn1 {
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+}
+
+
+.footer_btn5 {
+	border-top-right-radius: 7px;
+	border-bottom-right-radius: 7px;
+
+}
+
+
 

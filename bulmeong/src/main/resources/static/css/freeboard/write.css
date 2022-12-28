@@ -1,0 +1,50 @@
+@charset "EUC-KR";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
+
+body {
+	width: 70%;
+	margin: auto;
+}
+
+/* 내용 입력 상자 */
+.content_box {
+	margin: auto;	
+	width: 70%;
+}
+
+.note-editable:focus {
+	border: 1px solid rgba(113, 194, 133);
+	font-size: 12px;
+}
+
+
+/* 완료, 목록 버튼 */
+
+.btn_group {
+	width: 70%;
+	margin: auto;
+	margin-top: 1%;
+}
+
+.button1, .button2 {
+	border: 1px #CC4B4C solid;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	font-size: 12px;
+	padding: 6px 18px;
+	margin-right:-5px;
+	
+}
+
+
+.footer_btn1 {
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+}
+
+
+.footer_btn5 {
+	border-top-right-radius: 7px;
+	border-bottom-right-radius: 7px;
+
+}

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
+<link th:href="@{/css/freeboard/write.css}" rel="stylesheet" />
 <script>
 
 	$(document).ready(function(){
@@ -51,18 +52,17 @@
 	
 	<div>	
 		<form id="frm_write" th:action="@{/freeboard/add}" method="post">
-		
 			<div>
 				<label for="title">제목</label>
 				<input type="text" name="freeTitle" id="title">
 			</div>
-			<div>
+			<div class="content_box">
 				<label for="content">내용</label>
-				<textarea name="freeContent" id="content" ></textarea>
+				<textarea name="freeContent" id="content"></textarea>
 			</div>
-			<div>
-				<button class="button">완료</button>
-				<input type="button" value="목록" id="btn_list">
+			<div class="btn_group">
+				<button class="button1">완료</button>
+				<input type="button" class="button2" value="목록" id="btn_list">
 			</div>
 		</form>
 	</div>

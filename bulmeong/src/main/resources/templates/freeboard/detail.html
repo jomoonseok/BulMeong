@@ -96,6 +96,11 @@
 							
 							// State가 1일 때(일반 댓글)
 							if(comment.freeCmtState == 1) {
+								if(comment.profileImage == '/images/userimage/basic_profileImage.png'){
+									div += '<span><img src="' + comment.profileImage + '" class="comment_image"></span>';
+								} else {
+									div += '<span><img src="/load/profileImage/' + comment.profileImage + '" class="comment_image"></span>';									
+								}
 								
 								div += '<div class="cmt_content_style" style="display: inline-block;">';
 								div += '<span class="cmt_content_nickname_style"><strong>' + comment.nickname + '</strong></span>';
@@ -110,9 +115,9 @@
 							// Depth가 0일 때(삭제 댓글)
 							} else {
 								if(comment.freeCmtDepth == 0) {
-									div += '<div>삭제된 댓글입니다.</div>';
+									div += '<div class="remove_style" style="margin-left: 1%;">삭제된 댓글입니다.</div>';
 								} else {
-									div += '<div>삭제된 답글입니다.</div>';
+									div += '<div class="remove_style">삭제된 답글입니다.</div>';
 								}
 							}	
 								
@@ -168,7 +173,8 @@
 						
 							div += '<div>';
 							moment.locale('ko-KR');
-							div += (comment.freeCmtDepth == 0 && comment.cmtCnt > 0 ? '<button>더보기</button></div>' : '</div>');
+							// 답글 달린것만 더보기 버튼 생성
+							// div += (comment.freeCmtDepth == 0 && comment.cmtCnt > 0 ? '<button>더보기</button></div>' : '</div>');
 
 							$('#comment_list').append(div);
 							$('#comment_list').append('<div style="border-bottom: 1px dotted gray;"></div>');
@@ -194,7 +200,7 @@
 					$(this).parent().prev().toggleClass('blind'); // 1. 수정할 input 박스 생성
 					$(this).hide();								  // 2. 수정버튼 hide
 					$(this).next().hide();						  // 3. 삭제버튼 hide
-					$(this).parent().prev().prev().children().next().children().toggleClass('blind'); // 4. content hide	
+					$(this).parent().prev().prev().children().next().next().toggleClass('blind'); // 4. 기존 content hide	
 				});
 				
 			}
@@ -525,15 +531,17 @@
 		<form id="frm_btn" method="post">
 			<input type="hidden" name="freeNo" th:value="${free.freeNo}">
 			<input type="hidden" name="nickname" th:value="${free.nickname}">
-			<input type="button" value="글쓰기" id="btn_write">
-			<input type="button" value="목록" th:onclick="|location.href='@{/freeboard/list}'|">
+			<input type="button" class="footer_btn1" value="글쓰기" id="btn_write">
+			<input type="button" class="footer_btn2" value="목록" th:onclick="|location.href='@{/freeboard/list}'|">
 			<span th:if="${session.loginUser} != null and ${free.nickname == session.loginUser.nickname}">
-				<input type="button" value="수정" id="btn_edit">
-				<input type="button" value="삭제" id="btn_remove">
+				<input type="button" class="footer_btn3" value="수정" id="btn_edit">
+				<input type="button" class="footer_btn4" value="삭제" id="btn_remove">
 			</span>
-			<input type="button" value="TOP" id="btn_top">
+			<input type="button" class="footer_btn5" value="▲" id="btn_top">
 		</form>	
 	</div>
+	
+	
 
 
 <!-- 	<div> -->

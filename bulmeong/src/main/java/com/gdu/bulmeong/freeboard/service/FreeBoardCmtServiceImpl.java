@@ -75,6 +75,7 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 		
 		String freeCmtIp = request.getRemoteAddr();
 		String nickname = loginUser.getNickname();
+		String profileImage = loginUser.getProfileImage();
 
 		
 		// 기존 freeGroupNo 파라미터로 받아오기
@@ -91,6 +92,8 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		freeCmt.setFreeCmtIp(freeCmtIp);
 		freeCmt.setNickname(nickname);
 		freeCmt.setFreeGroupNo(freeGroupNo); // 0번을 받아온다.
+		freeCmt.setProfileImage(profileImage);
+		
 	
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAdd", freeBoardCmtMapper.insertCmt(freeCmt) == 1);
