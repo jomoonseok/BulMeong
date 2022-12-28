@@ -124,7 +124,7 @@ public class UsersController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/users/check/form")
+	@PostMapping("/users/check/form")
 	public String requiredLogin_checkForm() {
 		return "users/check";
 	}
@@ -171,12 +171,12 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/sleep/display")
-	public String requiredLogin_sleepDisplay() {
+	public String sleepDisplay() {
 		return "users/sleep";
 	}
 	
 	@PostMapping("/users/restore")
-	public void requiredLogin_restore(HttpServletRequest request, HttpServletResponse response) {
+	public void restore(HttpServletRequest request, HttpServletResponse response) {
 		usersService.restoreUser(request, response);
 	}
 	

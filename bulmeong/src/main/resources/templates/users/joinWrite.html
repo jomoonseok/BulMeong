@@ -442,15 +442,15 @@
 	
 	</script>
 	<style>
-		.inp_text {
-			width: 450px;
-			height: 50px;
-		}
-		
 		.div_all {
 			width:450px;
 			margin: 0 auto;
 			
+		}
+		
+		.inp_text {
+			width: 450px;
+			height: 50px;
 		}
 		
 		label, .text_edit {
@@ -511,13 +511,6 @@
 			color: white;
 		}
 		
-		.error_color {
-			color: rgb(204, 75, 76);
-		}
-		
-		.success_color {
-			color: rgb(113, 194, 133);
-		}
 	</style>
 </head>
 <body>
@@ -543,7 +536,7 @@
 			</div>
 			<div>
 				<input type="text" name="id" id="id" class="inp_text">
-				<span id="msg_id" class="error_color"></span>
+				<span id="msg_id"></span>
 			</div>
 			<!-- 비밀번호 -->
 			<div>
@@ -551,7 +544,7 @@
 			</div>
 			<div>
 				<input type="password" name="pw" id="pw" class="inp_text">
-				<span id="msg_pw" class="error_color"></span>
+				<span id="msg_pw"></span>
 			</div>
 			
 			<!-- 비밀번호 재확인 -->
@@ -560,7 +553,7 @@
 			</div>
 			<div>
 				<input type="password" id="re_pw" class="inp_text">
-				<span id="msg_re_pw" class="error_color"></span>
+				<span id="msg_re_pw"></span>
 			</div>
 			
 			<!-- 이름 -->
@@ -569,7 +562,7 @@
 			</div>
 			<div>
 				<input type="text" name="name" id="name" class="inp_text">
-				<span id="msg_name" class="error_color"></span>
+				<span id="msg_name"></span>
 			</div>
 			
 			<!-- 닉네임 -->
@@ -578,7 +571,7 @@
 			</div>
 			<div>
 				<input type="text" name="nickname" id="nickname" class="inp_text">
-				<span id="msg_nickname" class="error_color"></span>
+				<span id="msg_nickname"></span>
 			</div>
 			
 			<!-- 휴대전화 -->
@@ -587,7 +580,7 @@
 			</div>
 			<div>
 				<input type="text" name="mobile" id="mobile" placeholder="숫자만 입력해주세요." maxlength="11" class="inp_text">
-				<span id="msg_mobile" class="error_color"></span>
+				<span id="msg_mobile"></span>
 			</div>
 			
 			<!-- 성별 -->
@@ -608,7 +601,7 @@
 					<select name="birthmonth" id="birthmonth" class="birth"></select>
 					<input type="text" id="birthdate" class="birth" name="birthdate" maxlength="2" size="2" placeholder="일" readonly>
 				</div>
-					<span id="msg_birth" class="error_color"></span>
+					<span id="msg_birth"></span>
 			</div>
 			
 			<div class="text_edit">주소</div>
@@ -687,7 +680,7 @@
 			<div>
 				<input type="text" name="email" id="email" class="addr_email addr_email2">
 				<input type="button" value="인증번호 받기" id="btn_getAuthCode" class="btn_edit">
-				<span id="msg_email" class="error_color"></span><br>
+				<span id="msg_email"></span><br>
 				<input type="text" id="authCode" class="addr_email addr_email2" placeholder="인증코드 입력">
 				<input type="button" value="인증하기" id="btn_verifyAuthCode" class="btn_edit">
 			</div>
