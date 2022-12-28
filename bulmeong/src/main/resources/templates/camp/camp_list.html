@@ -16,16 +16,29 @@
 		text-decoration: underline;
 	}
 	
+	#paging {
+		text-align: center;
+		padding: 20px;
+		cursor: pointer;
+	}
+	
 	.enable_link {
-		padding: 5px 5px;
+		margin-left: 10px;
+		padding: 5px;
 		font-size: 20px;
 		color: #96a0ad;
 		line-height: 1.5;
 		text-align: center;
+		border-radius: 100%;
 	}
 	
 	.p {
+		margin-left: 10px;
 		font-size: 20px;
+		padding: 5px 10px 5px 10px;
+		border-radius: 100%;
+		background-color: #CC4B4C;
+		color: white;
 	}
 	
 </style>
@@ -283,7 +296,7 @@
 	<header th:replace="~{layout/header::header_layout}"></header>
 	<!-- <h1 th:text="${camp.campNo}"></h1> -->
     <div id="list_container">
-    	<div class="upbar" style="background-color: #D0D1D0; padding-top: 20px;">
+    	<div class="upbar" style="background-color: #71C285; padding-top: 20px;">
 			<div class="search" style="background-color: rgb(255, 255, 255, 0.7); padding: 30px 30px; margin: 0 20px 0 20px; border-radius: 20px; box-shadow: 5px 5px 5px 5px rgb(180 185 191 / 30%); display: flex;">
 		   		<div class="condition" style="padding-right: 100px;">
 		   			<h4>※조건으로 검색하기</h4>
@@ -357,7 +370,7 @@
 	
 	   		<div>
 	  			<div id="camp_list"></div>
-	   			<div id="paging" style="background-color: black;"></div>
+	   			<div id="paging"></div>
 				<input type="hidden" id="page" value="1">
 	   		</div>
 	   		
