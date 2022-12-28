@@ -16,4 +16,5 @@ public interface CampMapper {
 	public List<CampDTO> selectAllCamp(Map<String, Object> map);
 	public List<CampDTO> selectCampByOption(Map<String, Object> map);
 	public CampDTO selectCampByNo(int campNo);
+	public List<CampDTO> selectAllCampByJjim(int campNo);
 }

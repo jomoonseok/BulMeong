@@ -54,4 +54,10 @@ public class CampController {
 		return "camp/detail";
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/camp/jjimList", produces="application/json")
+	public Map<String, Object> printCampJjim(int campNo) {
+		return campService.getCampListByJjim(campNo);
+	}
+	
 }

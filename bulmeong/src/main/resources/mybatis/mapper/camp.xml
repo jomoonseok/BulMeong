@@ -56,4 +56,10 @@
 	 	 WHERE CAMP_NO = #{campNo}
 	 </select>
 	 
+	 <select id="selectAllCampByJjim" resultType="CampDTO"> 
+	    SELECT COUNT(*)
+ 		  FROM CAMP
+ 		 WHERE CAMP_NO = #{campNo}
+	 </select>
+	 
 </mapper>
