@@ -1,0 +1,180 @@
+@charset "EUC-KR";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
+
+
+/* https://fontawesome.com/icons */
+
+
+.blind {
+	display: none;
+}
+
+/* 1. 뒤로가기 */
+#btn_list {
+	cursor: pointer;
+	display: block;
+	width: 80%;
+	margin: auto;
+	font-size: 13px;
+}
+#btn_list:hover {
+	cursor: pointer;
+	display: block;
+	width: 80%;
+	margin: auto;
+	font-size: 13px;
+	color: rgba(113, 194, 133);
+}
+#btn_list:active {
+	cursor: pointer;
+	display: block;
+	width: 80%;
+	margin: auto;
+	font-size: 13px;
+	color: rgba(0, 0, 0);
+}
+
+/* 2. 게시글 */
+
+.out_board_box {
+	display: block;
+	margin-top: 2%;
+}
+.in_board_box {
+	border: 1px rgb(255, 255, 255) solid;
+	font-size: 13px;
+	box-shadow: 0 2px 5px rgba(0,0,0,.25);
+	width: 80%;
+	border-collapse: collapse;
+	border-radius: 15px;
+	overflow: hidden;
+	margin: auto;
+}
+.title_box {
+	background: rgba(113, 194, 133);
+	padding: 1%;
+}
+
+
+
+#move_cmt, #url_css {
+	float: right;
+	cursor: pointer;
+}
+#date_css {
+	font-size: 11px;
+	color: rgb(180, 185, 191);
+}
+
+#board_content {
+	margin: 10px;
+	padding: 20px;
+	background: rgb(180, 185, 191, 0.2);
+	border-radius: 15px;
+}
+
+.freeTitle {
+	font-size: 16px;
+	color: white;
+}
+
+/* 3. 좋아요 */
+.like_box {
+	margin: 1%;
+}
+
+/* 4. 댓글 카운트 */
+.cmt_cnt_box {
+	margin: 1%;
+}
+
+/* 5. 댓글 입력창 */
+.add_comment_input {
+	width: 100%;
+}
+
+#content {		
+	outline: 1px solid gray;
+	border: none;
+	border-radius: 15px;		
+	padding: 11px;
+	margin-left: 1%;
+	width: 90%;
+	height : 32px;
+}
+#content:focus {		
+   	border: 0.5px solid rgba(113, 194, 133);
+   	border: none;
+   	border-radius: 15px;		
+   	outline: 0.5px solid rgba(113, 194, 133);		   	   	
+   	padding: 11px;
+	margin-left: 1%;
+   	width: 90%;		   	
+	height : 32px;
+}
+
+
+
+#btn_add_comment {
+	width: 7%;
+	height : 32px;
+	border: none;
+	outline: 1px solid rgb(204, 75, 76);
+	border-radius: 15px;
+	background: rgb(255, 255, 255);
+	color: rgb(204, 75, 76);
+	font-size: 13px;
+	margin-left: 1%;
+}
+
+#btn_add_comment:hover {
+	width: 7%;
+	height : 32px;
+	border: none;
+	border-radius: 15px;
+	background: rgb(204, 75, 76);
+	color: rgb(255, 255, 255);
+	font-size: 13px;
+	margin-left: 1%;
+}
+
+/* 7. 댓글 */
+
+.cmt_create_date {
+	color: rgb(127, 127, 127);
+	font-size: 12px;
+}
+
+.cmt_content_style { 
+	margin: 10px; 
+	background-color: rgba(113, 194, 133, 0.1); 
+	border: none; 
+	border-radius: 15px; 
+	display: block; 
+	padding: 10px; 
+}
+
+
+.cmt_content_nickname_style {
+	border: 1px solid;
+	padding: 5px;
+	margin: 5px;
+	background: rgba(113, 194, 133, 0.2);
+	border: none;
+	border-radius: 15px;
+}
+
+.cmt_content {
+	padding-left: 10px;
+		color: rgb(55, 62, 72); 
+}
+
+/* 8. 하단 버튼 */
+
+.footer_btn_group {
+	display: block;
+	margin: auto;
+	margin-top: 3%;
+	width: 80%;
+}
+
