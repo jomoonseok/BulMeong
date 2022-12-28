@@ -62,8 +62,11 @@
     		ON C.CAMP_NO = CT.CAMP_NO
  		 WHERE C.CAMP_NO = #{campNo};
 	 </select>
-	 
-	 
-	 
-	 
+
+	 <select id="selectAllCampByJjim" resultType="CampDTO"> 
+	    SELECT COUNT(*)
+ 		  FROM CAMP
+ 		 WHERE CAMP_NO = #{campNo}
+	 </select>
+
 </mapper>

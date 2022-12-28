@@ -265,5 +265,10 @@ public class CampServiceImpl implements CampService {
 		model.addAttribute("tent", campMapper.selectTentByCampNo(campNo));
 	}
 	
-	
+	@Override
+	public Map<String, Object> getCampListByJjim(int campNo) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("jjim", campMapper.selectAllCampByJjim(campNo));
+		return result;
+	}
 }
