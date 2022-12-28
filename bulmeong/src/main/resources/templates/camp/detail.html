@@ -3,31 +3,22 @@
 <head th:replace="~{layout/header::head('상세보기')}"></head>
 <style>
 	
-		/*.all {
-			margin: 0 350px;		
-		}*/
-		
 		.body {
-			margin: 0 auto;		
+			margin: 0 auto;
+			margin-left: 10px;
 		}
 		
 		.layout {
-			background-color: #D0D1D0;
-			/* background: url(/images/camp/black.jpg) repeat-x 0 bottom; */
+			margin-left: 10px;
+			padding-left: 30px;
+			background-color: #71C285;
 			background-repeat: no-repeat;
 			background-size: cover;
 			height: 200px;
+			color: rgb(255, 255, 255);
+			background: rgb(113, 194, 133, 0.8);
+			border-radius: 10px;
 		
-			
-			/*width: 100%;
-			height: 100%;*/
-			/*
-			background-image: url(/images/camp.jpg); 
-			width: auto;
-			max-height: 100%;
-			background-repeat: none;
-			background-size: auto;
-			*/
 		}
 		
 		.facltNm {
@@ -55,14 +46,6 @@
 		}
 		
 		
-		/* .sns_share {
-			float: left;
-		    width: 300px;
-		    height: 41px;
-		    background: url(/images/share.png) no-repeat 0 0;
-		    background-image: url(/images/share.png);
-		} */
-		
 		.icon_copy {
 			width: 16px;
 		    height: 16px;
@@ -79,11 +62,39 @@
 		}
 		
 		.btn_jjim {
-			width: 230px;
-		    background-color: #e32242;
+		    background-color: #CC4B4C;
 		    padding-left: 0px;
 		    border: none;
 		    color: #fff;
+		    border-radius: 20px;
+		    height: 40px;
+		}
+		.btn_jjim:hover {
+			width: 200px;
+			height : 40px;
+			border-radius: 20px;
+			border: none;
+			background: rgb(204, 75, 76, 0.8);
+			color: rgb(255, 255, 255);
+			font-size: 16px;
+		}
+		
+		.btn_reserve {
+			background-color: #71C285;
+		    height: 40px;
+		    padding-left: 0px;
+		    border: black;
+		    color: #fff;
+		    border-radius: 20px;
+		}
+		.btn_reserve:hover {
+			width: 200px;
+			height : 40px;
+			border-radius: 20px;
+			border: none;
+			background: rgb(113, 194, 133, 0.8);
+			color: rgb(255, 255, 255);
+			font-size: 16px;
 		}
 		
 		.tab {
@@ -157,7 +168,7 @@
 		}
 		
 		#list {
-			background-color: #D0D1D0;
+			background-color: #71C285;
 			border-radius: 10px;
 		}
 		
@@ -232,7 +243,7 @@
 		}
 		
 		.imghead {
-			filter: invert(47%) sepia(95%) saturate(529%) hue-rotate(342deg) brightness(98%) contrast(102%);
+			filter: invert(888%) sepia(95%) saturate(529%) hue-rotate(333deg) brightness(98%) contrast(102%);
 		}
 		
 		.scale {
@@ -249,6 +260,10 @@
 		  -moz-transform: scale(1.2);
 		  -ms-transform: scale(1.2);
 		  -o-transform: scale(1.2);
+		}
+		
+		table th {
+			text-align: center;
 		}
 		
 	</style>
@@ -481,18 +496,19 @@
 												<a th:text="${camp.tel}">전화하기</a>
 											</td>
 										</tr>
-									</tbody>
-									<tfoot>
 										<tr>
-											<th scope="col">
+											<th scope="col" style="padding-top: 15px;">
 												<span id="heart"></span>
 												<span id="cartCnt"></span>
 											</th>
 											<td>
-												<button class="btn_jjim" >찜하기</button>
+												<button class="btn_jjim" style="width:200px;">찜하기</button>
+												<button class="btn_reserve" th:onclick="|location.href='@{reserve(campNo=${camp.campNo})}'|" style="width:200px;">예약하기</button>
 												<span id="jjim"></span>
 											</td>
 										</tr>
+									</tbody>
+									<tfoot>
 									</tfoot>
 								</table>
 								<!-- <div>
