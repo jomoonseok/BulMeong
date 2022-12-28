@@ -38,7 +38,7 @@
 
 .out_board_box {
 	display: block;
-	margin-top: 2%;
+	margin-top: 1%;
 }
 .in_board_box {
 	border: 1px rgb(255, 255, 255) solid;
@@ -81,11 +81,13 @@
 /* 3. 좋아요 */
 .like_box {
 	margin: 1%;
+	display: inline;
 }
 
 /* 4. 댓글 카운트 */
 .cmt_cnt_box {
 	margin: 1%;
+	display: inline;
 }
 
 /* 5. 댓글 입력창 */
@@ -146,27 +148,102 @@
 }
 
 .cmt_content_style { 
-	margin: 10px; 
-	background-color: rgba(113, 194, 133, 0.1); 
-	border: none; 
-	border-radius: 15px; 
-	display: block; 
+	position:relative;
+	margin: 10px;
+	margin-left: 30px;
 	padding: 10px; 
+	width:auto; 
+	height:auto; 
+	border-radius: 10px; 
+	background-color: rgb(204, 75, 76, 0.2);
+}
+
+.cmt_content_style:after { 
+	content:""; 
+	position: absolute;
+	top: 45px; 
+	left: -20px; 
+	border-right: 20px solid rgb(204, 75, 76, 0.2);
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
 }
 
 
 .cmt_content_nickname_style {
-	border: 1px solid;
-	padding: 5px;
-	margin: 5px;
-	background: rgba(113, 194, 133, 0.2);
-	border: none;
-	border-radius: 15px;
+	padding: 3px;
+	margin: 3px;
 }
 
 .cmt_content {
-	padding-left: 10px;
-		color: rgb(55, 62, 72); 
+	padding: 5%;
+	margin-left: 3%;
+	color: rgb(55, 62, 72);
+	background: rgb(0, 0, 0, 0.1);
+	display: block;
+	border-radius: 10px;
+}
+
+
+
+.btn_cmt_area {
+	margin-left: 35px;
+	background: none;
+	border: none;
+	transition: all 0.4s;
+}
+.btn_cmt_area:hover {
+	margin-left: 35px;
+	background: none;
+	border: none;
+	text-decoration: underline;
+	color: rgba(113, 194, 133);
+}
+
+.reply_area_box {
+	margin-bottom: 5px;
+}
+
+.btn_cmt_modify {
+	width: 18px;
+	opacity: 1;
+	transition: .3s ease;
+}
+
+
+.btn_cmt_modify:hover {
+	opacity: .5;
+}
+
+.btn_cmt_remove {
+	width: 18px;
+	opacity: 1;
+	transition: .3s ease;
+	margin-left: 3px;
+}
+
+.btn_cmt_remove:hover {
+	opacity: .5;
+}
+
+/* 답글 인풋 */
+.btn_reply_area {
+	outline: 1px solid gray;
+	border: none;
+	border-radius: 15px;		
+	padding: 11px;
+	width: 90%;
+	height : 32px;
+}
+.button_reply {
+	width: 7%;
+	height : 32px;
+	border: none;
+	outline: 1px solid rgb(204, 75, 76);
+	border-radius: 15px;
+	background: rgb(255, 255, 255);
+	color: rgb(204, 75, 76);
+	font-size: 13px;
+	margin-left: 1%;
 }
 
 /* 8. 하단 버튼 */

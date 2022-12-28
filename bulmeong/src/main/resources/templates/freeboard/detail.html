@@ -137,8 +137,8 @@
 									
 									if(comment.nickname == nickname) {
 										div += '<span>'
-										div += '<input type="button" value="수정" class="btn_cmt_modify">';
-										div += '<input type="button" value="삭제" class="btn_cmt_remove" data-free_cmt_no="' + comment.freeCmtNo + '">';
+										div += '<input type="image" src="/images/freeboard/edit.png" class="btn_cmt_modify">';
+										div += '<input type="image" src="/images/freeboard/remove.png" class="btn_cmt_remove" data-free_cmt_no="' + comment.freeCmtNo + '">';
 										div += '</span>'
 									}
 								}
@@ -148,7 +148,7 @@
 								
 							if(comment.freeCmtState == 1) {									
 								// 답글 버튼
-								div += '<div>'
+								div += '<div style="margin-bottom: 5px;">'
 								div += '<input type="button" value="답글" class="btn_cmt_area">';
 								div += '<div style="margin-left: 40px;" class="blind">';								
 								// 답글 form
@@ -478,20 +478,20 @@
 		
 			<hr>
 			
-			<!-- 3. 좋아요 -->
-			<div class="like_box">
-				<a id="lnk_like">
-					<span id="heart"></span>&nbsp;<span id="like"></span><span id="like_count"></span>
-				</a>
-			</div>
-		
-			
 			<!-- 4. 댓글 카운트 -->
-			<div class="cmt_cnt_box">
-				<span id="btn_comment_list">
-					<i class="fa-regular fa-comment-dots"></i>&nbsp;댓글
-					<span id="comment_count"></span>개
-				</span>
+			<div style="margin-bottom: 9px">
+				<div class="cmt_cnt_box">
+					<span id="btn_comment_list">
+						<i class="fa-regular fa-comment-dots"></i>&nbsp;댓글
+						<span id="comment_count"></span>개
+					</span>
+				</div>
+				<!-- 3. 좋아요 -->
+				<div class="like_box">
+					<a id="lnk_like">
+						<span id="heart"></span>&nbsp;<span id="like"></span><span id="like_count"></span>
+					</a>
+				</div>
 			</div>
 			
 			
