@@ -112,31 +112,58 @@ public class QnaServiceImpl implements QnaService {
 	// 답변추가
 	@Transactional
 	@Override
-	public int addAnswer(HttpServletRequest request) {
+	public void addAnswer(HttpServletRequest request, HttpServletResponse response) {
 		
 		String id = request.getParameter("id");
-		String qnaTitle = securityUtil.preventXSS(request.getParameter("qnaTitle"));
-		String qnaContent = securityUtil.preventXSS(request.getParameter("qnaContent"));
+		String writeAnswer = securityUtil.preventXSS(request.getParameter("writeAnswer"));
 		String qnaIp = request.getRemoteAddr();
+		String qnaTitle = "a";
 		
 		int depth = Integer.parseInt(request.getParameter("depth"));
 		int qnaGroupNo = Integer.parseInt(request.getParameter("qnaGroupNo"));
 		
-		QnaDTO qna = new QnaDTO();
-		qna.setDepth(depth);
-		qna.setQnaGroupNo(qnaGroupNo);
-		
-		qnaMapper.updatePreviousAnswer(qna);
+		System.out.println(id);
+		System.out.println(writeAnswer);
+		System.out.println(qnaIp);
+		System.out.println(depth);
+		System.out.println(qnaGroupNo);
 		
 		QnaDTO answer = new QnaDTO();
 		answer.setId(id);
-		answer.setQnaTitle(qnaTitle);
-		answer.setQnaContent(qnaContent);
+		answer.setQnaContent(writeAnswer);
 		answer.setQnaIp(qnaIp);
-		answer.setDepth(depth + 1);
+		answer.setDepth(depth);
 		answer.setQnaGroupNo(qnaGroupNo);
+		answer.setQnaTitle(qnaTitle);
 		
-		return qnaMapper.insertAnswer(answer);
+		int result = qnaMapper.insertAnswer(answer);
+		
+		try {
+			if(result > 0) {
+				System.out.println("ahi");
+				depth = 1;
+				QnaDTO qna = new QnaDTO();
+				qna.setDepth(depth);
+				qna.setQnaGroupNo(qnaGroupNo);
+				
+				qnaMapper.updatePreviousAnswer(qna);
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('작성되었습니다.');");
+				out.println("location.href='/qna/list';");
+				out.println("</script>");
+				
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
 	}
 	
 	

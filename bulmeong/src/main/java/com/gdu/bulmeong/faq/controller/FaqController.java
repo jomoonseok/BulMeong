@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.bulmeong.faq.service.FaqService;
 
@@ -33,4 +34,9 @@ public class FaqController {
 		return "redirect:/faq/list";
 	}
 	
+	@PostMapping("/faq/remove")
+	public String removeFaq(@RequestParam("faqNo") int faqNo) {
+		faqService.removeFaq(faqNo);
+		return "redirect:/faq/list";
+	}
 }

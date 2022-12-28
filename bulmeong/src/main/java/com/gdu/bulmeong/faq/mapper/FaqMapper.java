@@ -12,4 +12,5 @@ public interface FaqMapper {
 	public int selectFaqCount();
 	public List<FaqDTO> selectFaqListByMap(Map<String, Object> map);
 	public int insertFaq(FaqDTO faq);
+	public int deleteFaq(int faqNo);
 }

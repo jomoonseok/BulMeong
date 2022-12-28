@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('FAQ')}"></head>
-<link th:href="@{/css/faq.css}" rel="stylesheet" />
+<link th:href="@{/css/faq/list.css}" rel="stylesheet" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@500&display=swap" rel="stylesheet">
@@ -14,6 +14,12 @@
 		$('.btn_contentToggle').click(function(){
 			$(this).next().next().toggleClass('blind');			
 		});
+		
+		$('.btn_remove').click(function(){
+			if(confirm('삭제하시겠습니까?')){
+				$(this).parent().submit();
+			}
+		})
 
 	});
 </script>
@@ -41,6 +47,9 @@
 				<tr>
 					<th></th>
 					<th></th>
+					<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+						<th class="btn_delete"></th>
+					</th:block>
 				</tr>
 			</thead>
 			<tbody>
@@ -61,11 +70,18 @@
 								<div class="css_font2">A .</div>
 									
 									<span th:text="${faq.faqContent}" class="css_faq_content"></span>
-
+									
 <!-- 								<i class="fa-thin fa-circle-chevron-up"></i> -->
 							</div>
 						</td>
-
+						<td>
+							<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+								<form method="post" th:action="@{/faq/remove}">
+									<input type="button" value="삭제" class="btn_remove">
+									<input type="hidden" name="faqNo" th:value="${faq.faqNo}">
+								</form>
+							</th:block>
+						</td>
 					</tr>
 				</th:block>
 			</tbody>
@@ -76,6 +92,7 @@
 			</tfoot>
 		</table>
 	</div>
+	<div th:replace="~{layout/sidebar::sidebar_layout}"></div>
 	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

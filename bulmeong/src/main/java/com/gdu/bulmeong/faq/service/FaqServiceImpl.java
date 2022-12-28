@@ -38,7 +38,7 @@ public class FaqServiceImpl implements FaqService {
 		
 		int totalRecord = faqMapper.selectFaqCount();
 
-		int recordPerPage = 10;
+		int recordPerPage = 7;
 		
 		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
 		
@@ -65,6 +65,11 @@ public class FaqServiceImpl implements FaqService {
 		faq.setFaqContent(faqContent);
 		
 		return faqMapper.insertFaq(faq);
+	}
+	
+	@Override
+	public int removeFaq(int faqNo) {
+		return faqMapper.deleteFaq(faqNo);
 	}
 	
 }

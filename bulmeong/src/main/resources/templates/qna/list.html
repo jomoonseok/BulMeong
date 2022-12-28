@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('QNA목록')}"></head>
-<link th:href="@{/css/qna.css}" rel="stylesheet" />
+<link th:href="@{/css/qna/list.css}" rel="stylesheet" />
 <script th:inline="javascript">
 	
 	$(document).ready(function(){
 	
 	
-		$('#qnaqna').click(function(){
-			event.preventDefault();
-		});
+// 		$('#qnaqna').click(function(){
+// 			event.preventDefault();
+// 		});
 		
 		$('.btn_contentToggle').click(function(){
 			$(this).next().toggleClass('blind');			
@@ -30,11 +30,14 @@
 		});
 		
 		$('#btn_remove').click(function(){
-			if(confirm('삭제할까요?')){
+			if(confirm('삭제하시겠습니까?')){
 				$(this).parent().submit();
 			}
 		})
 		
+		$('#btn_submitAnswer').click(function() {
+			$('#frm_answer_add').submit();
+		})
 		
 		/*
 		1226 depth2일때만 답변달기 버튼 보이게
@@ -159,28 +162,32 @@
 						<td>
 							<th:block th:if="${qna.qnaState == 1}">
 								<div class="btn_contentToggle">
-									<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
+									<a th:text="${qna.qnaTitle}" id="qnaTitle"></a>
 								</div>
 								<div id="toggle_area" class="blind">
 									<hr>
 <!-- 									<span th:text="${qna.qnaTitle}" class="css_qna_title"></span><br> -->
 									<span th:text="${qna.qnaContent}" class="css_qna_content"></span>
 <!-- 									<div th:text="${qna.qnaContent}"> -->
+									<hr>
 									<div th:if="${session.loginUser != null} and ${session.loginUser.id == 'admin'}">
 										<form id="frm_answer_add" method="post" th:action="@{/qna/answer/add}">
-											<textarea id="writeAnswer" rows="10" cols="30" class="blind"></textarea>
+											<textarea id="writeAnswer" name="writeAnswer" rows="10" cols="30" class="blind"></textarea>
 											<input type="button" id="btn_writeAnswer" value="답변하기">
 											<input type="button" id="btn_submitAnswer" value="작성완료" class="blind">
+											<input type="hidden" name="id" th:value="${qna.id}">
+											<input type="hidden" name="depth" th:value="${qna.depth}">
+											<input type="hidden" name="qnaNo" th:value="${qna.qnaNo}">
+											<input type="hidden" name="qnaGroupNo" th:value="${qna.qnaGroupNo}">
 										</form>
 									</div>
-									<hr>
 								</div>
 							</th:block>
 							
 							<th:block th:if="${qna.qnaState == 2}">
 								<div th:if="${session.loginUser != null} and ${session.loginUser.id == qna.id} or ${session.loginUser.id == 'admin'}">
 									<div class="btn_contentToggle">
-										<a th:href="@{#}" th:text="${qna.qnaTitle}" id="qnaqna"></a>
+										<a th:text="${qna.qnaTitle}" id="qnaTitle"></a>
 									</div>
 									<div id="toggle_area" class="blind">
 										<hr>
@@ -188,14 +195,18 @@
 										<span th:text="${qna.qnaContent}" class="css_qna_content"></span>
 										
 <!-- 										<div th:text="${qna.qnaContent}" class="blind"> -->
+										<hr>
 										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
 											<form id="frm_answer_add" method="post" th:action="@{/qna/answer/add}">
-												<textarea id="writeAnswer" rows="10" cols="30" class="blind"></textarea>
+												<textarea id="writeAnswer" name="writeAnswer" rows="10" cols="30" class="blind"></textarea>
 												<input type="button" id="btn_writeAnswer" value="답변하기">
 												<input type="button" id="btn_submitAnswer" value="작성완료" class="blind">
+												<input type="hidden" name="id" th:value="${qna.id}">
+												<input type="hidden" name="depth" th:value="${qna.depth}">
+												<input type="hidden" name="qnaNo" th:value="${qna.qnaNo}">
+												<input type="hidden" name="qnaGroupNo" th:value="${qna.qnaGroupNo}">
 											</form>
 										</div>
-										<hr>
 									</div>
 								</div>
 								<div th:if="${session.loginUser} != null and ${session.loginUser.id} != ${qna.id} and ${session.loginUser.id} != 'admin'">
@@ -235,7 +246,8 @@
 									</div>
 									<input type="hidden" name="id" th:value="${qna.id}">
 									<input type="hidden" name="depth" th:value="${qna.depth}">
-									<input type="hidden" name="groupNo" th:value="${qna.qnaGroupNo}">
+									<input type="hidden" name="qnaNo" th:value="${qna.qnaNo}">
+									<input type="hidden" name="qnaGroupNo" th:value="${qna.qnaGroupNo}">
 								</form>
 							</td>
 						</th:block>

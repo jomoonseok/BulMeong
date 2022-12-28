@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <head th:replace="~{layout/header::head('QNA목록')}"></head>
+<link th:href="@{/css/qna/popup.css}" rel="stylesheet" />
 <script th:inline="javascript">
 	$(function(){
 		fn_AddQuestion();
@@ -64,7 +65,7 @@
     
     <form id="frm_writePop" th:object="${qna}" th:action="@{/qna/add}" method="post">
 	    <div class="input_wrap">
-			<div th:text="|작성자 ${session.loginUser.id}"></div>
+			<div th:text="|작성자 ${session.loginUser.id}|" class="css_qna_writer"></div>
 			<input type="hidden" id="id" name="id" th:value="${session.loginUser.id}">
 		</div>
 	    <div class="css_writeWrap">
@@ -73,7 +74,7 @@
 	    </div>
 	    <div class="css_writeWrap">
 	        <label for="qnaContent">내용</label><br>
-	        <textarea rows="20" cols="60" id="qnaContent" name="qnaContent" placeholder="내용을 입력하세요."></textarea>
+	        <textarea id="qnaContent" name="qnaContent" placeholder="내용을 입력하세요."></textarea>
 	    </div>
 	    <div class="form-check form-switch">
   			<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
@@ -81,7 +82,7 @@
 		</div>
 	    <div class="footer">
 	        <input type="submit" value="작성완료" id="btn_popupSubmit">
-	        <input type="reset" value="작성초기화">
+	        <input type="reset" value="작성초기화" class="btn_pupupReset">
 	        <input type="button" id="btn_popupClose" value="닫기">
 	    </div>
     </form>

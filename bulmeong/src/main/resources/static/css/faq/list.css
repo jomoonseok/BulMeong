@@ -20,6 +20,7 @@ body {
 .css_sub_title {
 /* 	border: 1px #a39485 solid; */
 	margin-left: 10px;
+	color: grey;
 }
 
 .css_faq_box {
@@ -74,11 +75,13 @@ table {
 
 #toggle_area {
 	font-size:13px;
+	margin-bottom: 10px;
 }
 
 .btn_contentToggle {
 	width: 100%;
 	font-weight: bold;
+	cursor: pointer;
 }
 
 .css_font1 {
@@ -117,6 +120,10 @@ hr {
 	margin-right: 20px;
 }
 
+i:hover {
+	color: #CC4B4C;
+}
+
 .fa-solid{
 	margin-top: 20px;
 }
@@ -135,14 +142,17 @@ hr {
 .css_answer {
 /* 	padding: 10px; */
 	background-color: #f8f8f9;
-	width: 98%;
+	width: 96%;
 	margin-right: 10px;
+	margin-left: 15px;
 }
 
 .css_faq_content {
 	font-size: 17px;
 	text-align: center;
 	margin-left: 5px;
+	margin-bottom: 20px;
+	color: #2c2c2c;
 }
 
 table > td {
@@ -155,3 +165,10 @@ tfoot > tr > td {
    font-size: 20px;
 }
 
+td a:hover {
+	color: rgba(113, 194, 133);
+}
+
+a {
+   color: #73685d;
+}

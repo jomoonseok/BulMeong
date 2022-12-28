@@ -1,22 +1,19 @@
 @charset "UTF-8";
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
 .blind {
 	display: none;
 }
 
 #toggle_area {
-	background-color: #f8f8f9;
+	background-color: #e9e9e9;
 	font-size:13px;
-	margin-bottom: 10px;
 }
 
 /* list.html */
-
 body {
-/* 	border: 1px #a39485 solid; */
 	width: 70%;
 	margin: auto;
+/* 	border: 1px #a39485 solid; */
 }
 
 .css_main_title {
@@ -29,53 +26,54 @@ body {
 	color: grey;
 }
 
-.css_qna_box {
+.css_notice_box {
 	height: 80px;
 	margin-top: 20px;
 	margin-bottom: 10px;
 	background-color: #f8f8f9;
 }
 
-.css_qna_box_inner {
+.css_notice_box_inner {
 	padding-top: 25px;
 	text-align: center;
 	margin: auto;
 	font-size: 18px;
 }
+	
+.css_outer {
+/* 		border: 1px #a39485 solid; */
+	width: 100%;
+	margin: 10px auto 10px 0;
+}
 
-#my_qnaList, #btn_qnaWrite {
+.css_btn_noticeWrite {
+/*  margin: center; */
+	width: 150px;
+	height: 28px;
 	border: 1px #CC4B4C solid;
 	border-radius:7px;
-	color: rgba(204, 75, 76);
-	background-color: white;
-	margin-top: 10px;
+	text-align: center;
+	text-color: rgba(204, 75, 76);
+	float: right;
 	margin-bottom: 10px;
-	margin-right: 3px;
-	float: right;
 }
-
-#btn_writeAnswer {
-	border: 1px #CC4B4C solid;
-	border-radius:7px;
-	color: rgba(204, 75, 76);
-	background-color: white;
-	float: right;
-}
-
-#my_qnaList:hover, #btn_qnaWrite:hover, #btn_writeAnswer:hover{
+   
+.css_btn_noticeWrite:hover { 
 	background-color: rgba(204, 75, 76); 
-    transition-duration: 0.3s;
-    color: white;
+	transition-duration: 0.3s;
+	text-color: white;
+}
+   
+.css_btn_noticeWrite > a {
+	color: #CC4B4C;
+}
+   
+.css_btn_noticeWrite > a:visited {
+	color: #CC4B4C;
 }
 
-tbody span {
-	/* 얘를 depth 1 일때(답변) 으로 수정하기 */
-	/* list.html도 blind빠져야함 */
-	padding-left: 25px;
-}
-
-hr {
-	margin-bottom: 10px;
+.css_btn_noticeWrite > a:hover {
+	color: white;
 }
 
 table {
@@ -113,54 +111,38 @@ td a:hover {
 	color: rgba(113, 194, 133);
 }
 
-.toggle_area {
-	text-align: center;
-}
-
-.css_qna_content {
-	font-size: 14px;
-}
-
 a {
    color: #73685d;
 }
-
+  
 thead > tr > th:first-of-type {
    width: 20%;
 }
 
 thead > tr > th:nth-of-type(2) {
-   width: 50%;
+   width: 40%;
 }
 
 thead > tr > th:nth-of-type(3) {
-   width: 5%;
+   width: 20%;
 }
 
 thead > tr > th:nth-of-type(4) {
-   width: 15%;
+   width: 20%;
 }
 
 tbody > tr:last-of-type {
    border: 1px #a39485 solid;
    border-radius: 5px;
 }
-
-thead > tr > th:nth-of-type(6) {
-   width: 10%;
-}
-
-.css_qna_depth {
-	text-align: center;
-}
-
-.css_qna_createDate,.css_qna_id{
-	text-align: center;
-}
-
+  
 tfoot > tr > td {
    text-align: center;
    width: 100%;
    font-size: 20px;
 }
 
+.css_notice_center{
+	text-align: center;
+}
+   

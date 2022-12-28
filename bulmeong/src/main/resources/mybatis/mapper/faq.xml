@@ -25,4 +25,10 @@
 			(#{faqTitle}, #{faqContent}, DATE_FORMAT(NOW(), '%y-%m-%d'))
 	</insert>
 	
+	<delete id="deleteFaq" parameterType="int">
+		DELETE
+		  FROM FAQ
+		 WHERE FAQ_NO = #{faqNo}
+	</delete>
+	
 </mapper>

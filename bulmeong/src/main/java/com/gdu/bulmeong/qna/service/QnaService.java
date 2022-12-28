@@ -8,6 +8,6 @@ import org.springframework.ui.Model;
 public interface QnaService {
 	public void findQnaList(HttpServletRequest request, Model model);
 	public int addQuestion(HttpServletRequest request, HttpServletResponse response);
-	public int addAnswer(HttpServletRequest request);
+	public void addAnswer(HttpServletRequest request, HttpServletResponse response);
 	public int removeQna(int qnaNO);
 }

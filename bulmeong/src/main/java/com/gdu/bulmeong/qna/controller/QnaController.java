@@ -26,7 +26,7 @@ public class QnaController {
 //	}
 	
 	@GetMapping("/qna/list")
-	public String qnaList(HttpServletRequest request, Model model) {
+	public String requiredLogin_qnaList(HttpServletRequest request, Model model) {
 		qnaService.findQnaList(request, model);
 		return "qna/list";
 	}
@@ -48,10 +48,9 @@ public class QnaController {
 		return "redirect:/qna/list";
 	}
 	
-	@PostMapping("/qna/aswer/add")
-	public String answerAdd(HttpServletRequest request) {
-		qnaService.addAnswer(request);
-		return "redirect:/qna/list";
+	@PostMapping("/qna/answer/add")
+	public void answerAdd(HttpServletRequest request, HttpServletResponse response) {
+		qnaService.addAnswer(request, response);
 	}
 	
 }
