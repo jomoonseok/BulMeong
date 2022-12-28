@@ -22,6 +22,7 @@ import com.gdu.bulmeong.admin.domain.AdminTentDTO;
 import com.gdu.bulmeong.admin.mapper.AdminMapper;
 import com.gdu.bulmeong.camp.domain.CampDTO;
 import com.gdu.bulmeong.camp.mapper.CampMapper;
+import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.MyFileUtil;
 import com.gdu.bulmeong.util.PageUtil;
 
@@ -42,6 +43,12 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private MyFileUtil myFileUtil;
+	
+	@Override
+	public void adminCheck(HttpServletRequest request, Model model) {
+		UsersDTO loginUser = (UsersDTO)request.getSession().getAttribute("loginUser");
+		model.addAttribute("loginUser", loginUser);
+	}
 	
 	public Map<String, Object> getAllUser() {
 		

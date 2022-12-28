@@ -166,7 +166,8 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/reserve")
-	public String requiredLogin_reserve() {
+	public String requiredLogin_reserve(HttpServletRequest request, Model model) {
+		usersService.getReserveById(request, model);
 		return "users/reserve";
 	}
 	
@@ -231,8 +232,5 @@ public class UsersController {
 	public void requiredLogin_modifyProfile(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
 		usersService.modifyProfile(multipartRequest, response);
 	}
-	
-	
-	
 	
 }

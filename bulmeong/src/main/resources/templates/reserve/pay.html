@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{layout/header::head('Bulmeong Pay')}"></head>
+<head th:insert="~{layout/header::head('[bulmeong] 결제하기')}"></head>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 	<!-- <link th:href='@{fakeLoader.js-master/dist/fakeLoader.min.css}' rel='stylesheet' />
     <script th:src='@{fakeLoader.js-master/dist/fakeLoader.min.js}'></script> -->
@@ -78,7 +78,6 @@
     		
     		// 함수 호출
 			pay();    		
-	   		fn_close();
     		
     	});
     	
@@ -103,9 +102,10 @@
 					if (rsp.success) {
 						alert("결제 및 예약이 완료되었습니다.");  // alert('결제 및 예약이 완료되었습니다.');  // location.href="결제 완료 후 이동할 페이지 url"
 						$('#frm_add').submit();
-						/* location.href="/";  // 마이페이지 예약내역으로 이동하기 */
+						// location.href="/users/reserve";  // 마이페이지 예약내역으로 이동하기 */
 					} else {
 						alert("결제 및 예약이 취소되었습니다.");  // alert('결제 및 예약에 실패하였습니다. 에러 : ' + rsp.error_msg); 
+						history.go(-3);
 					}
 	
 				});
@@ -119,11 +119,9 @@
     	
     	function fn_close() {
 			
-			$('#btn_close').click(function() {
-				alert('예약이 취소되었습니다.');
-				history.back();
-			})
-			
+			alert('예약이 취소되었습니다.');
+			history.back();
+		
 		}
     	
     	function fn_mobileCheck(){
@@ -178,12 +176,13 @@
 				</div>
 				<div>
 					<span>텐트 종류</span><input type="text" id="strCategory" readonly th:value="${strCategory}"> 
+					<input type="hidden" name="tentCategory" th:value="${tentCategory}"> 
 				</div>
 				<div>
 					<span style="padding-right: 41px;">텐트명</span><input type="text" id="tentName" readonly th:value="${tent.tentName}"> 
 				</div>
 				<div>
-					<span>텐트 금액</span><input type="text" id="tentSum" readonly th:value="${tent.tentSum}"> 
+					<span>텐트 금액</span><input type="text" id="tentSum" readonly th:value="${#numbers.formatInteger(tent.tentSum, 0, 'COMMA')}"> 
 				</div>
 			</div>
 			
@@ -212,7 +211,8 @@
 					<span>숙박일정</span><input type="text" id="reserveDate" readonly th:value="${reserveDate}"> 
 				</div>
 				<div>
-					<span>합계금액</span><input type="text" id="reserveSum" name="reserveSum" readonly th:value="${#numbers.formatInteger(tent.tentSum * reserveCount * reserveDate2, 0, 'COMMA')}"> 
+					<span>합계금액</span><input type="text" id="reserveSum2" name="reserveSum2" readonly th:value="${#numbers.formatInteger(tent.tentSum * reserveCount * reserveDate2, 0, 'COMMA')}"> 
+					<input type="hidden" id="reserveSum" name="reserveSum" readonly th:value="${tent.tentSum * reserveCount * reserveDate2}"> 
 				</div>
 			</div>
 			
@@ -220,7 +220,7 @@
 			
 			<div style="padding-bottom: 19px;">
 				<input type="button" value="결제하기" id="btn_pay">
-				<input type="button" value="취소하기" id="btn_close">
+				<input type="button" value="취소하기" id="btn_close" onclick="fn_close();">
 			</div>
 			
 		</div>

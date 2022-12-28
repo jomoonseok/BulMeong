@@ -34,7 +34,7 @@
 		INSERT INTO RESERVE
 			(CAMP_NO, TENT_NO, ID, RESERVE_NAME, RESERVE_COUNT, RESERVE_BEGIN_DATE, RESERVE_END_DATE, RESERVE_SUM, RESERVE_OPTION, RESERVE_STATE, RESERVE_CANCEL)
 		VALUES
-			(#{campNo}, #{tentNo}, #{id}, #{reserveName}, #{reserveCount}, #{reserveBeginDate}, date_add(#{reserveEndDate}, interval -1 day), #{reserveSum}, 1, 0, 'NULL')
+			(#{campNo}, #{tentNo}, #{id}, #{reserveName}, #{reserveCount}, #{reserveBeginDate}, date_add(#{reserveEndDate}, interval -1 day), #{reserveSum}, ${tentCategory}, 0, 'NULL')
 	</insert>
 	
 	<!-- <select id="selectReservedTent" parameterType="Map" resultType="ReservedDTO">
@@ -60,8 +60,6 @@
 	     <!-- WHERE A.CAMP_NO = #{campNo} AND B.RESERVE_BEGIN_DATE LIKE #{reserveBeginDate} OR B.RESERVE_END_DATE BETWEEN #{reserveBeginDate} AND date_add(#{reserveEndDate}, interval -1 day) -->
 	 	 <!-- WHERE A.CAMP_NO = #{campNo} AND B.RESERVE_BEGIN_DATE BETWEEN #{reserveBeginDate} AND date_add(#{reserveEndDate}, interval -1 day) -->
 	</select>
-	
-	
 	
 	
 </mapper>
