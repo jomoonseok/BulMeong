@@ -87,7 +87,7 @@ public class NoticeServiceImpl implements NoticeService {
 		MultipartFile multipartFile = multipartRequest.getFile("file");
 			
 		// 저장 경로
-		String path = "C:" + File.separator + "bulmeongImage" + File.separator + "noticeImage";
+		String path = myFileUtil.getSummernotePath();
 				
 		// 저장할 파일명
 		String filesystem = myFileUtil.getFilename(multipartFile.getOriginalFilename());
@@ -110,7 +110,7 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		// 저장된 파일을 확인할 수 있는 매핑을 반환
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("src", multipartRequest.getContextPath() + "/load/bulmeongImage/" + filesystem);  // 이미지 mapping값을 반환
+		map.put("src", "/load/noticeImage/" + filesystem);  // 이미지 mapping값을 반환
 		map.put("filesystem", filesystem);  // HDD에 저장된 파일명 반환
 		return map;
 		
@@ -190,7 +190,7 @@ public class NoticeServiceImpl implements NoticeService {
 		if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 			for(SummernoteImageDTO summernoteImage : summernoteImageList) {
 				if(notice.getNoticeContent().contains(summernoteImage.getFilesystem()) == false) {
-					File file = new File("C:" + File.separator + "bulmeongImage" + File.separator + "noticeImage", summernoteImage.getFilesystem());
+					File file = new File(myFileUtil.getSummernotePath(), summernoteImage.getFilesystem());
 					if(file.exists()) {
 						file.delete();
 					}
@@ -279,7 +279,7 @@ public class NoticeServiceImpl implements NoticeService {
 				
 				if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 					for(SummernoteImageDTO summernoteImage : summernoteImageList) {
-						File file = new File("C:" + File.separator + "bulmeongImage" + File.separator + "noticeImage", summernoteImage.getFilesystem());
+						File file = new File(myFileUtil.getSummernotePath(), summernoteImage.getFilesystem());
 						if(file.exists()) {
 							file.delete();
 						}

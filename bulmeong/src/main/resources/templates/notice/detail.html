@@ -2,30 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('공지사항')}"></head>
 <link th:href="@{/css/notice/detail.css}" rel="stylesheet" />
+
 <style>
 	.blind {
 		display: none;
 	}
 </style>
-<body>
-	<div>
 		<header th:replace="~{layout/header::header_layout}"></header>
+<body>
+	<div class="css_detail_wrap">
 		
-		<h3 th:text="|[공지] ${notice.noticeTitle}|"></h3>
+		<div class="css_notice_title_wrap">
+			<span th:text="|[공지] ${notice.noticeTitle}|"></span>
+		</div>
 		
-		<div>
+		<div class="css_notice_createDate">
 			<span th:text="|작성일▷ ${notice.noticeCreateDate}|"></span>
 <!-- 			&nbsp;&nbsp;&nbsp; -->
 <!-- 			<span th:text="|수정일 ${notice.noticeModifyDate}|"></span> -->
 		</div>
 		
-		<div>
+		<div class="css_notice_hit">
 			<span th:text="|조회수▷ ${#numbers.formatInteger(notice.noticeHit,1,'COMMA')}|"></span>
 		</div>
 		
 		<hr>
 		
-		<div th:utext="${notice.noticeContent}"></div>
+		<div th:utext="${notice.noticeContent}" class="css_noticeContent"></div>
 		
 		<hr>
 		
@@ -36,7 +39,7 @@
 						<input type="button" value="수정" id="btn_edit_notice">
 						<input type="button" value="삭제" id="btn_remove_notice">
 					</th:block>
-				<input type="button" value="목록" onclick="location.href='/notice/list'">
+				<input type="button" value="목록" onclick="location.href='/notice/list'" class="css_notice_list">
 			</form>
 		</div>
 		<script th:inline="javascript">
