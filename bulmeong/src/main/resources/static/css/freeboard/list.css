@@ -17,16 +17,18 @@
 
 h3 {
 	display: block;
-	width: 80%;
+	width: 70%;
 	margin: auto;
 	margin-bottom: 10px;
 }
 
 /* 글쓰기 버튼 */
+.writer_box {
+	width: 70%;
+	margin: auto;
+}
 .writer_btn {
 	display: block;
-	margin: auto;
-	width: 80%;
 }
 
 #write {
@@ -36,7 +38,7 @@ h3 {
 	background-color: white;
 	margin-bottom: 10px;
 	font-size: 13px;
-	padding: 1% 2%;
+	padding: 8px 20px;
 }
 #write:hover {
 	background-color: rgba(204, 75, 76); 
@@ -48,7 +50,7 @@ table {
 	border: 1px #a39485 solid;
 	font-size: .9em;
 	box-shadow: 0 2px 5px rgba(0,0,0,.25);
-	width: 80%;
+	width: 70%;
 	border-collapse: collapse;
 	border-radius: 5px;
 	overflow: hidden;
@@ -129,7 +131,7 @@ tfoot > tr > td > a{
 }
 
 .in_div_search {
-	width: 80%;
+	width: 70%;
   	margin: auto;
 }
 
