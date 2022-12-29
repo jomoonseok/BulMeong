@@ -196,7 +196,7 @@
 										
 <!-- 										<div th:text="${qna.qnaContent}" class="blind"> -->
 										<hr>
-										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+										<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'" >
 											<form id="frm_answer_add" method="post" th:action="@{/qna/answer/add}">
 												<textarea id="writeAnswer" name="writeAnswer" rows="10" cols="30" class="blind"></textarea>
 												<input type="button" id="btn_writeAnswer" value="답변하기">
@@ -207,6 +207,9 @@
 												<input type="hidden" name="qnaGroupNo" th:value="${qna.qnaGroupNo}">
 											</form>
 										</div>
+<!-- 										<div th:if="${qna.depth == 1}"> -->
+<!-- 											<span th:text="${qna.qnaContent}" class="css_qna_content"></span> -->
+<!-- 										</div> -->
 									</div>
 								</div>
 								<div th:if="${session.loginUser} != null and ${session.loginUser.id} != ${qna.id} and ${session.loginUser.id} != 'admin'">
