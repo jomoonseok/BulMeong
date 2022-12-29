@@ -19,6 +19,7 @@ public interface FreeBoardCmtMapper {
 	public int insertCmt(FreeBoardCmtDTO freeCmt);
 	public int deleteCmt(int freeCmtNo);
 	public int updateCmt(FreeBoardCmtDTO freeCmt);
+	public int updateCmtProfile(FreeBoardCmtDTO freeCmt);
 	
 	// 2. 대댓글
 	public int updatePreviousReply(FreeBoardCmtDTO freeCmt);

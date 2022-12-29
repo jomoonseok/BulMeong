@@ -2,14 +2,34 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
 
 
+/* 상단 이미지 */
+
+.top_image {
+	margin: auto;
+	width: 100%;
+	margin-top: 30px;
+}
+
+.image_style {
+	width: 70%;
+	margin: auto;
+	display: block;
+	opacity: 0.9;
+}
+
 /* 내용 입력 상자 */
 .content_box {
 	margin: auto;	
 	width: 70%;
 }
 
+.note-editable {
+	font-size: 12px;
+}
+
 .note-editable:focus {
-	border: 1px solid rgba(113, 194, 133);
+	background: rgba(113, 194, 133, 0.1);
+	
 	font-size: 12px;
 }
 
@@ -23,6 +43,19 @@
 
 #title {
 	border: none;
+	margin-top: 30px;
+	font-size: 25px;
+	width: 100%;
+	color: gray;
+}
+#title::placeholder {
+	font-size: 25px;
+	color: rgb(180, 185, 191);
+}
+
+#title:focus {
+	border: none;
+	outline: none;
 }
 
 

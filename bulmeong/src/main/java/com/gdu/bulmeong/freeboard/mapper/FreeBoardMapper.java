@@ -18,6 +18,7 @@ public interface FreeBoardMapper {
 	public int insertFreeBoard(FreeBoardDTO freeBoard);
 	public FreeBoardDTO selectFreeBoardByNo(int freeNo);
 	public int updateFreeBoard(FreeBoardDTO freeBoard);
+	public int updateFreeBrdProfile(FreeBoardDTO freeBoard);
 	public int deleteFreeBoard(int freeNo);
 	
 	// 2. 검색 기능
