@@ -1,9 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
+<title th:text="${title}"></title>
 <link th:href="@{/css/sidebar.css}" rel="stylesheet" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <div th:fragment="sidebar_layout">
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+
 <script>
     $(function () {
         $(".left_sub_menu").hide();
@@ -23,14 +25,14 @@
     });
 </script>
 	<div id="wrapper">
-        <div class="topbar" style="position: absolute; top: 0px; left:-12px;">
+        <div class="topbar" style="position: absolute; top: 0px; left:0px;">
             <!-- 왼쪽 메뉴 -->
             <div class="left side-menu">
                 <div class="sidebar-inner">
                     <div id="sidebar-menu">
                         <ul>
                             <li class="has_sub"><a href="javascript:void(0);" class="waves-effect">
-                                <i class="fas fa-bars"></i>
+                                <i class="fa-solid fa-list"></i>
                             </a></li>
                         </ul>
                     </div>
@@ -40,20 +42,28 @@
             <div class="left_sub_menu">
                 <div class="sub_menu">
 <!--                     <input type="search" name="SEARCH" placeholder="SEARCH"> -->
-                    <h2>bul meong</h2>
+                    <a th:href="@{/users/profile}">
+						<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}">
+							<img th:src="${session.loginUser.profileImage}" class="css_basic_profileImage" width="80px" style="border:1px solid black;">
+						</span>
+						<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
+							<img th:src="|/load/profileImage/${session.loginUser.profileImage}|" class="css_profileImage" width="80px" style="border:1px solid black;">
+						</span>
+					</a>
+					<br><a th:text="|${session.loginUser.nickname}|" class="nickname" th:href="@{/users/mypage}"></a>님
                     <ul class="big_menu">
                         <li>마이페이지<i class="arrow fas fa-angle-right"></i></li>
-                        <ul class="small_menu">
-                            <li><a href="#">회원정보변경</a></li>
-                            <li><a href="#">찜목록</a></li>
-                            <li><a href="">내가 쓴 글</a></li>
-                            <li><a href="#">예약내역</a></li>
+                        <ul class="css_mypage_sub_menu">
+                            <li><a th:href="@{/users/modify}">회원정보변경</a></li>
+                            <li><a th:href="@{/users/jjim}">찜목록</a></li>
+                            <li><a th:href="@{/users/board/list}">내가 쓴 글</a></li>
+                            <li><a th:href="@{/users/reserve}">예약내역</a></li>
                         </ul>
                     </ul>
                     <div class="big_menu">
                         <li>고객센터<i class="arrow fas fa-angle-right"></i></li>
-                        <ul class="small_menu">
-                            <li><a href="#">소메뉴2-1</a></li>
+                        <ul class="css_center_sub_menu">
+                            <li><a href="#"></a></li>
                             <li><a href="#"></a>소메뉴2-2</a></li>
                         </ul>
                     </div>

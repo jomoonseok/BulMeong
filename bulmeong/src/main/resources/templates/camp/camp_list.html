@@ -377,5 +377,6 @@
     <div th:if="${session.loginUser != null}">
 		<input type="hidden" id="userId" th:data-id="${session.loginUser.id}">
 	</div>
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>
