@@ -161,6 +161,7 @@
 		
 		.share {
 			position:relative;
+			
 			list-style: none; 
 			display: flex;
 			padding-right:6px;
@@ -247,21 +248,21 @@
 			filter: invert(50%) sepia(60%) saturate(4258%) hue-rotate(329deg) brightness(94%) contrast(86%);
 		}
 		
-		/* .img_box {
+		.scale {
 		  transform: scale(1);
 		  -webkit-transform: scale(1);
 		  -moz-transform: scale(1);
 		  -ms-transform: scale(1);
 		  -o-transform: scale(1);
-		  transition: all 0.3s ease-in-out;   
+		  transition: all 0.3s ease-in-out;   /* 부드러운 모션을 위해 추가*/
 		}
-		.img_box:hover {
-		  transform: scale(2);
-		  -webkit-transform: scale(2);
-		  -moz-transform: scale(2);
-		  -ms-transform: scale(2);
-		  -o-transform: scale(2);
-		} */  
+		.scale:hover {
+		  transform: scale(1.2);
+		  -webkit-transform: scale(1.2);
+		  -moz-transform: scale(1.2);
+		  -ms-transform: scale(1.2);
+		  -o-transform: scale(1.2);
+		}
 		
 		table th {
 			text-align: center;
@@ -775,7 +776,7 @@
 			
 			<hr>
 			
-			<div id="guide">
+			<div id="tentInfo">
 				<h3>
 					<img src="images/camp/info.png">텐트 사진
 				</h3>
@@ -798,138 +799,16 @@
 							<div class="ctg" th:case="3"><div th:text="자동차야영장"></div></div>
 						<th:block>
 						<div th:text="|최대수용인원 : ${tent.tentMaxCount}명|"></div>
-						<div th:text="|금액 : ${tent.tentSum}원|"></div>  -->
+						<div th:text="|금액 : ${tent.tentSum}원|"></div> -->
 					</div>
 					</th:block>
+					
 				</div>
+			</div>
 				
-			<!-- 	<script>
+			<hr>
 				
-					$(function(){
-						fn_Init();
-						fn_ImageSlide();
-					});
-					
-					// 전역 배열과 인덱스
-					var idx = 0;
-					var images = [
-						'animal1.jpg',
-						'animal2.jpg',
-						'animal10.jpg',
-						'daum.png',
-						'icons8-favorite-32.png',
-						'call.png',
-						'camp.jpg',
-						'check.png',
-						'hooray.jpg',
-						'lake.jpg',
-						'infom.PNG'
-					];
-					
-					function fn_Init(){
-						//초기 이미지
-						$('#img_box').css('background-image', 'url(/images/' + images[0] + ')');
-						// 초기 이미지 번호
-						$('#img_no').text('1 / ' + images.length);
-					}
-					
-					function fn_ImageSlide(){
-						$('.btn_img_slide').click(function(){
-							fn_ChangeImage($(this).data('next'));  // 변경할 인덱스를 전달
-						});
-					}
-					
-					function fn_ChangeImage(n){
-						
-						// 인덱스 갱신
-						idx += n;
-						
-						// 첫 이미지에서 이전 버튼을 누른 경우 마지막 이미지가 열림
-						if(idx == -1){
-							idx = images.length - 1;
-						}
-						
-						// 마지막 이미지에서 다음 버튼을 누른 경우 첫 이미지가 열림
-						if(idx == images.length){
-							idx = 0;
-						}
-						
-						// 배열의 이미지를 div에 적용
-						$('#img_box').css('background-image', 'url(/images/' + images[idx] + ')');
-						
-						// 이미지 번호 span에 적용
-						$('#img_no').text((idx + 1) + ' / ' + images.length);
-					}
-					
-				
-				</script>
-				
-				<style>
-				
-					.img_slide {
-						margin-top: 20px;
-					}
-					
-					.img_box {
-						width: 480px;
-						height: 480px;
-				        border: 5px solid gray;
-				        background-repeat: no-repeat;
-				        background-size: 100% 100%;
-				        transition: background-image 0.5s;
-				        text-align: center;
-					}
-					
-					.btn_img_slide_wrap {
-	    				text-align: center;
-					}
-					
-					.img_no {
-						display: inline-block;
-				    	width: 120px;
-				    	text-align: center;
-				    	font-size: 14px;
-				    	color: black;
-					}
-					
-					.btn_img_slide {
-						width: 50px;
-				    	height: 30px;
-				    	border: 0;
-				    	background-color: #CC4B4C;
-				    	cursor: pointer;
-					}
-					
-					.btn_img_slide:hover {
-						color: #fff;
-					}
-					
-					.btn_img_slide:active {
-						background-color: brown;
-					}
-				
-				</style>
-				
-				<div class="wrap">
-				
-					<div class="img_slide">
-						<div>
-							<div class="img_box" id="img_box" data-scale="2"></div>
-						</div>
-					
-						<div class="btn_img_slid_wrap">
-							<button class="btn_img_slide" data-next="-1">이전</button>
-							<span class="img_no" id="img_no"></span>
-							<button class="btn_img_slide" data-next="1">다음</button>
-						</div>
-					</div> -->
-					
-				
-				</div>
-				
-				<hr>
-				
-		
+			<div id="guide">	
 				<div>
 					<h3>
 						<img src="images/camp/info.png">안전 및 시설 배치도
@@ -1051,7 +930,8 @@
 				<button onclick="setOverlayMapTypeId('use_district')">지적편집도 보기</button>
 				</p>
 			</div>
-			
+				
+							
 			
 			<div id="review">
 				<div>
