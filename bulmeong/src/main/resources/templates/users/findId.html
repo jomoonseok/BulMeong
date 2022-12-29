@@ -5,6 +5,7 @@
 	<script>
 		$(document).ready(function(){
 			fn_findId();
+			//fn_join();
 		});
 		
 		var namePass = false;
@@ -59,11 +60,13 @@
 					success: function(resData) {
 						if (resData.findUser != null) {
 							let id = resData.findUser.id;
-							id = id.substring(0, 3) + '*****';
+							//id = id.substring(0, 3) + '*****';
 							console.log(resData.findUser.joinDate);
 							moment.locale('ko-KR');
+							$('#msg_result').css('color', 'rgba(113, 194, 133)');
 							$('#msg_result').html('회원님의 아이디는 ' + id + '입니다.<br>(가입일 : ' + resData.findUser.joinDate + ')');
 						} else {
+							$('#msg_result').css('color', 'rgb(204, 75, 76)');
 							$('#msg_result').html('일치하는 회원이 없습니다. 입력 정보를 확인하세요.');
 						}
 					}
@@ -72,7 +75,7 @@
 			
 		}
 		
-		/* function fn_join(){
+		function fn_join(){
 			if(namePass == false){
 				alert('이름을 확인하세요.');
 				event.preventDefault();
@@ -82,44 +85,124 @@
 				event.preventDefault();
 				return;
 			}
-		} */
+		}
 	</script>
+	<style>
+	
+	.out_login_box {
+    	display: block;
+        text-align: center;
+    }
+    
+    .in_login_box {
+    	margin-top: 100px;
+		background-color: rgb(255, 255, 255, 0.7);
+    	padding: 50px 35px 200px;
+        border: none;
+        border-radius: 20px;
+        position: absolute;
+  		left: 50%;
+  		transform: translateX(-50%);
+  		/* 그림자 */
+  		box-shadow: 5px 5px 5px 5px rgba(180, 185, 191, 0.3);
+  		
+    }
+    
+    #name, #email {
+		border: none;
+		border-radius: 15px;
+		outline: 1px solid gray;
+		padding: 11px;
+		margin: 8px;
+		width: 400px;
+		height : 40px;
+	
+	}
+	
+	#name:focus, #email:focus {
+	   	border: 0.5px solid rgba(113, 194, 133);
+	   	border: none;
+	   	border-radius: 15px;
+	
+	   	outline: 0.5px solid rgba(113, 194, 133);
+	   	   	
+	   	padding: 11px;
+	   	margin: 8px;
+	   	width: 400px;
+	   	
+		height : 40px;
+	   	background-color: rgba(113, 194, 133, 0.1);
+	}
+	
+	.btn_red {
+		width: 400px;
+		height : 50px;
+		border: none;
+		border-radius: 20px;
+		background: rgb(204, 75, 76);
+		color: rgb(255, 255, 255);
+		font-size: 16px;
+	}
+	
+	.btn_red:hover {
+		width: 400px;
+		height : 50px;
+		border: none;
+		border-radius: 20px;
+		background: rgb(204, 75, 76, 0.8);
+		color: rgb(255, 255, 255);
+		font-size: 16px;
+	}
+
+	#btn_checkbox{
+		text-align: left;
+		margin: 16px;
+	}
+
+	#search_user {
+		margin: 10px;
+		font-size: 14px;
+	}
+	</style>
 </head>
 <body>
 
-	<header th:replace="~{layout/header::header_layout}"></header>
-	
-	<h1>아이디 찾기</h1>
-	
+	<!-- <header th:replace="~{layout/header::header_layout}"></header> -->
+	<a class="logo" th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="300px" style="margin-bottom: 30px"></a>
 	<div>
-		<label for="name">
-			*이름<br>
-			<input type="text" name="name" id="name">
-		</label>
-		<span id="msg_name"></span>
+	<div class="out_login_box">
+		<div class="in_login_box">
+		
+			<h1>아이디 찾기</h1>
+			
+			<div>
+				<label for="name">
+					<input type="text" name="name" id="name" placeholder="이름">
+				</label>
+				<div id="msg_name"></div>
+			</div>
+			
+			<div>
+				<label for="email">
+					<input type="text" name="email" id="email" placeholder="이메일">
+				</label>
+				<div id="msg_email"></div>
+			</div>
+			
+			<div>
+				<input type="button" value="아이디찾기" id="btn_findId" class="btn_red">
+			</div>
+			
+			<div id="search_user">
+				<a th:href="@{/users/login/form}">로그인</a>｜
+				<a th:href="@{/users/findPw/form}">비밀번호 찾기</a>｜
+				<a th:href="@{/users/agree}">회원가입</a>
+			</div>
+			
+			
+			<div id="msg_result"></div>
+		</div>
 	</div>
-	
-	<div>
-		<label for="email">
-			*이메일<br>
-			<input type="text" name="email" id="email">
-		</label>
-		<span id="msg_email"></span>
 	</div>
-	
-	<div>
-		<input type="button" value="아이디찾기" id="btn_findId">
-	</div>
-	
-	<div>
-		<a th:href="@{/users/login/form}">로그인</a> / 
-		<a th:href="@{/users/findPw/form}">비밀번호 찾기</a> /
-		<a th:href="@{/users/agree}">회원가입</a>
-	</div>
-	
-	<hr>
-	
-	<div id="msg_result"></div>
-	
 </body>
 </html>

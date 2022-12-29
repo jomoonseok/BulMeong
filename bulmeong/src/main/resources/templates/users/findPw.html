@@ -21,6 +21,7 @@
 						$('#msg_id').text('');
 						idPass = true;
 					} else {
+						$('#msg_id').css('color', 'rgb(204, 75, 76)');
 						$('#msg_id').text('6~20자의 소문자, 대문자, 숫자를 2개 이상 조합해야 합니다.');
 						idPass = false;
 						return;
@@ -37,6 +38,7 @@
 						$('#msg_email').text('');
 						emailPass = true;
 					} else {
+						$('#msg_email').css('color', 'rgb(204, 75, 76)');
 						$('#msg_email').text('이메일 형식을 확인하세요.');
 						emailPass = false;
 						return;
@@ -86,44 +88,122 @@
 			});
 		}
 	</script>
+	<style>
+	
+	.out_login_box {
+    	display: block;
+        text-align: center;
+    }
+    
+    .in_login_box {
+    	margin-top: 100px;
+		background-color: rgb(255, 255, 255, 0.7);
+    	padding: 50px 35px 200px;
+        border: none;
+        border-radius: 20px;
+        position: absolute;
+  		left: 50%;
+  		transform: translateX(-50%);
+  		/* 그림자 */
+  		box-shadow: 5px 5px 5px 5px rgba(180, 185, 191, 0.3);
+  		
+    }
+    
+    #id, #email {
+		border: none;
+		border-radius: 15px;
+		outline: 1px solid gray;
+		padding: 11px;
+		margin: 8px;
+		width: 400px;
+		height : 40px;
+	
+	}
+	
+	#id:focus, #email:focus {
+	   	border: 0.5px solid rgba(113, 194, 133);
+	   	border: none;
+	   	border-radius: 15px;
+	
+	   	outline: 0.5px solid rgba(113, 194, 133);
+	   	   	
+	   	padding: 11px;
+	   	margin: 8px;
+	   	width: 400px;
+	   	
+		height : 40px;
+	   	background-color: rgba(113, 194, 133, 0.1);
+	}
+	
+	.btn_login {
+		width: 400px;
+		height : 50px;
+		border: none;
+		border-radius: 20px;
+		background: rgb(204, 75, 76);
+		color: rgb(255, 255, 255);
+		font-size: 16px;
+		margin-top: 10px;
+	}
+	
+	.btn_login:hover {
+		width: 400px;
+		height : 50px;
+		border: none;
+		border-radius: 20px;
+		background: rgb(204, 75, 76, 0.8);
+		color: rgb(255, 255, 255);
+		font-size: 16px;
+	}
+
+	#btn_checkbox{
+		text-align: left;
+		margin: 16px;
+	}
+
+	#search_user {
+		margin: 10px;
+		font-size: 14px;
+	}
+	</style>
 </head>
 <body>
 
-	<header th:replace="~{layout/header::header_layout}"></header>
+	<!-- <header th:replace="~{layout/header::header_layout}"></header> -->
 	
-	<h1>비밀번호 찾기</h1>
+	<a class="logo" th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="300px" style="margin-bottom: 30px"></a>
 	
-	<hr>
+	<div class="out_login_box">
+		<div class="in_login_box">
 	
-	<div>
-		<form>
-		
-			<div>
-				<label for="id">
-					*아이디<br>
-					<input type="text" name="id" id="id">
-				</label>
-				<span id="msg_id"></span>
-			</div>
+			<h1>비밀번호 찾기</h1>
 			
-			<div>
-				<label for="email">
-					*이메일<br>
-					<input type="text" name="email" id="email">
-				</label>
-				<span id="msg_email"></span>
-			</div>
-			
-			<input type="button" value="임시 비밀번호 발급" id="btn_findPw">
-			<br><br>
-			
-			<div>
-				<a th:href="@{/users/login/form}">로그인</a> / 
-				<a th:href="@{/users/findId/form}">아이디 찾기</a> /
-				<a th:href="@{/users/agree}">회원가입</a>
-			</div>
-			
-		</form>
+			<form>
+				<div>
+					<label for="id">
+						<input type="text" name="id" id="id" placeholder="아이디">
+					</label>
+					<div id="msg_id"></div>
+				</div>
+				
+				<div>
+					<label for="email">
+						<input type="text" name="email" id="email" placeholder="이메일">
+					</label>
+					<div id="msg_email"></div>
+				</div>
+				
+				<input type="button" value="임시 비밀번호 발급" id="btn_findPw" class="btn_login">
+				<br><br>
+				
+				<div>
+					<a th:href="@{/users/login/form}">로그인</a>｜
+					<a th:href="@{/users/findId/form}">아이디 찾기</a>｜
+					<a th:href="@{/users/agree}">회원가입</a>
+				</div>
+				
+			</form>
+		</div>
 	</div>
 	
 </body>

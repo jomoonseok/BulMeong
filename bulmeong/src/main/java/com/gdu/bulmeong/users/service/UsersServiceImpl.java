@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 import javax.servlet.http.Cookie;
@@ -34,7 +33,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.gdu.bulmeong.users.domain.ProfileImageDTO;
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
@@ -109,7 +107,7 @@ public class UsersServiceImpl implements UsersService {
 		
 		// 인증코드 만들기
 		String authCode = securityUtil.getAuthCode(6);  // String authCode = securityUtil.generateRandomString(6);
-		// System.out.println("발송된 인증코드 : " + authCode);
+		System.out.println("발송된 인증코드 : " + authCode);
 		
 		// 메일 전송
 		javaMailUtil.sendJavaMail(email, "[Application] 인증요청", "인증번호는 <strong>" + authCode + "</strong>입니다.");
@@ -118,7 +116,6 @@ public class UsersServiceImpl implements UsersService {
 		// 그래야 사용자가 입력한 인증코드와 비교를 할 수 있음
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("authCode", authCode);
-		System.out.println(authCode);
 		
 		return result;
 	}
@@ -327,7 +324,6 @@ public class UsersServiceImpl implements UsersService {
 				Date currentTime = new Date();
 				String date = format.format(currentTime);
 		        Date now = format.parse(date);
-		        System.out.println("날짜 계산 : " + cal.getTime().compareTo(now));
 		        model.addAttribute("pwModifyDate", cal.getTime().compareTo(now));
 		        request.getSession().setAttribute("pwModifyDate", cal.getTime().compareTo(now));
 				response.sendRedirect(url);
@@ -369,7 +365,6 @@ public class UsersServiceImpl implements UsersService {
 		// 파라미터
 		String id = request.getParameter("id");
 		String keepLogin = request.getParameter("keepLogin");
-		
 		// 로그인 유지를 체크한 경우
 		if(keepLogin != null) {
 			
@@ -381,15 +376,17 @@ public class UsersServiceImpl implements UsersService {
 			cookie.setPath("/");
 			response.addCookie(cookie);
 			
+			SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd");
+			String slm = format.format(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15));
+			
 			// session_id를 DB에 저장하기
 			UsersDTO user = UsersDTO.builder()
 					.id(id)
 					.sessionId(sessionId)
-					.sessionLimitDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15).toString())  // 현재타임스탬프 + 15일에 해당하는 타임스탬프
+					.sessionLimitDate(slm)  // 현재타임스탬프 + 15일에 해당하는 타임스탬프
 					.build();
-
 			usersMapper.updateSessionInfo(user);
-			
+			// new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15).toString()
 		}
 		// 로그인 유지를 체크하지 않은 경우
 		else {
@@ -625,7 +622,7 @@ public class UsersServiceImpl implements UsersService {
 		
 		for(int i=0; i < expectedUsers.size(); i++) {
 			String email = expectedUsers.get(i).getEmail();
-			javaMailUtil.sendJavaMail(email, "[Application] 휴면 안내", "회원님은 한 달 후 휴면 처리됩니다. 휴면 처리되지 않으시려면 로그인해 주세요.");
+			javaMailUtil.sendJavaMail(email, "[BulMeong] 휴면 안내", "회원님은 한 달 후 휴면 처리됩니다. 휴면 처리되지 않으시려면 로그인해 주세요.");
 		}
 	}
 	
@@ -716,7 +713,6 @@ public class UsersServiceImpl implements UsersService {
 			apiURL += "&client_id=" + clientId;
 			apiURL += "&redirect_uri=" + redirectURI;
 			apiURL += "&state=" + state;
-			System.out.println("apiURL : " + apiURL);
 			HttpSession session = request.getSession();
 			session.setAttribute("state", state);
 			
@@ -737,9 +733,6 @@ public class UsersServiceImpl implements UsersService {
 		String clientSecret = "8toAWv3hNm";
 		String code = request.getParameter("code");
 		String state = request.getParameter("state");
-		
-		System.out.println("code : " + code);
-		System.out.println("state : " + state);
 		
 		String redirectURI = null;
 		try {
@@ -790,7 +783,6 @@ public class UsersServiceImpl implements UsersService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("res : " + res.toString());
 		JSONObject obj = new JSONObject(res.toString());
 		String access_token = obj.getString("access_token");
 		return access_token;
@@ -854,7 +846,6 @@ public class UsersServiceImpl implements UsersService {
 		try {
 			
 			JSONObject profile = new JSONObject(sb.toString()).getJSONObject("response");
-			System.out.println("profile : " + profile);
 			String id = profile.getString("id");
 			String name = profile.getString("name");
 			String nickname = profile.getString("nickname");
@@ -864,17 +855,14 @@ public class UsersServiceImpl implements UsersService {
 			String birthyear = profile.getString("birthyear");
 			String birthday = profile.getString("birthday").replace("-", "");
 			String profileImage = "";
-			System.out.println("imageIsNull : " + profile.isNull("profile_image"));
+			
 			if(profile.isNull("profile_image")){
 				profileImage = "/images/userimage/basic_profileImage.png";
 			} else{
 				profileImage = profile.getString("profile_image");
 			};
-			System.out.println("if 처리후 image : " + profileImage);
 			
 			profileImage = profileImage.equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png") ? "/images/userimage/basic_profileImage.png" : profileImage;
-			
-			System.out.println("기본 프로필인지 아닌지 : " + profileImage);
 			
 			user = UsersDTO.builder()
 					.id(id)
@@ -1106,18 +1094,20 @@ public class UsersServiceImpl implements UsersService {
 		
 		MultipartFile image = multipartRequest.getFile("image");
 		String nickname = multipartRequest.getParameter("nickname");
-		
+		String removeCheck = multipartRequest.getParameter("removeCheck");
 		UsersDTO loginUser = (UsersDTO)multipartRequest.getSession().getAttribute("loginUser");
 		String id = loginUser.getId();
-		
+		String filesystem = loginUser.getProfileImage();
+		/*
 		int attachResult;
 		if(image.getSize() == 0) {  
 			attachResult = 1;
 		} else {
 			attachResult = 0;
 		}
-		
+		*/
 		try {
+			
 			// 첨부가 있는지 점검
 			if(image != null && image.isEmpty() == false) {  // 둘 다 필요함
 				
@@ -1126,9 +1116,10 @@ public class UsersServiceImpl implements UsersService {
 				origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
 				
 				// 저장할 이름
-				String filesystem = myFileUtil.getFilename(origin);
+				filesystem = myFileUtil.getFilename(origin);
 				
 				String sep = Matcher.quoteReplacement(File.separator);
+				
 				// 저장할 경로
 				String path = "C:" + sep + "bulmeongImage" + sep + "profileImage";
 				
@@ -1143,42 +1134,44 @@ public class UsersServiceImpl implements UsersService {
 				
 				// 첨부파일 서버에 저장(업로드 진행)
 				image.transferTo(file);
-				
-				// UsersDTO 생성
-				UsersDTO user = UsersDTO.builder()
-						.id(id)
-						.nickname(nickname)
-						.profileImage(filesystem)
-						.build();
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("id", id);
-				
-				
-				// DB에 UsersDTO 저장
-				attachResult += usersMapper.updateProfile(user);
-				
-				UsersDTO updateUser = usersMapper.selectUserByMap(map);
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				
-				if(attachResult > 0) {
-					
-					multipartRequest.getSession().setAttribute("loginUser", updateUser);
-					
-					out.println("<script>");
-					out.println("alert('프로필이 수정되었습니다.');");
-					out.println("location.href='/'");
-					out.println("</script>");
-				} else {
-					out.println("<script>");
-					out.println("alert('프로필 수정에 실패했습니다.');");
-					out.println("history.back();");
-					out.println("</script>");
-				}
-				out.close();
-				
+			} else if(removeCheck.equals("check")){
+				filesystem = "/images/userimage/basic_profileImage.png";
 			}
+			// UsersDTO 생성
+			UsersDTO user = UsersDTO.builder()
+					.id(id)
+					.nickname(nickname)
+					.profileImage(filesystem)
+					.build();
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("id", id);
+			
+			
+			// DB에 UsersDTO 저장
+			int attachResult = usersMapper.updateProfile(user);
+			
+			UsersDTO updateUser = usersMapper.selectUserByMap(map);
+			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(attachResult > 0) {
+				
+				multipartRequest.getSession().setAttribute("loginUser", updateUser);
+				
+				out.println("<script>");
+				out.println("alert('프로필이 수정되었습니다.');");
+				out.println("location.href='/'");
+				out.println("</script>");
+			} else {
+				out.println("<script>");
+				out.println("alert('프로필 수정에 실패했습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+			}
+			out.close();
+				
+			
 			
 		} catch(Exception e) {
 			e.printStackTrace();

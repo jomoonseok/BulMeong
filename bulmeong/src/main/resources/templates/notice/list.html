@@ -1,33 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('공지사항')}"></head>
+<link th:href="@{/css/notice/list.css}" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@500&display=swap" rel="stylesheet">
 <body>
 	
  	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	<h3>🔥🔥🔥공지사항🔥🔥🔥</h3>
-	
-<!-- 	<div th:if="${session.loginUser != null and session.loginUser.id == 'admin'}"> -->
-	<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
-		<a th:href="@{/notice/write}">공지사항 작성하기</a>
+	<div class="css_main_title_wrap">
+		<span class="css_main_title">공지사항</span><br>
+		<span class="css_sub_title">불멍 </span>
+	</div>
+
+	<div class="css_notice_box">
+		<div class="css_notice_box_inner">"공지사항을 통해서 홈페이지 소식을 확인하세요!"</div>
+	</div>
+
+	<hr>
+
+	<div class="css_outer">
+		<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'" class="css_btn_noticeWrite">
+			<a th:href="@{/notice/write}" class="css_text_noticeWrite">공지사항 작성하기</a>
+		</div>
 	</div>
 	
+
 	<div>
-		<table border="1">
+		<table>
 			<thead>
 				<tr>
-					<td>글번호</td>
-					<td>제목</td>
-					<td>조회수</td>
-					<td>작성일</td>
+					<th>글번호</th>
+					<th>제목</th>
+					<th>조회수</th>
+					<th>작성일</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="notice,vs:${noticeList}">
-					<td th:text="${beginNo - vs.index}"></td>
+					<td th:text="${beginNo - vs.index}" class="css_notice_center"></td>
 					<td><a th:href="@{/notice/increase/hit(noticeNo=${notice.noticeNo})}" th:utext="|[공지] ${notice.noticeTitle}|"></a></td>				
-					<td th:text="${notice.noticeHit}"></td>
-					<td th:text="${notice.noticeCreateDate}"></td>
+					<td th:text="${notice.noticeHit}" class="css_notice_center"></td>
+					<td th:text="${notice.noticeCreateDate}" class="css_notice_center"></td>
 				</tr>
 			</tbody>
 			<tfoot>
@@ -37,5 +52,7 @@
 			</tfoot>
 		</table>
 	</div>
+
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

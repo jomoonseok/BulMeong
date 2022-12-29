@@ -63,7 +63,6 @@
 	}
 	
     .out_login_box {
-
     	display: block;
         text-align: center;
     }
@@ -150,7 +149,7 @@
 <body>
 
 
-	<div class="out_login_box">
+	
 		<div class="in_login_box">
 	
 	<a class="logo" th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="300px" style="margin-bottom: 30px"></a>
@@ -176,7 +175,7 @@
 						<label class="form-check-label" for="rememberId">아이디 저장</label>
 					</div>
 					<div class="form-check form-switch" style="display: inline-block;">
-						<input class="form-check-input" type="checkbox" role="switch" id="keepLogin">
+						<input class="form-check-input" type="checkbox" role="switch" id="keepLogin" name="keepLogin">
 						<label class="form-check-label" for="keepLogin">자동로그인</label>
 					</div>
 				</div>
@@ -198,7 +197,7 @@
 			</div>
 	
 		</div>
-	</div>
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 	
 </body>
 </html>

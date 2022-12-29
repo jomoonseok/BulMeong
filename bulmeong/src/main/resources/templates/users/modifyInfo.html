@@ -147,29 +147,36 @@
 				let regYear = /^[12][0-9]{3}$/;
 				
 				if(yearValue != '' && yearValue >= 1900 && yearValue <= now.getFullYear() && regYear.test(yearValue) == true){
-					$('#msg_year').text('');
+					$('#msg_birth').text('');
 					yearPass = true;
 				} else {
-					$('#msg_year').text('생년월일을 다시 확인해주세요');
+					$('#msg_birth').css('color', 'rgb(204, 75, 76)');
+					$('#msg_birth').text('생년월일을 다시 확인해주세요');
 					yearPass = false;
 					return;
 				}
 			});
 			
 			$('#birthmonth').change(function(){
-				monthPass = true;
+				if($(this).val() == ''){
+					$('#birthdate').prop('readonly', true);
+					monthPass = false;
+				} else{
+					$('#birthdate').prop('readonly', false);
+					monthPass = true;
+				}
 			});
 			
 			
 			
 			$('#birthdate').keyup(function(){
 				let dateValue = $('#birthdate').val();
-				let regDate = /^[1-3][0-9]$/;
+				let regDate = /^[0-9]{1,2}$/;
 				let monthDate = '';
-				let month = $('#birthdate').parent().prev().children().val();
+				let month = $('#birthdate').prev().val();
 				console.log(month);
 				switch(month){
-				case "02" : now.getFullYear() / 4 == 0 ? monthDate = 29 : monthDate = 28; break;
+				case "02" : $('#birthyear').val() % 4 == 0 ? monthDate = 29 : monthDate = 28; break;
 				case "04" :
 				case "06" :
 				case "09" :
@@ -178,10 +185,11 @@
 				}
 				console.log(monthDate);
 				if(dateValue != '' && dateValue <= monthDate && regDate.test(dateValue) == true){
-					$('#msg_date').text('');
+					$('#msg_birth').text('');
 					datePass = true;
 				} else {
-					$('#msg_date').text('생년월일을 다시 확인해주세요');
+					$('#msg_birth').css('color', 'rgb(204, 75, 76)');
+					$('#msg_birth').text('생년월일을 다시 확인해주세요');
 					datePass = false;
 				}
 			});
@@ -253,17 +261,100 @@
 		}
 		
 	</script>
+	<style>
+		.div_all {
+			width:450px;
+			margin: 0 auto;
+			
+		}
+		
+		.inp_text {
+			width: 450px;
+			height: 50px;
+		}
+		
+		label, .text_edit {
+			font-size: 18px;
+			font-weight: 500;
+			margin-top: 10px;
+		}
+		
+		.inp_text:focus, .birth:focus {
+			/*background-color: rgb(113, 194, 133, 0.1);*/
+			border: none;
+			outline: 1px solid rgb(113, 194, 133);
+			border-radius: 2px;
+		}
+		
+		.birth {
+			width: 147px;
+			height: 50px;
+		}
+		
+		.address {
+			width: 296px;
+			height: 50px;
+		}
+		
+		.address_all {
+			margin-top: 15px;
+		}
+		
+		.btn_edit {
+			border: none;
+			width: 106px;
+			height: 50px;
+			border-radius: 7px;
+			background-color: rgb(3, 199, 90);
+			color: white;
+		}
+		
+		.div_btn {
+			text-align: center;
+		}
+		
+		.btn_green {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+			background-color: rgb(3, 199, 90);
+			color: white;
+		}
+		
+		.btn_red {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+     		background-color: rgb(204, 75, 76);
+			color: white;
+		}
+		
+		.btn_gray {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+     		background-color: rgb(142, 142, 142);
+			color: white;
+		}	
+		#btn_retire:hover {
+			background-color: #545454;
+		}
+	</style>
 </head>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 
-
-	<div>
-		<h1 th:text="|${session.loginUser.nickname}님의 마이페이지|"></h1>
+	<div class="div_all">
+		<h3 style="text-align:center;"><span style="color:rgb(3, 199, 90);" th:text="${session.loginUser.nickname}"></span>님의 마이페이지</h3>
+		
+		<hr>
 		
 		<div>
-			<input type="button" value="비밀번호변경" id="btn_edit_pw">
+			<input type="button" value="비밀번호변경" id="btn_edit_pw" class="btn_green">
 		</div>
 		<div id="modify_pw_area">
 			<form id="frm_edit_pw" th:action="@{/users/modify/pw}" method="post">
@@ -281,80 +372,94 @@
 					<span id="msg_re_pw"></span>
 				</div>
 				<div>
-					<button>비밀번호 변경하기</button>
-					<input type="button" value="비밀번호변경취소하기" id="btn_edit_pw_cancel">
+					<input type="button" value="취소하기" id="btn_edit_pw_cancel" class="btn_gray">
+					<button class="btn_green">비밀번호 변경하기</button>
 				</div>
 			</form>
 		</div>
 
+			<hr>
+
 		<div>
 
-			<div>* 표시는 필수 입력사항입니다.</div>
-
-			<hr>
+			<div class="text_edit">* 표시는 필수 입력사항입니다.</div>
 
 			<form id="frm_edit" th:action="@{/users/modify/info}" method="post">
 
 				<!-- hidden -->
-				<input type="hidden" name="id" th:value="${session.loginUser.id}">
+				<!-- <input type="hidden" name="id" th:value="${session.loginUser.id}"> -->
 				
 				<!-- 아이디 -->
-				<div th:text="|아이디 ${session.loginUser.id}|"></div>
-
+				<div>
+					<label for="id">아이디</label>
+				</div>
+				<div>
+					<input type="text" id="id" class="inp_text" name="id" th:value="${session.loginUser.id}" readonly>
+				</div>
 				<!-- 가입일 -->
-				<div th:text="|가입일 ${session.loginUser.joinDate}|"></div>
+				<div>
+					<label for="id">가입일</label>
+				</div>
+				<div>
+					<input type="text" id="joindate" class="inp_text" th:value="${session.loginUser.joinDate}" readonly>
+				</div>
 				
 
 				<!-- 이름 -->
 				<div>
 					<label for="name">이름*</label> 
-					<input type="text" name="name" id="name" th:value="${session.loginUser.name}">
+				</div>
+				<div>
+					<input type="text" name="name" id="name" class="inp_text" th:value="${session.loginUser.name}">
 					<span id="msg_name"></span>
 				</div>
 				
 				<!-- 성별 -->
+				<div class="text_edit">성별*</div>
 				<div>
-					<span>성별*</span> 
-					<input type="radio" name="gender" id="none" value="NO" checked="checked"> 
-					<label for="none">선택안함</label> 
-					<input type="radio" name="gender" id="male" value="M">
-					<label for="male">남자</label> 
-					<input type="radio" name="gender"id="female" value="F"> 
-					<label for="female">여자</label>
-						
+					<select name="gender" id="gender" class="inp_text">
+						<option value="NO">선택 안함
+						<option value="M">남자
+						<option value="F">여자
+					</select>
 					<script>
-						$(':radio[name="gender"][value="[[${session.loginUser.gender}]]"]')
-								.prop('checked', true);
+						$("#gender").val("[[${session.loginUser.gender}]]").prop("selected", true);
 					</script>
 				</div>
+						
 
 				<!-- 휴대전화 -->
 				<div>
 					<label for="mobile">휴대전화*</label> 
-					<input type="text" name="mobile" id="mobile" th:value="${session.loginUser.mobile}"> 
+				</div>
+				<div>
+					<input type="text" name="mobile" id="mobile" class="inp_text" th:value="${session.loginUser.mobile}"> 
 					<span id="msg_mobile"></span>
 				</div>
 
 				<!-- 생년월일 -->
 				<div>
-					<label for="birthyear">생년월일</label>
-					<input type="text" id="birthyear" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" th:value="${session.loginUser.birthYear}">
-					<select name="birthmonth" id="birthmonth"></select>
-					<input type="text" name="birthdate" maxlength="2" size="2" placeholder="일" th:value="${#strings.substring({session.loginUser.birthDay},3,5)}"> <!-- DB -->
+					<label for="birthyear">생년월일*</label>
+					<div>
+						<input type="text" id="birthyear" class="birth" name="birthyear" maxlength="4" size="4" placeholder="년(4자)" th:value="${session.loginUser.birthYear}">
+						<select name="birthmonth" id="birthmonth" class="birth"></select>
+						<input type="text" id="birthdate" class="birth" name="birthdate" maxlength="2" size="2" placeholder="일" th:value="${#strings.substring({session.loginUser.birthDay},3,5)}"> <!-- DB -->
+					</div>
+					<span id="msg_birth"></span>
+					<script>
+						$(function(){$('#birthmonth').val("[[${#strings.substring({session.loginUser.birthDay},1,3)}]]").prop('selected', true)});
+					</script>
 				</div>
-				<script>
-					$(function(){$('#birthmonth').children().val("[[${#strings.substring({session.loginUser.birthDay},1,3)}]]").prop('selected', true)});
-				</script>
 
 				<!-- 주소 -->
 				<div>
-					<input type="text" onclick="fn_execDaumPostcode()" name="postcode" id="postcode" placeholder="우편번호" readonly="readonly" th:value="${session.loginUser.postCode}">
-					<input type="button" onclick="fn_execDaumPostcode()" value="우편번호 찾기"><br>
-					<input type="text" name="roadAddress" id="roadAddress" placeholder="도로명주소"  readonly="readonly" th:value="${session.loginUser.roadAddress}">
-					<input type="text" name="jibunAddress" id="jibunAddress" placeholder="지번주소"  readonly="readonly" th:value="${session.loginUser.jibunAddress}"><br>
+					<input type="text" onclick="fn_execDaumPostcode()" name="postcode" id="postcode" class="address address_all" placeholder="우편번호" readonly="readonly" th:value="${session.loginUser.postCode}">
+					<input type="button" onclick="fn_execDaumPostcode()" class="btn_green" value="우편번호 찾기"><br>
+					<input type="text" name="roadAddress" id="roadAddress" class="inp_text address_all" placeholder="도로명주소"  readonly="readonly" th:value="${session.loginUser.roadAddress}">
+					<input type="text" name="jibunAddress" id="jibunAddress" class="inp_text address_all" placeholder="지번주소"  readonly="readonly" th:value="${session.loginUser.jibunAddress}"><br>
 					<span id="guide" style="color:#999;display:none"></span>
-					<input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소" th:value="${session.loginUser.detailAddress}">
-					<input type="text" name="extraAddress" id="extraAddress" placeholder="참고항목" readonly="readonly" th:value="${session.loginUser.extraAddress}">
+					<input type="text" name="detailAddress" id="detailAddress" class="inp_text address_all" placeholder="상세주소" th:value="${session.loginUser.detailAddress}">
+					<input type="text" name="extraAddress" id="extraAddress" class="inp_text address_all" placeholder="참고항목" readonly="readonly" th:value="${session.loginUser.extraAddress}">
 					<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 					<script>
 					    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
@@ -418,14 +523,17 @@
 				<!-- 이메일 -->
 				<div>
 					<label for="email">이메일*</label> 
-					<input type="text" name="email" id="email" th:value="${session.loginUser.email}"> 
+				</div>
+				<div>
+					<input type="text" name="email" id="email" class="inp_text" th:value="${session.loginUser.email}"> 
 					<span id="msg_email"></span>
 				</div>
 
-
+				<br>
+				
 				<!-- 선택 정보 동의 변경 -->
 				<div>
-					<div>위치정보 동의여부</div>
+					<div class="text_edit">위치정보 동의여부</div>
 					<label><input type="radio" name="location" value="on">동의함</label>
 					<label><input type="radio" name="location" value="off">동의 안함</label> 
 					<br>
@@ -438,7 +546,7 @@
 						}
 					</script>
 
-					<div>프로모션 동의여부</div>
+					<div class="text_edit">프로모션 동의여부</div>
 					<label><input type="radio" name="promotion" value="on">동의함</label>
 					<label><input type="radio" name="promotion" value="off">동의안함</label> 
 					<br>
@@ -450,23 +558,29 @@
 							$(':radio[name="promotion"][value="off"]').prop('checked', true);
 						}
 					</script>
+
 				</div>
 
 				<hr>
 
 				<!-- 버튼 -->
 				<div>
-					<button>수정완료</button>
-					<input type="button" value="취소하기" id="btn_cancel"> 
-					<input type="button" value="회원탈퇴" id="btn_retire">
+					<input type="button" value="취소하기" id="btn_cancel" class="btn_gray"> 
+					<button class="btn_green">수정완료</button>
+				</div>
+				<br>
+				<div>
+					<input type="button" value="회원탈퇴" id="btn_retire" class="btn_red" >
 				</div>
 
 			</form>
 
 			<!-- 회원탈퇴용 form -->
-			<form id="lnk_retire" th:action="@{/users/retire}" method="post"></form>
+			<form id="lnk_retire" th:action="@{/users/check/form}" method="post"></form>
 
 		</div>
 	</div>
+	
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>
