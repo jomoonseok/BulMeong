@@ -2,6 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{layout/header::head('[bulmeong] 캠핑장 조회')}"></head>
 <style>
+
+	body {
+		width: 70%;
+		margin: 0 auto;
+	}
+	
 	.camp_div {
 		border: solid 1px #333333;
 		display: flex;
@@ -128,6 +134,9 @@
 				success: function(resData) {
 					$('#camp_list').empty();
 					$('#title').html('<h1>캠핑장 조회 결과 : <span style="color: #CC4B4C; font-weight: bold;">' + resData.campCount + '개</span></h1>');
+					if(resData.campCount == 0) {
+						$('#title').append('<br><h3 style="text-align:center;"><span style="color: #CC4B4C; font-weight: bold;">조건에 부합하는 캠핑장이 없습니다. 「다시검색」버튼을 눌러주세요.');
+					}
 					$.each(resData.campList, function(i, camp){
 						if(camp.firstImageUrl == null) {
 							camp.firstImageUrl = 'https://www.foodsafetykorea.go.kr/residue/assets/_new/img/noimage.gif';   // 이미지가 없으면 이미지 지정해주기

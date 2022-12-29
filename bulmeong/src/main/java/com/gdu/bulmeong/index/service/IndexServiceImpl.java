@@ -285,5 +285,12 @@ public class IndexServiceImpl implements IndexService {
 		return result;
 	}
 	
+	@Override
+	public Map<String, Object> getFreeBrdList() {
+		Map<String, Object> result = new HashMap<>();
+		result.put("freeBrdLike", indexMapper.selectFreeBrdListTopFiveLike());
+		return result;
+	}
+	
 	
 }

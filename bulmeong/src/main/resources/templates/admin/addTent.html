@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('텐트 등록')}"></head>
+<style>
+	* {
+		margin-left: 28px;
+		width: 92%;
+	}
+	h3 {
+		margin-top: 40px;
+	}
+	
+	input[type="text"], select {
+		background-color: rgba(113, 194, 133, 0.8);
+		color: white;
+		border: none;
+		margin-top: 5px;
+		height: 35px;
+		border-radius: 10px;
+		text-align: center;
+		font-size: large;
+	}
+	
+	#btn input {
+   		width: 100px;
+		height : 40px;
+		border: none;
+		border-radius: 20px;
+		background-color: rgba(204, 75, 76, 1.0);
+		color: rgb(255, 255, 255);
+		font-size: 13px;
+   	}
+    	
+   	#btn input:hover {
+		width: 100px;
+		height : 40px;
+		border: none;
+		border-radius: 20px;
+		background: rgb(204, 75, 76, 0.5);
+		color: rgb(255, 255, 255);
+		font-size: 13px;
+	}
+	
+</style>
 <body>
 	
 	<script>
 		$(function(){
 			fn_getFacltNm();
+			fn_prevent();
 		});
 	</script>
 	
@@ -25,10 +67,25 @@
 				
 			})	
 		}
+		
+		function fn_prevent() {
+			$('#frm_tentAdd').submit(function(event) {
+				
+				if($('#facltNm').val() == '' || $('#facltNm').val() == '' || $('#TENT_CATEGORY').val() == '' || $('TENT_MAX_COUNT').val() == '' || $('#TENT_SUM').val() == '') {
+					alert('내용을 입력하세요.');
+					event.preventDefault();
+					return;
+				}
+				
+			})
+			
+			
+		}
+		
 	</script>
 		
-	<h3 style="text-align: center;">텐트 등록 화면</h3>
-	<form method="post" th:action="@{/admin/add}" enctype="multipart/form-data" >
+	<h3 style="text-align: center;">텐트 등록</h3>
+	<form method="post" id="frm_tentAdd" th:action="@{/admin/add}" enctype="multipart/form-data" >
 		<div>
 			캠핑장명 
 			<select name="campNo" id="facltNm">  <!-- 캠핑장 번호로 받아옴 -->
@@ -56,10 +113,7 @@
 		<div>
 			텐트 사진 <input type="file" name="TENT_IMAGE" id="TENT_IMAGE" multiple="multiple">
 		</div>
-		<div>
-			사진 목록
-		</div>
-		<div>
+		<div id="btn"><br><br>
 			<input type="submit" value="등록">
 			<input type="reset" value="취소" onclick="window.close()">
 		</div>

@@ -283,4 +283,16 @@ public class AdminServiceImpl implements AdminService {
 		return map;
 	}
 	
+	@Override
+	public Map<String, Object> changeImage(MultipartHttpServletRequest request) {
+		
+		MultipartFile tentImage = request.getFile("TENT_IMAGE");
+		System.out.println(request.getFile("TENT_IMAGE"));
+		Map<String, Object> map = new HashMap<>();
+		map.put("tentImage", tentImage);
+	
+		return map;
+	}
+	
+	
 }

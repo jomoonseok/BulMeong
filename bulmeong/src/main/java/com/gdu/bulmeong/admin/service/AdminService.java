@@ -19,4 +19,5 @@ public interface AdminService {
 	public void modifyTent(HttpServletRequest request, Model model);
 	public void changeTent(MultipartHttpServletRequest request, HttpServletResponse response);
 	public Map<String, Object> removeTent(HttpServletRequest request);
+	public Map<String, Object> changeImage(MultipartHttpServletRequest request);
 }
