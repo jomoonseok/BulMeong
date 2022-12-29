@@ -14,7 +14,15 @@
 	 <select id="selectAllCampByJjim" resultType="CampDTO"> 
 	    SELECT CAMP_NO, facltNm, sigunguNm, jjim, sum
  		  FROM CAMP
- 		 ORDER BY jjim DESC, CAMP_NO LIMIT 10
+ 		 ORDER BY jjim DESC, CAMP_NO LIMIT 5
+	 </select>
+	 
+	 <select id="selectFreeBrdListTopFiveLike" resultType="IndexFreeBoardDTO">
+	 	SELECT FB.FREE_NO, FB.FREE_TITLE, FB.NICKNAME, FREE_HIT, COUNT(*) AS LIKE_COUNT
+		  FROM FREE_LIKE FL INNER JOIN FREE_BRD FB
+            ON FL.FREE_NO = FB.FREE_NO
+	     GROUP BY FL.FREE_NO
+	     ORDER BY LIKE_COUNT DESC LIMIT 10
 	 </select>
 	 
 	 

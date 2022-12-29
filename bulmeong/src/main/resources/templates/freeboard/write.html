@@ -26,6 +26,7 @@
 			}			
 		});
 		
+		
 		// 서브밋
 		$('#frm_write').submit(function(event){
 			if($('#title').val() == ''){
@@ -46,8 +47,9 @@
 <body>
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	
-	<h3>작성 화면</h3>
+	<div class="top_image">
+		<img th:src="@{/images/freeboard/campfire.jpg}" class="image_style">
+	</div>
 	
 	<div>	
 		<form id="frm_write" th:action="@{/freeboard/add}" method="post">

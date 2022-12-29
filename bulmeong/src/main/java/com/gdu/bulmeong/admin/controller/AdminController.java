@@ -24,14 +24,15 @@ public class AdminController {
 	private AdminService adminService;
 	
 	@GetMapping("/admin")
-	public String admin_main() {
+	public String requiredLogin_admin_main(HttpServletRequest request, Model model) {
+		adminService.adminCheck(request, model);
 		return "/admin/main";
 	}
 
 	
 	// 유저
 	@GetMapping("/admin/userManage")
-	public String admin_userManage() {
+	public String requiredLogin_admin_userManage() {
 		return "/admin/userManage";
 	}
 	
@@ -45,7 +46,7 @@ public class AdminController {
 	
 	// 캠프
 	@GetMapping("/admin/campManage")
-	public String admin_campManage() {
+	public String requiredLogin_admin_campManage() {
 		return "/admin/campManage";
 	}
 	
@@ -57,7 +58,7 @@ public class AdminController {
 	
 	// 텐트
 	@GetMapping("/admin/tentManage")
-	public String admin_tentManage() {
+	public String requiredLogin_admin_tentManage() {
 		return "/admin/tentManage";
 	}
 	
@@ -68,7 +69,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/addTent")
-	public String addTent() {
+	public String requiredLogin_addTent() {
 		return "/admin/addTent";
 	}
 	
@@ -79,18 +80,18 @@ public class AdminController {
 	}
 	
 	@PostMapping("/admin/add")
-	public void uploadTent(MultipartHttpServletRequest request, HttpServletResponse response) {
+	public void requiredLogin_uploadTent(MultipartHttpServletRequest request, HttpServletResponse response) {
 		adminService.uploadTent(request, response);
 	}
 	
 	@GetMapping("/admin/modify")
-	public String modifyTent(HttpServletRequest request, Model model){
+	public String requiredLogin_modifyTent(HttpServletRequest request, Model model){
 		adminService.modifyTent(request, model); 
 		return "/admin/modifyTent";
 	}
 	
 	@PostMapping("/admin/change")
-	public void changeTent(MultipartHttpServletRequest request, HttpServletResponse response) {
+	public void requiredLogin_changeTent(MultipartHttpServletRequest request, HttpServletResponse response) {
 		adminService.changeTent(request, response);
 	}
 	
@@ -100,6 +101,11 @@ public class AdminController {
 		return adminService.removeTent(request);
 	}
 	
+	@ResponseBody
+	@PostMapping("/admin/changeImage")
+	public Map<String, Object> changeIamge(MultipartHttpServletRequest request) {
+		return adminService.changeImage(request);
+	}
 	
 	
 }

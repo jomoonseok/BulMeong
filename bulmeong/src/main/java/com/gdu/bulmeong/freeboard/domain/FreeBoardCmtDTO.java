@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FreeBoardCmtDTO {	
 	private int freeCmtNo, freeNo, freeSeq;
-	private String nickname, freeCmtContent, freeCmtCreateDate, freeCmtModifyDate, freeCmtIp, profileImage;
+	private String id, nickname, freeCmtContent, freeCmtCreateDate, freeCmtModifyDate, freeCmtIp, profileImage;
 	private int freeCmtState, freeCmtDepth, freeGroupNo, freeGroupOrder, cmtCnt;
 }

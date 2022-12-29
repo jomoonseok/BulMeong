@@ -42,5 +42,11 @@ public class IndexController {
 		return indexService.getCampListByJjim();
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/index/freeBrdList", produces="application/json")
+	public Map<String, Object> printFreeBrdList() {
+		return indexService.getFreeBrdList();
+	}
+	
 	
 }

@@ -64,9 +64,8 @@ public class ReserveController {
 	 }
 	 
 	 @PostMapping("/reserve/add")
-	 public String reserve_add(HttpServletRequest request, HttpServletResponse response) {
+	 public void reserve_add(HttpServletRequest request, HttpServletResponse response) {
 		 reserveService.addInfoReserve(request, response);
-		 return "redirect:/";
 		 
 	 }
 	 	

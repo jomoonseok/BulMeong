@@ -1,12 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
+<link th:href="@{/css/reviewboard/write.css}" rel="stylesheet" />
+
+<style>
+
+		.star {
+			display: inline-block;
+			direction: rtl;
+			border: 0;
+		}
+		
+		.star input[type=radio]{
+			display: none;
+		}
+		
+		.star label {
+			font-size: 30px;
+			color: transparent;
+			text-shadow: 0 0 0 #A4A4A4;
+		}
+		
+		.star label:hover {
+			text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+		}
+		
+		.star label:hover ~ label{
+    		text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+		}
+		
+		.star input[type=radio]:checked ~ label{
+    		text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+		}
+
+</style>
+
 <script>
 
 	$(document).ready(function(){
-
+		
+		$('#content').summernote({
+			width: 800,
+			height: 400,
+			lang: 'ko-KR',
+			toolbar: [
+				['style', ['bold', 'italic', 'underline', 'clear']],
+				['font', ['strikethrough', 'superscript', 'subscript']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']],
+				['height', ['height']]
+			]
+		});
+		
+		// 목록
+		$('#btn_list').click(function(){
+			if(confirm('게시글이 저장되지 않았습니다. 정말 돌아가시겠습니까?')){
+				location.href = '/reviewboard/list';
+			}			
+		});
+		
+		// 서브밋
+		$('#frm_write').submit(function(event){
+			if($('#title').val() == ''){
+				alert('제목은 필수입니다.');
+				event.preventDefault();
+				return;
+			}
+			if($('.rate').val() == ''){
+				alert('별점은 필수입니다.');
+				event.preventDefault();
+				return;
+			}
+			if($('#content').val() == ''){
+				alert('내용은 필수입니다.');
+				event.preventDefault();
+				return;
+			}
+		});
 		
 	});
+	
+	
+	$(function(){
+		fn_getFacltNm();
+	});
+	
+	function fn_getFacltNm() {
+		$.ajax({
+			type: 'post',
+			url: '/reviewboard/getFacltNm',
+			success: function(resData) {
+				console.log(resData);
+				var selectFacltNm = '<option value="">선택</option>';
+				$.each(resData.camp, function(i, camp) {
+					selectFacltNm += '<option value="'+ camp.campNo +'">' + camp.campNo + '_' + camp.facltNm + '</option>';
+				})
+				$('#facltNm').append(selectFacltNm);
+			}
+			
+		})	
+	}
 </script>
 	
 <body>
@@ -15,7 +109,43 @@
 	
 	<h3>작성 화면</h3>
 	
-
+	<div>	
+		<form id="frm_write" th:action="@{/reviewboard/add}" method="post">
+		
+			<div>
+				<label for="title">제목</label>
+				<input type="text" name="reviewTitle" id="title">
+			</div>
+			<div id="divCamp">
+				캠핑장명
+				<select name="campNo" id="facltNm">
+				</select>
+			</div>
+			<div>
+				<fieldset class="star">
+						<span class="text">별점을 선택해주세요</span>
+						<input type="radio" name="reviewStar" th:value="5" class="rate" id="rate1">
+						<label for="rate1">★</label>
+						<input type="radio" name="reviewStar" th:value="4" class="rate" id="rate2">
+						<label for="rate2">★</label>
+						<input type="radio" name="reviewStar" th:value="3" class="rate" id="rate3">
+						<label for="rate3">★</label>
+						<input type="radio" name="reviewStar" th:value="2" class="rate" id="rate4">
+						<label for="rate4">★</label>
+						<input type="radio" name="reviewStar" th:value="1" class="rate" id="rate5">
+						<label for="rate5">★</label>
+					</fieldset>
+			</div>
+			<div>
+				<label for="content">내용</label>
+				<textarea name="reviewContent" id="content" ></textarea>
+			</div>
+			<div>
+				<button class="button">완료</button>
+				<input type="button" value="목록" id="btn_list">
+			</div>
+		</form>
+	</div>
 
 </body>
 </html>
