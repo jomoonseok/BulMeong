@@ -42,4 +42,8 @@ public interface UsersService {
 	
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest);
 	public void modifyProfile(MultipartHttpServletRequest multipartRequest, HttpServletResponse response);
+	
+	// myPage
+	public void getReserveById(HttpServletRequest request, Model model);
+	
 }

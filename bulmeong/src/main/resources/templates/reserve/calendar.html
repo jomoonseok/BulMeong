@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{layout/header::head('Bulmeong Reserve')}"></head>
+<head th:insert="~{layout/header::head('[bulmeong] 예약하기')}"></head>
 
 	<link th:href='@{fullcalendar-5.11.3/lib/main.css}' rel='stylesheet' />
 	<link th:href='@{fakeLoader.js-master/dist/fakeLoader.min.css}' rel='stylesheet' />
@@ -172,6 +172,11 @@
       	    	dataType: 'json',
       	    	success: function(resData) {
       	    		$('#tent_info').empty();
+      	    		
+      	    		if(resData.tentList.length == 0) {
+   	    				var tent_div = '<div style="text-align:center; color:red">캠핑장에 등록된 텐트가 없습니다.</div>';
+   	    				$('#tent_info').append(tent_div);
+   	    			}
       	    		
    	    			if(resData.reservedTent.length != 0) {  // 조회한 날짜에 예약된 텐트가 있으면
  	    				var reservedTentNo = [];  // 예약된 텐트의 번호를 담을 배열
@@ -369,6 +374,6 @@
 	
 	
 	
-	
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

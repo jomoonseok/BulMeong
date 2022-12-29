@@ -254,6 +254,7 @@ public class CampServiceImpl implements CampService {
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("campList", campMapper.selectCampByOption(map));
+		result.put("campCount", campMapper.selectCampByOptionCount(map));
 		
 		return result;
 	}

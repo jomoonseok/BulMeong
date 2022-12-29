@@ -9,7 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 public interface AdminService {
-
+	
+	public void adminCheck(HttpServletRequest request, Model model);
 	public Map<String, Object> getAllUser();
 	public Map<String, Object> getAllCamp(HttpServletRequest request);
 	public Map<String, Object> getAllTent(HttpServletRequest request);

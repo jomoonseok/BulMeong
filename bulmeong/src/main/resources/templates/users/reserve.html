@@ -1,11 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
+	<style>
+		table {
+			box-shadow: 0 2px 5px rgba(0,0,0,.25);
+			width: 80%;
+			text-align: center;
+			font-size: 13px;
+		}
+	
+		tbody td {
+			height: 80px;
+			border-bottom: 1px solid rgba(0,0,0,.1);
+			background: #fff;
+		}
+		
+		h3 {
+			display: block;
+			width: 68%;
+			margin: auto;
+			margin-bottom: 10px;
+		}
+		
+	</style>
 <body>
-
+	
 	<header th:replace="~{layout/header::header_layout}"></header>
+	<h3><span th:text="${loginUser.name}"></span> 님의 예약 내역</h3>
+	<div class="container" >
 	
-	reserve
+		<table style="width:90%;">
+
+			<thead style="background-color: #71C285; color:white;">
+				<tr style="height: 75px;">
+					<th>예약번호</th>
+					<th>캠핑장명</th>
+					<th>주소</th>
+					<th>텐트사진</th>
+					<th>텐트명</th>
+					<th>텐트구분</th>
+					<th>예약자명</th>
+					<th>최대/예약인원</th>
+					<th>숙박시작일</th>
+					<th>퇴실일</th>
+					<th>결제금액</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="r : ${reserved}">
+					<td th:text="${r.reserveNo}"></td>
+					<td th:text="${r.facltNm}"></td>
+					<td th:text="${r.addr1}"></td>
+					<td th:if="${r.tentImage == '/images/tent/default_tent.png'}">
+						<img th:src="@{${r.tentImage}}" style="width:50px; height:50px;">
+					</td>
+					<td th:unless="${r.tentImage == '/images/tent/default_tent.png'}">
+						<img th:src="@{|/load/tent/${r.tentImage}|}" style="width:50px; height:50px;">
+					</td>
+					<td th:text="${r.tentName}"></td>
+					<th:block th:switch="${r.tentCategory}" >
+						<td th:case=0>글램핑</td>
+						<td th:case=1>카라반</td>
+						<td th:case=2>일반야영장</td>
+						<td th:case=3>자동차야영장</td>
+					</th:block>
+					<td th:text="${r.reserveName}"></td>
+					<td th:text="|${r.tentMaxCount} / ${r.reserveCount}|"></td>
+					<td th:text="${r.reserveBeginDate}"></td>
+					<td th:text="${r.EndDate}"></td>
+					<td th:text="${#numbers.formatInteger(r.reserveSum, 0, 'COMMA')}"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+			
+			</tfoot>
+			
+		</table>
+		
+		
+	</div>
 	
+	
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

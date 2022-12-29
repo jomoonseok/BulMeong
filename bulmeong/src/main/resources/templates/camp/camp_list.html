@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{layout/header::head('캠핑예약')}"></head>
+<head th:insert="~{layout/header::head('[bulmeong] 캠핑장 조회')}"></head>
 <style>
 	.camp_div {
 		border: solid 1px #333333;
@@ -127,6 +127,7 @@
 				dataType: 'json',
 				success: function(resData) {
 					$('#camp_list').empty();
+					$('#title').html('<h1>캠핑장 조회 결과 : <span style="color: #CC4B4C; font-weight: bold;">' + resData.campCount + '개</span></h1>');
 					$.each(resData.campList, function(i, camp){
 						if(camp.firstImageUrl == null) {
 							camp.firstImageUrl = 'https://www.foodsafetykorea.go.kr/residue/assets/_new/img/noimage.gif';   // 이미지가 없으면 이미지 지정해주기
@@ -164,7 +165,7 @@
 					}
 					$('#paging').append(paging);
 
-					$('#title').html('<h1>캠핑장 전체 목록 : <span style="color: #CC4B4C; font-weight: bold;">' + resData.campCount + '개</span></h1>');
+					
 				}
 			});
 		});
@@ -283,6 +284,18 @@
 			
 		}
 	
+	function fn_btnOption() {
+		$('#doNm').val('');
+		$('#induty').val('');
+		$('#themaEnvrnCl').val('');
+		fn_getList();
+	}
+	function fn_btnOption2() {
+		$('#query').val('');
+		fn_getList();
+		
+	}
+	
 </script>
 <body>
 
@@ -343,14 +356,16 @@
 			   			</select>
 		   			</span>
 		   			<input type="button" value="검색" id="btn_search">
+		   			<input type="reset" value="다시검색" id="btn_option" onclick="fn_btnOption()">
 		   		</div>
 			
 		   		<div>
-		   			<h4>※캠핑장명 검색하기</h4>
+		   			<h4>※캠핑장명으로 검색하기</h4>
 			   		<span>
 				   		<input type="text" name="query" id="query" style="width: 455px;">
 			   		</span>
 			   		<input type="button" value="검색" id="btn_query">
+			   		<input type="reset" value="다시검색" id="btn_option" onclick="fn_btnOption2()">
 		   		</div>
 			</div>
 			
@@ -377,5 +392,6 @@
 			<input type="hidden" id="userId" th:data-id="${session.loginUser.id}">
 		</div>
     </div>
+    <footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>
