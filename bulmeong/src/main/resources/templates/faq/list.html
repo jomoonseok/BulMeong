@@ -74,7 +74,7 @@
 <!-- 								<i class="fa-thin fa-circle-chevron-up"></i> -->
 							</div>
 						</td>
-						<td>
+						<td class="css_btn_remove_wrap">
 							<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
 								<form method="post" th:action="@{/faq/remove}">
 									<input type="button" value="삭제" class="btn_remove">
@@ -92,7 +92,7 @@
 			</tfoot>
 		</table>
 	</div>
-<!-- 	<div th:replace="~{layout/sidebar::sidebar_layout}"></div> -->
+	<div th:replace="~{layout/sidebar::sidebar_layout}"></div>
 	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>
