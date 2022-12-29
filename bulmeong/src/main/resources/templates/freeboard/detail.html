@@ -531,8 +531,8 @@
 		<form id="frm_btn" method="post">
 			<input type="hidden" name="freeNo" th:value="${free.freeNo}">
 			<input type="hidden" name="nickname" th:value="${free.nickname}">
-			<input type="button" class="footer_btn1" value="글쓰기" id="btn_write">
-			<input type="button" class="footer_btn2" value="목록" th:onclick="|location.href='@{/freeboard/list}'|">
+			<input type="button" class="footer_btn1" value="목록" th:onclick="|location.href='@{/freeboard/list}'|">
+			<input type="button" class="footer_btn2" value="글쓰기" id="btn_write" th:if="${session.loginUser} != null">
 			<span th:if="${session.loginUser} != null and ${free.nickname == session.loginUser.nickname}">
 				<input type="button" class="footer_btn3" value="수정" id="btn_edit">
 				<input type="button" class="footer_btn4" value="삭제" id="btn_remove">
