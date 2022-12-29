@@ -1,0 +1,174 @@
+@charset "UTF-8";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+body {
+/* 	border: 1px #a39485 solid; */
+	width: 70%;
+	margin: auto;
+}
+/* list.html */
+.css_main_title_wrap {
+/* 	border: 1px #a39485 solid;	 */
+}
+
+.css_main_title {
+/* 	border: 1px #a39485 solid; */
+	font-size: 30px;
+	margin-left: 10px;
+}
+
+.css_sub_title {
+/* 	border: 1px #a39485 solid; */
+	margin-left: 10px;
+	color: grey;
+}
+
+.css_faq_box {
+	height: 80px;
+	margin-top: 40px;
+	margin-bottom: 20px;
+	background-color: #f8f8f9;
+}
+
+.css_faq_box_inner {
+	padding-top: 25px;
+	text-align: center;
+	margin: auto;
+	font-size: 18px;
+}
+	
+#btn_faqWrite {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	margin-bottom: 10px;
+	float: right;
+}
+
+table {
+	width: 100%;
+}
+
+ thead > tr > th:first-of-type {
+    width: 0%;
+ }
+
+#btn_faqWrite:hover{
+	background-color: rgba(204, 75, 76); 
+    transition-duration: 0.3s;
+    color: white;
+}
+
+.css_table_wrap {
+/* 	border: 1px #a39485 solid; */
+	width:100%;
+}
+
+.css_fqaNo_blind {
+	visibility:hidden
+}
+
+.blind {
+	display: none;
+}
+
+#toggle_area {
+	font-size:13px;
+	margin-bottom: 10px;
+}
+
+.btn_contentToggle {
+	width: 100%;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.css_font1 {
+/* 	border: 1px #a39485 solid; */
+	font-family: 'Dosis', sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	color: #CC4B4C;
+	display: inline;
+	
+}
+
+.css_faq_title {
+	font-size: 18px;
+	color: #545454;
+	width: 100%;
+	padding-bottom: 30px;
+}
+
+hr {
+	width: 98%;
+	margin-right: 3px;
+}
+
+.css_btn {
+/* 	border: 1px #a39485 solid; */
+	display: inline;
+	float:right;
+}
+
+.css_btn > i {
+/* 	border: 1px #a39485 solid; */
+	display: inline;
+	float:right;
+	margin-top: 10px;
+	margin-right: 20px;
+}
+
+i:hover {
+	color: #CC4B4C;
+}
+
+.fa-solid{
+	margin-top: 20px;
+}
+
+.css_font2 {
+/* 	border: 1px #a39485 solid; */
+	font-family: 'Dosis', sans-serif;
+	font-size: 32px;
+	font-weight: bold;
+	margin-left: 20px;
+	margin-top: 10px;
+	color: #545454;
+	display: inline;
+}
+
+.css_answer {
+/* 	padding: 10px; */
+	background-color: #f8f8f9;
+	width: 96%;
+	margin-right: 10px;
+	margin-left: 15px;
+}
+
+.css_faq_content {
+	font-size: 17px;
+	text-align: center;
+	margin-left: 5px;
+	margin-bottom: 20px;
+	color: #2c2c2c;
+}
+
+table > td {
+	width: 100%;
+}
+
+tfoot > tr > td {
+   text-align: center;
+   width: 100%;
+   font-size: 20px;
+}
+
+td a:hover {
+	color: rgba(113, 194, 133);
+}
+
+a {
+   color: #73685d;
+}

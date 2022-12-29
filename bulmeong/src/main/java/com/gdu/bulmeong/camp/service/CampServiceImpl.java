@@ -254,6 +254,7 @@ public class CampServiceImpl implements CampService {
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("campList", campMapper.selectCampByOption(map));
+		result.put("campCount", campMapper.selectCampByOptionCount(map));
 		
 		return result;
 	}
@@ -262,8 +263,13 @@ public class CampServiceImpl implements CampService {
 	public void getDetailList(HttpServletRequest request, Model model) {
 		int campNo = Integer.parseInt(request.getParameter("campNo"));
 		model.addAttribute("camp", campMapper.selectCampByNo(campNo));
-		
+		model.addAttribute("tent", campMapper.selectTentByCampNo(campNo));
 	}
 	
-	
+	@Override
+	public Map<String, Object> getCampListByJjim(int campNo) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("jjim", campMapper.selectAllCampByJjim(campNo));
+		return result;
+	}
 }

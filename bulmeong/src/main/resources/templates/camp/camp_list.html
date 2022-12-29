@@ -1,22 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{layout/header::head('캠핑예약')}"></head>
+<head th:insert="~{layout/header::head('[bulmeong] 캠핑장 조회')}"></head>
 <style>
+
+	body {
+		width: 70%;
+		margin: 0 auto;
+	}
+	
 	.camp_div {
 		border: solid 1px #333333;
+		display: flex;
 	}
 
 	.camp_img {
 		width: 300px;
 	}
-	
-	.lnk_jjim:hover span {
-		cursor: pointer;
-		color: #f83030;
+
+	.name:hover {
+		color: #CC4B4C; 
+		text-decoration: underline;
 	}
-	.heart {
-		width: 16px;
-		margin-right: 5px;
+	
+	#paging {
+		text-align: center;
+		padding: 20px;
+		cursor: pointer;
+	}
+	
+	.enable_link {
+		margin-left: 10px;
+		padding: 5px;
+		font-size: 20px;
+		color: #96a0ad;
+		line-height: 1.5;
+		text-align: center;
+		border-radius: 100%;
+	}
+	
+	.p {
+		margin-left: 10px;
+		font-size: 20px;
+		padding: 5px 13px 5px 13px;
+		border-radius: 100%;
+		background-color: #CC4B4C;
+		color: white;
 	}
 	
 </style>
@@ -27,7 +55,7 @@
 		console.log(id);
 		fn_getList();
 		fn_changePage();
-		/* fn_getListOption(); */
+		fn_getListOption();
 		fn_reserve();
 		fn_detail();
 		
@@ -46,33 +74,20 @@
 			success: function(resData) {
 				$('#camp_list').empty();
 				$.each(resData.campList, function(i, camp){
-
 					if(camp.firstImageUrl == null) {
 						camp.firstImageUrl = 'https://www.foodsafetykorea.go.kr/residue/assets/_new/img/noimage.gif';   // 이미지가 없으면 이미지 지정해주기
 					}
-
-					var camp_div = '<div class="camp_div">';
-					camp_div += '<div><img class="camp_img" src=' + camp.firstImageUrl + '></img></div>';
-					camp_div += '<div>' + camp.facltNm + '</div>';
-					camp_div += '<div>' + camp.intro + '</div>';
-					camp_div += '<div>' + camp.campNo + '</div>';
-					camp_div += '<div>' + camp.addr1 + '</div>';
-					camp_div += '<div>' + camp.sbrsCl + '</div>';
-					camp_div += '<div>' + camp.tel + '</div>';
-					camp_div += '<div>' + camp.jjim + '</div>';
-					camp_div += '<div>' + camp.sum + '</div>';
 					
-					camp_div += '<div class="lnk_jjim" data-campno="'+ camp.campNo + '>';
-					
-					//camp_div += '<span class="heart"></span>';
-					//camp_div += '<span class="jjim">찜 </span>';
-					camp_div += '<span class="jjim_count"></span>';
-					camp_div += '</div>';
-					
-					camp_div += '<div><input type="button" class="btn_detail" data-campNo="' + camp.campNo + '" value="상세보기" </div>';  // 구현하기
-					camp_div += '<div><input type="button" class="btn_reserve" data-campNo="' + camp.campNo + '" value="예약하기" </div>';
+					var camp_div = '<div class="camp_div" style="padding: 20px;">';
+					camp_div += '<div class="img" style="padding-right: 30px;"><img class="camp_img" src=' + camp.firstImageUrl + '></img></div>';
+					camp_div += '<div class="txt" style="padding: 15px 0;">'
+					camp_div += '<div class="name" style="font-size: 20px; font-weight: bold;"><a href="/detail?campNo=' + camp.campNo + '">' + camp.facltNm + '</a></div>';
+					camp_div += '<div>' + camp.lineIntro + '</div><br>';
+					camp_div += '<div><img src="images/camp/place.png" style="width: 20px; height: 20px;"> ' + camp.addr1 + '</div>';
+					camp_div += '<div><img src="images/camp/call.png" style="width: 20px; height: 20px;"> ' + camp.tel + '</div>';
+					camp_div += '<div class="lnk_jjim"><img src="images/camp/redheart.png" style="width: 20px; height: 20px;"><span> ' + camp.jjim + '개</span></div>';
 					$('#camp_list').append(camp_div);
-				});
+				}); 
 
 				$('#paging').empty();
 				var pageUtil = resData.pageUtil;
@@ -84,7 +99,7 @@
 				// 페이지번호
 				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
 					if(p == $('#page').val()){
-						paging += '<strong>' + p + '</strong>';
+						paging += '<strong class="p">' + p + '</strong>';
 					} else {
 						paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
 					}
@@ -95,7 +110,7 @@
 				}
 				$('#paging').append(paging);
 
-				$('#title').html('<h1>캠핑장 전체 목록 : ' + resData.campCount + '개</h1>');
+				$('#title').html('<h1>캠핑장 전체 목록 : <span style="color: #CC4B4C; font-weight: bold;">' + resData.campCount + '개</span></h1>');
 			}
 		});
 	}
@@ -107,7 +122,7 @@
 		});
 	}
 
-	/* function fn_getListOption() {
+	function fn_getListOption() {
 		fn_btnInit();
 		$('#btn_query, #btn_search').on('click', function() {  // 묶어놓은 거 풀 생각하기
 
@@ -117,29 +132,26 @@
 				data: {query:$('#query').val(), doNm:$('#doNm').val(), induty:$('#induty').val(), themaEnvrnCl:$('#themaEnvrnCl').val()},
 				dataType: 'json',
 				success: function(resData) {
-					console.log(resData);
 					$('#camp_list').empty();
+					$('#title').html('<h1>캠핑장 조회 결과 : <span style="color: #CC4B4C; font-weight: bold;">' + resData.campCount + '개</span></h1>');
+					if(resData.campCount == 0) {
+						$('#title').append('<br><h3 style="text-align:center;"><span style="color: #CC4B4C; font-weight: bold;">조건에 부합하는 캠핑장이 없습니다. 「다시검색」버튼을 눌러주세요.');
+					}
 					$.each(resData.campList, function(i, camp){
-
 						if(camp.firstImageUrl == null) {
 							camp.firstImageUrl = 'https://www.foodsafetykorea.go.kr/residue/assets/_new/img/noimage.gif';   // 이미지가 없으면 이미지 지정해주기
 						}
-
-						var camp_div = '<div class="camp_div">';
-						camp_div += '<div><img class="camp_img" src=' + camp.firstImageUrl + '></img></div>';
-						camp_div += '<div>' + camp.facltNm + '</div>';
-						camp_div += '<div>' + camp.intro + '</div>';
-						camp_div += '<div>' + camp.campNo + '</div>';
-						camp_div += '<div>' + camp.addr1 + '</div>';
-						camp_div += '<div>' + camp.sbrsCl + '</div>';
-						camp_div += '<div>' + camp.tel + '</div>';
-						camp_div += '<div id="lnk_jjim"><span id="heart"></span><span id="jjim">찜</span><span id="jjim_count"></span></div>';
-						camp_div += '<div><input type="button" class="btn_detail" data-campNo="' + camp.campNo + '" value="상세보기" </div>';
-						camp_div += '<div><input type="button" class="btn_reserve" data-campNo="' + camp.campNo + '" value="예약하기" </div>';
+						
+						var camp_div = '<div class="camp_div" style="padding: 20px;">';
+						camp_div += '<div class="img" style="padding-right: 30px;"><img class="camp_img" src=' + camp.firstImageUrl + '></img></div>';
+						camp_div += '<div class="txt" style="padding: 15px 0;">'
+						camp_div += '<div class="name" style="font-size: 20px; font-weight: bold;"><a href="/detail?campNo=' + camp.campNo + '">' + camp.facltNm + '</a></div>';
+						camp_div += '<div>' + camp.lineIntro + '</div><br>';
+						camp_div += '<div><img src="images/camp/place.png" style="width: 20px; height: 20px;"> ' + camp.addr1 + '</div>';
+						camp_div += '<div><img src="images/camp/call.png" style="width: 20px; height: 20px;"> ' + camp.tel + '</div>';
+						camp_div += '<div class="lnk_jjim"><img src="images/camp/redheart.png" style="width: 20px; height: 20px;"><span> ' + camp.jjim + '개</span></div>';
 						$('#camp_list').append(camp_div);
-					});
-
-					// 옵션 검색 시 페이징 처리는 아직 구현안됨.
+					}); 
 
 					$('#paging').empty();
 					var pageUtil = resData.pageUtil;
@@ -151,7 +163,7 @@
 					// 페이지번호
 					for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
 						if(p == $('#page').val()){
-							paging += '<strong>' + p + '</strong>';
+							paging += '<strong class="p">' + p + '</strong>';
 						} else {
 							paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
 						}
@@ -161,13 +173,13 @@
 						paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
 					}
 					$('#paging').append(paging);
-					$('#title').append('<h1>캠핑장 검색 목록 : ' + resData.campCount + '개</h1>');
 
+					
 				}
 			});
 		});
 	}
- */
+ 
 	function fn_btnInit() {
 		$('#btn_query').on('click', function() {
 			$('#doNm').val('');
@@ -193,7 +205,7 @@
 	}
 	
 	
-/* 
+
 	// 찜 표시 여부(찜테이블에 사용자가 있는지 확인)
 	function fn_jjimCheck() { 
 		$.ajax({
@@ -226,7 +238,7 @@
 			}
 		});
 	}
-	  */
+	  
 	  
 	  
 	// 좋아요 누르기
@@ -281,101 +293,115 @@
 			
 		}
 	
+	function fn_btnOption() {
+		$('#doNm').val('');
+		$('#induty').val('');
+		$('#themaEnvrnCl').val('');
+		fn_getList();
+	}
+	function fn_btnOption2() {
+		$('#query').val('');
+		fn_getList();
+		
+	}
+	
 </script>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 	<!-- <h1 th:text="${camp.campNo}"></h1> -->
     <div id="list_container">
+    	<div class="upbar" style="background-color: #71C285; padding-top: 20px;">
+			<div class="search" style="background-color: rgb(255, 255, 255, 0.7); padding: 30px 30px; margin: 0 20px 0 20px; border-radius: 20px; box-shadow: 5px 5px 5px 5px rgb(180 185 191 / 30%); display: flex;">
+		   		<div class="condition" style="padding-right: 100px;">
+		   			<h4>※조건으로 검색하기</h4>
+		   			<span>
+			   			지역
+			   			<select name="doNm" id="doNm">
+			   				<option value="">선택</option>
+			   				<option value="서울">서울</option>
+			   				<option value="경기">경기</option>
+			   				<option value="대전">대전</option>
+			   				<option value="충북">충북</option>
+			   				<option value="광주">광주</option>
+			   				<option value="울산">울산</option>
+			   				<option value="경남">경남</option>
+			   				<option value="강원">강원</option>
+			   				<option value="부산">부산</option>
+			   				<option value="경북">경북</option>
+			   				<option value="충남">충남</option>
+			   				<option value="인천">인천</option>
+			   				<option value="대구">대구</option>
+			   				<option value="제주">제주</option>
+			   				<option value="세종">세종</option>
+			   				<option value="전북">전북</option>
+			   				<option value="전남">전남</option>
+			   			</select>
+		   			</span>
+		   			<span>
+		   				업종
+		   				<select name="induty" id="induty">
+			   				<option value="">선택</option>
+			   				<option value="글램핑">글램핑</option>
+			   				<option value="카라반">카라반</option>
+			   				<option value="일반야영장">일반야영장</option>
+			   				<option value="자동차야영장">자동차야영장</option>
+			   			</select>
+		   			</span>
+		   			<span>
+		   				테마환경
+		   				<select name="themaEnvrnCl" id="themaEnvrnCl">
+			   				<option value="">선택</option>
+			   				<option value="봄꽃여행">봄꽃여행</option>
+			   				<option value="여름물놀이">여름물놀이</option>
+			   				<option value="가을단풍명소">가을단풍명소</option>
+			   				<option value="겨울눈꽃명소">겨울눈꽃명소</option>
+			   				<option value="낚시">낚시</option>
+			   				<option value="걷기길">걷기길</option>
+			   				<option value="수상레저">수상레저</option>
+			   				<option value="액티비티">액티비티</option>
+			   				<option value="일출명소">일출명소</option>
+			   				<option value="일몰명소">일몰명소</option>
+			   			</select>
+		   			</span>
+		   			<input type="button" value="검색" id="btn_search">
+		   			<input type="reset" value="다시검색" id="btn_option" onclick="fn_btnOption()">
+		   		</div>
+			
+		   		<div>
+		   			<h4>※캠핑장명으로 검색하기</h4>
+			   		<span>
+				   		<input type="text" name="query" id="query" style="width: 455px;">
+			   		</span>
+			   		<input type="button" value="검색" id="btn_query">
+			   		<input type="reset" value="다시검색" id="btn_option" onclick="fn_btnOption2()">
+		   		</div>
+			</div>
+			
+	   		<hr>
+	   		
+		</div>
 
-   		<div>
-   		캠핑장명 검색하기<br>
-	   		<span>
-		   		<input type="text" name="query" id="query">
-	   		</span>
-	   		<input type="button" value="검색" id="btn_query">
-   		</div>
-
-   		<hr>
-
-   		<div>
-   		조건으로 검색하기<br>
-   			<span>
-	   			지역
-	   			<select name="doNm" id="doNm">
-	   				<option value="">선택</option>
-	   				<option value="서울">서울</option>
-	   				<option value="경기">경기</option>
-	   				<option value="대전">대전</option>
-	   				<option value="충북">충북</option>
-	   				<option value="광주">광주</option>
-	   				<option value="울산">울산</option>
-	   				<option value="경남">경남</option>
-	   				<option value="강원">강원</option>
-	   				<option value="부산">부산</option>
-	   				<option value="경북">경북</option>
-	   				<option value="충남">충남</option>
-	   				<option value="인천">인천</option>
-	   				<option value="대구">대구</option>
-	   				<option value="제주">제주</option>
-	   				<option value="세종">세종</option>
-	   				<option value="전북">전북</option>
-	   				<option value="전남">전남</option>
-	   			</select>
-   			</span>
-   			<span>
-   				업종
-   				<select name="induty" id="induty">
-	   				<option value="">선택</option>
-	   				<option value="글램핑">글램핑</option>
-	   				<option value="카라반">카라반</option>
-	   				<option value="일반야영장">일반야영장</option>
-	   				<option value="자동차야영장">자동차야영장</option>
-	   			</select>
-   			</span>
-   			<span>
-   				테마환경
-   				<select name="themaEnvrnCl" id="themaEnvrnCl">
-	   				<option value="">선택</option>
-	   				<option value="봄꽃여행">봄꽃여행</option>
-	   				<option value="여름물놀이">여름물놀이</option>
-	   				<option value="가을단풍명소">가을단풍명소</option>
-	   				<option value="겨울눈꽃명소">겨울눈꽃명소</option>
-	   				<option value="낚시">낚시</option>
-	   				<option value="걷기길">걷기길</option>
-	   				<option value="수상레저">수상레저</option>
-	   				<option value="액티비티">액티비티</option>
-	   				<option value="일출명소">일출명소</option>
-	   				<option value="일몰명소">일몰명소</option>
-	   			</select>
-   			</span>
-   			<input type="button" value="검색" id="btn_search">
-   		</div>
-		
-   		<hr>
-
-   		<div id="title"></div> 
-
-   		<div>
-  			<div id="camp_list"></div>
-   			<div id="paging"></div>
-			<input type="hidden" id="page" value="1">
-   		</div>
-   		
-   		<form>
-   			<div>
-   				<input type="hidden" name="campNo" value="${camp.campNo}">
-   			</div>
-	   		<div id="lnk_jjim">
-	   			<span id="heart"></span><span id="jjim">찜 </span><span id="jjim_count"></span>
+	
+	   		<div id="title" style="padding: 50px"></div> 
+	
+	   		<div>
+	  			<div id="camp_list"></div>
+	   			<div id="paging"></div>
+				<input type="hidden" id="page" value="1">
 	   		</div>
-   		</form>
-   		
-   		
-
+	   		
+	   		<form>
+	   			<div>
+	   				<input type="hidden" name="campNo" value="${camp.campNo}">
+	   			</div>
+	   		</form>
+	   		
+	    <div th:if="${session.loginUser != null}">
+			<input type="hidden" id="userId" th:data-id="${session.loginUser.id}">
+		</div>
     </div>
-    <div th:if="${session.loginUser != null}">
-		<input type="hidden" id="userId" th:data-id="${session.loginUser.id}">
-	</div>
+    
+    <footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

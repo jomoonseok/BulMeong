@@ -1210,6 +1210,14 @@ public class UsersServiceImpl implements UsersService {
 		
 	}
 	
-	 
+	// myPage
+	@Override
+	public void getReserveById(HttpServletRequest request, Model model) {
+		UsersDTO loginUser = (UsersDTO)request.getSession().getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		model.addAttribute("reserved", usersMapper.selectReserveById(id));
+		model.addAttribute("loginUser", loginUser);
+	}
 	
 }

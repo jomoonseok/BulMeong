@@ -58,7 +58,7 @@ public class NoticeServiceImpl implements NoticeService {
 		// 페이지 파라미터
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
-		int recordPerPage = 5;
+		int recordPerPage = 10;
 				
 		// 전체 공지 개수
 		int totalRecord = noticeMapper.selectNoticeListCount();
@@ -87,7 +87,7 @@ public class NoticeServiceImpl implements NoticeService {
 		MultipartFile multipartFile = multipartRequest.getFile("file");
 			
 		// 저장 경로
-		String path = "C:" + File.separator + "noticeImage";
+		String path = myFileUtil.getSummernotePath();
 				
 		// 저장할 파일명
 		String filesystem = myFileUtil.getFilename(multipartFile.getOriginalFilename());
@@ -110,7 +110,7 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		// 저장된 파일을 확인할 수 있는 매핑을 반환
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("src", multipartRequest.getContextPath() + "/load/image/" + filesystem);  // 이미지 mapping값을 반환
+		map.put("src", "/load/noticeImage/" + filesystem);  // 이미지 mapping값을 반환
 		map.put("filesystem", filesystem);  // HDD에 저장된 파일명 반환
 		return map;
 		
@@ -155,7 +155,6 @@ public class NoticeServiceImpl implements NoticeService {
 								.build();
 						noticeMapper.insertSummernoteImage(summernoteImage);
 					}
-					System.out.println(notice.getNoticeNo());
 				}
 				out.println("<script>");
 				out.println("alert('공지사항이 등록되었습니다.')");
@@ -191,7 +190,7 @@ public class NoticeServiceImpl implements NoticeService {
 		if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 			for(SummernoteImageDTO summernoteImage : summernoteImageList) {
 				if(notice.getNoticeContent().contains(summernoteImage.getFilesystem()) == false) {
-					File file = new File("C:" + File.separator + "noticeImage", summernoteImage.getFilesystem());
+					File file = new File(myFileUtil.getSummernotePath(), summernoteImage.getFilesystem());
 					if(file.exists()) {
 						file.delete();
 					}
@@ -280,7 +279,7 @@ public class NoticeServiceImpl implements NoticeService {
 				
 				if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 					for(SummernoteImageDTO summernoteImage : summernoteImageList) {
-						File file = new File("C:" + File.separator + "noticeImage", summernoteImage.getFilesystem());
+						File file = new File(myFileUtil.getSummernotePath(), summernoteImage.getFilesystem());
 						if(file.exists()) {
 							file.delete();
 						}
@@ -293,7 +292,7 @@ public class NoticeServiceImpl implements NoticeService {
 				out.println("alert('공지사항 삭제가 불가능합니다.');");
 				out.println("history.back();");
 			}
-			out.println("</script>");			
+			out.println("</script>");
 			out.close();
 		} catch (Exception e) {
 			e.printStackTrace();

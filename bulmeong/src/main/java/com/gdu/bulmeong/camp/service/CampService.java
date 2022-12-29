@@ -22,4 +22,5 @@ public interface CampService {
 	public void getDetailList(HttpServletRequest request, Model model);
 	public void deleteAllCamp(HttpServletResponse response);
 	
+	public Map<String, Object> getCampListByJjim(int campNo);
 }
