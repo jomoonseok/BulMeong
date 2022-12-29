@@ -61,10 +61,13 @@
 		
 		.info_box {
 			display: flex;
+			height: 90px;
+			padding-top: 30px;
+		}
+		
+		.outline {
 			border:1px solid rgb(3, 199, 90);
 			border-radius: 8px;
-			height: 130px;
-			padding-top: 30px;
 		}
 	</style>
 </head>
@@ -74,18 +77,26 @@
 	
 	<div class="div_all">
 		<div class="main_box">
-			<div class="info_box">
-				<div class="img_box" style="margin-top:5px">
-					<img class="profile_img" th:src="|/load/profileImage/${session.loginUser.profileImage}|">
+			<div class="outline">
+				<div class="info_box">
+					<div class="img_box" style="margin-top:5px">
+						<!-- <img class="profile_img" th:src="|/load/profileImage/${session.loginUser.profileImage}|"> -->
+						<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}">
+							<img id="profileImage" th:src="${session.loginUser.profileImage}" class="profile_img">
+						</span>
+						<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
+							<img id="profileImage" th:src="|/load/profileImage/${session.loginUser.profileImage}|" class="profile_img">
+						</span>
+					</div>
+					<div class="text_box" style="margin-left:10px;">
+						<div th:text="${session.loginUser.name}" style="color:rgb(3, 199, 90); font-size:20px; font-weight:600;"></div>
+						<div th:text="${session.loginUser.email}" ></div>
+					</div>
 				</div>
-				<div class="text_box" style="margin-left:10px;">
-					<div th:text="${session.loginUser.name}" style="color:rgb(3, 199, 90); font-size:20px; font-weight:600;"></div>
-					<div th:text="${session.loginUser.email}" ></div>
-				</div>
+				<hr>
+				<img src="/images/userimage/call.png" style="width:18px; padding-bottom:4px; margin: 0 8px;"><span th:text="${session.loginUser.mobile}"></span>
+				<hr>
 			</div>
-			<hr>
-			<img src="/images/userimage/call.png" style="width:18px; padding-bottom:4px; margin-right:8px;"><span th:text="${session.loginUser.mobile}"></span>
-			<hr>
 			<div class="link_box">
 				<div>
 					<a class="link" th:href="@{/users/modify}">회원정보변경</a>

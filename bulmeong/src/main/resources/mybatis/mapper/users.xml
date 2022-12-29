@@ -215,5 +215,16 @@
 		 WHERE R.ID = #{id};
 	</select>
 	
+	<!--  -->
+	<select id="selectJjimList" parameterType="String" resultType="CampDTO">
+		SELECT CAMP_NO, facltNm, jjim
+		  FROM CAMP
+		 WHERE CAMP_NO IN (SELECT T.CAMP_NO
+						     FROM USERS U INNER JOIN CAMP_CART T		    
+							   ON U.ID = T.ID
+						    WHERE U.ID = #{id})
+	</select>
+	
+	
 	
 </mapper>

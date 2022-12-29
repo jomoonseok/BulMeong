@@ -58,7 +58,7 @@
 				let maxSize = 1024 * 1024 * 1;  // 1MB
 				let files = this.files;
 				
-				$('#fileSize').text(files[0].size / 1024);
+				$('#fileSize').text(Math.ceil(files[0].size / 1024) + 'MB');
 				
 				// 크기 체크
 				if(files.size > maxSize){
@@ -67,7 +67,7 @@
 					return;
 				}
 				
-				let data = new FormData($('#form_test')[0]);
+				let data = new FormData($('#form_data')[0]);
 				
 				$.ajax({
 					type: 'post',
@@ -80,6 +80,7 @@
 					success: function(resData){
 						$('#removeCheck').val('');
 						$('#profileImage').prop('src', '/load/profileImagePreview/' + resData.filesystem);
+						//$('#profileImage').prop('width', '100px');
 					}
 				}); // ajax
 			}); // change
@@ -93,7 +94,52 @@
 		
 	</script>
 	<style>
-		.image{
+		.div_all {
+			width:70%;
+			/* border: 1px solid black; */
+			margin: 0 auto;
+			padding: 15px;
+		}
+		
+		.tbl_all {
+			width: 100%;
+			margin-bottom: 15px; 
+		}
+		
+		.tbl_border_top {
+			border-top : 1px solid black;
+		}
+		
+		.tbl_border_bottom {
+			border-bottom : 1px solid black;
+		}
+		
+		.tbl_border_right {
+			border-right : 1px solid black;
+		}
+		
+		.tbl_text {
+			font-size : 18px;
+			text-align: center;
+		}
+		
+		.img_box {
+			width: 100px;
+    		height: 100px; 
+    		border:solid 1px white;
+    		outline: solid 1px rgb(132, 132, 132);
+    		background-color:white;
+			border-radius: 70%;
+    		overflow: hidden;
+		}
+		
+		.profile_img {
+			width: 100%;
+		    height: 100%;
+		    object-fit: cover;
+		}
+		
+		.btn_shape{
 			display: inline-block; 
 			border:1px solid gray; 
 			width:100px; 
@@ -102,57 +148,94 @@
 			text-align:center;
 			font-weight: bold; 
 		}
+		
+		.btn_green {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+			background-color: rgb(3, 199, 90);
+			color: white;
+		}
+		
+		.btn_red {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+     		background-color: rgb(204, 75, 76);
+			color: white;
+		}
+		
+		.btn_gray {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+     		background-color: rgb(142, 142, 142);
+			color: white;
+		}
+		
 	</style>
 </head>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	<h1>프로필 수정</h1>
 	
-	<form th:action="@{/users/modify/profile}" method="post" enctype="multipart/form-data" id="form_test">
-		<table border="1">
-			<tbody>
-				<tr>
-					<td>프로필 이미지</td>
-					<td>
-						<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}">
-							<img id="profileImage" th:src="${session.loginUser.profileImage}" width="100px" style="border:1px solid black;">
-						</span>
-						<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
-							<img id="profileImage" th:src="|/load/profileImage/${session.loginUser.profileImage}|" width="100px" style="border:1px solid black;">
-						</span>
-						<div>
-							<label for="image" class="image">사진변경</label>
-							<input type="file" id="image" name="image" accept="image/png, image/jpeg" style="display:none">
-						</div>
-						<div>
-							<input type="hidden" id="removeCheck" name="removeCheck">
-							<label for="remove" class="image">삭제</label>
-							<input type="button" id="remove" style="display:none" onclick="
-								$('#removeCheck').val('check');
-								$('#image').val('');
-								$('#profileImage').prop('src', '/images/userimage/basic_profileImage.png');
-							">
-						</div>
-						<span id="fileSize"></span>
-					</td>
-				</tr>
-				<tr>
-					<td><label for="nickname">닉네임</label> </td>
-					<td>
-						<!-- 닉네임 -->
-						<div>
-							<input type="text" name="nickname" id="nickname" th:value="${session.loginUser.nickname}">
-						</div>
+	<div class="div_all">
+	
+		<h3>프로필 수정</h3>
+		<p>대표 프로필 이미지와 별명을 수정 하실 수 있습니다.</p><br>
+		
+		<form th:action="@{/users/modify/profile}" method="post" enctype="multipart/form-data" id="form_data">
+			<table class="tbl_all tbl_border_top tbl_border_bottom">
+				<thead>
+					<tr style="height:250px;">
+						<td class="tbl_border_right tbl_border_bottom tbl_text" style="background-color:rgb(232, 232, 232);">프로필 이미지</td>
+						<td class="tbl_border_bottom" style="padding-left:20px;">
+							<div class="img_box">
+								<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}">
+									<img id="profileImage" th:src="${session.loginUser.profileImage}" class="profile_img">
+								</span>
+								<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
+									<img id="profileImage" th:src="|/load/profileImage/${session.loginUser.profileImage}|" class="profile_img">
+								</span>
+							</div>
+							<div style="margin-top:10px;">
+								<label for="image" class="btn_shape">사진변경</label>
+								<input type="file" id="image" name="image" accept="image/png, image/jpeg" style="display:none">
+								<input type="hidden" id="removeCheck" name="removeCheck">
+								<label for="remove" class="btn_shape">삭제</label>
+								<input type="button" id="remove" style="display:none" onclick="
+									$('#removeCheck').val('check');
+									$('#image').val('');
+									$('#profileImage').prop('src', '/images/userimage/basic_profileImage.png');
+									$('#fileSize').text('0MB');
+								">
+							</div>
+							<span id="fileSize">0MB</span>
+						</td>
+					</tr>
+					</thead>
+					<tbody>
+					<tr style="height:130px;">
+						<td class="tbl_border_right tbl_text" style="background-color:rgb(232, 232, 232);"><label for="nickname">닉네임</label></td>
+						<td style="padding-left:20px;">
+							<!-- 닉네임 -->
+							<div>
+								<input type="text" name="nickname" id="nickname" th:value="${session.loginUser.nickname}">
+							</div>
 							<span id="msg_nickname"></span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<button>적용</button>
-		<input type="button" value="취소하기" id="btn_cancel">
-	</form>
-	
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div style="text-align:center;">
+				<input type="button" value="취소하기" id="btn_cancel" class="btn_gray">
+				<button class="btn_green">적용</button>
+			</div>
+		</form>
+	</div>
 </body>
 </html>

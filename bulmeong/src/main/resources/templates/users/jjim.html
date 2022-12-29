@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head th:replace="~{layout/header::head('찜목록')}"></head>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	jjim
+	<table border="1">
+		<thead>
+			<tr>
+				 <td>캠핑장 번호</td>
+				 <td>캠핑장 이름</td>
+				 <td>찜</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="jjim : ${jjim}">
+				<td th:text="${jjim.campNo}"></td>
+				<td><a th:href="|/detail?campNo=${jjim.campNo}|" th:text="${jjim.facltNm}"></a></td>
+				<td th:text="${jjim.jjim}"></td>
+			</tr>
+		</tbody>
+	</table>
 	
 </body>
 </html>
