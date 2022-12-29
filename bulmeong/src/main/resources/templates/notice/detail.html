@@ -13,22 +13,22 @@
 	<div class="css_detail_wrap">
 		
 		<div class="css_notice_title_wrap">
-			<h3 th:text="|[공지] ${notice.noticeTitle}|"></h3>
+			<span th:text="|[공지] ${notice.noticeTitle}|"></span>
 		</div>
 		
-		<div>
+		<div class="css_notice_createDate">
 			<span th:text="|작성일▷ ${notice.noticeCreateDate}|"></span>
 <!-- 			&nbsp;&nbsp;&nbsp; -->
 <!-- 			<span th:text="|수정일 ${notice.noticeModifyDate}|"></span> -->
 		</div>
 		
-		<div>
+		<div class="css_notice_hit">
 			<span th:text="|조회수▷ ${#numbers.formatInteger(notice.noticeHit,1,'COMMA')}|"></span>
 		</div>
 		
 		<hr>
 		
-		<div th:utext="${notice.noticeContent}"></div>
+		<div th:utext="${notice.noticeContent}" class="css_noticeContent"></div>
 		
 		<hr>
 		
