@@ -44,6 +44,7 @@ body {
 }
 
 #my_qnaList, #btn_qnaWrite {
+	height:36px;
 	border: 1px #CC4B4C solid;
 	border-radius:7px;
 	color: rgba(204, 75, 76);
