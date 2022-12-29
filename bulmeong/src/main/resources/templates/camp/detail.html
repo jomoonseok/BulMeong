@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('[bulmeong] 상세보기')}"></head>
 <style>
-		
 		body {
 			width: 70%;
 			margin: 0 auto;
@@ -33,7 +32,7 @@
 		    width: 100%;
 		    margin-top: 30px;
 		    z-index: 3;
-		    text-align: light;
+		    /* text-align: center; */
 		    color: #fff;
 		    top: 75px;
 		    text-shadow: 2px 2px 3px rgb(0 0 0);
@@ -47,7 +46,7 @@
 		    z-index: 3;
 		    color: #fff;
 		    top: 25px;
-		    text-align: light;
+		   /*  text-align: center; */
 		}
 		
 		
@@ -103,23 +102,23 @@
 		}
 		
 		.tab {
-	        width: 800px;
+	        width: 100%;
 	        list-style: none; 
 	        display: flex;   
 	        padding: 0;
-	        background-color: #A7A2A2;
+	        background-color: rgb(113, 194, 133, 0.8);
 	        font-weight: bold;
     	}
     	
     	.tab li {
-	        width: 200px;            /* 너비 */
+	        width: 400px;            /* 너비 */
 	        height: 50px;           /* 높이 */
 	        text-align: center;     /* 가로 가운데 정렬 */
 	        line-height: 50px;      /* 세로 가운데 정렬 */
     	}
     	
     	.tab li:hover {
-        	border-bottom: 3px solid #FA2B2B;
+        	border-bottom: 3px solid #CC4B4C;
     	}
     
 	    .red {
@@ -166,10 +165,8 @@
 		
 		.share {
 			position:relative;
-			
 			list-style: none; 
 			display: flex;
-			padding-right:6px;
 		}
 		
 		#list {
@@ -194,7 +191,7 @@
 		    border: 1px solid #fff;
 		    border-radius: 100px;
 		    text-align: center;
-		    font-size: 15px;
+		    font-size: 20px;
 		    color: #fff;
 		    margin-right: 5px; 
 		    margin-left: 5px;
@@ -202,9 +199,8 @@
 		
 		.tag_u {
 			color: #fff;
-			font-size: 15px;
-			padding-right: 100px;
-			width: 500px;
+			font-size: 18px;
+			 width: 1100px; 
 		}
 		
 		.underbar {
@@ -230,9 +226,10 @@
 		
 		.txt {
 			display: block; 
-			position:absolute; top:50px;
+			position:absolute; 
+			top:77px;
 			text-align: center;
-			font-size: 10px;
+			font-size: 15px;
 			width: 100%;
 		}
 		
@@ -260,6 +257,7 @@
 		  -ms-transform: scale(1);
 		  -o-transform: scale(1);
 		  transition: all 0.3s ease-in-out;   /* 부드러운 모션을 위해 추가*/
+		  
 		}
 		.scale:hover {
 		  transform: scale(1.2);
@@ -303,7 +301,7 @@
     		text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
 		}
 		
-		#reviewcontent {
+		#reviewContent {
 		    width: 100%;
 		    height: 150px;
 		    padding: 10px;
@@ -312,6 +310,35 @@
 		    border-radius: 5px;
 		    font-size: 16px;
 		    resize: none;
+		}
+		
+		.camp_table th {
+			padding-right: 80px;
+			padding-left: 80px;
+		}
+		
+		#but {
+			margin-top: 10px;
+			background: rgb(113, 194, 133, 0.8);
+			border: none;
+			border-radius: 20px;
+			height: 30px;
+		}
+		
+		#but:hover {
+			color: white;
+		}
+		
+		#button {
+			margin-top: 10px;
+			background: rgb(204, 75, 76, 0.8);
+			border: none;
+			border-radius: 20px;
+			height: 30px;
+		}
+		
+		#button:hover {
+			color: white;
 		}
 		
 	</style>
@@ -359,6 +386,7 @@
 			<hr>
 			
 			<div class="underbar">
+				
 				<div class="tag">
 					<p class="tag_p">태그</p>
 					<ul class="tag_u">
@@ -372,36 +400,37 @@
 				<div class="icon">
 					<ul class="share">
 						<li id="list">
-							<img src="images/camp/share.png" style="cursor:pointer; width: 32px; height: 32px;" class="imghead" id="sns_share" onclick="fn_toggleImg()">
+							<img src="images/camp/share.png" style="cursor:pointer; width: 42px; height: 42px;" class="imghead" id="sns_share" onclick="fn_toggleImg()">
 							<div class="sns_type" style="display:none; z-index: 2">
 								<ul>
 									<li>
-										<img src="images/camp/back.png" class="sns_cancel imghead" id="back" style="width: 32px; height: 32px; display: none;">
+										<img src="images/camp/back.png" class="sns_cancel imghead" id="back" style="width: 42px; height: 42px; display: none; padding-right: 10px;">
 									</li> 
 									<li>
-										<img src="images/camp/facebook.png" class="sns_list1" onclick="fn_sendSns('facebook')" style="width: 32px; height: 32px; cursor:pointer;">
+										<img src="images/camp/facebook.png" class="sns_list1" onclick="fn_sendSns('facebook')" style="width: 42px; height: 42px; cursor:pointer;">
 									</li>
 									<li>
-										<img src="images/camp/twitter.png" class="sns_list2" onclick="fn_sendSns('twitter')" style="width: 32px; height: 32px; cursor:pointer;">
+										<img src="images/camp/twitter.png" class="sns_list2" onclick="fn_sendSns('twitter')" style="width: 42px; height: 42px; cursor:pointer;">
 									</li>
 									<li>
-										<img src="images/camp/kakaotalk.png" class="sns_list4" onclick="fn_sendSns('kakaotalk')" style="width: 32px; height: 32px; cursor:pointer;">
+										<img src="images/camp/kakaotalk.png" class="sns_list4" onclick="fn_sendSns('kakaotalk')" style="width: 42px; height: 42px; cursor:pointer;">
 									</li>
 								</ul>
 							</div>
 						</li>
 						<li class="link">
 							<a href="" onclick="linkCopy()">
-								<img class="imghead" src="images/camp/url.png" style="width: 32px; height: 32px;">
+								<img class="imghead" src="images/camp/url.png" style="width: 42px; height: 42px;">
 							</a>
 						</li>
 						<li class="print">
 							<a href="#printThis" onclick="printThis()">
-								<img class="imghead" src="images/camp/print.png" style="width: 32px; height: 32px;">
+								<img class="imghead" src="images/camp/print.png" style="width: 42px; height: 42px;">
 							</a>
 						</li>
 					</ul>
 				</div>
+				
 			</div>
 			
 		</div>	
@@ -666,7 +695,7 @@
 						<a href="#intro" class="camp_intro">캠핑장 소개</a>
 					</li>
 					<li class="c_guide">
-						<a href="#guide" class="camp_guide">이용안내</a>
+						<a href="#guide" class="camp_guide">캠핑장 사진</a>
 					</li>
 					<li class="c_map">
 						<a href="#map" class="camp_map">위치 정보</a>
@@ -674,9 +703,9 @@
 					<li class="c_review">
 						<a href="#review" class="camp_review">캠핑 후기</a>
 					</li>
-					<li class="c_notice">
+					<!-- <li class="c_notice">
 						<a href="#notice" class="camp_notice">공지/이벤트</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 			<div id="intro">
@@ -696,20 +725,20 @@
 				</h3>
 				<div class="camp_item">
 					<ul>
-						<li>
+						<li style="height: 100px;">
 							<i class="items">
 								<th:block th:each=" lang : ${#strings.listSplit(camp.sbrsCl,',')}">
 									<th:block th:switch="${lang}">
-									<div class="pic" th:case="전기"><img src="/images/camp/electric.png" width="42px" height="42px" class="iconList"><div class="txt">전기</div></div>
-									<div class="pic" th:case="무선인터넷"><img src="/images/camp/wifi.png" width="42px" height="42px" class="iconList"><div class="txt">와이파이</div></div>
-									<div class="pic" th:case="장작판매"><img src="/images/camp/wood.png" width="42px" height="42px" class="iconList"><div class="txt">장작판매</div></div>
-									<div class="pic" th:case="온수"><img src="/images/camp/hot.png" width="42px" height="42px" class="iconList"><div class="txt">온수</div></div>
-									<div class="pic" th:case="물놀이장"><img src="/images/camp/pool.png" width="42px" height="42px" class="iconList"><div class="txt">물놀이장</div></div>
-									<div class="pic" th:case="놀이터"><img src="/images/camp/play.png" width="42px" height="42px" class="iconList"><div class="txt">놀이터</div></div>
-									<div class="pic" th:case="운동장"><img src="/images/camp/ground.png" width="42px" height="42px" class="iconList"><div class="txt">운동장</div></div>
-									<div class="pic" th:case="운동시설"><img src="/images/camp/dumbbell.png" width="42px" height="42px" class="iconList"><div class="txt">운동시설</div></div>
-									<div class="pic" th:case="산책로"><img src="/images/camp/path.png" width="42px" height="42px" class="iconList"><div class="txt">산책로</div></div>
-									<div class="pic" th:case="마트.편의점"><img src="/images/camp/store.png" width="42px" height="42px" class="iconList"><div class="txt">마트</div></div>
+									<div class="pic" th:case="전기"><img src="/images/camp/electric.png" width="78px" height="78px" class="iconList"><div class="txt">전기</div></div>
+									<div class="pic" th:case="무선인터넷"><img src="/images/camp/wifi.png" width="78px" height="78px" class="iconList"><div class="txt">와이파이</div></div>
+									<div class="pic" th:case="장작판매"><img src="/images/camp/wood.png" width="78px" height="78px" class="iconList"><div class="txt">장작판매</div></div>
+									<div class="pic" th:case="온수"><img src="/images/camp/hot.png" width="78px" height="78px" class="iconList"><div class="txt">온수</div></div>
+									<div class="pic" th:case="물놀이장"><img src="/images/camp/pool.png" width="78px" height="78px" class="iconList"><div class="txt">물놀이장</div></div>
+									<div class="pic" th:case="놀이터"><img src="/images/camp/play.png" width="78px" height="78px" class="iconList"><div class="txt">놀이터</div></div>
+									<div class="pic" th:case="운동장"><img src="/images/camp/ground.png" width="78px" height="78px" class="iconList"><div class="txt">운동장</div></div>
+									<div class="pic" th:case="운동시설"><img src="/images/camp/dumbbell.png" width="78px" height="78px" class="iconList"><div class="txt">운동시설</div></div>
+									<div class="pic" th:case="산책로"><img src="/images/camp/path.png" width="78px" height="78px" class="iconList"><div class="txt">산책로</div></div>
+									<div class="pic" th:case="마트.편의점"><img src="/images/camp/store.png" width="78px" height="78px" class="iconList"><div class="txt">마트</div></div>
 									<th:block>
 								</th:block>
 							</i>
@@ -780,40 +809,40 @@
 			</p>
 			
 			<hr>
-			
-			<div id="tentInfo">
-				<h3>
-					<img src="images/camp/info.png">텐트 사진
-				</h3>
-				
-				<div class="tentImg" style="display: grid; grid-template-columns: repeat(4, 300px); column-gap: 30px; row-gap: 30px;">
-					
-					<th:block th:each="tent : ${tent}">
-					<div>
-						<div class="scale" th:if="${tent.tentImage == '/images/tent/default_tent.png'}">
-							<img th:src="${tent.tentImage}" style="width:300px; height:200px;  margin-bottom: 10px;">
-						</div>
-						<div class="scale" th:unless="${tent.tentImage == '/images/tent/default_tent.png'}">
-							<img th:src="|/load/tent/${tent.tentImage}|" style="width:300px; height:200px;   margin-bottom: 10px;">
-						</div>
-						<!-- <div th:text="|텐트이름 : ${tent.tentName}|"></div>
-						<th:block th:switch="${tent.tentCategory}">
-							<div class="ctg" th:case="0"><div th:text="글램핑"></div></div>
-							<div class="ctg" th:case="1"><div th:text="카라반"></div></div>
-							<div class="ctg" th:case="2"><div th:text="일반야영장"></div></div>
-							<div class="ctg" th:case="3"><div th:text="자동차야영장"></div></div>
-						<th:block>
-						<div th:text="|최대수용인원 : ${tent.tentMaxCount}명|"></div>
-						<div th:text="|금액 : ${tent.tentSum}원|"></div> -->
-					</div>
-					</th:block>
-					
-				</div>
-			</div>
-				
-			<hr>
 				
 			<div id="guide">	
+				<div id="tentInfo" style="width: 100%;">
+					<h3>
+						<img src="images/camp/info.png">텐트 사진
+					</h3>
+					
+					<div class="tentImg" style="display: grid; grid-template-columns: repeat(5, 300px); column-gap: 30px; row-gap: 30px;">
+						
+						<th:block th:each="tent : ${tent}">
+						<div>
+							<div class="scale" th:if="${tent.tentImage == '/images/tent/default_tent.png'}">
+								<img th:src="${tent.tentImage}" style="width:300px; height:200px;  margin-bottom: 10px;">
+							</div>
+							<div class="scale" th:unless="${tent.tentImage == '/images/tent/default_tent.png'}">
+								<img th:src="|/load/tent/${tent.tentImage}|" style="width:300px; height:200px;   margin-bottom: 10px;">
+							</div>
+							<!-- <div th:text="|텐트이름 : ${tent.tentName}|"></div>
+							<th:block th:switch="${tent.tentCategory}">
+								<div class="ctg" th:case="0"><div th:text="글램핑"></div></div>
+								<div class="ctg" th:case="1"><div th:text="카라반"></div></div>
+								<div class="ctg" th:case="2"><div th:text="일반야영장"></div></div>
+								<div class="ctg" th:case="3"><div th:text="자동차야영장"></div></div>
+							<th:block>
+							<div th:text="|최대수용인원 : ${tent.tentMaxCount}명|"></div>
+							<div th:text="|금액 : ${tent.tentSum}원|"></div> -->
+						</div>
+						</th:block>
+						
+					</div>
+				</div>
+					
+				<hr>
+				
 				<div>
 					<h3>
 						<img src="images/camp/info.png">안전 및 시설 배치도
@@ -821,34 +850,34 @@
 				</div>
 			
 				<div>
-					<p><img src="images/camp/campinfo.png"></p>
+					<p><img src="images/camp/campinfo.png" style="width: 100%;"></p>
 				</div>
 			</div>
 			
 			<hr>
 			
-			<div>
+			
+			<div id="map">
 				<div>
 					<h3>
 						<img src="images/camp/info.png">위치 정보
 					</h3>
 				</div>
-			</div>			
-			
-			<div id="map">
-		
-				<input type="hidden"  id="mapY" th:value="${camp.mapY}" >
-				<input type="hidden"  id="mapX" th:value="${camp.mapX}" >
-				<input type="hidden"  id="facltNm" th:value="${camp.facltNm}">
-				<input type="hidden"  id="addr1" th:value="${camp.addr1}">
-				<div id="location" style="width:100px; height:700px;"></div>
+				
+				<div>
+					<input type="hidden"  id="mapY" th:value="${camp.mapY}" >
+					<input type="hidden"  id="mapX" th:value="${camp.mapX}" >
+					<input type="hidden"  id="facltNm" th:value="${camp.facltNm}">
+					<input type="hidden"  id="addr1" th:value="${camp.addr1}">
+					<div id="location" style="width:100%; height:700px;"></div>
+				</div>
 				<script>
 					var facltNm = $('#facltNm').val();
 					var addr1 = $('#addr1').val();
 					var mapY = $('#mapY').val();
 					var mapX = $('#mapX').val();
 				
-					var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+					var container = document.getElementById('location'); //지도를 담을 영역의 DOM 레퍼런스
 					var options = { //지도를 생성할 때 필요한 기본 옵션
 						center: new kakao.maps.LatLng(mapY, mapX),
 						level: 5 //지도의 레벨(확대, 축소 정도)
@@ -928,15 +957,15 @@
 		
 			<div>
 			
-				<p>
-				<button onclick="setOverlayMapTypeId('traffic')">교통정보 보기</button> 
-				<button onclick="setOverlayMapTypeId('roadview')">로드뷰 도로정보 보기</button> 
-				<button onclick="setOverlayMapTypeId('terrain')">지형정보 보기</button>
-				<button onclick="setOverlayMapTypeId('use_district')">지적편집도 보기</button>
+				<p style="text-align: center;">
+				<button id="but" onclick="setOverlayMapTypeId('traffic')">교통정보 보기</button> 
+				<button id="but" onclick="setOverlayMapTypeId('roadview')">로드뷰 도로정보 보기</button> 
+				<button id="but" onclick="setOverlayMapTypeId('terrain')">지형정보 보기</button>
+				<button id="but" onclick="setOverlayMapTypeId('use_district')">지적편집도 보기</button>
 				</p>
 			</div>
-				
-							
+				 
+			<hr>			
 			
 			<div id="review">
 				<div>
@@ -945,26 +974,60 @@
 					</h3>
 				</div>
 				
-				<form class="star" method="post">
+				<form class="star" action="/camp/reviewAdd" method="post">
+					<div class="div" style="display:flex;">
+						<div class="pic" style="margin-right: 10px; margin-top: 10px; margin-left: 0px;">
+							<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}">
+								<img th:src="${session.loginUser.profileImage}" width="38px" style="border:1px solid black;">
+							</span>
+							<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
+								<img th:src="|/load/profileImage/${session.loginUser.profileImage}|" width="38px" style="border:1px solid black;">
+							</span>
+						</div> 
+						<div class="user" >
+							<input type="text" name="writer" th:value="${session.loginUser.nickname}" readonly style="border: none; width:100px; margin-top: 20px;"><br>
+							<!-- <input type="text" name="createDate" th:value="작성일" readonly style="border: none; width:100px;"> -->
+						</div>
+					</div>
 					<fieldset>
 						<span class="text">별점을 선택해주세요</span>
-						<input type="radio" name="reviewStar" value="5" id="rate1">
+						<input type="radio" name="reviewStar" value="5" class="rate" id="rate1">
 						<label for="rate1">★</label>
-						<input type="radio" name="reviewStar" value="4" id="rate2">
+						<input type="radio" name="reviewStar" value="4" class="rate" id="rate2">
 						<label for="rate2">★</label>
-						<input type="radio" name="reviewStar" value="3" id="rate3">
+						<input type="radio" name="reviewStar" value="3" class="rate" id="rate3">
 						<label for="rate3">★</label>
-						<input type="radio" name="reviewStar" value="2" id="rate4">
+						<input type="radio" name="reviewStar" value="2" class="rate" id="rate4">
 						<label for="rate4">★</label>
-						<input type="radio" name="reviewStar" value="1" id="rate5">
+						<input type="radio" name="reviewStar" value="1" class="rate" id="rate5">
 						<label for="rate5">★</label>
 					</fieldset>
 					<div>
-						<textarea class="area" id="reviewcontent" placeholder="한줄평을 작성해주세요."></textarea>
+						<textarea class="area" id="reviewContent" placeholder="한줄평을 작성해주세요."></textarea>
 					</div>
+					<div>
+						<button id="button">리뷰 작성</button>
+					</div> 
 				</form>
 				
-			</div>			
+			</div>	
+			
+			
+			<script>
+				
+				$(function(){
+					
+					$('#button').on('click', function(event){
+						if($('.rate').val() == '' || $('#reviewContent').val() == ''){
+							alert('별점과 내용은 필수입니다.');
+							event.preventDefault();
+							return false;
+						} 
+					});
+					
+				});
+			
+			</script>	 	
 			
 				
 		</section>
