@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('FAQ')}"></head>
+<link th:href="@{/css/faq/list.css}" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@500&display=swap" rel="stylesheet">
+<script th:inline="javascript">
+	$(function(){
+		$('#btn_faqWrite').click(function(){
+			location.href = '/faq/write';
+		});
+		
+		$('.btn_contentToggle').click(function(){
+			$(this).next().next().toggleClass('blind');			
+		});
+		
+		$('.btn_remove').click(function(){
+			if(confirm('삭제하시겠습니까?')){
+				$(this).parent().submit();
+			}
+		})
+
+	});
+</script>
+<body>	
+	<header th:replace="~{layout/header::header_layout}"></header>
+
+	<div class="css_main_title_wrap">
+		<span class="css_main_title">FAQ</span><br>
+		<span class="css_sub_title">자주하는 질문</span>
+	</div>
+	
+	<div class="css_faq_box">
+		<div class="css_faq_box_inner">"FAQ를 통해서 원하시는 답변을 쉽고 빠르게 찾아보세요"</div>
+	</div>
+	
+	<hr>
+	
+	<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+		<input type="button" id="btn_faqWrite" value="새글작성">
+	</div>
+	
+	<div class="css_table_wrap">
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th></th>
+					<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+						<th class="btn_delete"></th>
+					</th:block>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="faq:${faqList}">
+					<tr>
+						<td>
+							<div class="css_fqaNo_blind" th:text="${faq.faqNo}"></div>
+						</td>
+						<td>
+							<div class="btn_contentToggle">
+								<div class="css_font1">Q.</div>
+								<span th:text="${faq.faqTitle}" class="css_faq_title"></span>
+								<div class="css_btn"><i class="fa-solid fa-caret-down fa-2x"></i></div>
+<!-- 								<i class="fa-thin fa-circle-chevron-down"></i> -->
+							</div>
+							<hr>
+							<div id="toggle_area" class="blind css_answer">
+								<div class="css_font2">A .</div>
+									
+									<span th:text="${faq.faqContent}" class="css_faq_content"></span>
+									
+<!-- 								<i class="fa-thin fa-circle-chevron-up"></i> -->
+							</div>
+						</td>
+						<td>
+							<th:block th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
+								<form method="post" th:action="@{/faq/remove}">
+									<input type="button" value="삭제" class="btn_remove">
+									<input type="hidden" name="faqNo" th:value="${faq.faqNo}">
+								</form>
+							</th:block>
+						</td>
+					</tr>
+				</th:block>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5" th:utext="${paging}"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+<!-- 	<div th:replace="~{layout/sidebar::sidebar_layout}"></div> -->
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
+</body>
+</html>

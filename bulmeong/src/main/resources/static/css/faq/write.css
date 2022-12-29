@@ -1,0 +1,50 @@
+@charset "UTF-8";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+body {
+/* 	border: 1px #a39485 solid; */
+	width: 70%;
+	margin: auto;
+}
+
+#faqTitle {
+	border: 1px solid gray;
+	border-radius: 12px;
+	padding: 11px;
+	margin: 8px;
+	width: 50%;
+	height : 32px;
+	display: inline-block;
+}
+
+#faqTitle:focus {
+	border: 1px solid rgba(113, 194, 133);
+   	border-radius: 15px;
+	outline: none;
+   	padding: 11px;
+   	margin: 8px;
+   	width: 50%;  	
+	height : 32px;
+   	background-color: #f8f8f9;
+}
+
+#faqContent {
+	border: 1px solid gray;
+	border-radius: 12px;
+	padding: 11px;
+	margin: 8px;
+	width: 96%;
+	height : 500px;
+	display: inline-block;
+}
+
+#faqContent:focus {
+	border: 1px solid rgba(113, 194, 133);
+   	border-radius: 15px;
+	outline: none;
+   	padding: 11px;
+   	margin: 8px;
+   	width: 96%;
+	height : 500px;
+   	background-color: #f8f8f9;
+}

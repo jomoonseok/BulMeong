@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('공지사항')}"></head>
-<link th:href="@{/css/detail.css}" rel="stylesheet" />
+<link th:href="@{/css/notice/detail.css}" rel="stylesheet" />
+
 <style>
 	.blind {
 		display: none;
@@ -56,5 +57,6 @@
 
 		</script>
 	</div>
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

@@ -1,0 +1,124 @@
+@charset "UTF-8";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+.blind {
+	display: none;
+}
+
+#toggle_area {
+	background-color: #f8f8f9;
+	font-size:13px;
+	margin-bottom: 10px;
+}
+
+/* list.html */
+
+body {
+/* 	border: 1px #a39485 solid; */
+	width: 100%;
+	height: 100%;
+	margin: auto;
+}
+
+.css_writeWrap{
+	width: 98%;
+	margin: auto;
+}
+
+.input_wrap{
+	font-weight: 400;
+	font-size: 18px;
+}
+
+.css_qna_writer {
+	margin-left: 8px;
+}
+
+div > label {
+	font-weight: 400;
+	font-size: 18px;
+	margin-left: 5px;
+}
+
+#qnaTitle {
+	border: 1px solid gray;
+	border-radius: 12px;
+	padding: 11px;
+	margin: 8px;
+	width: 50%;
+	height : 32px;
+	display: inline-block;
+}
+
+#qnaTitle:focus {
+	border: 1px solid rgba(113, 194, 133);
+   	border-radius: 15px;
+	outline: none;
+   	padding: 11px;
+   	margin: 8px;
+   	width: 50%;  	
+	height : 32px;
+   	background-color: #f8f8f9;
+}
+
+#qnaContent {
+	border: 1px solid gray;
+	border-radius: 12px;
+	padding: 11px;
+	margin: 8px;
+	width: 96%;
+	height : 500px;
+	display: inline-block;
+}
+
+#qnaContent:focus {
+	border: 1px solid rgba(113, 194, 133);
+   	border-radius: 15px;
+	outline: none;
+   	padding: 11px;
+   	margin: 8px;
+   	width: 96%;
+	height : 500px;
+   	background-color: #f8f8f9;
+}
+
+.footer {
+/* 	border: 1px solid rgba(113, 194, 133); */
+	width: 220px;
+	margin:auto;
+}
+
+#btn_popupSubmit {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	float: left;
+}
+
+.btn_pupupReset {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	margin-left: 4px;
+}
+
+.form-switch {
+/* 	border: 1px solid gray; */
+	width: 94%;
+	margin: auto;
+}
+
+#btn_popupClose {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+}
+
+#btn_popupSubmit:hover, .btn_pupupReset:hover, #btn_popupClose:hover{
+	background-color: rgba(204, 75, 76); 
+    transition-duration: 0.3s;
+    color: white;
+}

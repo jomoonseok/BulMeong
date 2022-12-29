@@ -24,6 +24,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+		registry.addResourceHandler("/load/bulmeongImage/**")
+			.addResourceLocations("file:///C:/bulmeongImage/noticeImage/");
 		registry.addResourceHandler("/load/image/**")
 			.addResourceLocations("//");
 		registry.addResourceHandler("/load/tent/**")
@@ -32,6 +35,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		.addResourceLocations("file:///C:/bulmeongImage/profileImagePreview/");
 		registry.addResourceHandler("/load/profileImage/**")
 		.addResourceLocations("file:///C:/bulmeongImage/profileImage/");
+
 	}
 	/*
 	@Override
