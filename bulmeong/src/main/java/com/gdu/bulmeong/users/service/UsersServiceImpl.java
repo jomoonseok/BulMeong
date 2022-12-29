@@ -33,6 +33,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.bulmeong.freeboard.domain.FreeBoardCmtDTO;
+import com.gdu.bulmeong.freeboard.domain.FreeBoardDTO;
+import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
+import com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper;
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
@@ -55,6 +59,12 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Autowired
 	private MyFileUtil myFileUtil;
+	
+	@Autowired
+	private FreeBoardCmtMapper freeBrdCmtMapper;
+	
+	@Autowired
+	private FreeBoardMapper freeBrdMapper;
 	
 	@Override
 	public Map<String, Object> isReduceId(String id) {
@@ -1086,7 +1096,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	
-	
+	@Transactional
 	@Override
 	public void modifyProfile(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
 		
@@ -1116,7 +1126,7 @@ public class UsersServiceImpl implements UsersService {
 				
 				// 저장할 이름
 				filesystem = myFileUtil.getFilename(origin);
-				
+
 				// 저장할 경로
 				String path = myFileUtil.getProfilePath();
 				
@@ -1143,11 +1153,32 @@ public class UsersServiceImpl implements UsersService {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("id", id);
 			
+			//freeBrdMapper.updateNicknameNull(nickname);
+			//freeBrdCmtMapper.updateNicknameNull(nickname);
 			
 			// DB에 UsersDTO 저장
 			int attachResult = usersMapper.updateProfile(user);
 			
 			UsersDTO updateUser = usersMapper.selectUserByMap(map);
+			
+			// FreeBoardDTO
+			FreeBoardDTO fb = new FreeBoardDTO();
+			fb.setId(id);
+			fb.setNickname(nickname);
+			fb.setProfileImage(filesystem);
+
+			// FreeBoardCmtDTO
+			FreeBoardCmtDTO fbc = new FreeBoardCmtDTO();
+			fbc.setId(id);
+			fbc.setNickname(nickname);
+			fbc.setProfileImage(filesystem);
+	
+			freeBrdMapper.updateFreeBrdProfile(fb);
+			freeBrdCmtMapper.updateCmtProfile(fbc);
+			
+			
+			
+			
 			
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
@@ -1176,6 +1207,14 @@ public class UsersServiceImpl implements UsersService {
 		
 	}
 	
-	 
+	// myPage
+	@Override
+	public void getReserveById(HttpServletRequest request, Model model) {
+		UsersDTO loginUser = (UsersDTO)request.getSession().getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		model.addAttribute("reserved", usersMapper.selectReserveById(id));
+		model.addAttribute("loginUser", loginUser);
+	}
 	
 }

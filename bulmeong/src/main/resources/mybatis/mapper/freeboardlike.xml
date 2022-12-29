@@ -11,7 +11,7 @@
 		SELECT COUNT(*)
 		  FROM FREE_LIKE
 		 WHERE FREE_NO = #{freeNo}
-		   AND NICKNAME = #{nickname}
+		   AND ID = #{id}
 	</select>
 	
 	<!-- 2. 좋아요 선택 -->
@@ -24,9 +24,9 @@
 	<!-- 3. 좋아요 추가 -->
 	<insert id="insertLike" parameterType="map">
 		INSERT INTO FREE_LIKE
-			(NICKNAME, FREE_NO)
+			(ID, FREE_NO)
 		VALUES
-			(#{nickname}, #{freeNo})
+			(#{id}, #{freeNo})
 	</insert>
 	
 	<!-- 4. 좋아요 삭제 -->
@@ -34,7 +34,7 @@
 		DELETE
 		  FROM FREE_LIKE
 		 WHERE FREE_NO = #{freeNo}
-		   AND NICKNAME = #{nickname}
+		   AND ID = #{id}
 	</delete>
 	
 

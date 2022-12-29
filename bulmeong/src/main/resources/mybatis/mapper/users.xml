@@ -207,4 +207,13 @@
 		 WHERE ID = #{id} 
 	</update>
 	
+	<select id="selectReserveById" parameterType="String" resultType="MyPageReservedDTO">
+		SELECT C.facltNm, C.addr1, R.RESERVE_NO, R.CAMP_NO, R.TENT_NO, R.RESERVE_NAME, R.RESERVE_COUNT, R.RESERVE_BEGIN_DATE, date_add(R.RESERVE_END_DATE, interval +1 day) AS END_DATE, R.RESERVE_SUM, T.TENT_IMAGE, T.TENT_CATEGORY, T.TENT_NAME, T.TENT_MAX_COUNT
+  		  FROM USERS U INNER JOIN RESERVE R
+    	    ON U.ID = R.ID INNER JOIN CAMP_TENT T
+						           ON R.TENT_NO = T.TENT_NO INNER JOIN CAMP C ON C.CAMP_NO = T.CAMP_NO
+		 WHERE R.ID = #{id};
+	</select>
+	
+	
 </mapper>

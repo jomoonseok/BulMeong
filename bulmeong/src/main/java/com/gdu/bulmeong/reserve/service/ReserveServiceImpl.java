@@ -86,6 +86,7 @@ public class ReserveServiceImpl implements ReserveService {
 		model.addAttribute("reserveCount", reserveCount);
 		model.addAttribute("strCategory", strCategory);
 		model.addAttribute("reserveDate2", reserveDate2);
+		model.addAttribute("tentCategory", tentCategory);
 	}
 	
 	@Override
@@ -99,6 +100,7 @@ public class ReserveServiceImpl implements ReserveService {
 		String reserveBeginDate = request.getParameter("reserveBeginDate");
 		String reserveEndDate = request.getParameter("reserveEndDate");
 		String reserveSum = request.getParameter("reserveSum");
+		int tentCategory = Integer.parseInt(request.getParameter("tentCategory"));
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("campNo", campNo);
@@ -109,10 +111,9 @@ public class ReserveServiceImpl implements ReserveService {
 		map.put("reserveBeginDate", reserveBeginDate);
 		map.put("reserveEndDate", reserveEndDate);
 		map.put("reserveSum", reserveSum);
+		map.put("tentCategory", tentCategory);
 		
 		int result = reserveMapper.insertReserve(map);
-		
-		
 		
 		PrintWriter out = null;
 		try {
@@ -120,11 +121,12 @@ public class ReserveServiceImpl implements ReserveService {
 				out = response.getWriter();
 				response.setContentType("text/html; charset=UTF-8");
 				out.println("<script>");
-				out.println("alert('삽입 성공')");
+				out.println("alert('예약내역 화면으로 이동합니다.')");
+				out.println("location.href='/users/reserve'");
 				out.println("</script>");
 			} else {
 				out.println("<script>");
-				out.println("alert('삽입 실패')");
+				out.println("alert('예약이 실패하였습니다.')");
 				out.println("</script>");
 			}
 		} catch(Exception e) {

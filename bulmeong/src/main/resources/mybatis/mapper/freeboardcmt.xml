@@ -15,8 +15,8 @@
 	
 	<!-- 2. 댓글 리스트 -->
 	<select id="selectCmtList" parameterType="int" resultType="FreeBoardCmtDTO">
-		SELECT A.ROW_NUM, A.FREE_CMT_NO, A.FREE_NO, A.NICKNAME, A.FREE_CMT_CONTENT, A.FREE_CMT_CREATE_DATE, A.FREE_CMT_MODIFY_DATE, A.FREE_CMT_IP, A.FREE_CMT_STATE, A.FREE_CMT_DEPTH, A.FREE_GROUP_NO, A.FREE_GROUP_ORDER, A.PROFILE_IMAGE, A.cmtCnt
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_GROUP_NO DESC, FREE_GROUP_ORDER ASC) AS ROW_NUM, FREE_CMT_NO, FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER, PROFILE_IMAGE,
+		SELECT A.ROW_NUM, A.FREE_CMT_NO, A.FREE_NO, A.ID, A.NICKNAME, A.FREE_CMT_CONTENT, A.FREE_CMT_CREATE_DATE, A.FREE_CMT_MODIFY_DATE, A.FREE_CMT_IP, A.FREE_CMT_STATE, A.FREE_CMT_DEPTH, A.FREE_GROUP_NO, A.FREE_GROUP_ORDER, A.PROFILE_IMAGE, A.cmtCnt
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY FREE_GROUP_NO DESC, FREE_GROUP_ORDER ASC) AS ROW_NUM, FREE_CMT_NO, FREE_NO, ID, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER, PROFILE_IMAGE,
 				CASE WHEN FREE_CMT_DEPTH = 0 THEN
 				(SELECT COUNT(*) FROM FREE_CMT fc2  WHERE fc2.FREE_GROUP_NO = fc.FREE_GROUP_NO AND FREE_CMT_DEPTH > 0)
 				ELSE 0 END cmtCnt
@@ -29,9 +29,9 @@
 	<!-- 3. 댓글 추가 -->
 	<insert id="insertCmt" parameterType="FreeBoardCmtDTO" useGeneratedKeys="true" keyProperty="freeCmtNo">
 		INSERT INTO FREE_CMT
-			(FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER, PROFILE_IMAGE)
+			(FREE_NO, ID, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER, PROFILE_IMAGE)
 		VALUES
-			(#{freeNo}, #{nickname}, #{freeCmtContent}, DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, 0, #{freeGroupNo}, 0, #{profileImage})
+			(#{freeNo}, #{id}, #{nickname}, #{freeCmtContent}, DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, 0, #{freeGroupNo}, 0, #{profileImage})
 	</insert>
 
 
@@ -40,27 +40,29 @@
 		UPDATE FREE_CMT
 		   SET FREE_GROUP_NO = LAST_INSERT_ID(FREE_GROUP_NO + 1)
 	</update>
-	
-	
-	
-	<!-- 4. 댓글 삭제 -->
+
+	<!-- 5. 댓글 삭제 -->
 	<update id="deleteCmt" parameterType="int">
 		UPDATE FREE_CMT
 		   SET FREE_CMT_STATE = 0
 		 WHERE FREE_CMT_NO = #{freeCmtNo}
 	</update>
-	
-	
-	
-	
-	<!-- 5. 댓글 수정 -->
+
+	<!-- 6. 댓글 수정 -->
 	<update id="updateCmt" parameterType="FreeBoardCmtDTO">
 		UPDATE FREE_CMT
 		   SET FREE_CMT_CONTENT = #{freeCmtContent}, FREE_CMT_MODIFY_DATE = DATE_FORMAT(NOW(), '%y-%m-%d %h:%i')
 		 WHERE FREE_CMT_NO = #{freeCmtNo}
 	</update>
 	
-	<!-- 5. 다단계층 댓글(groupOrder 1 증가시키는 쿼리) -->	
+	<!-- 7. 댓글 프로필 수정 -->
+	<update id="updateCmtProfile" parameterType="FreeBoardCmtDTO">
+		UPDATE FREE_CMT
+		   SET PROFILE_IMAGE = #{profileImage}, NICKNAME = #{nickname}
+		 WHERE ID = #{id}
+	</update>
+
+	<!-- 8. 다단계층 댓글(groupOrder 1 증가시키는 쿼리) -->	
 	<update id="updatePreviousReply" parameterType="FreeBoardCmtDTO">
 		UPDATE FREE_CMT
 		   SET FREE_GROUP_ORDER = FREE_GROUP_ORDER + 1
@@ -70,12 +72,12 @@
 	
 
 	
-	<!-- 6. 대댓글 추가 -->
+	<!-- 9. 대댓글 추가 -->
 	<insert id="insertCmtReply" parameterType="FreeBoardCmtDTO" useGeneratedKeys="true" keyProperty="freeCmtNo">
 		INSERT INTO FREE_CMT
-			(FREE_NO, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER)
+			(FREE_NO, ID, NICKNAME, FREE_CMT_CONTENT, FREE_CMT_CREATE_DATE, FREE_CMT_MODIFY_DATE, FREE_CMT_IP, FREE_CMT_STATE, FREE_CMT_DEPTH, FREE_GROUP_NO, FREE_GROUP_ORDER, PROFILE_IMAGE)
 		VALUES
-			(#{freeNo}, #{nickname}, #{freeCmtContent},DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, #{freeCmtDepth}, #{freeGroupNo}, #{freeGroupOrder})
+			(#{freeNo}, #{id}, #{nickname}, #{freeCmtContent},DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), DATE_FORMAT(NOW(), '%y-%m-%d %h:%i'), #{freeCmtIp}, 1, #{freeCmtDepth}, #{freeGroupNo}, #{freeGroupOrder}, #{profileImage})
 	</insert>
 
 

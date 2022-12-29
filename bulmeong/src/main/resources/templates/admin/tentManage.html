@@ -109,7 +109,7 @@
                             
                             <script>
                             	function fn_tentAdd() {
-                            		window.open("/admin/addTent", "_blank", "width=500,height=600");
+                            		window.open("/admin/addTent", "_blank", "width=500,height=600,left=700,top=200");
                             	}
                             </script>
                             
@@ -133,7 +133,7 @@
                                     </tbody>
                                     <tfoot>
                                     	<tr>
-                                    		<td id="paging"></td>
+                                    		<td colspan="9" id="paging" style="text-align: center;"></td>
                                     	</tr>
                                     </tfoot>
                                 </table>
@@ -240,7 +240,7 @@
 			}
        		
        		function fn_modifyTent(e) {
-   				window.open("/admin/modify?tentNo=" + $(e).data('tentno') + "&facltNm=" + $(e).data('facltnm'), "_blank", "width=500,height=600")
+   				window.open("/admin/modify?tentNo=" + $(e).data('tentno') + "&facltNm=" + $(e).data('facltnm'), "_blank", "width=500,height=600,left=700,top=200")
        		}
        		
        		function fn_removeTent(e) {

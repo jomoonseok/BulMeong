@@ -53,7 +53,8 @@
 						<a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="|${free.freeTitle} (${freeCmt[i.index]})|"></a>
 					</td>
 					<td th:text="(${freelike[i.index]})"></td>
-					<td th:text="${free.nickname}"></td>
+					<td th:text="${free.nickname}">
+					</td>
 					<td th:text="${free.freeCreateDate}"></td>
 					<td th:text="${free.freeHit}"></td>
 				</tr>

@@ -21,5 +21,6 @@ public class TentDTO {
 	private int tentSum;
 	private int tentState;
 	private String tentImage;
+	private int jjim;
 	
 }

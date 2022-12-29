@@ -122,16 +122,20 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		HttpSession session = request.getSession();
 		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
+		String id = loginUser.getId();
 		String nickname = loginUser.getNickname();
 		String freeTitle = request.getParameter("freeTitle");
 		String freeContent = request.getParameter("freeContent");
 		String freeIp = request.getRemoteAddr();
+		String profileImage = loginUser.getProfileImage();
 		
 		FreeBoardDTO freeBoard = FreeBoardDTO.builder()
+				.id(id)
 				.nickname(nickname)
 				.freeTitle(freeTitle)
 				.freeContent(freeContent)
 				.freeIp(freeIp)
+				.profileImage(profileImage)
 				.build();
 
 		int result = freeBoardMapper.insertFreeBoard(freeBoard);
@@ -189,12 +193,13 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		}
 		
 		
-		String nickname = loginUser.getNickname(); 		  // 로그인한사람
+		String id = loginUser.getId(); 		  // 로그인한사람
 		
-		String writer = request.getParameter("nickname"); // 작성자
+		String writer = request.getParameter("id"); // 작성자
+		
 		
 		// 2. session에 loginUser가 작성자랑 같을 때 권한 주기
-		if (nickname.equals(writer)) {
+		if (id.equals(writer)) {
 			
 				String freeTitle = request.getParameter("freeTitle");
 				String freeContent = request.getParameter("freeContent");
@@ -278,11 +283,11 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			}
 		}
 		
-		String nickname = loginUser.getNickname(); 		  // 로그인한사람
-		String writer = request.getParameter("nickname"); // 작성자
+		String id = loginUser.getId(); 		  // 로그인한사람
+		String writer = request.getParameter("id"); // 작성자
 		
 		// 2. session에 loginUser가 작성자랑 같을 때 권한 주기
-		if (nickname.equals(writer)) {
+		if (id.equals(writer)) {
 			
 			int result = freeBoardMapper.deleteFreeBoard(freeNo);
 			

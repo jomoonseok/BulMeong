@@ -160,7 +160,8 @@
 	margin: 10px;
 	margin-left: 30px;
 	padding: 10px; 
-	width:auto; 
+	width: auto;
+	max-width: 50%; 
 	height:auto; 
 	border-radius: 10px; 
 	background-color: rgb(204, 75, 76, 0.2);
@@ -183,9 +184,9 @@
 }
 
 .cmt_content {
-	padding: 5%;
+	padding: 10px;
 	color: rgb(55, 62, 72);
-	background: rgb(0, 0, 0, 0.1);
+	background: rgb(0, 0, 0, 0.1);	
 	display: block;
 	border-radius: 10px;
 	width: auto;
@@ -212,27 +213,63 @@
 	margin-bottom: 5px;
 }
 
-.btn_cmt_modify {
+/* 댓글 수정, 취소 버튼 / 답글 수정, 취소 버튼*/
+.btn_cmt_modify, .btn_cmt_run_modify {
 	width: 18px;
 	opacity: 1;
 	transition: .3s ease;
 }
 
 
-.btn_cmt_modify:hover {
+.btn_cmt_modify:hover, .btn_cmt_run_modify:hover {
 	opacity: .5;
 }
 
-.btn_cmt_remove {
+.btn_cmt_remove, .btn_cmt_modify_cancle {
 	width: 18px;
 	opacity: 1;
 	transition: .3s ease;
 	margin-left: 3px;
 }
 
-.btn_cmt_remove:hover {
+.btn_cmt_remove:hover, .btn_cmt_modify_cancle:hover {
 	opacity: .5;
 }
+
+/* 답글 수정 인풋 */
+.reply_input_style {
+	background: none;
+	border: none;
+
+	border-bottom: 1px solid gray;
+	font-size: 13px;
+	color: rgb(55, 62, 72);
+	width: auto;
+	max-width: 100%; 
+}
+
+
+.reply_input_style:focus {
+	font-size: 13px;
+	border: none;
+	outline: none;
+	size: auto;
+	width: auto;
+}
+
+/* 답글 수정 버튼 */
+.btn_cmt_run_modify {
+	width: 18px;
+}
+
+
+
+/* 답글 수정 취소 버튼 */
+.btn_cmt_modify_cancle {
+	width: 18px;
+	margin-left: 3px;
+}
+
 
 /* 답글 인풋 */
 .btn_reply_area {
@@ -242,7 +279,9 @@
 	padding: 11px;
 	width: 90%;
 	height : 32px;
+	color: rgb(55, 62, 72);
 }
+
 .button_reply {
 	width: 7%;
 	height : 32px;
@@ -253,6 +292,15 @@
 	color: rgb(204, 75, 76);
 	font-size: 13px;
 	margin-left: 1%;
+}
+
+/* 답글 리스트 */
+.reply_comment_style > .cmt_content_style {
+	background: rgb(180, 185, 191, 0.2);
+}
+
+.reply_comment_style > .cmt_content_style:after { 
+	border-right: 20px solid rgb(180, 185, 191, 0.2);
 }
 
 /* 삭제된 댓글 스타일 */

@@ -5,7 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.gdu.bulmeong.users.domain.ProfileImageDTO;
+import com.gdu.bulmeong.reserve.domain.ReservedDTO;
+import com.gdu.bulmeong.users.domain.MyPageReservedDTO;
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
 import com.gdu.bulmeong.users.domain.SleepUsersDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
@@ -33,4 +34,7 @@ public interface UsersMapper {
 	public int insertNaverUser(UsersDTO user);
 	public int updateProfile(UsersDTO user);
 	//public int insertProfileImage(ProfileImageDTO profileImage);
+	
+	// myPage
+	public List<MyPageReservedDTO> selectReserveById(String id);
 }
