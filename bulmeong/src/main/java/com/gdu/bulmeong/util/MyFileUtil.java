@@ -65,7 +65,7 @@ public class MyFileUtil {
 	}
 	
 	public String getProfilePath() {
-		return "storage" + sep + "bulmeong" + sep + "profileImagePreview";
+		return "storage" + sep + "bulmeong" + sep + "profileImage";
 	}
 	
 	// 써머노트 이미지 경로

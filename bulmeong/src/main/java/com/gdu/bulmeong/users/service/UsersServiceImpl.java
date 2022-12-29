@@ -1060,9 +1060,8 @@ public class UsersServiceImpl implements UsersService {
 				// 저장할 이름
 				String filesystem = myFileUtil.getFilename(origin);
 				
-				String sep = Matcher.quoteReplacement(File.separator);
 				// 저장할 경로
-				String path = "C:" + sep + "bulmeongImage" + sep + "profileImagePreview";
+				String path = myFileUtil.getPreviewPath();
 				
 				// 저장할 경로 만들기
 				File dir = new File(path);
@@ -1118,10 +1117,9 @@ public class UsersServiceImpl implements UsersService {
 				// 저장할 이름
 				filesystem = myFileUtil.getFilename(origin);
 				
-				String sep = Matcher.quoteReplacement(File.separator);
 				
 				// 저장할 경로
-				String path = "C:" + sep + "bulmeongImage" + sep + "profileImage";
+				String path = myFileUtil.getProfilePath();
 				
 				// 저장할 경로 만들기
 				File dir = new File(path);
