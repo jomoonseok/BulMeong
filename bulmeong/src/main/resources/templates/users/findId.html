@@ -5,6 +5,7 @@
 	<script>
 		$(document).ready(function(){
 			fn_findId();
+			//fn_join();
 		});
 		
 		var namePass = false;
@@ -74,7 +75,7 @@
 			
 		}
 		
-		/* function fn_join(){
+		function fn_join(){
 			if(namePass == false){
 				alert('이름을 확인하세요.');
 				event.preventDefault();
@@ -84,7 +85,7 @@
 				event.preventDefault();
 				return;
 			}
-		} */
+		}
 	</script>
 	<style>
 	
@@ -133,7 +134,7 @@
 	   	background-color: rgba(113, 194, 133, 0.1);
 	}
 	
-	.btn_login {
+	.btn_red {
 		width: 400px;
 		height : 50px;
 		border: none;
@@ -143,7 +144,7 @@
 		font-size: 16px;
 	}
 	
-	.btn_login:hover {
+	.btn_red:hover {
 		width: 400px;
 		height : 50px;
 		border: none;
@@ -168,7 +169,7 @@
 
 	<!-- <header th:replace="~{layout/header::header_layout}"></header> -->
 	<a class="logo" th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="300px" style="margin-bottom: 30px"></a>
-	
+	<div>
 	<div class="out_login_box">
 		<div class="in_login_box">
 		
@@ -189,7 +190,7 @@
 			</div>
 			
 			<div>
-				<input type="button" value="아이디찾기" id="btn_findId" class="btn_login">
+				<input type="button" value="아이디찾기" id="btn_findId" class="btn_red">
 			</div>
 			
 			<div id="search_user">
@@ -202,7 +203,6 @@
 			<div id="msg_result"></div>
 		</div>
 	</div>
-	
-	<!-- <footer th:replace="~{layout/footer::footer_layout}"></footer> -->
+	</div>
 </body>
 </html>
