@@ -28,39 +28,43 @@
 
 	<h3>자유게시판</h3>
 
-	<div th:if="${session.loginUser} != null" class="writer_btn">
- 		<input type="button" value="글쓰기" id="write">
+	<div th:if="${session.loginUser} != null">
+		<div class="writer_box">
+ 			<input type="button" value="글쓰기" id="write">
+		</div>
 	</div>
 
-	<table>
-		<thead>
-			<tr>
-				<th>번호</th>
-				<th>제목</th>
-				<th>좋아요</th>
-				<th>작성자</th>
-				<th>작성일</th>
-				<th>조회</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="free , i : ${freeBoardList}">
-				<td th:text="${free.freeNo}"></td>
-				<td>
-					<a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="|${free.freeTitle} (${freeCmt[i.index]})|"></a>
-				</td>
-				<td th:text="(${freelike[i.index]})"></td>
-				<td th:text="${free.nickname}"></td>
-				<td th:text="${free.freeCreateDate}"></td>
-				<td th:text="${free.freeHit}"></td>
-			</tr>
-		</tbody>
-		<tfoot>
-			<tr>
-				<td colspan="6" th:utext="${paging}"></td>
-			</tr>
-		</tfoot>
-	</table>
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>좋아요</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th>조회</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="free , i : ${freeBoardList}">
+					<td th:text="${free.freeNo}"></td>
+					<td>
+						<a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="|${free.freeTitle} (${freeCmt[i.index]})|"></a>
+					</td>
+					<td th:text="(${freelike[i.index]})"></td>
+					<td th:text="${free.nickname}"></td>
+					<td th:text="${free.freeCreateDate}"></td>
+					<td th:text="${free.freeHit}"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="6" th:utext="${paging}"></td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
 	
 
 	

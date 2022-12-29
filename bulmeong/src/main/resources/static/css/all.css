@@ -5,7 +5,7 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
  
 * {
-	font-family: 'Noto Sans KR', sans-serif;
+   font-family: 'Noto Sans KR', sans-serif;
 }
 
 div {
@@ -13,5 +13,4 @@ div {
 }
 
 /* https://fontawesome.com/icons */
-	
-
+   

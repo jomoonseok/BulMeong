@@ -1,22 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head>
+	<style>
+		.div_all {
+			text-align: center;
+		}
+		
+		.list {
+			list-style: none;
+			padding:0;
+		}
+		
+		.btn_green {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+			background-color: rgb(3, 199, 90);
+			color: white;
+		}
+		
+		.btn_red {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+     		background-color: rgb(204, 75, 76);
+			color: white;
+		}
+		
+		.btn_gray {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+     		background-color: rgb(142, 142, 142);
+			color: white;
+		}
+	</style>
+</head>
 <body>
 
-	<header th:replace="~{layout/header::header_layout}"></header>
-	
-	<div>
+	<!-- <header th:replace="~{layout/header::header_layout}"></header> -->
+	<a th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="200px" style="margin: 10px"></a>
+	<div class="div_all" style="margin-top:150px;">
 	
 		<h1>휴면계정안내</h1>
 		
 		<div>
 			안녕하세요!<br>
-			<div th:text="|${session.sleepUser.id}님은 1년 이상 로그인하지 않아 관련 법령에 의해 휴면계정으로 전환되었습니다.|"></div>
+			<div><span th:text="${session.sleepUser.id}" style="color:rgb(3, 199, 90);"></span>님은 1년 이상 로그인하지 않아 관련 법령에 의해 휴면계정으로 전환되었습니다.</div>
 			<br><br>
-			<ul>
-				<li th:text="|가입일 ${session.sleepUser.joinDate}|"></li>
-				<li th:text="|마지막 로그인 ${session.sleepUser.lastLoginDate}|"></li>
-				<li th:text="|휴면전환일 ${session.sleepUser.sleepDate}|"></li>
+			<ul class="list">
+				<li th:text="|가입일 : ${session.sleepUser.joinDate}|"></li>
+				<li th:text="|마지막 로그인 : ${session.sleepUser.lastLoginDate}|"></li>
+				<li th:text="|휴면전환일 : ${session.sleepUser.sleepDate}|"></li>
 			</ul>
 		</div>
 		
@@ -24,12 +63,13 @@
 		
 		<div>
 			<div>
-				휴면해제를 위해 휴면해제 버튼을 클릭해 주세요.
+				<label for="btn_restore" style="color:rgb(204, 75, 76);">휴면해제를 위해 휴면해제 버튼을 클릭해 주세요.</label>
 			</div>
+			<br>
 			<form id="frm_restore" th:action="@{/users/restore}" method="post">
 				<div>
-					<button>휴면해제</button>
-					<input type="button" value="취소" onclick="location.href='/'">
+					<input type="button" value="취소" onclick="location.href='/'" class="btn_gray">
+					<button id="btn_restore" class="btn_green">휴면해제</button>
 				</div>
 			</form>
 		</div>

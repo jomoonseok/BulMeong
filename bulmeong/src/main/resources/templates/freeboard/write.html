@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
+<link th:href="@{/css/freeboard/write.css}" rel="stylesheet" />
 <script>
 
 	$(document).ready(function(){
 		
 		$('#content').summernote({
-			width: 800,
-			height: 400,
+			height: 500,
 			lang: 'ko-KR',
 			toolbar: [
 				['style', ['bold', 'italic', 'underline', 'clear']],
@@ -51,18 +51,15 @@
 	
 	<div>	
 		<form id="frm_write" th:action="@{/freeboard/add}" method="post">
-		
-			<div>
-				<label for="title">제목</label>
-				<input type="text" name="freeTitle" id="title">
+			<div class="title_box">
+				<input type="text" name="freeTitle" id="title" placeholder="제목을 입력하세요">
 			</div>
-			<div>
-				<label for="content">내용</label>
-				<textarea name="freeContent" id="content" ></textarea>
+			<div class="content_box">
+				<textarea name="freeContent" id="content"></textarea>
 			</div>
-			<div>
-				<button class="button">완료</button>
-				<input type="button" value="목록" id="btn_list">
+			<div class="btn_group">
+				<button class="button1">완료</button>
+				<input type="button" class="button2" value="목록" id="btn_list">
 			</div>
 		</form>
 	</div>
