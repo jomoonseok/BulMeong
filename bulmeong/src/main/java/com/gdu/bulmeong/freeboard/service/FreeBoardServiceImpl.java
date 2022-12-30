@@ -108,6 +108,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 		model.addAttribute("paging", pageUtil.getPaging("/freeboard/list?dateColumn=" + dateColumn + "&column=" + column + "&query=" + query));
+
 		
 		
 		// 3-1. [게시글 리스트] freeBoardDTO 받아오기 (Mapper에서)

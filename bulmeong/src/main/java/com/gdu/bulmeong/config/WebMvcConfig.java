@@ -12,21 +12,19 @@ import com.gdu.bulmeong.util.MyFileUtil;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-   
-   @Autowired
-   private KeepLoginInterceptor keepLoginInterceptor;
-   
-   @Autowired
-   private SleepUserCheckingInterceptor sleepUserCheckingInterceptor;
-   
-   @Autowired
-   private MyFileUtil myFileUtil;
-
+	
+	@Autowired
+	private KeepLoginInterceptor keepLoginInterceptor;
+	
+	@Autowired
+	private SleepUserCheckingInterceptor sleepUserCheckingInterceptor;
+	
+	@Autowired
+	private MyFileUtil myFileUtil;
+	
    @Override
    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-//      registry.addResourceHandler("/load/bulmeongImage/**")
-//         .addResourceLocations("file:///C:/bulmeongImage/noticeImage/");
       registry.addResourceHandler("/load/noticeImage/**")
          .addResourceLocations("file:" + myFileUtil.getSummernotePath() + "/");
       registry.addResourceHandler("/load/tent/**")
@@ -35,15 +33,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
       .addResourceLocations("file:" + myFileUtil.getPreviewPath() + "/");
       registry.addResourceHandler("/load/profileImage/**")
       .addResourceLocations("file:" + myFileUtil.getProfilePath() + "/");
-
    }
-   /*
-   @Override
-   public void addInterceptors(InterceptorRegistry registry) {
-      registry.addInterceptor(testInterceptor)
-      .addPathPatterns("/**");
-   }
-   */
    
    @Override
    public void addInterceptors(InterceptorRegistry registry) {
@@ -56,7 +46,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
       .addPathPatterns("/users/login");
       
    }
-   
-   
-   
 }
