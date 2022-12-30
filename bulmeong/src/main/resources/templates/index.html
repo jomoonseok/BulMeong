@@ -5,13 +5,271 @@
 
 <body>
 
-	<header th:replace="~{layout/header::header_layout}"></header>
-	
-	<div id="container">
-	
+   <header th:replace="~{layout/header::header_layout}"></header>
+   
+   <div id="container">
+   
+   
+   
+   <div class="jjimListArea">
+      찜 캠핑장 TOP 5
+      <table class="jjimList table">
+         <thead>
+            <tr>
+               <td>순위</td>
+               <td>캠핑장명</td>
+               <td>지역</td>
+               <td>찜</td>
+            </tr>
+         </thead>
+         <tbody id="tbody_jjim">
+         </tbody>
+      </table>
+   </div>
+   <script>
+      
+         
+      $.ajax({
+         
+         type: 'get',
+         url: '/index/jjimList',
+         success: function(resData) {
+            
+            $.each(resData.jjim, function(i, jjim) {
+               var jjimBoard = '<tr>';
+               jjimBoard += '<td>' + ++i + '</td>';
+               jjimBoard += '<td><a href="/detail?campNo=' + jjim.campNo + '">' + jjim.facltNm + '</a></td>';
+               jjimBoard += '<td>' + jjim.sigunguNm + '</td>';
+               jjimBoard += '<td>' + jjim.jjim + '</td>';
+               jjimBoard += '</tr>';
+               $('#tbody_jjim').append(jjimBoard);
+            });
+               
+               
+            
+         }
+         
+      })
+      
+   </script>
+     
+<!--      <div id="weatherArea"> -->
+<!--        <div class="xyLoaction"> -->
+<!--           <div class="location"></div> -->
+<!--        </div> -->
+<!--        <div class="xyWeather"> -->
+<!--           <div class="today" style="float:left"></div> -->
+<!--           <div class="tomorrow" style="float:left"></div> -->
+<!--           <div class="afterTomorrow" style="float:left"></div> -->
+<!--        </div> -->
+<!--      </div> -->
+     
+   <script>
+      
+      /* // 위치정보 받아오기
+      navigator.geolocation.getCurrentPosition(
+         
+         function(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            
+            fn_addr(latitude, longitude);     // 좌표->주소 api
+            fn_weather(latitude, longitude);  // 좌표->날씨 api
+            
+         }, 
+      );
 
-  	
-	</div>
+      // 주소 api 받아오기 https://www.vworld.kr/dev/v4dv_geocoderguide_s002.do
+      function fn_addr(x, y) {
+          $.ajax({
+            type: 'get',
+            url: '/index/location',
+            data: 'latitude=' + x + '&longitude=' + y,
+            success: function(resData) {
+               var jsonObj = JSON.parse(resData.location);  // jsonObj - ADDR : "서울특별시 금천구 가산동 557-3"
+               $('.location').append('<div>현재 위치 : ' + jsonObj.ADDR + ' 부근</div>');
+            }
+         })
+       }
+      
+      // 오늘 날짜 구하기(yyyyMMdd)
+      function getToday(){
+          var date = new Date();
+          var year = date.getFullYear();
+          var month = ("0" + (1 + date.getMonth())).slice(-2);
+          var day = ("0" + date.getDate()).slice(-2);
 
+          return year + month + day;
+      }
+      
+      
+      // 기상청 api 받아오기
+       function fn_weather(x, y) {
+          $.ajax({
+            type: 'get',
+            url: '/index/weather',
+            data: 'latitude=' + x + '&longitude=' + y,
+            success: function(resData) {
+               var skyDiv = '<div>';
+               var todayDiv = '<div>오늘&nbsp;(' + resData.todayDate + ')</div>';
+               
+               $.each(resData.todayWeather, function(i, today) {
+                  
+                  switch(today.fcstValue) {
+                  case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+                  case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+                  case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;   height: 59px;"></div>'; break;
+                  
+                  }
+                  
+                  todayDiv += '<div class="todayDiv" data-idx="' + i + '">' + today.category + ' : ' + today.fcstValue + '</div>'; 
+               })
+               $('.today').append(skyDiv);
+               $('.today').append(todayDiv);
+               
+               var tomorrowDiv = '<div>내일&nbsp;(' + resData.tomorrowDate + ')</div>';
+               $.each(resData.tomorrowWeather, function(i, tomorrow) {
+                  
+                  switch(tomorrow.fcstValue) {
+                  case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+                  case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+                  case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;   height: 59px;"></div>'; break;
+                  
+                  }
+                  
+                  tomorrowDiv += '<div class="tomorrowDiv" data-idx="' + i + '">' + tomorrow.category + ' : ' + tomorrow.fcstValue + '</div>'; 
+               })
+               $('.tomorrow').append(skyDiv);
+               $('.tomorrow').append(tomorrowDiv);
+               
+               var afterTomorrowDiv = '<div>모레&nbsp;(' + resData.afterTomorrowDate + ')</div>';
+               $.each(resData.afterTomorrowWeather, function(i, afterTomorrow) {
+                  
+                  switch(afterTomorrow.fcstValue) {
+                  case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+                  case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+                  case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;   height: 59px;"></div>'; break;
+                  
+                  }
+                  
+                  afterTomorrowDiv += '<div class="afterTomorrowDiv" data-idx="' + i + '">' + afterTomorrow.category + ' : ' + afterTomorrow.fcstValue + '</div>'; 
+               })
+               $('.afterTomorrow').append(skyDiv);
+               $('.afterTomorrow').append(afterTomorrowDiv);
+            }
+         })
+       } */
+   </script>
+   
+   <div class="freeBoardList">
+      <div class="freebrd_title_box"><a class="freebrd_title" th:href="@{/freeboard/list}">자유게시판 인기글 TOP 5</a></div>
+      <div class="freebrd_box">
+         <span id="div_freelike"></span>   
+      </div>
+   </div>
+   
+   <script>
+   
+      fn_freeBoardList();
+   
+      function fn_freeBoardList(){
+         $.ajax({
+            type: 'get',
+            url: '/index/freeBrdList',
+            success: function(resData) {
+               console.log(resData);
+               $.each(resData.freeBrdLike, function(i, free) {
+                  var freeDiv = '<div class="freebrd_one_box">';
+                  freeDiv += '<div>';
+                  freeDiv += '<div class="free_title"><a href="/freeboard/detail?freeNo=' + free.freeNo + '">' + free.freeTitle + '</a></div>';      
+                  freeDiv += '<div class="free_cotent"><a href="/freeboard/detail?freeNo=' + free.freeNo + '">' + free.freeContent + '</a></div>';
+                  freeDiv += '</div>';
+                  freeDiv += '<div>';
+                  freeDiv += '<div class="free_like_style">' + free.likeCount + '</div>';
+                  freeDiv += '<span class="free_nickname">' + free.nickname + '</span>';
+                  freeDiv += '<span class="free_createDate">' + free.freeCreateDate + '</span>';
+                  freeDiv += '</div>';
+                  freeDiv += '</div>';
+                  $('#div_freelike').append(freeDiv);
+               });
+               
+            }
+         })
+      }
+   </script>
+   
+   
+   
+   
+   
+   <!-- 홈화면 -->
+    <!-- Swiper -->
+    <div class="swiper-overflow-container" >
+      <div class="swiper_html">
+          <div class="swiper_body">
+             <div class="swiper-container mySwiper">
+             <hr><div>여행테마별 캠핑장</div>
+                <div class="swiper-wrapper"></div>
+               <div class="swiper-pagination"></div>
+             </div>
+            </div>
+      </div>
+   </div>
+    
+     <!-- Initialize Swiper -->
+     <!-- 캠핑장 리스트 -->
+     <script>
+     
+        function fn_swiper() {
+           var swiper = new Swiper('.mySwiper', {
+                 slidesPerView: 3,
+                 slidesPerColumn: 2,
+                 spaceBetween: 30,
+                 slidesOffsetBefore: 20,
+                   slidesOffsetAfter: 20,
+                 pagination: {
+                   el: '.swiper-pagination',
+                   clickable: true,
+                 },
+                 autoplay: {
+                   delay: 2000,
+               },
+                 loop:true   
+            });
+        }
+        
+        $.ajax({
+           type: 'get',
+           url: '/index/listIndex',
+           success: function(resData) {
+              /* var rand = [];
+              for(let i=0; i < 10; i++) {
+                 rand.push( Math.floor(((Math.random() * resData.camp.length) + 1)) );
+              }
+              var set = new Set(rand);
+              var uniqueRand = [...rand]; */
+              
+              $.each(resData.camp, function(i, camp) {
+                 if(camp.themaEnvrnCl != '') {
+                    var campDiv = '<div class="swiper-slide">';
+                    campDiv += '<div><img src ="' + camp.firstImageUrl + '" style="width:175px; height:116px"><img><div>';
+                    campDiv += '<div style="font-size:4px">' + camp.facltNm + '<div>';
+                    if(!camp.themaEnvrnCl.startsWith(',')) {
+                       campDiv += '<div style="font-size:4px">' + '#' + camp.themaEnvrnCl.replaceAll(',',' #'); + '<div>';
+                    } 
+                    
+                    $('.swiper-wrapper').append(campDiv);
+                    
+                 }
+              })
+              fn_swiper();
+           }
+        })
+        
+     </script>
+
+     
+   </div>
+   
 </body>
 </html>
