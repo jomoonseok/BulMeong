@@ -24,7 +24,7 @@ public class NoticeController {
 	
 	/* 목록 */
 	@GetMapping("/notice/list")
-	public String requiredLogin_list(HttpServletRequest request, Model model) {
+	public String list(HttpServletRequest request, Model model) {
 		noticeService.getNoticeList(request, model);
 		return "notice/list";
 	}
