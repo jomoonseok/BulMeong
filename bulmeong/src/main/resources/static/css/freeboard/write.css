@@ -2,6 +2,13 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css');
 
 
+body {
+	width: 70%;
+	margin: auto;
+}
+
+
+
 /* 상단 이미지 */
 
 .top_image {
@@ -11,7 +18,7 @@
 }
 
 .image_style {
-	width: 70%;
+	width: 100%;
 	margin: auto;
 	display: block;
 	opacity: 0.9;
@@ -20,7 +27,6 @@
 /* 내용 입력 상자 */
 .content_box {
 	margin: auto;	
-	width: 70%;
 }
 
 .note-editable {
@@ -36,7 +42,6 @@
 
 /* 타이틀 인풋 박스 */
 .title_box {
-	width: 70%;
 	margin: auto;
 	margin-bottom: 10px;
 }
