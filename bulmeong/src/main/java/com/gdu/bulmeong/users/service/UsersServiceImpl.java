@@ -1126,8 +1126,7 @@ public class UsersServiceImpl implements UsersService {
 				
 				// 저장할 이름
 				filesystem = myFileUtil.getFilename(origin);
-				
-				
+
 				// 저장할 경로
 				String path = myFileUtil.getProfilePath();
 				

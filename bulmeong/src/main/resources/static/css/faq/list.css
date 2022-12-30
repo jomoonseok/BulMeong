@@ -7,9 +7,9 @@ body {
 	margin: auto;
 }
 /* list.html */
-.css_main_title_wrap {
+/* .css_main_title_wrap { */
 /* 	border: 1px #a39485 solid;	 */
-}
+/* } */
 
 .css_main_title {
 /* 	border: 1px #a39485 solid; */
@@ -46,6 +46,12 @@ body {
 	float: right;
 }
 
+#btn_faqWrite:hover{
+	background-color: rgba(204, 75, 76); 
+    transition-duration: 0.3s;
+    color: white;
+}
+
 table {
 	width: 100%;
 }
@@ -53,12 +59,6 @@ table {
  thead > tr > th:first-of-type {
     width: 0%;
  }
-
-#btn_faqWrite:hover{
-	background-color: rgba(204, 75, 76); 
-    transition-duration: 0.3s;
-    color: white;
-}
 
 .css_table_wrap {
 /* 	border: 1px #a39485 solid; */
@@ -122,6 +122,28 @@ hr {
 
 i:hover {
 	color: #CC4B4C;
+}
+
+.btn_remove {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	margin: auto;
+	text-align: center;
+	width: 50px;
+}
+
+.btn_remove:hover {
+	background-color: rgba(204, 75, 76); 
+    transition-duration: 0.3s;
+    color: white;
+}
+
+.css_btn_remove_wrap {
+	width: 8%;
+	height: 15px;
+	margin: auto;
 }
 
 .fa-solid{
