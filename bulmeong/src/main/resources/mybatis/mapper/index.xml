@@ -7,22 +7,22 @@
 <mapper namespace="com.gdu.bulmeong.index.mapper.IndexMapper">
 
 	 <select id="selectAllCampIndex" resultType="CampDTO">
-	 	SELECT CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime, jjim, sum 
+	 	SELECT CAMP_NO, FACLTNM, INTRO, LINEINTRO, FEATURENM, SBRSCL, FIRSTIMAGEURL, THEMAENVRNCL, EQPMNLENDCL, TOURERACL, INDUTY, ALLAR, OPERPDCL, HVOFBGNDE, HVOFENDDLE, PRMISNDE, OPERDECL, TOILETCO, EXTSHRCO, BRAZIERCL, GLAMPINNERFCLTY, CARAVINNERFCLTY, LCTCL, ADDR1, DONM, SIGUNGUNM, ADDR2, ZIPCODE, MAPX, MAPY, HOMEPAGE, TEL, CREATEDTIME, MODIFIEDTIME, JJIM, SUM 
 	 	  FROM CAMP
 	 </select>
 	 
 	 <select id="selectAllCampByJjim" resultType="CampDTO"> 
-	    SELECT CAMP_NO, facltNm, sigunguNm, jjim, sum
+	    SELECT CAMP_NO, FACLTNM, SIGUNGUNM, JJIM, SUM
  		  FROM CAMP
- 		 ORDER BY jjim DESC, CAMP_NO LIMIT 5
+ 		 ORDER BY JJIM DESC, CAMP_NO LIMIT 5
 	 </select>
 	 
 	 <select id="selectFreeBrdListTopFiveLike" resultType="IndexFreeBoardDTO">
-	 	SELECT FB.FREE_NO, FB.FREE_TITLE, FB.NICKNAME, FREE_HIT, COUNT(*) AS LIKE_COUNT
+	 	SELECT FB.FREE_NO, FB.FREE_TITLE, FB.NICKNAME, FB.FREE_CONTENT, FB.FREE_CREATE_DATE, FREE_HIT, COUNT(*) AS LIKE_COUNT
 		  FROM FREE_LIKE FL INNER JOIN FREE_BRD FB
             ON FL.FREE_NO = FB.FREE_NO
 	     GROUP BY FL.FREE_NO
-	     ORDER BY LIKE_COUNT DESC LIMIT 10
+	     ORDER BY LIKE_COUNT DESC LIMIT 5
 	 </select>
 	 
 	 

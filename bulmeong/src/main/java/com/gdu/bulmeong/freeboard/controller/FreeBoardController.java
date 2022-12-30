@@ -20,18 +20,16 @@ public class FreeBoardController {
 	@Autowired
 	private FreeBoardService freeBoardService;
 	
-	@Autowired
-	private FreeBoardCmtService freeBoardCmtService;
-	
-	@Autowired
-	private FreeBoardLikeService freeBoardlikeServcie;
-	
-	
 	// 1. CRUD 기능
 	@GetMapping("/freeboard/list")
 	public String list(HttpServletRequest request, Model model) {
-		model.addAttribute("request", request);
-		freeBoardService.getFreeList(model);
+		freeBoardService.getFreeList(request, model);
+		return "freeboard/list";
+	}
+	
+	@GetMapping("/freeboard/search/list")
+	public String search(HttpServletRequest request, Model model) {
+		freeBoardService.getSearchFreeList(request, model);
 		return "freeboard/list";
 	}
 	

@@ -33,9 +33,49 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	private PageUtil pageUtil;
 	
 	@Override
-	public void getFreeList(Model model) {
-		Map<String, Object> modelMap = model.asMap();
-		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");
+	public void getFreeList(HttpServletRequest request, Model model) {
+		
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt.orElse("1"));
+		
+		int totalRecord = freeBoardMapper.selectFreeListCount();
+		
+		int recordPerPage = 10;
+		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("begin", pageUtil.getBegin() - 1);
+		map.put("recordPerPage", recordPerPage);
+		
+		List<FreeBoardDTO> freeBoardList = freeBoardMapper.selectFreeListByMap(map);
+		
+		model.addAttribute("freeBoardList", freeBoardList);
+		model.addAttribute("totalRecord", totalRecord);
+		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
+		model.addAttribute("paging", pageUtil.getPaging("/freeboard/list"));
+		
+		// 4-1. [게시글 댓글수, 좋아요] 
+		List<Integer> freeNo = new ArrayList<Integer>();
+		List<Integer> cmtCount = new ArrayList<Integer>();
+		for(int i = 0; i < freeBoardList.size(); i++) {
+			freeNo.add(freeBoardList.get(i).getFreeNo());
+			cmtCount.add(freeBoardCmtMapper.selectCmtCount(freeNo.get(i)));
+		}
+		List<Integer> freelike = new ArrayList<Integer>();
+		for(int i = 0; i < freeBoardList.size(); i++) {
+			freeNo.add(freeBoardList.get(i).getFreeNo());
+			freelike.add(freeBoardLikeMapper.selectLikeCount(freeNo.get(i)));
+		}
+
+		// 4-2. [게시글 댓글수, 좋아요] model에 넣어주기 
+		model.addAttribute("freeCmt", cmtCount);
+		model.addAttribute("freeLike", freelike);
+		
+	}
+	
+	
+	@Override
+	public void getSearchFreeList(HttpServletRequest request, Model model) {
 
 		// 1-1. [검색기능] 파라미터 받아오기
 		String dateColumn = request.getParameter("dateColumn");
@@ -52,51 +92,47 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		model.addAttribute("dateColumn", dateColumn);
 		model.addAttribute("column", column);
 		model.addAttribute("query", query);
-		
 		 
 		// 2-1. [페이징] '0'일 경우 1페이지로 가기
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
-		int totalRecord = freeBoardMapper.selectFindFreeboardsCount(map);
+		int totalRecord = freeBoardMapper.selectSearchFreeboardsCount(map);
 		
 		// 2-2. [페이징] 표시할 페이지 수
 		int recordPerPage = 10;
-		pageUtil.setSearchPageUtil(page, totalRecord, recordPerPage);
-		map.put("begin", pageUtil.getBegin());
+		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
+		map.put("begin", pageUtil.getBegin() - 1);
 		map.put("recordPerPage", recordPerPage);
 		
 		// 2-3. [페이징] model에 값 넣어주기
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getSearchPaging("/freeboard/list"));
+		model.addAttribute("paging", pageUtil.getPaging("/freeboard/list?dateColumn=" + dateColumn + "&column=" + column + "&query=" + query));
+
 		
 		
 		// 3-1. [게시글 리스트] freeBoardDTO 받아오기 (Mapper에서)
-		List<FreeBoardDTO> freeBoard = freeBoardMapper.selectFreeListByMap(map);
+		List<FreeBoardDTO> freeBoardList = freeBoardMapper.selectSearchFreeListByMap(map);
 		
 		// 3-2. [게시글 리스트] model에 freeBoard 값 넣어주기
-		model.addAttribute("freeBoardList", freeBoard);
+		model.addAttribute("freeBoardList", freeBoardList);
 		
 		// 4-1. [게시글 댓글수, 좋아요] 
 		List<Integer> freeNo = new ArrayList<Integer>();
 		List<Integer> cmtCount = new ArrayList<Integer>();
-		for(int i = 0; i < freeBoard.size(); i++) {
-			freeNo.add(freeBoard.get(i).getFreeNo());
+		for(int i = 0; i < freeBoardList.size(); i++) {
+			freeNo.add(freeBoardList.get(i).getFreeNo());
 			cmtCount.add(freeBoardCmtMapper.selectCmtCount(freeNo.get(i)));
 		}
 		List<Integer> freelike = new ArrayList<Integer>();
-		for(int i = 0; i < freeBoard.size(); i++) {
-			freeNo.add(freeBoard.get(i).getFreeNo());
+		for(int i = 0; i < freeBoardList.size(); i++) {
+			freeNo.add(freeBoardList.get(i).getFreeNo());
 			freelike.add(freeBoardLikeMapper.selectLikeCount(freeNo.get(i)));
 		}
 
 		// 4-2. [게시글 댓글수, 좋아요] model에 넣어주기 
 		model.addAttribute("freeCmt", cmtCount);
-		model.addAttribute("freelike", freelike);
-
-		
-		
-		
+		model.addAttribute("freeLike", freelike);
 		
 	}
 	
@@ -136,7 +172,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			
 			out.println("<script>");
 			if(result > 0) {
-				out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='" + request.getContextPath() + "/freeboard/detail?freeNo=" + freeBoard.getFreeNo() + "'}");
+				out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='/freeboard/detail?freeNo=" + freeBoard.getFreeNo() + "'}");
 				out.println("else { location.href='/freeboard/list'}");
 			} else {
 				out.println("alert('게시글 등록에 실패하였습니다.');");
@@ -288,7 +324,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 				out.println("<script>");
 				if(result > 0) {
 					out.println("alert('게시글이 삭제되었습니다.');");
-					out.println("location.href='" + request.getContextPath() + "/freeboard/list';");
+					out.println("location.href='/freeboard/list';");
 				} else {
 					out.println("alert('게시글이 삭제되지 않았습니다.");
 					out.println("history.back();");

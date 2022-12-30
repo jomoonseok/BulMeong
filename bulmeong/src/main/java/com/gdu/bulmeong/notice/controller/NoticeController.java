@@ -21,12 +21,6 @@ public class NoticeController {
 
 	@Autowired 
 	private NoticeService noticeService;
-	 
-	
-//	@GetMapping("/")
-//	public String index() {
-//		return "index";
-//	}
 	
 	/* 목록 */
 	@GetMapping("/notice/list")

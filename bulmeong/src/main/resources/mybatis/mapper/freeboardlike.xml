@@ -36,11 +36,6 @@
 		 WHERE FREE_NO = #{freeNo}
 		   AND ID = #{id}
 	</delete>
-	
 
-	
-	
-
-	
 	
 </mapper>

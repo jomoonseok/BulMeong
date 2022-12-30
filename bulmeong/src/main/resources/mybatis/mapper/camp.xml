@@ -34,16 +34,16 @@
 		SELECT CAMP_NO, FACLTNM, INTRO, LINEINTRO, FEATURENM, SBRSCL, FIRSTIMAGEURL, THEMAENVRNCL, EQPMNLENDCL, TOURERACL, INDUTY, ALLAR, OPERPDCL, HVOFBGNDE, HVOFENDDLE, PRMISNDE, OPERDECL, TOILETCO, EXTSHRCO, BRAZIERCL, GLAMPINNERFCLTY, CARAVINNERFCLTY, LCTCL, ADDR1, DONM, SIGUNGUNM, ADDR2, ZIPCODE, MAPX, MAPY, HOMEPAGE, TEL, CREATEDTIME, MODIFIEDTIME, JJIM, SUM 
 		  FROM CAMP
 		<where>
-		    <if test="query != null">
+		    <if test="query != ''">
 		        FACLTNM LIKE CONCAT('%', #{query}, '%') 
 		    </if>
-	 	    <if test="doNm != null">
+	 	    <if test="doNm != ''">
 		        AND DONM = #{doNm}
 		    </if>
-		    <if test="induty != null">
+		    <if test="induty != ''">
 		        AND INDUTY = #{induty}
 		    </if>
-		    <if test="themaEnvrnCl != null">
+		    <if test="themaEnvrnCl != ''">
 		        AND THEMAENVRNCL = #{themaEnvrnCl}
 		    </if>
 	    </where>
@@ -53,16 +53,16 @@
 		SELECT COUNT(*)
 		  FROM CAMP
 		<where>
-		    <if test="query != null">
+		    <if test="query != ''">
 		        FACLTNM LIKE CONCAT('%', #{query}, '%') 
 		    </if>
-	 	    <if test="doNm != null">
+	 	    <if test="doNm != ''">
 		        AND DONM = #{doNm}
 		    </if>
-		    <if test="induty != null">
+		    <if test="induty != ''">
 		        AND INDUTY = #{induty}
 		    </if>
-		    <if test="themaEnvrnCl != null">
+		    <if test="themaEnvrnCl != ''">
 		        AND THEMAENVRNCL = #{themaEnvrnCl}
 		    </if>
 	    </where>

@@ -12,17 +12,19 @@ public interface FreeBoardMapper {
 	
 	// 1. CRUD 기능
 	public int selectFreeListCount();
-		
 	public List<FreeBoardDTO> selectFreeListByMap(Map<String, Object> map);
+	
+	// 2. 검색 기능
+	public int selectSearchFreeboardsCount(Map<String, Object> map);
+	public  List<FreeBoardDTO> selectSearchFreeListByMap(Map<String, Object> map);
+	
+	
 	public int updateHit(int freeNo);
 	public int insertFreeBoard(FreeBoardDTO freeBoard);
 	public FreeBoardDTO selectFreeBoardByNo(int freeNo);
 	public int updateFreeBoard(FreeBoardDTO freeBoard);
 	public int updateFreeBrdProfile(FreeBoardDTO freeBoard);
 	public int deleteFreeBoard(int freeNo);
-	
-	// 2. 검색 기능
-	public int selectFindFreeboardsCount(Map<String, Object> map);
 
 	
 
