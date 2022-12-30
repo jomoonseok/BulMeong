@@ -21,40 +21,29 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	
 	@Autowired
 	private MyFileUtil myFileUtil;
+	
+   @Override
+   public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-		registry.addResourceHandler("/load/noticeImage/**")
-			.addResourceLocations("file:" + myFileUtil.getSummernotePath() + "/");
-		registry.addResourceHandler("/load/tent/**")
-			.addResourceLocations("file:///C:/bulmeongImage/tent/");
-		registry.addResourceHandler("/load/profileImagePreview/**")
-		.addResourceLocations("file:" + myFileUtil.getPreviewPath() + "/");
-		registry.addResourceHandler("/load/profileImage/**")
-		.addResourceLocations("file:" + myFileUtil.getProfilePath() + "/");
-
-	}
-	/*
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(testInterceptor)
-		.addPathPatterns("/**");
-	}
-	*/
-	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(keepLoginInterceptor)
-		.addPathPatterns("/**")
-		.excludePathPatterns("/users/login/form")
-		.excludePathPatterns("/users/login");
-		
-		registry.addInterceptor(sleepUserCheckingInterceptor)
-		.addPathPatterns("/users/login");
-		
-	}
-	
-	
-	
+      registry.addResourceHandler("/load/noticeImage/**")
+         .addResourceLocations("file:" + myFileUtil.getSummernotePath() + "/");
+      registry.addResourceHandler("/load/tent/**")
+         .addResourceLocations("file:" + myFileUtil.getTentPath() + "/");
+      registry.addResourceHandler("/load/profileImagePreview/**")
+      .addResourceLocations("file:" + myFileUtil.getPreviewPath() + "/");
+      registry.addResourceHandler("/load/profileImage/**")
+      .addResourceLocations("file:" + myFileUtil.getProfilePath() + "/");
+   }
+   
+   @Override
+   public void addInterceptors(InterceptorRegistry registry) {
+      registry.addInterceptor(keepLoginInterceptor)
+      .addPathPatterns("/**")
+      .excludePathPatterns("/users/login/form")
+      .excludePathPatterns("/users/login");
+      
+      registry.addInterceptor(sleepUserCheckingInterceptor)
+      .addPathPatterns("/users/login");
+      
+   }
 }
