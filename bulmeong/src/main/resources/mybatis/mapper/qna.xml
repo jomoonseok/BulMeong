@@ -19,12 +19,6 @@
 		  	      FROM QNA) A
 		 WHERE A.QNA_RN BETWEEN #{begin} AND #{end}
 	</select>
-<!-- 	<select id="selectQnaList" parameterType="Map" resultType="QnaDTO"> -->
-<!-- 		SELECT QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH -->
-<!-- 		  FROM QNA -->
-<!-- 		 ORDER BY QNA_GROUP_NO DESC, QNA_CREATE_DATE DESC -->
-<!-- 		 LIMIT #{begin}, #{recordPerPage} -->
-<!-- 	</select> -->
 	
 	<!-- Question 추가 -->
 	<insert id="insertQuestion" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="qnaNo">
@@ -61,12 +55,4 @@
 		 WHERE QNA_NO = #{qnaNo}
 	</delete>
 	
-	
-	
-<!-- 	<insert id="insertAnswer" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="qnaNo"> -->
-<!-- 		INSERT INTO QNA -->
-<!-- 			(ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH) -->
-<!-- 		VALUES -->
-<!-- 			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'), #{qnaState}, #{qnaIp}, #{qnaNo}, 1) -->
-<!-- 	</insert> -->
 </mapper>
