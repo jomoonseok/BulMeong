@@ -104,8 +104,13 @@ body {
 	border-bottom: 1px solid;
 }
 
-.free_content {
+.free_content > a {
 	text-overflow: ellipsis;
+	  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100px;
+  height: 20px;
 }
 
 .free_like_style {
