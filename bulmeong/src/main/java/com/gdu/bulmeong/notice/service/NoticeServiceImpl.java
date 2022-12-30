@@ -41,20 +41,6 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public void getNoticeList(HttpServletRequest request, Model model) {
 		
-//		// 세션
-//		HttpSession session = request.getSession();
-//		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
-//		String id = request.getParameter(loginUser.getId());
-//		
-//		String noticeTitle = request.getParameter("noticeTitle");
-//		String noticeContent = request.getParameter("noticeContent");
-//		
-//		NoticeDTO notice = NoticeDTO.builder()
-//				.noticeTitle(noticeTitle)
-//				.noticeContent(noticeContent)
-//				.id(id)
-//				.build();
-//		
 		// 페이지 파라미터
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
@@ -69,14 +55,13 @@ public class NoticeServiceImpl implements NoticeService {
 		// 조회조건(Map)
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-		map.put("recordPerPage",pageUtil.getRecordPerPage());
+		map.put("recordPerPage",recordPerPage);
 
 		// 뷰로 전달할 데이터
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("noticeList", noticeMapper.selectNoticeListByMap(map));
-		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/notice/list"));
+		model.addAttribute("beginNo", totalRecord - (page - 1) * recordPerPage);
+		model.addAttribute("paging", pageUtil.getPaging("/notice/list"));
 	}
 	
 	// 이미지 저장
