@@ -1070,9 +1070,8 @@ public class UsersServiceImpl implements UsersService {
 				// 저장할 이름
 				String filesystem = myFileUtil.getFilename(origin);
 				
-				String sep = Matcher.quoteReplacement(File.separator);
 				// 저장할 경로
-				String path = "C:" + sep + "bulmeongImage" + sep + "profileImagePreview";
+				String path = myFileUtil.getPreviewPath();
 				
 				// 저장할 경로 만들기
 				File dir = new File(path);
@@ -1127,11 +1126,9 @@ public class UsersServiceImpl implements UsersService {
 				
 				// 저장할 이름
 				filesystem = myFileUtil.getFilename(origin);
-				
-				String sep = Matcher.quoteReplacement(File.separator);
-				
+
 				// 저장할 경로
-				String path = "C:" + sep + "bulmeongImage" + sep + "profileImage";
+				String path = myFileUtil.getProfilePath();
 				
 				// 저장할 경로 만들기
 				File dir = new File(path);
@@ -1217,6 +1214,15 @@ public class UsersServiceImpl implements UsersService {
 		String id = loginUser.getId();
 		
 		model.addAttribute("reserved", usersMapper.selectReserveById(id));
+		model.addAttribute("loginUser", loginUser);
+	}
+	
+	@Override
+	public void getJjimList(HttpServletRequest request, Model model) {
+		UsersDTO loginUser = (UsersDTO)request.getSession().getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		model.addAttribute("jjim", usersMapper.selectJjimList(id));
 		model.addAttribute("loginUser", loginUser);
 	}
 	

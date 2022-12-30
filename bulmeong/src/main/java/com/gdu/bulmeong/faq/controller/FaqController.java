@@ -18,7 +18,7 @@ public class FaqController {
 	private FaqService faqService;
 	 
 	@GetMapping("/faq/list")
-	public String faqList(HttpServletRequest request, Model model) {
+	public String requiredLogin_faqList(HttpServletRequest request, Model model) {
 		faqService.loadFaqList(request, model);
 		return "faq/list";
 	}

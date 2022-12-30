@@ -1,11 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head th:replace="~{layout/header::head('찜목록')}"></head>
+<head>
+	<style>
+		table {
+			box-shadow: 0 2px 5px rgba(0,0,0,.25);
+			width: 80%;
+			text-align: center;
+			font-size: 13px;
+		}
+	
+		tbody td {
+			height: 80px;
+			border-bottom: 1px solid rgba(0,0,0,.1);
+			background: #fff;
+		}
+		
+		.btn_green {
+			width: 100px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+			background-color: rgb(3, 199, 90);
+			color: white;
+		}
+	</style>
+</head>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	jjim
+	<br><br><br>
+	
+	<div class="container" >
+	
+		<table style="width:90%;">
+			<thead style="background-color: #71C285; color:white;">
+				<tr style="height: 75px;">
+					 <td>번호</td>
+					 <td>캠핑장명</td>
+					 <td>주소</td>
+					 <td>전화</td>
+					 <!-- <td>사진</td> -->
+					 <td>찜</td>
+					 <td></td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="jjim : ${jjim}" class="tbl_border_right2">
+					<td th:text="${jjim.campNo}"></td>
+					<td th:text="${jjim.facltNm}"></td>
+					<td th:text="${jjim.addr1}"></td>
+					<td th:text="${jjim.tel}"></td>
+					<!-- <td><img th:src="${jjim.firstImageUrl}" width="100px;"></td> -->
+					<td th:text="${jjim.jjim}"></td>
+					<td><input type="button" class="btn_green" th:onclick="location.href='/detail?campNo=[[${jjim.campNo}]]'" value="바로가기"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
 	
 </body>
 </html>

@@ -45,5 +45,7 @@ public interface UsersService {
 	
 	// myPage
 	public void getReserveById(HttpServletRequest request, Model model);
+	public void getJjimList(HttpServletRequest request, Model model);
+	
 	
 }
