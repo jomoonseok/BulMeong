@@ -195,12 +195,13 @@ public class CampServiceImpl implements CampService {
 		int page = Integer.parseInt(request.getParameter("page"));
 		int campCount = campMapper.selectCampCount();
 		
-		pageUtil.setPageUtil(page, campCount, 5);
+		int recordPerPage = 5;
+		
+		pageUtil.setPageUtil(page, campCount, recordPerPage);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("begin", pageUtil.getBegin() - 1);
-//		map.put("end", pageUtil.getEnd());
-		map.put("end", pageUtil.getRecordPerPage());
+		map.put("recordPerPage", recordPerPage);
 		
 		List<CampDTO> camp = campMapper.selectAllCamp(map);
 		

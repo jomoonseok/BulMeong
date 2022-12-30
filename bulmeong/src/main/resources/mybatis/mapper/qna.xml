@@ -14,17 +14,11 @@
 	
 	<!-- QNA 리스트 -->
 	<select id="selectQnaList" parameterType="Map" resultType="QnaDTO">
-		SELECT A.QNA_RN, A.QNA_NO, A.ID, A.QNA_TITLE, A.QNA_CONTENT, A.QNA_CREATE_DATE, A.QNA_MODIFY_DATE, A.QNA_STATE, A.QNA_IP, A.QNA_GROUP_NO, A.DEPTH
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY QNA_GROUP_NO DESC, DEPTH ASC, QNA_CREATE_DATE DESC) AS QNA_RN, QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH
-		  	      FROM QNA) A
-		 WHERE A.QNA_RN BETWEEN #{begin} AND #{end}
+		SELECT QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH
+		FROM QNA
+		ORDER BY QNA_GROUP_NO DESC, QNA_CREATE_DATE DESC
+		LIMIT #{begin}, #{recordPerPage}
 	</select>
-<!-- 	<select id="selectQnaList" parameterType="Map" resultType="QnaDTO"> -->
-<!-- 		SELECT QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH -->
-<!-- 		  FROM QNA -->
-<!-- 		 ORDER BY QNA_GROUP_NO DESC, QNA_CREATE_DATE DESC -->
-<!-- 		 LIMIT #{begin}, #{recordPerPage} -->
-<!-- 	</select> -->
 	
 	<!-- Question 추가 -->
 	<insert id="insertQuestion" parameterType="QnaDTO" useGeneratedKeys="true" keyProperty="qnaNo">

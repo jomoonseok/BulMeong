@@ -35,17 +35,14 @@
 	
 	<update id="updateIncreaseCampJjim" parameterType="int">
 		UPDATE CAMP
-		   SET jjim = jjim + 1
+		   SET JJIM = JJIM + 1
 		 WHERE CAMP_NO = #{campNo}
 	</update>
 
 	<update id="updateDecreaseCampJjim" parameterType="int">
 		UPDATE CAMP
-		   SET jjim = jjim - 1
+		   SET JJIM = JJIM - 1
 		 WHERE CAMP_NO = #{campNo}
 	</update>
 	
-	
-	
-	 
 </mapper>
