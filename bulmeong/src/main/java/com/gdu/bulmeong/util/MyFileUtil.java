@@ -75,12 +75,13 @@ public class MyFileUtil {
 	}
 	
 	// 캠프 이미지 경로
-		public String getTentPath() {
-			return "storage" + sep + "bulmeong" + sep + "tentImage";
-		}
+	public String getTentPath() {
+		return "storage" + sep + "bulmeong" + sep + "tentImage";
+	}
 	
 	// 1~9 => 01~09
 	public String makeZero(int n) {
 		return (n < 10) ? "0" + n : "" + n;
 	}
+	
 }

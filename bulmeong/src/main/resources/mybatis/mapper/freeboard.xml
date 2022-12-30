@@ -16,36 +16,18 @@
 	<select id="selectFreeListByMap" parameterType="Map" resultType="FreeBoardDTO">
 		SELECT A.FREE_NO, A.ID, A.NICKNAME, A.FREE_TITLE, A.FREE_CREATE_DATE, A.FREE_HIT, A.PROFILE_IMAGE
 		 FROM FREE_BRD A
-      		  WHERE 1 = 1
-      	<choose>
-			<when test="dateColumn=='ADAY'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()) 
-			</when>
-			<when test="dateColumn=='AWEEK'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW())
-			</when>
-			<when test="dateColumn=='AMONTH'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW())
-			</when>
-			<when test="dateColumn=='AYEAR'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 YEAR) AND NOW())
-			</when>
-      	</choose>
-		<choose>
-			<when test="column=='FREE_TITLE'">
-				AND FREE_TITLE LIKE CONCAT('%',#{query},'%')
-			</when>
-			<when test="column=='FREE_CONTENT'">
-				AND FREE_CONTENT LIKE CONCAT('%',#{query},'%')
-			</when>
-			<when test="column=='FREE_CONTENT_FREE_CONTENT'">
-				AND FREE_TITLE LIKE CONCAT('%', #{query}, '%')
-                 OR FREE_CONTENT LIKE CONCAT('%', #{query}, '%')
-			</when>
-			<when test="column=='NICKNAME'">
-				AND NICKNAME LIKE CONCAT('%',#{query},'%')
-			</when>	
-		</choose>
+		<where>
+			FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL - 1 ${dateColumn}) AND NOW() 
+			<choose>
+				<when test="column=='FREE_TITLE' or column=='FREE_CONTENT' or column=='NICKNAME'">
+					AND ${column} LIKE CONCAT('%' ,#{query}, '%')
+				</when>
+				<when test="column=='FREE_CONTENT_FREE_CONTENT'">
+					AND FREE_TITLE LIKE CONCAT('%', #{query}, '%')
+	                 OR FREE_CONTENT LIKE CONCAT('%', #{query}, '%')
+				</when>
+			</choose>
+		</where>
 			 ORDER BY A.FREE_NO DESC
 			 LIMIT #{begin}, #{recordPerPage}
 	</select>

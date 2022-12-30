@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gdu.bulmeong.users.interceptor.KeepLoginInterceptor;
 import com.gdu.bulmeong.users.interceptor.SleepUserCheckingInterceptor;
-import com.gdu.bulmeong.users.interceptor.TestInterceptor;
 import com.gdu.bulmeong.util.MyFileUtil;
 
 @Configuration
@@ -19,9 +18,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
    
    @Autowired
    private SleepUserCheckingInterceptor sleepUserCheckingInterceptor;
-   
-   @Autowired
-   private TestInterceptor testInterceptor;
    
    @Autowired
    private MyFileUtil myFileUtil;
