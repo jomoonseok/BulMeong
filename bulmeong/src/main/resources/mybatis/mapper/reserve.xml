@@ -7,7 +7,7 @@
 <mapper namespace="com.gdu.bulmeong.reserve.mapper.ReserveMapper">
 	
 	<select id="selectAllCampByCampNo" parameterType="int" resultType="CampDTO">
-		SELECT CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime
+		SELECT CAMP_NO, FACLTNM, INTRO, LINEINTRO, FEATURENM, SBRSCL, FIRSTIMAGEURL, THEMAENVRNCL, EQPMNLENDCL, TOURERACL, INDUTY, ALLAR, OPERPDCL, HVOFBGNDE, HVOFENDDLE, PRMISNDE, OPERDECL, TOILETCO, EXTSHRCO, BRAZIERCL, GLAMPINNERFCLTY, CARAVINNERFCLTY, LCTCL, ADDR1, DONM, SIGUNGUNM, ADDR2, ZIPCODE, MAPX, MAPY, HOMEPAGE, TEL, CREATEDTIME, MODIFIEDTIME
 		  FROM CAMP
 		 WHERE CAMP_NO = #{campNo}
 	</select>
@@ -20,7 +20,7 @@
 	</select>
 	
 	<select id="selectCampByCampNo" parameterType="int" resultType="CampDTO">
-		SELECT CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime
+		SELECT CAMP_NO, FACLTNM, INTRO, LINEINTRO, FEATURENM, SBRSCL, FIRSTIMAGEURL, THEMAENVRNCL, EQPMNLENDCL, TOURERACL, INDUTY, ALLAR, OPERPDCL, HVOFBGNDE, HVOFENDDLE, PRMISNDE, OPERDECL, TOILETCO, EXTSHRCO, BRAZIERCL, GLAMPINNERFCLTY, CARAVINNERFCLTY, LCTCL, ADDR1, DONM, SIGUNGUNM, ADDR2, ZIPCODE, MAPX, MAPY, HOMEPAGE, TEL, CREATEDTIME, MODIFIEDTIME
 		  FROM CAMP
 		 WHERE CAMP_NO = #{campNo}
 	</select>
@@ -38,28 +38,16 @@
 			(#{campNo}, #{tentNo}, #{id}, #{reserveName}, #{reserveCount}, #{reserveBeginDate}, date_add(#{reserveEndDate}, interval -1 day), #{reserveSum}, ${tentCategory}, 0, 'NULL')
 	</insert>
 	
-	<!-- <select id="selectReservedTent" parameterType="Map" resultType="ReservedDTO">
-		 SELECT A.TENT_NO, A.CAMP_NO, A.TENT_CATEGORY, A.TENT_NAME, A.TENT_MAX_COUNT, A.TENT_SUM, A.TENT_IMAGE, B.ID, B.RESERVE_NAME, B.RESERVE_COUNT, B.RESERVE_BEGIN_DATE, B.RESERVE_END_DATE, B.RESERVE_SUM, B.RESERVE_STATE
-  		   FROM CAMP_TENT AS A INNER JOIN RESERVE AS B
-    		 ON A.CAMP_NO = B.CAMP_NO
- 		  WHERE A.CAMP_NO = #{campNo} AND B.RESERVE_BEGIN_DATE BETWEEN #{reserveBeginDate} AND date_add(#{reserveEndDate}, interval -1 day)
-	</select> -->
 	<select id="selectReservedTent" parameterType="Map" resultType="ReservedDTO">
-		 SELECT DISTINCT A.TENT_NO  <!-- , A.CAMP_NO, A.TENT_CATEGORY, A.TENT_NAME, A.TENT_MAX_COUNT, A.TENT_SUM, A.TENT_IMAGE, B.ID, B.RESERVE_NAME, B.RESERVE_COUNT, B.RESERVE_BEGIN_DATE, B.RESERVE_END_DATE, B.RESERVE_SUM, B.RESERVE_STATE -->
+		 SELECT DISTINCT A.TENT_NO
 	  	  FROM CAMP_TENT AS A LEFT OUTER JOIN RESERVE AS B
 	    	ON A.TENT_NO = B.TENT_NO
 	    	<if test="reserveDate == 1">
 	    		WHERE #{reserveBeginDate} BETWEEN B.RESERVE_BEGIN_DATE AND B.RESERVE_END_DATE
 	    	</if>
 	    	<if test="reserveDate >= 2">
-	    		<!-- WHERE #{reserveBeginDate} BETWEEN B.RESERVE_BEGIN_DATE AND B.RESERVE_END_DATE OR date_add(#{reserveEndDate}, interval -1 day) BETWEEN B.RESERVE_BEGIN_DATE AND B.RESERVE_END_DATE -->
-	    		<!-- WHERE (#{reserveBeginDate} <![CDATA[ <= ]]> B.RESERVE_BEGIN_DATE) AND (B.RESERVE_BEGIN_DATE BETWEEN B.RESERVE_BEGIN_DATE AND B.RESERVE_END_DATE AND date_add(#{reserveEndDate}, interval -1 day) <![CDATA[ >= ]]> B.RESERVE_END_DATE OR date_add(#{reserveEndDate}, interval -1 day) LIKE B.RESERVE_END_DATE) -->                                 <!-- AND               date_add(#{reserveEndDate}, interval -1 day) BETWEEN B.RESERVE_BEGIN_DATE AND B.RESERVE_END_DATE --><!-- OR #{reserveEndDate} <![CDATA[ >= ]]> B.RESERVE_END_DATE -->
-	    		<!-- WHERE #{reserveBeginDate} <![CDATA[ <= ]]> B.RESERVE_BEGIN_DATE AND B.RESERVE_BEGIN_DATE BETWEEN B.RESERVE_BEGIN_DATE AND B.RESERVE_END_DATE AND B.RESERVE_END_DATE BETWEEN B.RESERVE_BEGIN_DATE AND B.RESERVE_END_DATE -->
 	    		WHERE #{reserveBeginDate} BETWEEN B.RESERVE_BEGIN_DATE AND B.RESERVE_END_DATE OR #{reserveBeginDate} <![CDATA[ <= ]]> B.RESERVE_BEGIN_DATE AND date_add(#{reserveEndDate}, interval -1 day) <![CDATA[ >= ]]> B.RESERVE_BEGIN_DATE
 	    	</if>
-	     	
-	     <!-- WHERE A.CAMP_NO = #{campNo} AND B.RESERVE_BEGIN_DATE LIKE #{reserveBeginDate} OR B.RESERVE_END_DATE BETWEEN #{reserveBeginDate} AND date_add(#{reserveEndDate}, interval -1 day) -->
-	 	 <!-- WHERE A.CAMP_NO = #{campNo} AND B.RESERVE_BEGIN_DATE BETWEEN #{reserveBeginDate} AND date_add(#{reserveEndDate}, interval -1 day) -->
 	</select>
 	
 	

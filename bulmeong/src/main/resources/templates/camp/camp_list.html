@@ -154,27 +154,6 @@
 					}); 
 
 					$('#paging').empty();
-					var pageUtil = resData.pageUtil;
-					var paging = '';
-					// 이전 블록
-					if(pageUtil.beginPage != 1) {
-						paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
-					}
-					// 페이지번호
-					for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
-						if(p == $('#page').val()){
-							paging += '<strong class="p">' + p + '</strong>';
-						} else {
-							paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
-						}
-					}
-					// 다음 블록
-					if(pageUtil.endPage != pageUtil.totalPage){
-						paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
-					}
-					$('#paging').append(paging);
-
-					
 				}
 			});
 		});
