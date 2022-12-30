@@ -36,7 +36,6 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
-		// int totalRecord = freeBoardMapper.selectFindFreeboardsCount(map);
 		int totalRecord = 5;
 		
 
@@ -44,13 +43,12 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		pageUtil.setSearchPageUtil(page, totalRecord, recordPerPage);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		map.put("recordPerPage", recordPerPage);
 		
 
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getSearchPaging(request.getContextPath() + "/reviewBoard/list"));
+		model.addAttribute("paging", pageUtil.getSearchPaging("/reviewBoard/list"));
 		
 		List<ReviewBoardDTO> reivewBoard = reviewBoardMapper.reviewList(map);
 		
@@ -95,7 +93,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 			
 			out.println("<script>");
 			if(result > 0) {
-				out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='" + request.getContextPath() + "/reviewboard/detail?reviewNo=" + reviewBoard.getReviewNo() + "'}");
+				out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='/reviewboard/detail?reviewNo=" + reviewBoard.getReviewNo() + "'}");
 				out.println("else { location.href='/reviewBoard/list'}");
 			} else {
 				out.println("alert('게시글 등록에 실패하였습니다.');");

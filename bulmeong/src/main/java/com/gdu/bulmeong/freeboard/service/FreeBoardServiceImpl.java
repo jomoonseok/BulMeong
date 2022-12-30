@@ -68,7 +68,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		// 2-3. [페이징] model에 값 넣어주기
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getSearchPaging("/freeboard/list"));
+		model.addAttribute("paging", pageUtil.getSearchPaging("/freeBoard/list"));
 		
 		
 		// 3-1. [게시글 리스트] freeBoardDTO 받아오기 (Mapper에서)
