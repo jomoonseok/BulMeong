@@ -1,8 +1,6 @@
 package com.gdu.bulmeong.freeboard.service;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +18,6 @@ import com.gdu.bulmeong.freeboard.mapper.FreeBoardCmtMapper;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.PageUtil;
 import com.gdu.bulmeong.util.SecurityUtil;
-
-import oracle.net.aso.l;
 
 @Service
 public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {

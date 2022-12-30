@@ -6,13 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,22 +23,15 @@ import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.MyFileUtil;
 import com.gdu.bulmeong.util.PageUtil;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class AdminServiceImpl implements AdminService {
 	
-	@Value("{custom.path.uploadTentImages}")
-	private String fileRealPath;
-	
-	@Autowired 
 	private AdminMapper adminMapper;
-	
-	@Autowired
 	private CampMapper campMapper;
-	
-	@Autowired
 	private PageUtil pageUtil;
-	
-	@Autowired
 	private MyFileUtil myFileUtil;
 	
 	@Override
@@ -66,7 +56,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("begin", pageUtil.getBegin() - 1);
-		map.put("end", pageUtil.getRecordPerPage());
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		List<CampDTO> camp = adminMapper.selectAllCampAdmin(map);
 		
@@ -87,7 +77,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("begin", pageUtil.getBegin() - 1);
-		map.put("end", pageUtil.getRecordPerPage());
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		List<AdminTentDTO> tent = adminMapper.selectAllTentAdmin(map);
 		
@@ -116,13 +106,6 @@ public class AdminServiceImpl implements AdminService {
 		int TENT_SUM = Integer.parseInt(request.getParameter("TENT_SUM"));
 		MultipartFile TENT_IMAGE = request.getFile("TENT_IMAGE");
 		
-		int imageResult = 0;
-		if(TENT_IMAGE.getSize() == 0) {
-			imageResult = 1;
-		} else {
-			imageResult = 0;
-		}
-		
 		try {
 			if(TENT_IMAGE != null && TENT_IMAGE.isEmpty() == false || TENT_IMAGE.getSize() >= 0) {
 				
@@ -131,7 +114,6 @@ public class AdminServiceImpl implements AdminService {
 				
 				String filesystem = myFileUtil.getFilename(origin);
 				
-				String sep = Matcher.quoteReplacement(File.separator);
 				String path = "";
 				
 				if(TENT_IMAGE.getSize() == 0) {
@@ -198,13 +180,6 @@ public class AdminServiceImpl implements AdminService {
 		int TENT_SUM = Integer.parseInt(request.getParameter("TENT_SUM"));
 		MultipartFile TENT_IMAGE = request.getFile("TENT_IMAGE");
 		
-		int imageResult = 0;
-		if(TENT_IMAGE.getSize() == 0) {
-			imageResult = 1;
-		} else {
-			imageResult = 0;
-		}
-		
 		try {
 			if(TENT_IMAGE != null && TENT_IMAGE.isEmpty() == false || TENT_IMAGE.getSize() >= 0) {
 			
@@ -212,10 +187,8 @@ public class AdminServiceImpl implements AdminService {
 				origin = origin.substring(origin.lastIndexOf("\\") + 1);
 				
 				String filesystem = myFileUtil.getFilename(origin);
-				
-				String sep = Matcher.quoteReplacement(File.separator);
+
 				String path = "";
-				
 				if(TENT_IMAGE.getSize() == 0) {
 					filesystem = "/images/tent/default_tent.png";
 					

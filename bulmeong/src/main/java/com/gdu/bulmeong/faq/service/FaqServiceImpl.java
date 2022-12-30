@@ -6,9 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -23,11 +21,8 @@ import lombok.AllArgsConstructor;
 @Service
 public class FaqServiceImpl implements FaqService {
 	
-	@Autowired 
 	private FaqMapper faqMapper;
-	@Autowired
 	private PageUtil pageUtil;
-	@Autowired
 	private SecurityUtil securityUtil;
 	
 	@Override
@@ -44,13 +39,12 @@ public class FaqServiceImpl implements FaqService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin() - 1);
-		map.put("end", pageUtil.getEnd());
-		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		map.put("recordPerPage", recordPerPage);
 		
 		List<FaqDTO> faqList = faqMapper.selectFaqListByMap(map);
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("faqList", faqList);
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/faq/list"));
+		model.addAttribute("paging", pageUtil.getPaging("/faq/list"));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 	}
 	

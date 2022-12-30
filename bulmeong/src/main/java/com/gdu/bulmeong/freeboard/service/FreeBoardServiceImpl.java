@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -21,26 +20,17 @@ import com.gdu.bulmeong.freeboard.mapper.FreeBoardLikeMapper;
 import com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.PageUtil;
-import com.gdu.bulmeong.util.SecurityUtil;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class FreeBoardServiceImpl implements FreeBoardService {
 	
-	@Autowired
 	private FreeBoardMapper freeBoardMapper;
-	
-	@Autowired
 	private FreeBoardCmtMapper freeBoardCmtMapper;
-	
-	@Autowired
 	private FreeBoardLikeMapper freeBoardLikeMapper;
-	
-	@Autowired
 	private PageUtil pageUtil;
-	
-	@Autowired
-	private SecurityUtil securityUtil;
-	
 	
 	@Override
 	public void getFreeList(Model model) {
@@ -73,13 +63,12 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		int recordPerPage = 10;
 		pageUtil.setSearchPageUtil(page, totalRecord, recordPerPage);
 		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		map.put("recordPerPage", recordPerPage);
 		
 		// 2-3. [페이징] model에 값 넣어주기
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getSearchPaging(request.getContextPath() + "/freeboard/list"));
+		model.addAttribute("paging", pageUtil.getSearchPaging("/freeboard/list"));
 		
 		
 		// 3-1. [게시글 리스트] freeBoardDTO 받아오기 (Mapper에서)

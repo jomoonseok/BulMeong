@@ -8,7 +8,7 @@
 
 	<insert id="insertCampApi" parameterType="CampDTO">
 		INSERT INTO CAMP
-			(facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime)
+			(FACLTNM, INTRO, LINEINTRO, FEATURENM, SBRSCL, FIRSTIMAGEURL, THEMAENVRNCL, EQPMNLENDCL, TOURERACL, INDUTY, ALLAR, OPERPDCL, HVOFBGNDE, HVOFENDDLE, PRMISNDE, OPERDECL, TOILETCO, EXTSHRCO, BRAZIERCL, GLAMPINNERFCLTY, CARAVINNERFCLTY, LCTCL, ADDR1, DONM, SIGUNGUNM, ADDR2, ZIPCODE, MAPX, MAPY, HOMEPAGE, TEL, CREATEDTIME, MODIFIEDTIME)
 		VALUES
 			(#{facltNm}, #{intro}, #{lineIntro}, #{featureNm}, #{sbrsCl}, #{firstImageUrl}, #{themaEnvrnCl}, #{eqpmnLendCl}, #{tourEraCl}, #{induty}, #{allar}, #{operPdCl}, #{hvofBgnde}, #{hvofEnddle}, #{prmisnDe}, #{operDeCl}, #{toiletCo}, #{extshrCo}, #{brazierCl}, #{glampInnerFclty}, #{caravInnerFclty}, #{lctCl}, #{addr1}, #{doNm}, #{sigunguNm}, #{addr2}, #{zipcode}, #{mapX}, #{mapY}, #{homepage}, #{tel}, #{createdtime}, #{modifiedtime})
 	</insert>
@@ -16,7 +16,6 @@
 	 <delete id="deleteCampApi">
 	 	DELETE 
 	 	  FROM CAMP
-	 	 WHERE 1=1
 	 </delete>
 	 
 	 <select id="selectCampCount" resultType="int">
@@ -25,27 +24,27 @@
 	 </select>
 	 
 	 <select id="selectAllCamp" parameterType="Map" resultType="CampDTO">
-	 	SELECT A.ROW_NUM, A.CAMP_NO, A.facltNm, A.intro, A.lineIntro, A.featureNm, A.sbrsCl, A.firstImageUrl, A.themaEnvrnCl, A.eqpmnLendCl, A.tourEraCl, A.induty, A.allar, A.operPdCl, A.hvofBgnde, A.hvofEnddle, A.prmisnDe, A.operDeCl, A.toiletCo, A.extshrCo, A.brazierCl, A.glampInnerFclty, A.caravInnerFclty, A.lctCl, A.addr1, A.doNm, A.sigunguNm, A.addr2, A.zipcode, A.mapX, A.mapY, A.homepage, A.tel, A.createdtime, A.modifiedtime, A.jjim, A.sum
-	 	  FROM (SELECT ROW_NUMBER() OVER(ORDER BY CAMP_NO <!-- ORDER BY "modifiedtime" DESC -->) AS ROW_NUM, CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime, jjim, sum 
-	 	          FROM CAMP) A
-	 	 LIMIT #{begin}, #{end}
+	 	SELECT CAMP_NO, FACLTNM, INTRO, LINEINTRO, FEATURENM, SBRSCL, FIRSTIMAGEURL, THEMAENVRNCL, EQPMNLENDCL, TOURERACL, INDUTY, ALLAR, OPERPDCL, HVOFBGNDE, HVOFENDDLE, PRMISNDE, OPERDECL, TOILETCO, EXTSHRCO, BRAZIERCL, GLAMPINNERFCLTY, CARAVINNERFCLTY, LCTCL, ADDR1, DONM, SIGUNGUNM, ADDR2, ZIPCODE, MAPX, MAPY, HOMEPAGE, TEL, CREATEDTIME, MODIFIEDTIME, JJIM, SUM
+	 	  FROM CAMP
+		 ORDER BY CAMP_NO <!-- ORDER BY "modifiedtime" DESC -->
+	 	 LIMIT #{begin}, #{recordPerPage}
 	 </select>
 	 
 	 <select id="selectCampByOption" parameterType="Map" resultType="CampDTO">
-		SELECT CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime, jjim, sum 
+		SELECT CAMP_NO, FACLTNM, INTRO, LINEINTRO, FEATURENM, SBRSCL, FIRSTIMAGEURL, THEMAENVRNCL, EQPMNLENDCL, TOURERACL, INDUTY, ALLAR, OPERPDCL, HVOFBGNDE, HVOFENDDLE, PRMISNDE, OPERDECL, TOILETCO, EXTSHRCO, BRAZIERCL, GLAMPINNERFCLTY, CARAVINNERFCLTY, LCTCL, ADDR1, DONM, SIGUNGUNM, ADDR2, ZIPCODE, MAPX, MAPY, HOMEPAGE, TEL, CREATEDTIME, MODIFIEDTIME, JJIM, SUM 
 		  FROM CAMP
 		<where>
 		    <if test="query != null">
-		        facltNm LIKE CONCAT('%', #{query}, '%') 
+		        FACLTNM LIKE CONCAT('%', #{query}, '%') 
 		    </if>
 	 	    <if test="doNm != null">
-		        AND doNm LIKE CONCAT('%', #{doNm}, '%')
+		        AND DONM = #{doNm}
 		    </if>
 		    <if test="induty != null">
-		        AND induty LIKE CONCAT('%', #{induty}, '%')
+		        AND INDUTY = #{induty}
 		    </if>
 		    <if test="themaEnvrnCl != null">
-		        AND themaEnvrnCl LIKE CONCAT('%', #{themaEnvrnCl}, '%')
+		        AND THEMAENVRNCL = #{themaEnvrnCl}
 		    </if>
 	    </where>
 	 </select>
@@ -55,31 +54,31 @@
 		  FROM CAMP
 		<where>
 		    <if test="query != null">
-		        facltNm LIKE CONCAT('%', #{query}, '%') 
+		        FACLTNM LIKE CONCAT('%', #{query}, '%') 
 		    </if>
 	 	    <if test="doNm != null">
-		        AND doNm LIKE CONCAT('%', #{doNm}, '%')
+		        AND DONM = #{doNm}
 		    </if>
 		    <if test="induty != null">
-		        AND induty LIKE CONCAT('%', #{induty}, '%')
+		        AND INDUTY = #{induty}
 		    </if>
 		    <if test="themaEnvrnCl != null">
-		        AND themaEnvrnCl LIKE CONCAT('%', #{themaEnvrnCl}, '%')
+		        AND THEMAENVRNCL = #{themaEnvrnCl}
 		    </if>
 	    </where>
 	 </select>
 	 
 	 <select id="selectCampByNo" parameterType="int" resultType="CampDTO">  
-	 	SELECT CAMP_NO, facltNm, intro, lineIntro, featureNm, sbrsCl, firstImageUrl, themaEnvrnCl, eqpmnLendCl, tourEraCl, induty, allar, operPdCl, hvofBgnde, hvofEnddle, prmisnDe, operDeCl, toiletCo, extshrCo, brazierCl, glampInnerFclty, caravInnerFclty, lctCl, addr1, doNm, sigunguNm, addr2, zipcode, mapX, mapY, homepage, tel, createdtime, modifiedtime, jjim, sum 
+	 	SELECT CAMP_NO, FACLTNM, INTRO, LINEINTRO, FEATURENM, SBRSCL, FIRSTIMAGEURL, THEMAENVRNCL, EQPMNLENDCL, TOURERACL, INDUTY, ALLAR, OPERPDCL, HVOFBGNDE, HVOFENDDLE, PRMISNDE, OPERDECL, TOILETCO, EXTSHRCO, BRAZIERCL, GLAMPINNERFCLTY, CARAVINNERFCLTY, LCTCL, ADDR1, DONM, SIGUNGUNM, ADDR2, ZIPCODE, MAPX, MAPY, HOMEPAGE, TEL, CREATEDTIME, MODIFIEDTIME, JJIM, SUM 
 	 	  FROM CAMP
 	 	 WHERE CAMP_NO = #{campNo}
 	 </select>
 	 
 	 <select id="selectTentByCampNo" parameterType="int" resultType="TentDTO">
-	 	SELECT TENT_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_SUM, TENT_STATE, TENT_IMAGE, jjim
+	 	SELECT TENT_NO, TENT_CATEGORY, TENT_NAME, TENT_MAX_COUNT, TENT_SUM, TENT_STATE, TENT_IMAGE, JJIM
   		  FROM CAMP C INNER JOIN CAMP_TENT CT
     		ON C.CAMP_NO = CT.CAMP_NO
- 		 WHERE C.CAMP_NO = #{campNo};
+ 		 WHERE C.CAMP_NO = #{campNo}
 	 </select>
 
 	 <select id="selectAllCampByJjim" resultType="CampDTO"> 

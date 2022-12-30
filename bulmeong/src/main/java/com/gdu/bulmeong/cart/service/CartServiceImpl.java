@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.gdu.bulmeong.camp.mapper.CampMapper;
 import com.gdu.bulmeong.cart.mapper.CartMapper;
 
 @Service
@@ -17,9 +16,6 @@ public class CartServiceImpl implements CartService {
 	
 	@Autowired 
 	private CartMapper cartMapper;
-	
-	@Autowired
-	private CampMapper campMapper;
 	 
 	@Override
 	public Map<String, Object> getJjimCheck(HttpServletRequest request) {

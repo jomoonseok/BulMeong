@@ -8,10 +8,9 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.gdu.bulmeong.qna.domain.QnaDTO;
@@ -26,13 +25,8 @@ import lombok.AllArgsConstructor;
 @Service
 public class QnaServiceImpl implements QnaService {
 	
-	@Autowired 
 	private QnaMapper qnaMapper;
-	
-	@Autowired
 	private PageUtil pageUtil;
-	
-	@Autowired
 	public SecurityUtil securityUtil;
 	
 	// 리스트
@@ -50,8 +44,7 @@ public class QnaServiceImpl implements QnaService {
 		
 		// DB로 보낼 Map
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("begin", pageUtil.getBegin() - 1);
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		// DB에서 목록 가져오기
@@ -159,10 +152,6 @@ public class QnaServiceImpl implements QnaService {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		
 		
 	}
 	
