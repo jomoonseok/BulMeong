@@ -70,6 +70,7 @@
 	padding: 20px;
 	background: rgb(180, 185, 191, 0.2);
 	border-radius: 15px;
+	word-wrap:break-word;
 }
 
 .freeTitle {
@@ -190,6 +191,7 @@
 	display: block;
 	border-radius: 10px;
 	width: auto;
+	word-wrap:break-word;
 }
 
 
@@ -308,11 +310,6 @@
 	margin: 1% 0;
 }
 
-/* 수정 인풋 */
-.frm_cmt_modify {
-	
-	
-}
 
 /* 8. 하단 버튼 */
 
