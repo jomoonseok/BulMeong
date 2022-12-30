@@ -10,9 +10,13 @@ import com.gdu.bulmeong.freeboard.domain.FreeBoardDTO;
 public interface FreeBoardService {
 
 	// 1. CRUD 기능
-	public void getFreeList(Model model);
 	
-//	public int getCmtCountByList(int freeNo);
+	// 전체 목록
+	public void getFreeList(HttpServletRequest request, Model model);
+	
+	// 검색 목록
+	public void getSearchFreeList(HttpServletRequest request, Model model);
+
 	
 	public int increseFreeBoardHit(int freeNo);
 	public void addFreeBoard(HttpServletRequest request, HttpServletResponse response);

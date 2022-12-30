@@ -26,12 +26,6 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	@Autowired
 	private FreeBoardCmtMapper freeBoardCmtMapper;
 	
-	@Autowired
-	private PageUtil pageUtil;
-	
-	@Autowired
-	private SecurityUtil securityUtil;
-	
 
 	@Override
 	public Map<String, Object> getCmtCount(int freeNo) {
