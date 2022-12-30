@@ -1,61 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
-<style>
-	
+<link th:href="@{/css/index.css}" rel="stylesheet" />
 
-	body {
-   		width: 70%;
-   		margin: 0 auto;
-   	}
-   	
-   	#container {
-		display: grid;
-	    grid-template-columns: 60% 30%;
-	    grid-template-rows: 50% 50% 50%;
-	    margin: 30px;
-   	}
-   	
-   	.jjimListArea {
-   		text-align: center;
-   		width: 98%;
-   	}
-   	
-   	#weatherArea {
-   		text-align: center;
-   		grid-column-start: 2;
-	    grid-column-end: 4;
-   	}
-   	
-   	.location > div{
-   		padding-bottom: 10px;
-   	}
-   	
-   	.xyWeather {
-   		grid-column-start: 2;
-	    grid-column-end: 4;
-   	}
-   	
-   	.swiper-overflow-container {
-   		grid-column-start: 1;
-	    grid-column-end: 4;
-   	}
-   	
-   	.freelike_table {
-   		width: 100%;
-   		text-align: center;
-   	}
-   	
-   	.today, .tomorrow, .afterTomorrow {
-   		width: 33%;
-   	}
-   	
-   	.today > div, .tomorrow > div, .afterTomorrow > div {
-   		margin: 0 auto;
-   	}
-   	
-   	
-</style>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
@@ -215,39 +162,36 @@
 	</script>
 	
 	<div class="freeBoardList">
-		자유게시판 인기글 TOP 10
-		<table class="freelike_table">
-			<thead>
-				<tr>
-					<td>순위</td>
-					<td>작성자</td>
-					<td>제목</td>
-					<td>조회수</td>
-					<td>좋아요</td>
-				</tr>
-			</thead>
-			<tbody id="tbody_freelike">
-			</tbody>
-		</table>
+		<a class="freebrd_title" th:href="@{/freeboard/list}">자유게시판 인기글 TOP 10</a>
+
+			<div id="tbody_freelike">
+			</div>
+	
 	</div>
 	
 	<script>
 		$.ajax({
 			type: 'get',
 			url: '/index/freeBrdList',
+			
+			
+			
+			
 			success: function(resData) {
 				console.log(resData);
 				$.each(resData.freeBrdLike, function(i, free) {
-					var freeDiv = '<tr>';
-					freeDiv += '<td>' + ++i + '</td>';
-					freeDiv += '<td>' + free.nickname + '</td>';
-					freeDiv += '<td><a href="/freeboard/detail?freeNo=' + free.freeNo + '">' + free.freeTitle + '</a></td>';
-					freeDiv += '<td>' + free.freeHit + '</td>';
-					freeDiv += '<td>' + free.likeCount + '</td>';
-					freeDiv += '</tr>';
+					var freeDiv = '<span class="freebrd_box">';
+					freeDiv += '<div class="freebrd_one_box">'
+					freeDiv += '<div><a href="/freeboard/detail?freeNo=' + free.freeNo + '">' + free.freeTitle + '</a></div>';
+					freeDiv += '<hr>';			
+					freeDiv += '<div><a href="/freeboard/detail?freeNo=' + free.freeNo + '">' + free.freeContent + '</a></div>';
+					freeDiv += '<hr>';			
+					freeDiv += '<span class="free_nickname">' + free.nickname + '</span>';
+					freeDiv += '<span class="free_createDate">' + free.freeCreateDate + '</span>';
+					freeDiv += '<div class="free_like_style">' + free.likeCount + '</div>';
+					freeDiv += '</div>';
+					freeDiv += '</span>';
 					$('#tbody_freelike').append(freeDiv);
-					
-					
 				});
 				
 			}

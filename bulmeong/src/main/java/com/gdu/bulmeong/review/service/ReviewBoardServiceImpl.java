@@ -40,7 +40,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		
 
 		int recordPerPage = 10;
-		pageUtil.setSearchPageUtil(page, totalRecord, recordPerPage);
+		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin());
 		map.put("recordPerPage", recordPerPage);
@@ -48,7 +48,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getSearchPaging("/reviewBoard/list"));
+		model.addAttribute("paging", pageUtil.getPaging("/reviewBoard/list"));
 		
 		List<ReviewBoardDTO> reivewBoard = reviewBoardMapper.reviewList(map);
 		

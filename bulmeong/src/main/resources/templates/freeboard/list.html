@@ -15,15 +15,6 @@
 		
 		});
 
-			function goPage(page){ // page는 받는 이름...
-				
-				var dateColumn = $("#dateColumn option:selected").val();
-				var column = $("#column option:selected").val();
-				var query = $("#query").val();
-				location.href="/freeboard/list?page=" + page + "&dateColumn=" + dateColumn + "&column=" + column + "&query=" + query;
-	
-			}
-		
 	</script>
 
 	<h3>자유게시판</h3>
@@ -47,14 +38,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="free , i : ${freeBoardList}">
+				<tr th:each="free:${freeBoardList}">
 					<td th:text="${free.freeNo}"></td>
-					<td>
-						<a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="|${free.freeTitle} (${freeCmt[i.index]})|"></a>
-					</td>
-					<td th:text="(${freelike[i.index]})"></td>
-					<td th:text="${free.nickname}">
-					</td>
+					<td><a th:href="@{/freeboard/increse/hit(freeNo=${free.freeNo})}" th:text="|${free.freeTitle} (${freeCmt[freeStat.index]})|"></a></td>
+					<td th:text="(${freeLike[freeStat.index]})"></td>
+					<td th:text="${free.nickname}"></td>
 					<td th:text="${free.freeCreateDate}"></td>
 					<td th:text="${free.freeHit}"></td>
 				</tr>
@@ -72,22 +60,23 @@
 	
 	<div class="out_div_search">
 		<div class="in_div_search">
-		
-			<select id="dateColumn" name="dateColumn" class="form-select" aria-label="Default select example">
-				<option value="">전체기간</option>
-				<option value="DAY" th:selected="${dateColumn} == DAY">1일</option>
-				<option value="WEEK" th:selected="${dateColumn} == WEEK">1주일</option>
-				<option value="MONTH" th:selected="${dateColumn} == MONTH">1개월</option>
-				<option value="YEAR" th:selected="${dateColumn} == YEAR">1년</option>
-			</select>
-			<select id="column" name="column" class="form-select" aria-label="Default select example">
-				<option value="FREE_TITLE" th:selected="${column} == FREE_TITLE">제목</option>
-				<option value="FREE_CONTENT"  th:selected="${column} == FREE_CONTENT">내용</option>
-				<option value="FREE_CONTENT_FREE_CONTENT" th:selected="${column} == FREE_CONTENT_FREE_CONTENT">제목 + 내용</option>
-				<option value="NICKNAME" th:selected="${column} == NICKNAME">게시글 작성자</option>
-			</select>
-			<input type="text" id="query" name="query" th:value=${query}>
-			<button class="search" th:onclick="goPage(1)">검색</button>
+			<form th:action="@{/freeboard/search/list}">
+				<select id="dateColumn" name="dateColumn" class="form-select" aria-label="Default select example">
+					<option value="">전체기간</option>
+					<option value="DAY" th:selected="${dateColumn} == DAY">1일</option>
+					<option value="WEEK" th:selected="${dateColumn} == WEEK">1주일</option>
+					<option value="MONTH" th:selected="${dateColumn} == MONTH">1개월</option>
+					<option value="YEAR" th:selected="${dateColumn} == YEAR">1년</option>
+				</select>
+				<select id="column" name="column" class="form-select" aria-label="Default select example">
+					<option value="FREE_TITLE" th:selected="${column} == FREE_TITLE">제목</option>
+					<option value="FREE_CONTENT"  th:selected="${column} == FREE_CONTENT">내용</option>
+					<option value="FREE_TITLE_FREE_CONTENT" th:selected="${column} == FREE_TITLE_FREE_CONTENT">제목 + 내용</option>
+					<option value="NICKNAME" th:selected="${column} == NICKNAME">게시글 작성자</option>
+				</select>
+				<input type="text" id="query" name="query" th:value=${query}>
+				<button class="search">검색</button>
+			</form>
 		</div>
 	</div>
 	
