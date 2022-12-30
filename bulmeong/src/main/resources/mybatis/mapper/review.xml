@@ -14,9 +14,9 @@
 
 	<!-- 2. 게시글 리스트 -->
 	<select id="reviewList" parameterType="Map" resultType="ReviewBoardDTO">
-		SELECT A.REVIEW_NO, A.NICKNAME, A.REVIEW_TITLE, A.REVIEW_CREATE_DATE, A.REVIEW_HIT, A.REVIEW_STAR
-		 FROM REVIEW_BRD A
-		 ORDER BY A.REVIEW_NO DESC
+		SELECT REVIEW_NO, NICKNAME, REVIEW_TITLE, REVIEW_CREATE_DATE, REVIEW_HIT, REVIEW_STAR
+		  FROM REVIEW_BRD 
+		 ORDER BY REVIEW_NO DESC
 		 LIMIT #{begin}, #{recordPerPage}
     </select>
 
@@ -24,7 +24,7 @@
 	<update id="updateHit" parameterType="int">
 		UPDATE REVIEW_BRD
 		   SET REVIEW_HIT = REVIEW_HIT + 1
-		 WHERE REVIEW_NO = #{freeNo}
+		 WHERE REVIEW_NO = #{reviewNo}
 	</update>
 	
 	<!-- 4. 게시글 추가 -->
@@ -40,16 +40,6 @@
 		  FROM CAMP
 	</select>
 	
-	
-	
-	
-	<!-- 리뷰 작성 -->
-	<!-- <insert id="insertReview" parameterType="ReviewBoardDTO"  useGeneratedKeys="true" keyProperty="freeNo">
-      INSERT INTO REVIEW_BRD
-         (CAMP_NO, NICKNAME, REVIEW_CONTENT, REVIEW_CREATE_DATE, REVIEW_MODIFIY_DATE, REVIEW_IP, REVIEW_HIT, REVIEW_STAR)
-      VALUES
-         (#{campNo}, #{nickname}, #{reviewContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), #{reviewIp}, #{reviewHit}, #{reviewStar})
-	</insert> -->
 	
 	
 </mapper>

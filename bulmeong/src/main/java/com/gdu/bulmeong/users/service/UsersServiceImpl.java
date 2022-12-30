@@ -714,8 +714,12 @@ public class UsersServiceImpl implements UsersService {
 		
 		try {
 			
+			String requestURL = request.getRequestURL().toString();
+			String requestURI = request.getRequestURI();
+			String host = requestURL.substring(0, requestURL.indexOf(requestURI));  // http://localhost:9090, http://goodeeit.shop
+			
 			String clientId = "ymBUOS66J0o3pUpDZezX";
-			String redirectURI = URLEncoder.encode("http://localhost:9090/users/naver/login", "UTF-8");  // 네이버 로그인 Callback URL에 작성한 주소 입력 
+			String redirectURI = URLEncoder.encode(host + "/users/naver/login", "UTF-8");  // 네이버 로그인 Callback URL에 작성한 주소 입력 
 			SecureRandom random = new SecureRandom();
 			String state = new BigInteger(130, random).toString();
 			
@@ -746,7 +750,12 @@ public class UsersServiceImpl implements UsersService {
 		
 		String redirectURI = null;
 		try {
-			redirectURI = URLEncoder.encode("http://localhost:9090/users/naver/login", "UTF-8");
+			
+			String requestURL = request.getRequestURL().toString();
+			String requestURI = request.getRequestURI();
+			String host = requestURL.substring(0, requestURL.indexOf(requestURI));  // http://localhost:9090, http://goodeeit.shop
+			
+			redirectURI = URLEncoder.encode(host, "UTF-8");
 		} catch(UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -758,7 +767,7 @@ public class UsersServiceImpl implements UsersService {
 			apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
 			apiURL += "client_id=" + clientId;
 			apiURL += "&client_secret=" + clientSecret;
-			//apiURL += "&redirect_uri=" + redirectURI;
+			apiURL += "&redirect_uri=" + redirectURI;
 			apiURL += "&code=" + code;
 			apiURL += "&state=" + state;
 			

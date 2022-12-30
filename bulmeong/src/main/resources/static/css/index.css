@@ -1,0 +1,64 @@
+@charset "EUC-KR";
+
+body {
+	width: 70%;
+	margin: 0 auto;
+}
+  	
+#container {
+	display: grid;
+   grid-template-columns: 60% 30%;
+   grid-template-rows: 50% 50% 50%;
+   margin: 30px;
+}
+ 	
+.jjimListArea {
+	text-align: center;
+	width: 98%;
+}
+ 	
+#weatherArea {
+ 	text-align: center;
+	grid-column-start: 2;
+	grid-column-end: 4;
+}
+ 	
+.location > div{
+	padding-bottom: 10px;
+}
+ 	
+.xyWeather {
+	grid-column-start: 2;
+	grid-column-end: 4;
+}
+ 	
+.swiper-overflow-container {
+ 	grid-column-start: 1;
+	grid-column-end: 4;
+}
+ 	
+ 	
+.today, .tomorrow, .afterTomorrow {
+	width: 33%;
+}
+ 	
+.today > div, .tomorrow > div, .afterTomorrow > div {
+	margin: 0 auto;
+}
+
+
+
+/* 자유게시판 표 */
+.freebrd_title {
+	font-size: 13px;
+	color: gray;
+	border-bottom: 1px solid gray;
+	width: auto;
+}
+.freebrd_box {
+	display: inline;
+}
+
+.freebrd_one_box {
+	border: 1px solid;
+}

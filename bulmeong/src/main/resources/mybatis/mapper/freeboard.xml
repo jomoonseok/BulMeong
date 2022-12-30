@@ -6,30 +6,57 @@
 
 <mapper namespace="com.gdu.bulmeong.freeboard.mapper.FreeBoardMapper">
 
+	<!-- 그냥 목록 -->
 	<!-- 1. 게시글 카운트 -->
 	<select id="selectFreeListCount" resultType="int">
 		SELECT COUNT(*)
 		  FROM FREE_BRD
 	</select>
+	
+	<select id="selectFreeListByMap" parameterType="Map" resultType="FreeBoardDTO">
+		SELECT FREE_NO, ID, NICKNAME, FREE_TITLE, FREE_CREATE_DATE, FREE_HIT, PROFILE_IMAGE
+		 FROM FREE_BRD
+		 ORDER BY FREE_NO DESC
+		 LIMIT #{begin}, #{recordPerPage}
+	</select>
+	
+
+
+	<!-- # 게시글 검색 기능 -->
+	<!-- 1. 검색 카운트 -->
+	<select id="selectSearchFreeboardsCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_BRD
+		<where>
+			<if test="dateColumn != ''">
+				FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL - 1 ${dateColumn}) AND NOW()
+			</if>
+			<if test="column=='FREE_TITLE' or column=='FREE_CONTENT' or column=='NICKNAME'">
+				AND ${column} LIKE CONCAT('%', #{query}, '%')
+			</if>
+			<if test="column=='FREE_TITLE_FREE_CONTENT'">
+				AND (FREE_TITLE LIKE CONCAT('%', #{query}, '%') OR FREE_CONTENT LIKE CONCAT('%', #{query}, '%'))
+			</if>
+		</where>
+	</select>
 
 	<!-- 2. 게시글 리스트 및 검색 -->
-	<select id="selectFreeListByMap" parameterType="Map" resultType="FreeBoardDTO">
-		SELECT A.FREE_NO, A.ID, A.NICKNAME, A.FREE_TITLE, A.FREE_CREATE_DATE, A.FREE_HIT, A.PROFILE_IMAGE
-		 FROM FREE_BRD A
+	<select id="selectSearchFreeListByMap" parameterType="Map" resultType="FreeBoardDTO">
+		SELECT FREE_NO, ID, NICKNAME, FREE_TITLE, FREE_CREATE_DATE, FREE_HIT, PROFILE_IMAGE
+		 FROM FREE_BRD
 		<where>
-			FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL - 1 ${dateColumn}) AND NOW() 
-			<choose>
-				<when test="column=='FREE_TITLE' or column=='FREE_CONTENT' or column=='NICKNAME'">
-					AND ${column} LIKE CONCAT('%' ,#{query}, '%')
-				</when>
-				<when test="column=='FREE_CONTENT_FREE_CONTENT'">
-					AND FREE_TITLE LIKE CONCAT('%', #{query}, '%')
-	                 OR FREE_CONTENT LIKE CONCAT('%', #{query}, '%')
-				</when>
-			</choose>
+			<if test="dateColumn != ''">
+				FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL - 1 ${dateColumn}) AND NOW()
+			</if>
+			<if test="column=='FREE_TITLE' or column=='FREE_CONTENT' or column=='NICKNAME'">
+				AND ${column} LIKE CONCAT('%', #{query}, '%')
+			</if>
+			<if test="column=='FREE_TITLE_FREE_CONTENT'">
+				AND (FREE_TITLE LIKE CONCAT('%', #{query}, '%') OR FREE_CONTENT LIKE CONCAT('%', #{query}, '%'))
+			</if>
 		</where>
-			 ORDER BY A.FREE_NO DESC
-			 LIMIT #{begin}, #{recordPerPage}
+		 ORDER BY FREE_NO DESC
+		 LIMIT #{begin}, #{recordPerPage}
 	</select>
 	
 	<!-- 3. 조회수 -->
@@ -79,48 +106,8 @@
 	</delete>
 	
 	
-	<!-- # 게시글 검색 기능 -->
-	<!-- 1. 검색 카운트 -->
-	<select id="selectFindFreeboardsCount" parameterType="Map" resultType="int">
-		SELECT COUNT(*)
-		  FROM FREE_BRD
- 		 WHERE 1 = 1
-		<choose>
-			<when test="dateColumn=='ADAY'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 DAY) AND NOW()) 
-			</when>
-			<when test="dateColumn=='AWEEK'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW())
-			</when>
-			<when test="dateColumn=='AMONTH'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW())
-			</when>
-			<when test="dateColumn=='AYEAR'">
-				AND (FREE_CREATE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -4 YEAR) AND NOW())
-			</when>
-		</choose>
-		<choose>
-			<when test="column=='FREE_TITLE'">
-				AND FREE_TITLE LIKE CONCAT('%',#{query},'%')
-			</when>
-			<when test="column=='FREE_CONTENT'">
-				AND FREE_CONTENT LIKE CONCAT('%',#{query},'%')
-			</when>
-			<when test="column=='FREE_CONTENT_FREE_CONTENT'">
-				AND FREE_TITLE LIKE CONCAT('%', #{query}, '%')
-                 OR FREE_CONTENT LIKE CONCAT('%', #{query}, '%')
-			</when>
-			<when test="column=='NICKNAME'">
-				AND NICKNAME LIKE CONCAT('%',#{query},'%')
-			</when>
-		</choose>
-		
-	</select>
-	
 
-	
-	
 
-	
+
 	
 </mapper>
