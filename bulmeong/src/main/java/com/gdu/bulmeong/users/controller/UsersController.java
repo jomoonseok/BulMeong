@@ -24,10 +24,10 @@ public class UsersController {
 	@Autowired 
 	private UsersService usersService;
 	
-	/*@GetMapping("/")
+	@GetMapping("/")
 	public String index() {
 		return "index";
-	}*/
+	}
 	
 	@GetMapping("/users/agree")
 	public String agree() {
