@@ -217,7 +217,7 @@
 	
 	<!--  -->
 	<select id="selectJjimList" parameterType="String" resultType="CampDTO">
-		SELECT CAMP_NO, facltNm, jjim
+		SELECT CAMP_NO, facltNm, jjim, firstImageUrl, addr1, tel
 		  FROM CAMP
 		 WHERE CAMP_NO IN (SELECT T.CAMP_NO
 						     FROM USERS U INNER JOIN CAMP_CART T		    
