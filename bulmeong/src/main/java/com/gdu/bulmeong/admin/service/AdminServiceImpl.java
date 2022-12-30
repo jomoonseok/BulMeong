@@ -138,7 +138,7 @@ public class AdminServiceImpl implements AdminService {
 					filesystem = "/images/tent/default_tent.png";
 					
 				} else {
-					path = "C:" + sep + "bulmeongImage" + sep + "tent";
+					path = myFileUtil.getTentPath();
 					File dir = new File(path);
 					if(dir.exists() == false) {
 						dir.mkdirs();
@@ -220,7 +220,7 @@ public class AdminServiceImpl implements AdminService {
 					filesystem = "/images/tent/default_tent.png";
 					
 				} else {
-					path = "C:" + sep + "bulmeongImage" + sep + "tent";
+					path = myFileUtil.getTentPath();
 					File dir = new File(path);
 					if(dir.exists() == false) {
 						dir.mkdirs();

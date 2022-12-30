@@ -156,7 +156,8 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/jjim")
-	public String requiredLogin_jjim() {
+	public String requiredLogin_jjim(HttpServletRequest request, Model model) {
+		usersService.getJjimList(request, model);
 		return "users/jjim";
 	}
 	

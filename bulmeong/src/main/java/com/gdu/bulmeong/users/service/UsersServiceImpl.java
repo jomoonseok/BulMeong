@@ -1217,4 +1217,13 @@ public class UsersServiceImpl implements UsersService {
 		model.addAttribute("loginUser", loginUser);
 	}
 	
+	@Override
+	public void getJjimList(HttpServletRequest request, Model model) {
+		UsersDTO loginUser = (UsersDTO)request.getSession().getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		model.addAttribute("jjim", usersMapper.selectJjimList(id));
+		model.addAttribute("loginUser", loginUser);
+	}
+	
 }

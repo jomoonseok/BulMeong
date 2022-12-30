@@ -64,6 +64,7 @@ public class MyFileUtil {
 		return "storage" + sep + "bulmeong" + sep + "profileImagePreview";
 	}
 	
+	// 프로필 이미지 경로
 	public String getProfilePath() {
 		return "storage" + sep + "bulmeong" + sep + "profileImage";
 	}
@@ -72,6 +73,11 @@ public class MyFileUtil {
 	public String getSummernotePath() {
 		return "storage" + sep + "bulmeong" + sep + "noticeImage";
 	}
+	
+	// 캠프 이미지 경로
+		public String getTentPath() {
+			return "storage" + sep + "bulmeong" + sep + "tentImage";
+		}
 	
 	// 1~9 => 01~09
 	public String makeZero(int n) {
