@@ -54,7 +54,7 @@ public class NoticeServiceImpl implements NoticeService {
 
 		// 조회조건(Map)
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("begin", pageUtil.getBegin());
+		map.put("begin", pageUtil.getBegin()-1);
 		map.put("recordPerPage",recordPerPage);
 
 		// 뷰로 전달할 데이터
