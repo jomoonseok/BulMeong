@@ -17,6 +17,12 @@
 		  		  FROM NOTICE) A
 		 WHERE A.RN BETWEEN #{begin} AND #{end}
 	</select>
+	<select id="selectNoticeListByMap" parameterType="Map" resultType="NoticeDTO">
+		SELECT NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_HIT, NOTICE_CREATE_DATE, NOTICE_MODIFY_DATE, ID
+		  FROM NOTICE
+		 ORDER BY NOTICE_NO DESC
+		 LIMIT #{begin}, #{recordPerPage}
+	</select>
 	
 	<insert id="insertSummernoteImage" parameterType="SummernoteImageDTO">
 		INSERT INTO SUMMERNOTE_IMAGE
