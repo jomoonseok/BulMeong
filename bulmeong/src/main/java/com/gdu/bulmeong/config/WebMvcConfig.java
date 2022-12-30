@@ -13,54 +13,54 @@ import com.gdu.bulmeong.util.MyFileUtil;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-	
-	@Autowired
-	private KeepLoginInterceptor keepLoginInterceptor;
-	
-	@Autowired
-	private SleepUserCheckingInterceptor sleepUserCheckingInterceptor;
-	
-	@Autowired
-	private TestInterceptor testInterceptor;
-	
-	@Autowired
-	private MyFileUtil myFileUtil;
+   
+   @Autowired
+   private KeepLoginInterceptor keepLoginInterceptor;
+   
+   @Autowired
+   private SleepUserCheckingInterceptor sleepUserCheckingInterceptor;
+   
+   @Autowired
+   private TestInterceptor testInterceptor;
+   
+   @Autowired
+   private MyFileUtil myFileUtil;
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+   @Override
+   public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-//		registry.addResourceHandler("/load/bulmeongImage/**")
-//			.addResourceLocations("file:///C:/bulmeongImage/noticeImage/");
-		registry.addResourceHandler("/load/noticeImage/**")
-			.addResourceLocations("file:" + myFileUtil.getSummernotePath() + "/");
-		registry.addResourceHandler("/load/tent/**")
-			.addResourceLocations("file:///C:/bulmeongImage/tent/");
-		registry.addResourceHandler("/load/profileImagePreview/**")
-		.addResourceLocations("file:" + myFileUtil.getPreviewPath() + "/");
-		registry.addResourceHandler("/load/profileImage/**")
-		.addResourceLocations("file:" + myFileUtil.getProfilePath() + "/");
+//      registry.addResourceHandler("/load/bulmeongImage/**")
+//         .addResourceLocations("file:///C:/bulmeongImage/noticeImage/");
+      registry.addResourceHandler("/load/noticeImage/**")
+         .addResourceLocations("file:" + myFileUtil.getSummernotePath() + "/");
+      registry.addResourceHandler("/load/tent/**")
+         .addResourceLocations("file:" + myFileUtil.getTentPath() + "/");
+      registry.addResourceHandler("/load/profileImagePreview/**")
+      .addResourceLocations("file:" + myFileUtil.getPreviewPath() + "/");
+      registry.addResourceHandler("/load/profileImage/**")
+      .addResourceLocations("file:" + myFileUtil.getProfilePath() + "/");
 
-	}
-	/*
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(testInterceptor)
-		.addPathPatterns("/**");
-	}
-	*/
-	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(keepLoginInterceptor)
-		.addPathPatterns("/**")
-		.excludePathPatterns("/users/login/form")
-		.excludePathPatterns("/users/login");
-		
-		registry.addInterceptor(sleepUserCheckingInterceptor)
-		.addPathPatterns("/users/login");
-		
-	}
-	
-	
-	
+   }
+   /*
+   @Override
+   public void addInterceptors(InterceptorRegistry registry) {
+      registry.addInterceptor(testInterceptor)
+      .addPathPatterns("/**");
+   }
+   */
+   
+   @Override
+   public void addInterceptors(InterceptorRegistry registry) {
+      registry.addInterceptor(keepLoginInterceptor)
+      .addPathPatterns("/**")
+      .excludePathPatterns("/users/login/form")
+      .excludePathPatterns("/users/login");
+      
+      registry.addInterceptor(sleepUserCheckingInterceptor)
+      .addPathPatterns("/users/login");
+      
+   }
+   
+   
+   
 }
