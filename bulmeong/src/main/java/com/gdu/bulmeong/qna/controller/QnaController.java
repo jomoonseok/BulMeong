@@ -18,12 +18,6 @@ public class QnaController {
 
 	@Autowired 
 	private QnaService qnaService;
-	 
-	
-//	@GetMapping("/")
-//	public String index() {
-//		return "index";
-//	}
 	
 	@GetMapping("/qna/list")
 	public String requiredLogin_qnaList(HttpServletRequest request, Model model) {
