@@ -41,47 +41,46 @@ public class MyFileUtil {
    }
 
    // 오늘 경로
-   public String getTodayPath() {
-      Calendar calendar = Calendar.getInstance();
-      int year = calendar.get(Calendar.YEAR);
-      int month = calendar.get(Calendar.MONTH) + 1;
-      int day = calendar.get(Calendar.DAY_OF_MONTH);
-      return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);  // 루트/storage
-   }
-   
-   // 어제 경로
-   public String getYesterdayPath() {
-      Calendar calendar = Calendar.getInstance();
-      calendar.add(Calendar.DATE, -1);  // 1일 전
-      int year = calendar.get(Calendar.YEAR);
-      int month = calendar.get(Calendar.MONTH) + 1;
-      int day = calendar.get(Calendar.DAY_OF_MONTH);
-      return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);  // 루트/storage
-   }
-   
-   // 임시 경로
-   public String getPreviewPath() {
-      return "storage" + sep + "bulmeong" + sep + "profileImagePreview";
-   }
-   
-   // 프로필 이미지 경로
-   public String getProfilePath() {
-      return "storage" + sep + "bulmeong" + sep + "profileImage";
-   }
-   
-   // 써머노트 이미지 경로
-   public String getSummernotePath() {
-      return "storage" + sep + "bulmeong" + sep + "noticeImage";
-   }
-   
-   // 캠프 이미지 경로
-      public String getTentPath() {
-         return "storage" + sep + "bulmeong" + sep + "tentImage";
-      }
-   
-   // 1~9 => 01~09
-   public String makeZero(int n) {
-      return (n < 10) ? "0" + n : "" + n;
-   }
-   
+	public String getTodayPath() {
+		Calendar calendar = Calendar.getInstance();
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);  // 루트/storage
+	}
+	
+	// 어제 경로
+	public String getYesterdayPath() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, -1);  // 1일 전
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);  // 루트/storage
+	}
+	
+	// 임시 경로
+	public String getPreviewPath() {
+		return "storage" + sep + "bulmeong" + sep + "profileImagePreview";
+	}
+	
+	// 프로필 이미지 경로
+	public String getProfilePath() {
+		return "storage" + sep + "bulmeong" + sep + "profileImage";
+	}
+	
+	// 써머노트 이미지 경로
+	public String getSummernotePath() {
+		return "storage" + sep + "bulmeong" + sep + "noticeImage";
+	}
+	
+	// 캠프 이미지 경로
+		public String getTentPath() {
+			return "storage" + sep + "bulmeong" + sep + "tentImage";
+		}
+	
+	// 1~9 => 01~09
+	public String makeZero(int n) {
+		return (n < 10) ? "0" + n : "" + n;
+	}
 }
