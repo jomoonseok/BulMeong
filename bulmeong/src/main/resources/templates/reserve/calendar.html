@@ -8,6 +8,11 @@
     <script th:src='@{fakeLoader.js-master/dist/fakeLoader.min.js}'></script>
     
    <style>
+    	body {
+    		width: 70%;
+    		margin: 0 auto;
+    	}
+    	
     	
     	#fc-dom-1 {
     		font-size: 23px;
@@ -55,6 +60,10 @@
     		background-color: transparent;
     	}
     	
+    	.DATE {
+    		margin-top: 5px;
+    	}
+    	
     	
     </style>
     
@@ -95,7 +104,6 @@
 		        locale: 'ko',  // 언어
 		        timeZone: 'Asia/Seoul',  // 서울시간기준
 		        firstDay: 1,  // 월화수목금토일순으로
-		          
 		        titleFormat: function (date) {  // 월화수목금토일순으로
 		            year = date.date.year;
 		            month = date.date.month + 1;
@@ -354,10 +362,10 @@
 			<div class="left_side"><hr>
 				<div style="text-align: center">여행정보 입력</div><hr>
 				<span style="color: red; ">* 달력에 마우스를 드래그하여 숙박일을 선택하고 인원수를 입력해주세요.</span><br>
-				입실일 <input type="text"  readonly="readonly" id="reserveBeginDate" name="reserveBeginDate" class="DATE" style="width:100px;">
-				퇴실일 <input type="text" readonly="readonly" id="reserveEndDate" name="reserveEndDate" class="DATE" style="width:100px;">
-				일정 <input type="text" readonly="readonly" id="reserveDate" name="reserveDate" class="DATE" style="width:100px;">
-				인원수 <input type="text" id="reserveCount" name="reserveCount"><br><hr>
+				숙박 시작일 <input type="text"  readonly="readonly" id="reserveBeginDate" name="reserveBeginDate" class="DATE" style="width:100px; border: none; background-color: rgb(233, 233, 233); border-radius: 5px;">
+				퇴실일 <input type="text" readonly="readonly" id="reserveEndDate" name="reserveEndDate" class="DATE" style="width:100px; border: none; background-color: rgb(233, 233, 233); border-radius: 5px;">
+				일정 <input type="text" readonly="readonly" id="reserveDate" name="reserveDate" class="DATE" style="width:100px; border: none; background-color: rgb(233, 233, 233); border-radius: 5px;"><br>
+				<span style="margin-left: 34px;">인원수 <input type="text" id="reserveCount" class="DATE" name="reserveCount" style="border: none; margin-left: 3px; background-color: rgb(233, 233, 233); border-radius: 5px;"></span><br><hr>
 				<input type="hidden" id="reserveDate2" name="reserveDate2">
 				<span id='calendar'></span>
 			</div>

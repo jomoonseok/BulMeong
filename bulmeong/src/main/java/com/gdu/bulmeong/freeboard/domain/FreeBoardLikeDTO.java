@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FreeBoardLikeDTO {
 	private int freeNo;
-	private String nickname;
+	private String id;
 }

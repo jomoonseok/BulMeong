@@ -1,24 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<style>
+		nav {
+			display : none;
+		}
+		
+		.link_box1 {
+			text-align:center;
+		}
+		
+		.link, .link:hover {
+			border: 1px solid rgb(3, 109, 90);
+			background-color: rgb(3, 199, 90);
+		    color: white;
+		    font-size: 20px;
+		    border-radius: 7px;
+		    text-align: center;
+		    margin: 20px 0;
+		    display: inline-block;
+		    width: 50%;
+		    height: 50px;
+		    line-height: 50px; 
+		}
+		
+		.div_all {
+			/* text-align:center; */
+			width: 70%;
+			margin: 0 auto; 
+			 border:1px solid black;
+			 /*
+			background-color:rgb(250, 252, 252);
+			padding: 0 10px;  */
+		}
+		
+		.main_box {
+			width: 60%;
+			margin: 0 auto; 
+			border:1px solid black;
+			background-color:rgb(250, 252, 252);
+			padding: 0 10px; 
+		}
+		
+		.img_box {
+			width: 50px;
+    		height: 50px; 
+    		/* border:solid 1px black; */
+    		background-color:white;
+			border-radius: 70%;
+    		overflow: hidden;
+		}
+		
+		.profile_img {
+			width: 100%;
+		    height: 100%;
+		    object-fit: cover;
+		}
+		
+		.info_box {
+			display: flex;
+			border:1px solid rgb(3, 199, 90);
+			border-radius: 8px;
+			height: 130px;
+			padding-top: 30px;
+		}
+	</style>
+</head>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	<div>
-		<a th:href="@{/users/modify}">회원정보변경</a>
+	<div class="div_all">
+		<div class="main_box">
+			<div class="info_box">
+				<div class="img_box" style="margin-top:5px">
+					<img class="profile_img" th:src="|/load/profileImage/${session.loginUser.profileImage}|">
+				</div>
+				<div class="text_box" style="margin-left:10px;">
+					<div th:text="${session.loginUser.name}" style="color:rgb(3, 199, 90); font-size:20px; font-weight:600;"></div>
+					<div th:text="${session.loginUser.email}" ></div>
+				</div>
+			</div>
+			<hr>
+			<img src="/images/userimage/call.png" style="width:18px; padding-bottom:4px; margin-right:8px;"><span th:text="${session.loginUser.mobile}"></span>
+			<hr>
+			<div class="link_box">
+				<div>
+					<a class="link" th:href="@{/users/modify}">회원정보변경</a>
+				</div>
+				<div>
+					<a class="link" th:href="@{/users/profile}">프로필 이미지 설정</a>
+				</div>
+				<div>
+					<a class="link" th:href="@{/users/jjim}">찜목록</a>
+				</div>
+				<div>
+					<a class="link" th:href="@{/users/board/list}">내가 쓴 글</a>
+				</div>
+				<div>
+					<a class="link" th:href="@{/users/reserve}">예약 내역</a>
+				</div> 
+			</div>
+		</div>
 	</div>
-	<div>
-		<a th:href="@{/users/profile}">프로필 이미지 설정</a>
+	
+	
+	
+	<!--  
+	<div class="side">
+		
+		<h1>마이페이지</h1>
+		
+		<div>
+			<a class="link" th:href="@{/users/modify}">회원정보변경</a>
+		</div>
+		<div>
+			<a class="link" th:href="@{/users/profile}">프로필 이미지 설정</a>
+		</div>
+		<div>
+			<a class="link" th:href="@{/users/jjim}">찜목록</a>
+		</div>
+		<div>
+			<a class="link" th:href="@{/users/board/list}">내가 쓴 글</a>
+		</div>
+		<div>
+			<a class="link" th:href="@{/users/reserve}">예약 내역</a>
+		</div> 
 	</div>
-	<div>
-		<a th:href="@{/users/jjim}">찜목록</a>
-	</div>
-	<div>
-		<a th:href="@{/users/board/list}">내가 쓴 글</a>
-	</div>
-	<div>
-		<a th:href="@{/users/reserve}">예약 내역</a>
-	</div>
+	-->
+	<!-- <footer th:replace="~{layout/footer::footer_layout}"></footer> -->
 </body>
 </html>

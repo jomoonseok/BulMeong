@@ -101,6 +101,11 @@ public class AdminController {
 		return adminService.removeTent(request);
 	}
 	
+	@ResponseBody
+	@PostMapping("/admin/changeImage")
+	public Map<String, Object> changeIamge(MultipartHttpServletRequest request) {
+		return adminService.changeImage(request);
+	}
 	
 	
 }

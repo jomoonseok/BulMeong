@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FreeBoardDTO {
 	private int freeNo;
-	private String nickname, freeTitle, freeContent, freeCreateDate, freeModifiyDate, freeIp;
+	private String id, nickname, freeTitle, freeContent, freeCreateDate, freeModifiyDate, freeIp, profileImage;
 	private int freeHit;
 
 

@@ -1,0 +1,175 @@
+@charset "UTF-8";
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+.blind {
+	display: none;
+}
+
+#toggle_area {
+	background-color: #f8f8f9;
+	font-size:13px;
+	margin-bottom: 10px;
+}
+
+/* list.html */
+
+body {
+/* 	border: 1px #a39485 solid; */
+	width: 70%;
+	margin: auto;
+}
+
+.css_main_title {
+/* 	border: 1px #a39485 solid; */
+	font-size: 30px;
+}
+
+.css_sub_title {
+/* 	border: 1px #a39485 solid; */
+	color: grey;
+}
+
+.css_qna_box {
+	height: 80px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	background-color: #f8f8f9;
+}
+
+.css_qna_box_inner {
+	padding-top: 25px;
+	text-align: center;
+	margin: auto;
+	font-size: 18px;
+}
+
+#my_qnaList, #btn_qnaWrite {
+	height:36px;
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 3px;
+	float: right;
+}
+
+#btn_writeAnswer {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	float: right;
+}
+
+#my_qnaList:hover, #btn_qnaWrite:hover, #btn_writeAnswer:hover{
+	background-color: rgba(204, 75, 76); 
+    transition-duration: 0.3s;
+    color: white;
+}
+
+tbody span {
+	/* 얘를 depth 1 일때(답변) 으로 수정하기 */
+	/* list.html도 blind빠져야함 */
+	padding-left: 25px;
+}
+
+hr {
+	margin-bottom: 13px;
+}
+
+table {
+   border: 1px #a39485 solid;
+   font-size: .9em;
+   box-shadow: 0 2px 5px rgba(0,0,0,.25);
+   width: 100%;
+   border-collapse: collapse;
+   border-radius: 5px;
+   overflow: hidden;
+   margin: auto;
+}
+
+th {
+   text-align: center;
+}
+  
+thead {
+   font-weight: bold;
+   color: #fff;
+   background: rgba(113, 194, 133);
+}
+  
+td, th {
+   padding: 1em .5em;
+   vertical-align: middle;
+}
+  
+td {
+   border-bottom: 1px solid rgba(0,0,0,.1);
+   background: #fff;
+}
+
+#qnaTitle:hover {
+	color: rgba(113, 194, 133);
+	cursor:pointer;
+}
+
+.toggle_area {
+	text-align: center;
+}
+
+.css_qna_content {
+	font-size: 14px;
+}
+
+#qnaTitle {
+   color: #73685d;
+}
+
+a {
+   color: #73685d;
+}
+a:hover {
+   color: rgba(113, 194, 133);
+}
+
+thead > tr > th:first-of-type {
+   width: 20%;
+}
+
+thead > tr > th:nth-of-type(2) {
+   width: 50%;
+}
+
+thead > tr > th:nth-of-type(3) {
+   width: 5%;
+}
+
+thead > tr > th:nth-of-type(4) {
+   width: 15%;
+}
+
+tbody > tr:last-of-type {
+   border: 1px #a39485 solid;
+   border-radius: 5px;
+}
+
+thead > tr > th:nth-of-type(6) {
+   width: 10%;
+}
+
+.css_qna_depth {
+	text-align: center;
+}
+
+.css_qna_createDate,.css_qna_id{
+	text-align: center;
+}
+
+tfoot > tr > td {
+   text-align: center;
+   width: 100%;
+   font-size: 20px;
+}
+

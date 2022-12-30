@@ -21,6 +21,8 @@ import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.PageUtil;
 import com.gdu.bulmeong.util.SecurityUtil;
 
+import oracle.net.aso.l;
+
 @Service
 public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	
@@ -72,10 +74,12 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 	public Map<String, Object> addCmt(FreeBoardCmtDTO freeCmt) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		HttpSession session = request.getSession();
-		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
-		
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 		
 		String freeCmtIp = request.getRemoteAddr();
+		String id = loginUser.getId();
 		String nickname = loginUser.getNickname();
+		String profileImage = loginUser.getProfileImage();
+
 		
 		// 기존 freeGroupNo 파라미터로 받아오기
 		int freeGroupNo = Integer.parseInt(request.getParameter("freeGroupNo"));
@@ -89,8 +93,11 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 
 		// 새로 단 댓글에 ip, nickname, groupNo를 넣어준다.
 		freeCmt.setFreeCmtIp(freeCmtIp);
+		freeCmt.setId(id);
 		freeCmt.setNickname(nickname);
 		freeCmt.setFreeGroupNo(freeGroupNo); // 0번을 받아온다.
+		freeCmt.setProfileImage(profileImage);
+		
 	
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAdd", freeBoardCmtMapper.insertCmt(freeCmt) == 1);
@@ -125,7 +132,9 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		HttpSession session = request.getSession();
 		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
+		String id = loginUser.getId();
 		String nickname = loginUser.getNickname();
+		String profileImage = loginUser.getProfileImage();
 		
 		// 1. 기존 댓글 groupOrder증가 !
 		// 원글의 DEPTH, GROUP_NO, GROUP_ORDER
@@ -144,12 +153,13 @@ public class FreeBoardCmtServiceImpl implements FreeBoardCmtService {
 		// 2. 답글 달기!
 		//UsersDTO loginUser = (UserDTO)session.getAttribute("loginUser");
 		String freeCmtIp = request.getRemoteAddr();
-		// freeCmtReply.setId(loginUser.getId());
+		freeCmtReply.setId(id);
 		freeCmtReply.setFreeCmtIp(freeCmtIp);
 		freeCmtReply.setNickname(nickname);
 		freeCmtReply.setFreeCmtDepth(freeCmtDepth + 1);
 		freeCmtReply.setFreeGroupNo(freeGroupNo);
 		freeCmtReply.setFreeGroupOrder(freeGroupOrder + 1);
+		freeCmtReply.setProfileImage(profileImage);
 				
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("isAddReply", freeBoardCmtMapper.insertCmtReply(freeCmtReply) == 1);

@@ -13,14 +13,13 @@
 #btn_list {
 	cursor: pointer;
 	display: block;
-	width: 80%;
+	width: 70%;
 	margin: auto;
 	font-size: 13px;
 }
 #btn_list:hover {
 	cursor: pointer;
 	display: block;
-	width: 80%;
 	margin: auto;
 	font-size: 13px;
 	color: rgba(113, 194, 133);
@@ -28,7 +27,6 @@
 #btn_list:active {
 	cursor: pointer;
 	display: block;
-	width: 80%;
 	margin: auto;
 	font-size: 13px;
 	color: rgba(0, 0, 0);
@@ -38,17 +36,18 @@
 
 .out_board_box {
 	display: block;
-	margin-top: 2%;
+	margin-top: 1%;
 }
 .in_board_box {
 	border: 1px rgb(255, 255, 255) solid;
 	font-size: 13px;
 	box-shadow: 0 2px 5px rgba(0,0,0,.25);
-	width: 80%;
+	width: 70%;
 	border-collapse: collapse;
 	border-radius: 15px;
 	overflow: hidden;
 	margin: auto;
+
 }
 .title_box {
 	background: rgba(113, 194, 133);
@@ -80,12 +79,14 @@
 
 /* 3. 좋아요 */
 .like_box {
-	margin: 1%;
+	display: inline;
+	cursor: pointer;
 }
 
 /* 4. 댓글 카운트 */
 .cmt_cnt_box {
 	margin: 1%;
+	display: inline;
 }
 
 /* 5. 댓글 입력창 */
@@ -140,33 +141,177 @@
 
 /* 7. 댓글 */
 
+.comment_image {
+	width: 50px;
+	border: 1px solid white;
+	border-radius: 15px;
+	height: 50px;
+	outline: 1px solid rgb(127, 127, 127);
+	margin-left: 15px;
+}
+
 .cmt_create_date {
 	color: rgb(127, 127, 127);
 	font-size: 12px;
 }
 
 .cmt_content_style { 
-	margin: 10px; 
-	background-color: rgba(113, 194, 133, 0.1); 
-	border: none; 
-	border-radius: 15px; 
-	display: block; 
+	position:relative;
+	margin: 10px;
+	margin-left: 30px;
 	padding: 10px; 
+	width: auto;
+	max-width: 50%; 
+	height:auto; 
+	border-radius: 10px; 
+	background-color: rgb(204, 75, 76, 0.2);
+}
+
+.cmt_content_style:after { 
+	content:""; 
+	position: absolute;
+	top: 45px; 
+	left: -20px; 
+	border-right: 20px solid rgb(204, 75, 76, 0.2);
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
 }
 
 
 .cmt_content_nickname_style {
-	border: 1px solid;
-	padding: 5px;
-	margin: 5px;
-	background: rgba(113, 194, 133, 0.2);
-	border: none;
-	border-radius: 15px;
+	padding: 3px;
+	margin: 3px;
 }
 
 .cmt_content {
-	padding-left: 10px;
-		color: rgb(55, 62, 72); 
+	padding: 10px;
+	color: rgb(55, 62, 72);
+	background: rgb(0, 0, 0, 0.1);	
+	display: block;
+	border-radius: 10px;
+	width: auto;
+}
+
+
+
+.btn_cmt_area {
+	margin-left: 35px;
+	background: none;
+	border: none;
+	transition: all 0.4s;
+}
+
+.btn_cmt_area:hover {
+	margin-left: 35px;
+	background: none;
+	border: none;
+	text-decoration: underline;
+	color: rgba(113, 194, 133);
+}
+
+.reply_area_box {
+	margin-bottom: 5px;
+}
+
+/* 댓글 수정, 취소 버튼 / 답글 수정, 취소 버튼*/
+.btn_cmt_modify, .btn_cmt_run_modify {
+	width: 18px;
+	opacity: 1;
+	transition: .3s ease;
+}
+
+
+.btn_cmt_modify:hover, .btn_cmt_run_modify:hover {
+	opacity: .5;
+}
+
+.btn_cmt_remove, .btn_cmt_modify_cancle {
+	width: 18px;
+	opacity: 1;
+	transition: .3s ease;
+	margin-left: 3px;
+}
+
+.btn_cmt_remove:hover, .btn_cmt_modify_cancle:hover {
+	opacity: .5;
+}
+
+/* 답글 수정 인풋 */
+.reply_input_style {
+	background: none;
+	border: none;
+
+	border-bottom: 1px solid gray;
+	font-size: 13px;
+	color: rgb(55, 62, 72);
+	width: auto;
+	max-width: 100%; 
+}
+
+
+.reply_input_style:focus {
+	font-size: 13px;
+	border: none;
+	outline: none;
+	size: auto;
+	width: auto;
+}
+
+/* 답글 수정 버튼 */
+.btn_cmt_run_modify {
+	width: 18px;
+}
+
+
+
+/* 답글 수정 취소 버튼 */
+.btn_cmt_modify_cancle {
+	width: 18px;
+	margin-left: 3px;
+}
+
+
+/* 답글 인풋 */
+.btn_reply_area {
+	outline: 1px solid gray;
+	border: none;
+	border-radius: 15px;		
+	padding: 11px;
+	width: 90%;
+	height : 32px;
+	color: rgb(55, 62, 72);
+}
+
+.button_reply {
+	width: 7%;
+	height : 32px;
+	border: none;
+	outline: 1px solid rgb(204, 75, 76);
+	border-radius: 15px;
+	background: rgb(255, 255, 255);
+	color: rgb(204, 75, 76);
+	font-size: 13px;
+	margin-left: 1%;
+}
+
+/* 답글 리스트 */
+.reply_comment_style > .cmt_content_style {
+	background: rgb(180, 185, 191, 0.2);
+}
+
+.reply_comment_style > .cmt_content_style:after { 
+	border-right: 20px solid rgb(180, 185, 191, 0.2);
+}
+
+/* 삭제된 댓글 스타일 */
+.remove_style {
+	margin: 1% 0;
+}
+
+/* 수정 인풋 */
+.frm_cmt_modify {
+	
+	
 }
 
 /* 8. 하단 버튼 */
@@ -174,7 +319,38 @@
 .footer_btn_group {
 	display: block;
 	margin: auto;
-	margin-top: 3%;
-	width: 80%;
+	margin-top: 1%;
+	width: 70%;
+
 }
+
+
+.footer_btn_group input {
+	border: 1px #CC4B4C solid;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	font-size: 12px;
+	padding: 6px 18px;
+	margin-right:-5px;
+}
+
+.footer_btn_group input:hover {
+	background-color: rgba(204, 75, 76); 
+	transition-duration: 0.3s;
+	color: white;	
+}
+
+.footer_btn1 {
+	border-top-left-radius: 7px;
+	border-bottom-left-radius: 7px;
+}
+
+
+.footer_btn5 {
+	border-top-right-radius: 7px;
+	border-bottom-right-radius: 7px;
+
+}
+
+
 

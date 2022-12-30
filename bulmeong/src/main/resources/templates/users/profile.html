@@ -78,6 +78,7 @@
 					processData : false,
 					dataType: 'json',
 					success: function(resData){
+						$('#removeCheck').val('');
 						$('#profileImage').prop('src', '/load/profileImagePreview/' + resData.filesystem);
 					}
 				}); // ajax
@@ -110,7 +111,6 @@
 	<h1>프로필 수정</h1>
 	
 	<form th:action="@{/users/modify/profile}" method="post" enctype="multipart/form-data" id="form_test">
-		<!-- <input type="hidden" id="id" th:value="${session.loginUser.id}"> -->
 		<table border="1">
 			<tbody>
 				<tr>
@@ -126,13 +126,15 @@
 							<label for="image" class="image">사진변경</label>
 							<input type="file" id="image" name="image" accept="image/png, image/jpeg" style="display:none">
 						</div>
-						<!--  <div>
+						<div>
+							<input type="hidden" id="removeCheck" name="removeCheck">
 							<label for="remove" class="image">삭제</label>
 							<input type="button" id="remove" style="display:none" onclick="
+								$('#removeCheck').val('check');
 								$('#image').val('');
 								$('#profileImage').prop('src', '/images/userimage/basic_profileImage.png');
 							">
-						</div> -->
+						</div>
 						<span id="fileSize"></span>
 					</td>
 				</tr>

@@ -810,14 +810,13 @@
 			
 			<hr>
 			
-				
 			<div id="guide">	
 				<div id="tentInfo">
 					<h3>
 						<img src="images/camp/info.png">텐트 사진
 					</h3>
 					
-					<div class="tentImg" style="display: grid; grid-template-columns: repeat(5, 300px); column-gap: 30px; row-gap: 30px;">
+					<div class="tentImg" style="display: grid; grid-template-columns: repeat(4, 300px); column-gap: 30px; row-gap: 30px;">
 						
 						<th:block th:each="tent : ${tent}">
 						<div>
@@ -1010,8 +1009,9 @@
 						<button id="button">리뷰 작성</button>
 					</div> 
 				</form>
-				
+
 			</div> -->	
+
 			
 			
 			<script>
@@ -1035,6 +1035,6 @@
 		</div>
 	</div>
 	
-		
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

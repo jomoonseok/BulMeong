@@ -37,6 +37,7 @@
 		<typeAlias type="com.gdu.bulmeong.users.domain.MyPageReservedDTO" alias="MyPageReservedDTO" />
 		
 		<typeAlias type="com.gdu.bulmeong.admin.domain.AdminTentDTO" alias="AdminTentDTO" />
+		<typeAlias type="com.gdu.bulmeong.index.domain.IndexFreeBoardDTO" alias="IndexFreeBoardDTO" />
 	
 
 	</typeAliases>
