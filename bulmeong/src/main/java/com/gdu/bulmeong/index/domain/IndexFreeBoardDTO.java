@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class IndexFreeBoardDTO {
 	private int freeNo;
-	private String nickname, freeTitle;
+	private String nickname, freeTitle, freeCreateDate, freeContent;
 	private int freeHit;
 	private int likeCount;
 
