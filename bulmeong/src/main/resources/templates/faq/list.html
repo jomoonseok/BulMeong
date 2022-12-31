@@ -18,10 +18,7 @@
 			} else {
 				$('.css_btn').children().removeClass('fa-caret-up').addClass('fa-caret-down');
 			}
-			
 		});
-		
-		
 		
 		$('.btn_remove').click(function(){
 			if(confirm('삭제하시겠습니까?')){
@@ -80,15 +77,11 @@
 								<div class="css_font1">Q.</div>
 								<span th:text="${faq.faqTitle}" class="css_faq_title"></span>
 								<div class="css_btn"><i class="fa-solid fa-caret-down fa-2x"></i></div>
-<!-- 								<i class="fa-thin fa-circle-chevron-down"></i> -->
 							</div>
 							<hr>
 							<div id="toggle_area" class="blind css_answer">
 								<div class="css_font2">A .</div>
-									
 									<span th:text="${faq.faqContent}" class="css_faq_content"></span>
-									
-<!-- 								<i class="fa-thin fa-circle-chevron-up"></i> -->
 							</div>
 						</td>
 						<td class="css_btn_remove_wrap">
