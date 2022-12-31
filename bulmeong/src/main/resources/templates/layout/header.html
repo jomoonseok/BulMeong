@@ -193,8 +193,7 @@
 	<!-- 로그인이 안 된 상태 -->
 	<div class="login-box" th:if="${session.loginUser == null}">
 		<a th:href="@{/users/agree}">회원가입</a> ｜
-		<a th:href="@{/users/login/form}" class="a_login">로그인</a> ｜
-		<a th:href="@{/admin}">관리자 전용</a>
+		<a th:href="@{/users/login/form}" class="a_login">로그인</a>
 	</div>
 	
 	<!-- 로그인이 된 상태 -->
@@ -235,6 +234,9 @@
 		</a>
 		<a th:text="|${session.loginUser.nickname}|" class="nickname" th:href="@{/users/mypage}"></a>님
 		<a th:href="@{/users/logout}"  class="a_logout">로그아웃</a>
+		<div th:if="${session.loginUser.id == 'admin'}">
+			<a th:href="@{/admin}">관리자 페이지로 이동</a>
+		</div>
 	</div>
 
 	
