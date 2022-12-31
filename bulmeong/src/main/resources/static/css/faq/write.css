@@ -48,3 +48,31 @@ body {
 	height : 500px;
    	background-color: #f8f8f9;
 }
+
+.faq_btn_wrap {
+/* 	border: 1px solid rgba(113, 194, 133); */
+	width: 180px;
+	float: right;
+}
+
+.btn_faqReset {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	float: right;
+}
+
+ .btn_faqSubmit {
+ 	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+	margin-left: 5px;
+ }
+
+.btn_faqReset:hover, .btn_faqSubmit:hover {
+	background-color: rgba(204, 75, 76); 
+    transition-duration: 0.3s;
+    color: white;
+}

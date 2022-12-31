@@ -16,7 +16,7 @@
             	$(".left_sub_menu").fadeToggle(50);
                 $('.topbar').css('background-color', '#f8f8f9');
                 $('#icon').css('float', 'right');
-                $('.fa-solid').removeClass('fa-bars').addClass('fa-xmark');
+                $('#icon').removeClass('fa-bars').addClass('fa-xmark');
               }
         });
         // 왼쪽메뉴 드롭다운
@@ -75,6 +75,16 @@
 		                <hr style="border-style: dotted; width:170px; margin: auto;">
 		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;">
 		                <br>
+		                    <li>캠핑 커뮤니티 <i class="arrow fas fa-angle-right"></i></li>
+		                    <ul class="css_mypage_sub_menu">
+		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/notice/list}">공지사항</a></li>
+		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/qna/list}">Q&A</a></li>
+		                    	<li style="list-style: none; font-size: 14px;"><a th:href="@{/faq/list}">FAQ</a></li>
+		                	</ul>
+		                </ul>
+		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;">
+		                <hr style="border-style: dotted; width:170px; margin: auto;">
+		                <br>
 		                    <li>고객센터 <i class="arrow fas fa-angle-right"></i></li>
 		                    <ul class="css_mypage_sub_menu">
 		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/notice/list}">공지사항</a></li>
@@ -94,7 +104,7 @@
 		             <hr style="border-style: dotted; width:170px; margin: auto;">
 		             <br>
 		             <div style="text-align: center;">
-		             <a th:href="@{/users/login/form}">회원가입</a>
+		             <a th:href="@{/users/login/form}">로그인</a> ㅣ <a th:href="@{/users/agree}">회원가입</a>
 		             </div>
 		             <br>
 		             <hr style="border-style: dotted; width:170px; margin: auto;">

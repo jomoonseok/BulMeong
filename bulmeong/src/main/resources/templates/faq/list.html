@@ -12,8 +12,16 @@
 		});
 		
 		$('.btn_contentToggle').click(function(){
-			$(this).next().next().toggleClass('blind');			
+			$(this).next().next().toggleClass('blind')
+			if($('.fa-solid').hasClass('fa-caret-down')) {
+				$('.css_btn').children().removeClass('fa-caret-down').addClass('fa-caret-up');
+			} else {
+				$('.css_btn').children().removeClass('fa-caret-up').addClass('fa-caret-down');
+			}
+			
 		});
+		
+		
 		
 		$('.btn_remove').click(function(){
 			if(confirm('삭제하시겠습니까?')){
@@ -22,6 +30,7 @@
 		})
 
 	});
+
 </script>
 <body>	
 	<header th:replace="~{layout/header::header_layout}"></header>
@@ -36,6 +45,14 @@
 	</div>
 	
 	<hr>
+	
+<!-- 	<div> -->
+<!-- 		<input type="button" name="faqCategory" value="전체보기"> -->
+<!-- 		<input type="button" name="faqCategory" value="홈페이지 이용방법"> -->
+<!-- 		<input type="button" name="faqCategory" value="계정관리"> -->
+<!-- 		<input type="button" name="faqCategory" value="예약 및 결제"> -->
+<!-- 		<input type="button" name="faqCategory" value="숙박"> -->
+<!-- 	</div> -->
 	
 	<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
 		<input type="button" id="btn_faqWrite" value="새글작성">
