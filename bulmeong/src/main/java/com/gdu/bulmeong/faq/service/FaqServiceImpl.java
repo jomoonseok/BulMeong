@@ -27,8 +27,9 @@ public class FaqServiceImpl implements FaqService {
 	
 	@Override
 	public void loadFaqList(HttpServletRequest request, Model model) {
-		
+
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		
 		int page = Integer.parseInt(opt.orElse("1"));
 		
 		int totalRecord = faqMapper.selectFaqCount();
@@ -36,16 +37,19 @@ public class FaqServiceImpl implements FaqService {
 		int recordPerPage = 7;
 		
 		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
+
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("begin", pageUtil.getBegin() - 1);
 		map.put("recordPerPage", recordPerPage);
+
 		
 		List<FaqDTO> faqList = faqMapper.selectFaqListByMap(map);
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("faqList", faqList);
 		model.addAttribute("paging", pageUtil.getPaging("/faq/list"));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
+
 	}
 	
 	@Override

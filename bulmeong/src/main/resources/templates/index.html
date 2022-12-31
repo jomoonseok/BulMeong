@@ -16,11 +16,59 @@
 	        <area shape="default" th:href="@{/camp}" coords="201,849,795,1009">
     	</map>
 	</div>
+
+	
+	<div class="rank_image">
+		<img th:src="@{/images/index/ranking.png}" width="30px">
+		<span>많이 찜한 캠핑장</span>
+	</div>
+	<div class="jjimListArea">
+		<table class="jjimList table">
+			<thead>
+				<tr>
+					<th>순위</th>
+					<th>캠핑장명</th>
+					<th>지역</th>
+					<th>찜</th>
+				</tr>
+			</thead>
+			<tbody id="tbody_jjim">
+			</tbody>
+		</table>
+	</div>
+	<script>
+		
+		$.ajax({
+			
+			type: 'get',
+			url: '/index/jjimList',
+			success: function(resData) {	
+				$.each(resData.jjim, function(i, jjim) {
+					var jjimBoard = '<tr>';
+					if (i == 0) {
+						jjimBoard += '<td>' + '<img src="/images/index/medal(1).png" width="40px;">'; + '</td>';	
+					} else if (i == 1) {
+						jjimBoard += '<td>' + '<img src="/images/index/medal(2).png" width="40px;">'; + '</td>';	
+					} else if (i == 2) {
+						jjimBoard += '<td>' + '<img src="/images/index/medal(3).png" width="40px;">'; + '</td>';	
+					} else {
+						jjimBoard += '<td>' + ++i + '</td>';						
+					}
+					jjimBoard += '<td><a href="/detail?campNo=' + jjim.campNo + '">' + jjim.facltNm + '</a></td>';
+					jjimBoard += '<td>' + jjim.sigunguNm + '</td>';
+					jjimBoard += '<td>' + jjim.jjim + '</td>';
+					jjimBoard += '</tr>';
+					$('#tbody_jjim').append(jjimBoard);
+				});
+					
+			}
+			
+		});
+		
+	</script>
 	
 	
 
-
- 
 	
 	<div class="freeBoardList">
 		<div class="freebrd_title_box"><a class="freebrd_title" th:href="@{/freeboard/list}"><span class="top5_style">&lt;&nbsp;<img th:src="@{/images/index/chat.png}" width="30px">&nbsp;&gt;</span></a></div>
@@ -58,78 +106,15 @@
 			})
 		}
 	</script>
-	
-	<!-- 관리자 게시판 -->
-	
-	<div class="main-quick">
-		<div>
-			<a>홈페이지 소식이 궁금하다면?</a>
-		</div>
-		<div>
-			자주 묻는 질문들을 빠르게 확인해보세요!
-		</div>
-		<div>
-			더 다양한 질문을 해보세요!
-		</div>
-	</div>
-	
-	
-	
-	
-	
-		
-	<div class="jjimListArea">
-		찜 캠핑장 TOP 5
-		<table class="jjimList table">
-			<thead>
-				<tr>
-					<td>순위</td>
-					<td>캠핑장명</td>
-					<td>지역</td>
-					<td>찜</td>
-				</tr>
-			</thead>
-			<tbody id="tbody_jjim">
-			</tbody>
-		</table>
-	</div>
-	<script>
-		
-			
-		$.ajax({
-			
-			type: 'get',
-			url: '/index/jjimList',
-			success: function(resData) {
-				
-				$.each(resData.jjim, function(i, jjim) {
-					var jjimBoard = '<tr>';
-					jjimBoard += '<td>' + ++i + '</td>';
-					jjimBoard += '<td><a href="/detail?campNo=' + jjim.campNo + '">' + jjim.facltNm + '</a></td>';
-					jjimBoard += '<td>' + jjim.sigunguNm + '</td>';
-					jjimBoard += '<td>' + jjim.jjim + '</td>';
-					jjimBoard += '</tr>';
-					$('#tbody_jjim').append(jjimBoard);
-				});
-					
-					
-				
-			}
-			
-		})
-		
-	</script>
-	
-	
-	<!-- 홈화면 -->
+
     <!-- Swiper -->
     <div class="swiper-overflow-container" >
 		<div class="swiper_html">
     		<div class="swiper_body">
     			<div class="swiper-container mySwiper">
-    			<hr><div>여행테마별 캠핑장</div>
-       			<div class="swiper-wrapper"></div>
-      			<div class="swiper-pagination"></div>
+    				<div>여행테마별 캠핑장</div>
+       				<div class="swiper-wrapper"></div>
+      				<div class="swiper-pagination"></div>
     			</div>
    			</div>
 		</div>
@@ -187,15 +172,15 @@
   		
   	</script>
   	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-
-
+  	<!-- 관리자 게시판 -->
+	
+	<div class="main-quick">
+		<a th:href="@{/notice/list}"><img th:src="@{/images/index/공지사항.png}" width="30%"></a>
+		<a th:href="@{/faq/list}"><img th:src="@{/images/index/FAQ.png}" width="30%"></a>
+		<a th:href="@{/qna/list}"><img th:src="@{/images/index/QnA.png}" width="30%"></a>
+	</div>
+	
+	
 	
 	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 

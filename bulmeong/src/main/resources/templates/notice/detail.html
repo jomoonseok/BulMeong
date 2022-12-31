@@ -12,25 +12,28 @@
 <body>
 	<div class="css_detail_wrap">
 		
+		<div class="css_ccupdegy"></div>
+		
 		<div class="css_notice_title_wrap">
 			<span th:text="|[공지] ${notice.noticeTitle}|"></span>
 		</div>
 		
+		<div class="css_ooo">
+		
 		<div class="css_notice_createDate">
-			<span th:text="|작성일▷ ${notice.noticeCreateDate}|"></span>
+			<i class="fa-solid fa-pen-to-square"></i>&nbsp<span th:text="|작성일 ${notice.noticeCreateDate}|"></span>
 <!-- 			&nbsp;&nbsp;&nbsp; -->
 <!-- 			<span th:text="|수정일 ${notice.noticeModifyDate}|"></span> -->
 		</div>
 		
 		<div class="css_notice_hit">
-			<span th:text="|조회수▷ ${#numbers.formatInteger(notice.noticeHit,1,'COMMA')}|"></span>
+			<i class="fa-solid fa-eye"></i>&nbsp<span th:text="|조회수&nbsp&nbsp ${#numbers.formatInteger(notice.noticeHit,1,'COMMA')}|"></span>
 		</div>
 		
-		<hr>
+		</div>
 		
 		<div th:utext="${notice.noticeContent}" class="css_noticeContent"></div>
 		
-		<hr>
 		
 		<div id="only_admin">
 			<form id="frm_btn" method="post">
@@ -57,6 +60,7 @@
 
 		</script>
 	</div>
+	<br>
 	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>
