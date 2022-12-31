@@ -9,11 +9,15 @@
 	display: none;
 }
 
+body {
+	width: 70%;
+	margin: auto;
+}  
+
 /* 1. 뒤로가기 */
 #btn_list {
 	cursor: pointer;
 	display: block;
-	width: 70%;
 	margin: auto;
 	font-size: 13px;
 }
@@ -42,7 +46,6 @@
 	border: 1px rgb(255, 255, 255) solid;
 	font-size: 13px;
 	box-shadow: 0 2px 5px rgba(0,0,0,.25);
-	width: 70%;
 	border-collapse: collapse;
 	border-radius: 15px;
 	overflow: hidden;
@@ -70,6 +73,7 @@
 	padding: 20px;
 	background: rgb(180, 185, 191, 0.2);
 	border-radius: 15px;
+	word-wrap:break-word;
 }
 
 .freeTitle {
@@ -190,6 +194,7 @@
 	display: block;
 	border-radius: 10px;
 	width: auto;
+	word-wrap:break-word;
 }
 
 
@@ -308,11 +313,6 @@
 	margin: 1% 0;
 }
 
-/* 수정 인풋 */
-.frm_cmt_modify {
-	
-	
-}
 
 /* 8. 하단 버튼 */
 
@@ -320,7 +320,6 @@
 	display: block;
 	margin: auto;
 	margin-top: 1%;
-	width: 70%;
 
 }
 

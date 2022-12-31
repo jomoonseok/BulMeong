@@ -9,6 +9,10 @@
 	display: none;
 }
 
+body {
+	width: 70%;
+	margin: auto;
+}
 
 .cmt_create_date {
 	color: rgb(127, 127, 127);
@@ -17,14 +21,12 @@
 
 h3 {
 	display: block;
-	width: 70%;
 	margin: auto;
 	margin-bottom: 10px;
 }
 
 /* 글쓰기 버튼 */
 .writer_box {
-	width: 70%;
 	margin: auto;
 }
 .writer_btn {
@@ -50,11 +52,11 @@ table {
 	border: 1px #a39485 solid;
 	font-size: .9em;
 	box-shadow: 0 2px 5px rgba(0,0,0,.25);
-	width: 70%;
 	border-collapse: collapse;
 	border-radius: 5px;
 	overflow: hidden;
 	margin: auto;
+	width: 100%;
 }
 
 th {
@@ -131,7 +133,6 @@ tfoot > tr > td > a{
 }
 
 .in_div_search {
-	width: 70%;
   	margin: auto;
 }
 
