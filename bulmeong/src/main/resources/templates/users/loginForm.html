@@ -155,8 +155,6 @@
 			<a th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="80%" style="margin-bottom: 30px"></a>
 		</div>
 		<form id="frm_login" th:action="@{/users/login}" method="post">
-			<!-- 컨트롤러에서 넘겨준 값 : 로그인 후 이동할 주소가 있음 -->
-			<input type="hidden" name="url" th:value="${url}">
 			<div class="login_input_box">
 				<input type="text" name="id" id="id" placeholder="아이디">
 			</div>

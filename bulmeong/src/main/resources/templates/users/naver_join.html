@@ -3,6 +3,8 @@
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
 <head>
 	<style>
+		/* 동의 css */
+		/*
 		.blind {
 			display: none;
 		}
@@ -15,24 +17,74 @@
 		.lbl_checked {
 			background-image: url(/images/userimage/check.png);
 		}
+		*/
+		/* 정보 css */
+		.div_all {
+			width:450px;
+			margin: 0 auto;
+		}
+		
+		.div_info {
+			border: 3px solid rgb(3, 199, 90);
+			border-radius: 8px;
+			padding: 10px;
+			margin-bottom: 5px;
+		}
+		
+		.inp_text {
+			width: 340px;
+			height: 50px;
+		}
+		
+		.text_area {
+			width: 450px;
+			height: 80px;
+			margin-bottom: 20px;
+		}
+		
+		.btn_check {
+			border: none;
+			width: 105px;
+			height: 50px;
+			border-radius: 7px;
+			background-color: rgb(3, 199, 90);
+			color: white;
+		}
+		
+		.div_btn {
+			text-align: center;
+		}
+		
+		.btn_green {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+			background-color: rgb(3, 199, 90);
+			color: white;
+		}
+		
+		.btn_gray {
+			width: 150px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+     		background-color: rgb(142, 142, 142);
+			color: white;
+		}
 	</style>
+	
 	<script>
+		/* 동의 script */
 		$(function(){
 			fn_checkAll();
 			fn_checkOne();
-			fn_toggleCheck();
 			fn_submit();
 		});
 		
 		function fn_checkAll(){
 			$('#check_all').click(function(){
 				$('.check_one').prop('checked', $(this).prop('checked'));
-				
-				if($(this).is(':checked')){  
-					$('.lbl_one').addClass('lbl_checked');
-				} else {
-					$('.lbl_one').removeClass('lbl_checked');
-				}
 			});
 		}
 		
@@ -43,19 +95,7 @@
 					checkCnt += $($('.check_one')[i]).prop('checked');
 				}
 				$('#check_all').prop('checked', $('.check_one').length == checkCnt);	
-				
-				if($('#check_all').is(':checked')){
-					$('.lbl_all').addClass('lbl_checked');
-				} else {
-					$('.lbl_all').removeClass('lbl_checked');
-				}
 			});
-		}
-		
-		function fn_toggleCheck(){
-			$('.lbl_all, .lbl_one').click(function(){
-				$(this).toggleClass('lbl_checked');
-			})
 		}
 		
 		function fn_submit(){
@@ -68,123 +108,145 @@
 			});
 		}
 		
+		/* 정보 script */
+		$(function(){
+			fn_nicknameCheck();
+			fn_emailCheck();
+			fn_join();
+			fn_home();
+		});
+		
+		var nicknamePass = false;
+		var emailPass = false;
+		
+		
+		function fn_nicknameCheck(){	
+			
+			$('#nickname').keyup(function(){
+				$('#msg_nickname').text('');
+				
+				// 정규식(2~10자, 한글+영어+숫자)
+				let regNickname = /^[가-힣0-9a-zA-Z]{2,10}$/;
+				
+				let nicknameValue = $('#nickname').val();
+				
+				if(nicknameValue == '' || regNickname.test(nicknameValue) == false){
+					$('#msg_nickname').css('color', 'rgb(204, 75, 76)');
+					$('#msg_nickname').text('닉네임을 확인하세요');
+					nicknamePass = false;
+					return;
+				} else if(nicknameValue != '' && regNickname.test(nicknameValue) == true){
+					$('#msg_nickname').css('color', 'rgb(113, 194, 133)');
+					$('#msg_nickname').text('중복체크를 클릭해주세요');
+				}
+			});
+			
+			$('#btn_nickname_check').click(function(){
+				
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '/users/checkReduceNickname',
+					data: 'nickname=' + $('#nickname').val(),
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						if(resData.isUser || resData.isSleepUser || resData.isRetireUser){
+							$('#msg_nickname').css('color', 'rgb(204, 75, 76)');
+							$('#msg_nickname').text('이미 사용중인 닉네임입니다.');
+							nicknamePass = false;
+						} else {
+							$('#msg_nickname').css('color', 'rgb(113, 194, 133)');
+							$('#msg_nickname').text('사용 가능한 닉네임입니다.');
+							nicknamePass = true;
+						}
+					}
+				});
+			});
+		}
+		
+		// 이메일 중복 체크
+		function fn_emailCheck(){	
+			
+			$('#email').keyup(function(){
+				
+				$('#msg_email').text('');
+				
+				// 정규식 
+				let regEmail = /^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+(\.[a-zA-Z]{2,}){1,2}$/;
+				
+				// 입력한 이메일
+				let emailValue = $('#email').val();
+				
+				// 정규식 검사
+				if(emailValue == '' || regEmail.test(emailValue) == false){
+					$('#msg_email').css('color', 'rgb(204, 75, 76)');
+					$('#msg_email').text('이메일 형식을 확인하세요');
+					emailPass = false;
+					return;
+				} else if(emailValue != '' || regEmail.test(emailValue) == true){
+					$('#msg_email').css('color', 'rgb(113, 194, 133)');
+					$('#msg_email').text('중복체크를 클릭해주세요');
+				}
+			});
+			
+			$('#btn_email_check').click(function(){
+				
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '/users/checkReduceEmail',
+					data: 'email=' + $('#email').val(),
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						// 기존 회원 정보에 등록된 이메일이라면 실패 처리
+						if(resData.isUser || resData.isSleepUser){
+							$('#msg_email').css('color', 'rgb(204, 75, 76)');
+							$('#msg_email').text('이미 사용중인 이메일입니다.');
+							emailPass = false;
+						} else {
+							$('#msg_email').css('color', 'rgb(113, 194, 133)');
+							$('#msg_email').text('사용 가능한 이메일입니다.');
+							emailPass = true;
+						}
+					}
+				});
+			});
+		}
+		
+		function fn_join(){
+			$('#frm_join').submit(function(event){
+				if(nicknamePass == false){
+					alert('닉네임을 확인하세요.');
+					event.preventDefault();
+					return;
+				} else if(emailPass == false){
+					alert('이메일을 확인하세요.');
+					event.preventDefault();
+					return;
+				} else if($('#service').is(':checked') == false || $('#privacy').is(':checked') == false){
+					alert('필수 약관에 동의하세요.');
+					event.preventDefault();
+					return;
+				}
+			});
+		}
+		
+		function fn_home(){
+			$('#btn_home').click(function(){
+				location.href = '/';
+			})
+		}
 	</script>
 </head>
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
-	<script>
+	<h1>네이버 간편 가입</h1>
 	
-	$(function(){
-		fn_nicknameCheck();
-		fn_emailCheck();
-		fn_join();
-	});
-	
-	var nicknamePass = false;
-	var emailPass = false;
-	
-	function fn_nicknameCheck(){	
-		$('#btn_nickname_check').click(function(){
-			$('#msg_nickname').text('');
-			
-			// 정규식(2~10자, 한글+영어+숫자)
-			let regNickname = /^[가-힣0-9a-zA-Z]{2,10}$/;
-			
-			let nicknameValue = $('#nickname').val();
-			
-			if(regNickname.test(nicknameValue) == false){
-				$('#msg_nickname').text('닉네임을 확인하세요');
-				nicknamePass = false;
-				return;
-			}
-			
-			$.ajax({
-				/* 요청 */
-				type: 'get',
-				url: '/users/checkReduceNickname',
-				data: 'nickname=' + $('#nickname').val(),
-				/* 응답 */
-				dataType: 'json',
-				success: function(resData){
-					if(resData.isUser || resData.isSleepUser || resData.isRetireUser){
-						$('#msg_nickname').text('이미 사용중인 닉네임입니다.');
-						nicknamePass = false;
-					} else {
-						$('#msg_nickname').text('사용 가능한 닉네임입니다.');
-						nicknamePass = true;
-					}
-				}
-			});
-		});
-	}
-	
-	// 이메일 중복 체크
-	function fn_emailCheck(){	
-		$('#btn_email_check').click(function(){
-			$('#msg_email').text('');
-			
-			// 정규식 
-			let regEmail = /^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+(\.[a-zA-Z]{2,}){1,2}$/;
-			
-			// 입력한 이메일
-			let emailValue = $('#email').val();
-			
-			// 정규식 검사
-			if(regEmail.test(emailValue) == false){
-				$('#msg_email').text('이메일 형식을 확인하세요');
-				emailPass = false;
-				return;
-			}
-			
-			$.ajax({
-				/* 요청 */
-				type: 'get',
-				url: '/users/checkReduceEmail',
-				data: 'email=' + $('#email').val(),
-				/* 응답 */
-				dataType: 'json',
-				success: function(resData){
-					// 기존 회원 정보에 등록된 이메일이라면 실패 처리
-					if(resData.isUser || resData.isSleepUser){
-						$('#msg_email').text('이미 사용중인 이메일입니다.');
-						emailPass = false;
-					} else {
-						$('#msg_email').text('사용 가능한 이메일입니다.');
-						emailPass = true;
-					}
-				}
-			});
-		});
-	}
-	
-	function fn_join(){
-		$('#frm_join').submit(function(event){
-			if(nicknamePass == false){
-				alert('닉네임을 확인하세요.');
-				event.preventDefault();
-				return;
-			} else if(emailPass == false){
-				alert('이메일을 확인하세요.');
-				event.preventDefault();
-				return;
-			} else if($('#service').is(':checked') == false || $('#privacy').is(':checked') == false){
-				alert('필수 약관에 동의하세요.');
-				event.preventDefault();
-				return;
-			}
-		});
-	}
-	
-</script>
-</head>
-<body>
-
-	<div>
-		<h1>네이버 간편 가입</h1>
-	
-		<div>* 표시는 필수 입력사항입니다.</div>
+	<div class="div_all">
 		
 		<hr>
 		
@@ -198,18 +260,21 @@
 			<input type="hidden" name="birthDay" th:value="${profile.birthDay}">
 			<input type="hidden" name="profileImage" th:value="${profile.profileImage}">
 			
-			<div th:text="|이름 : ${profile.name}|"></div>
-			
-			<div th:text="|휴대전화 : ${profile.mobile}|"></div>
-			
-			<div th:text="|생년월일 : ${profile.birthYear}${profile.birthDay}|"></div>
-			
-			<div>
-				<label for="nickname">닉네임*</label>
-				<input type="text" name="nickname" id="nickname" th:value="${profile.nickname}">
-				<input type="button" value="중복체크" id="btn_nickname_check">
-				<span id="msg_nickname"></span>
+			<div class="div_info">
+				<div th:text="|이름 : ${profile.name}|" style="margin-bottom:5px;"></div>
+				
+				<div th:text="|휴대전화 : ${profile.mobile}|" style="margin-bottom:5px;"></div>
+				
+				<div th:text="|생년월일 : ${profile.birthYear}${profile.birthDay}|" style="margin-bottom:5px;"></div>
 			</div>
+			<div>
+				<label for="nickname">닉네임</label>
+			</div>
+			<div>
+				<input type="text" name="nickname" id="nickname" class="inp_text" th:value="${profile.nickname}">
+				<input type="button" value="중복체크" id="btn_nickname_check" class="btn_check">
+			</div>
+			<span id="msg_nickname"></span>
 			<!--  
 			<div>
 				<input type="text" onclick="fn_execDaumPostcode()" name="postcode" id="postcode" placeholder="우편번호" readonly="readonly">
@@ -278,57 +343,57 @@
 				    }
 				</script>
 			</div> -->
-			
 			<div>
-				<label for="email">이메일*</label>
-				<input type="text" name="email" id="email" th:value="${profile.email}">
-				<input type="button" value="중복체크" id="btn_email_check">
-				<span id="msg_email"></span>
+				<label for="email" style="margin-top:5px;">이메일</label>
 			</div>
+			<div>
+				<input type="text" name="email" id="email" class="inp_text" th:value="${profile.email}">
+				<input type="button" value="중복체크" id="btn_email_check" class="btn_check">
+			</div>
+			<span id="msg_email"></span>
 			
 			<hr>
 			
 			<!-- 약관 -->
 			<div>
-				<input type="checkbox" id="check_all" class="blind">
-				<label for="check_all" class="lbl_all">모두 동의</label>
-			</div>
-			
-			<hr>
-			
-			<div>
-				<input type="checkbox" id="service" class="check_one blind">
-				<label for="service" class="lbl_one">이용약관 동의(필수)</label>
-				<div>
-					<textarea>본 약관은 ...</textarea>
+				<div class="form-check form-switch" style="display:inline-block; margin-bottom:10px;">
+					<input type="checkbox" id="check_all" class="form-check-input" role="switch">
+					<label for="check_all" class="orm-check-label">모두 동의</label>
 				</div>
 			</div>
-			<div>
-				<input type="checkbox" id="privacy" class="check_one blind">
-				<label for="privacy" class="lbl_one">개인정보수집 동의(필수)</label>
-				<div>
-					<textarea>개인정보보호법에 따라 ...</textarea>
-				</div>
+			<div class="form-check form-switch" style="display: inline-block;">
+				<input type="checkbox" id="service" class="check_one form-check-input" role="switch">
+				<label for="service" class="orm-check-label">이용약관 동의(필수)</label> <!-- checkbox는 체크하면 name과 value 없어도 넘어간다. -->
 			</div>
 			<div>
-				<input type="checkbox" id="location" name="location" class="check_one blind">
-				<label for="location" class="lbl_one">위치정보수집 동의(선택)</label>
-				<div>
-					<textarea>위치정보 ...</textarea>
-				</div>
+				<textarea readonly class="text_area">이용약관</textarea>
+			</div>
+			<div class="form-check form-switch" style="display: inline-block;">
+				<input type="checkbox" id="privacy" class="check_one form-check-input" role="switch">
+				<label for="privacy" class="orm-check-label">개인정보수집 동의(필수)</label>
 			</div>
 			<div>
-				<input type="checkbox" id="promotion" name="promotion" class="check_one blind">
-				<label for="promotion" class="lbl_one">마케팅 동의(선택)</label>
-				<div>
-					<textarea>이벤트 ...</textarea>
-				</div>
+				<textarea readonly class="text_area">개인정보수집</textarea>
+			</div>
+			<div class="form-check form-switch" style="display: inline-block;">
+				<input type="checkbox" id="location" class="check_one form-check-input" role="switch" name="location"> <!-- checkbox는 체크 안 하면 안 넘어간다. -->
+				<label for="location" class="form-check-label">위치정보수집 동의(선택)</label>
+			</div>
+			<div>
+				<textarea readonly class="text_area">위치정보수집</textarea>
+			</div>
+			<div class="form-check form-switch" style="display: inline-block;">
+				<input type="checkbox" id="promotion" class="check_one form-check-input" role="switch" name="promotion">
+				<label for="promotion" class="form-check-label">마케팅 동의(선택)</label>
+			</div>
+			<div>
+				<textarea readonly class="text_area">이건 나중에 생각하자</textarea>
 			</div>
 			
 			<!-- 버튼 -->
-			<div>
-				<button>가입하기</button>
-				<input type="button" value="취소하기" onclick="history.back()">
+			<div class="div_btn">
+				<input type="button" value="취소하기" id="btn_home" class="btn_gray">
+				<button class="btn_green">가입하기</button>
 			</div>
 		
 		</form>

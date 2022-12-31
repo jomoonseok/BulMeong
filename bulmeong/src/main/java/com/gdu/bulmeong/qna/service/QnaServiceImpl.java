@@ -115,12 +115,6 @@ public class QnaServiceImpl implements QnaService {
 		int depth = Integer.parseInt(request.getParameter("depth"));
 		int qnaGroupNo = Integer.parseInt(request.getParameter("qnaGroupNo"));
 		
-		System.out.println(id);
-		System.out.println(writeAnswer);
-		System.out.println(qnaIp);
-		System.out.println(depth);
-		System.out.println(qnaGroupNo);
-		
 		QnaDTO answer = new QnaDTO();
 		answer.setId(id);
 		answer.setQnaContent(writeAnswer);
@@ -133,7 +127,6 @@ public class QnaServiceImpl implements QnaService {
 		
 		try {
 			if(result > 0) {
-				System.out.println("ahi");
 				depth = 1;
 				QnaDTO qna = new QnaDTO();
 				qna.setDepth(depth);

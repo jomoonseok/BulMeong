@@ -14,4 +14,5 @@ public class FaqDTO {
 	private String faqTitle;
 	private String faqContent;
 	private String faqCreateDate;
+	private int faqCategory;
 }

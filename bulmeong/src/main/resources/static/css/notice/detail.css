@@ -7,20 +7,34 @@
 /* list.html */
 body {
 	width: 70%;
+	height: 100%;
 	margin: auto;
-	border: 1px #a39485 solid;
+/* 	border: 1px #a39485 solid; */
 }  
 
+.css_ccupdegy {
+	width:100%;
+	height:40px;
+	border: 1px rgb(255, 255, 255) solid;
+	border-radius: 15px 15px 0px 0px;
+	background-color: rgba(113, 194, 133);
+}
+
 .css_detail_wrap {
-	border: 1px #a39485 solid;
+	border: 1px rgb(255, 255, 255) solid;
 	margin-top: 20px;
+	box-shadow: 0 2px 5px rgba(0,0,0,.25);
+	border-radius: 15px;
 }
 
 .css_notice_title_wrap{
-	border: 2px #CC4B4C solid;
-	height: 60px;
+	border-bottom: 2px lightgrey solid;
+	height: 50px;
 	font-size: 25px;
-	
+}
+
+.css_notice_title_wrap > span{
+	padding-top: 30px;
 }
 
 #only_admin {
@@ -28,6 +42,10 @@ body {
 	
 }
 
+.css_ooo {
+	vertical-align: middle;
+	border-bottom: 2px lightgrey solid;
+}
 
 .css_notice_createDate {
 	display: inline-block;
@@ -39,6 +57,14 @@ body {
 	margin-right: 3px;
 	color: #a39485;
 	size: 9px;
+}
+
+.css_noticeContent{
+	margin: 10px;
+	padding: 20px;
+	background: rgb(180, 185, 191, 0.2);
+	border-radius: 15px;
+	word-wrap:break-word;
 }
 
 .css_noticeContent > p > img {

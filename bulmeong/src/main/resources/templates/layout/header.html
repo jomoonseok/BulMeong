@@ -7,14 +7,14 @@
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/summernote-lite.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fdc1275e330935fc88dd56ef67687ccd&libraries=services,clusterer,drawing"></script>
 <script defer src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="/js/printThis.js"></script>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" th:href="@{/css/all.css}">
 <link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
+<!-- footer.css -->
+<link th:href="@{/css/footer.css}" rel="stylesheet" />
 <!-- swiper(슬라이드 라이브러리) -->
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 <link rel="stylesheet" th:href="@{/css/swiper@8.45-swiper-bundle.min.css}"/>
@@ -80,22 +80,6 @@
         line-height: 50px;		
     }
 
-/*     #navigation:hover > li .mega-box { */
-/*     	visibility: visible; */
-/*     } */
-    
-/*     .mega-box { */
-/*      	visibility: hidden; */
-		
-		
-/*     } */
-    
-/*     .mega-box > ul > li { */
-/*     	width: 140px; */
-/* 		margin: 0 auto; */
-/*     	text-align: center; */
-/*     } */
-    
     
     .login-box {
     	display: inline;
@@ -240,37 +224,6 @@
 	</div>
 
 	
-	
-<!-- 	<ul id="navigation"> -->
-<!-- 		<li><a th:href="@{/camp}">캠핑예약</a></li> -->
-<!-- 		<li><a th:href="@{/freeboard/list}">캠핑커뮤니티</a> -->
-<!-- 		<div class="mega-box"> -->
-<!-- 			<ul> -->
-<!-- 				<li><a th:href="@{/freeboard/list}">자유게시판</a></li> -->
-<!-- 				<li><a th:href="@{/reviewboard/list}">리뷰게시판</a></li> -->
-<!-- 			</ul> -->
-<!-- 		</div> -->
-<!-- 		</li> -->
-<!-- 		<li><a th:href="@{/qna/list}">고객센터</a> -->
-<!-- 		<div class="mega-box"> -->
-<!-- 			<ul> -->
-<!-- 				<li><a th:href="@{/qna/list}">QnA</a></li> -->
-<!-- 				<li><a th:href="@{/notice/list}">공지사항</a></li> -->
-<!-- 				<li><a th:href="@{/faq/list}">FAQ</a></li> -->
-<!-- 			</ul> -->
-<!-- 		</div> -->
-<!-- 		</li> -->
-<!-- 		<li><a th:href="@{/users/mypage}">마이페이지</a> -->
-<!-- 		<div class="mega-box"> -->
-<!-- 			<ul> -->
-<!-- 				<li><a th:href="@{/users/modify}">회원정보변경</a></li> -->
-<!-- 				<li><a th:href="@{/users/jjim}">찜목록</a></li> -->
-<!-- 				<li><a th:href="@{/users/board/list}">내가 쓴 글</a></li> -->
-<!-- 				<li><a th:href="@{/users/reserve}">예약 내역</a></li> -->
-<!-- 			</ul> -->
-<!-- 		</div> -->
-<!-- 		</li> -->
-<!-- 	</ul> -->
 <style>
 	nav {
 	   width:  100%;

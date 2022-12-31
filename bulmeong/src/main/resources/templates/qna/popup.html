@@ -9,28 +9,7 @@
 		fn_closePopup();
 		
 	});
-		
-//         var parentIpt = document.getElementById('qnaTitle');
-//         var parentIpt = document.getElementById('qnaContent');
-
-
-
-//         function sendData() {
-//             childWindow.onload = function(event) {
-//                 childWindow.document.getElementById('qnaTitle').textContent = parentIpt.value;
-//                 childWindow.document.getElementById('qnaContent').textContent = parentIpt.value;
-//             }
-//         }
-//          document.getElementById('btn_done').onclick = function(event) {
-//             opener.document.getElementById('qnaTitle').textContent = document.getElementById('qnaTitle').textContent;
-//             opener.document.getElementById('qnaContent').textContent = document.getElementById('qnaContent').textContent;
-//             sendData();
-//         }
-        
-// 		function sendChildValue(qnaTitle, qnaContent) {
-// 			opener.setChildValue(qnaTitle, qnaContent);
-// 			window.close();
-// 		}
+	
 		function fn_AddQuestion(){
 			$('#frm_writePop').submit(function(event){
 				
@@ -48,17 +27,7 @@
 				window.close();
 			});
 		}
-		
-// 		function fn_submitPopup(){	
-// 			$('#btn_popupSubmit').submit(function(){
-// 				if($('#noticeTitle').val() == ''){
-// 					alert('제목을 입력하세요.');
-// 					event.preventDefault();
-// 					return;
-// 				}
-// 			})
-// 		}
-        
+
 </script>
 
 <body>
@@ -88,24 +57,5 @@
     </form>
     
 </body>
-<!-- <body> -->
-	
-<!-- 	<div> -->
-<!-- 		<label for="qnaTitle">제목</label> -->
-<!-- 		<input type="text" id="qnaTitle" placeholder="제목을 입력하세요."> -->
-<!-- 	</div> -->
-<!-- 	<div> -->
-<!-- 		<textarea rows="150" cols="150" id="qnaContent" placeholder="내용을 입력하세요."></textarea> -->
-<!-- 	</div> -->
 
-<!-- 	<hr> -->
-	
-<!-- 	<div class="footer"> -->
-<!-- 		<button>작성완료</button> -->
-<!-- 		<input type="reset" value="입력초기화"> -->
-<!-- 		<input type="button" value="목록" id="btn_list"> -->
-<!-- 		<input type="button">	 -->
-<!-- 	</div> -->
-
-<!-- </body> -->
 </html>
