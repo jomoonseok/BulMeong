@@ -47,7 +47,32 @@
 			fn_checkOne();
 			fn_submit();
 			fn_home();
+			fn_test();
 		});
+		
+		function fn_test(){
+			var arr1 = ['a', 'b', 'c'];
+			var arr2 = [1, 2, 3];
+			
+			var obj = {
+					'arr1' : arr1,
+					'arr2' : arr2
+			};
+			
+			$('#test').click(function(){
+				$.ajax({
+					url: '/users/test',
+					type: 'post',
+					contentType: 'application/json',
+					data: JSON.stringify(obj),
+					dataType: 'json',
+					success: function(resData){
+						console.log(resData);
+					}
+				});
+			});
+			
+		}
 		
 		function fn_checkAll(){
 			$('#check_all').click(function(){
@@ -83,7 +108,7 @@
 	</script>
 </head>
 <body>
-
+	<!-- <input type="button" id="test" value="test"> -->
 	<a th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="200px" style="margin: 10px"></a>
 
 	<!-- <header th:replace="~{layout/header::header_layout}"></header> -->

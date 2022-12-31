@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gdu.bulmeong.users.interceptor.KeepLoginInterceptor;
+import com.gdu.bulmeong.users.interceptor.PreventLoginInterceptor;
 import com.gdu.bulmeong.users.interceptor.SleepUserCheckingInterceptor;
 import com.gdu.bulmeong.util.MyFileUtil;
 
@@ -21,6 +22,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	
 	@Autowired
 	private MyFileUtil myFileUtil;
+	
+	@Autowired
+	private PreventLoginInterceptor preventLoginInterceptor;
 	
    @Override
    public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -44,6 +48,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
       
       registry.addInterceptor(sleepUserCheckingInterceptor)
       .addPathPatterns("/users/login");
+      
+      registry.addInterceptor(preventLoginInterceptor)
+      .addPathPatterns("/users/agree")
+      .addPathPatterns("/users/join/write")
+      .addPathPatterns("/users/login/form")
+      .addPathPatterns("/users/naver/login")
+      .addPathPatterns("/users/sleep/display")
+      .addPathPatterns("/users/findId/form")
+      .addPathPatterns("/users/findPw/form");
       
    }
 }

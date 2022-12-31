@@ -287,7 +287,6 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public void login(HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 파라미터
-		String url = request.getParameter("url");
 		String id = request.getParameter("id");
 		String pw = request.getParameter("pw");
 		String nickname = request.getParameter("nickname");
@@ -336,7 +335,7 @@ public class UsersServiceImpl implements UsersService {
 		        Date now = format.parse(date);
 		        model.addAttribute("pwModifyDate", cal.getTime().compareTo(now));
 		        request.getSession().setAttribute("pwModifyDate", cal.getTime().compareTo(now));
-				response.sendRedirect(url);
+				response.sendRedirect("/");
 			} catch(ParseException e) {
 				e.printStackTrace();
 			} catch(IOException e) {
@@ -1232,7 +1231,14 @@ public class UsersServiceImpl implements UsersService {
 		String id = loginUser.getId();
 		
 		model.addAttribute("jjim", usersMapper.selectJjimList(id));
-		model.addAttribute("loginUser", loginUser);
+	}
+	
+	@Override
+	public void getFreeBoardList(HttpServletRequest request, Model model) {
+		UsersDTO loginUser = (UsersDTO)request.getSession().getAttribute("loginUser");
+		String id = loginUser.getId();
+		
+		model.addAttribute("boardList", usersMapper.selectBoardList(id));
 	}
 	
 }
