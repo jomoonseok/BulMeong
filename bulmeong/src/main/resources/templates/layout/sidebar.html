@@ -3,6 +3,19 @@
 <title th:text="${title}"></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <div th:fragment="sidebar_layout">
+<style>
+li:hover {
+	color:#71C285;
+	cursor: pointer;
+}
+a:hover {
+	color:#71C285;
+}
+
+.alink:hover {
+	color:#71C285;
+}
+</style>
 <script>
     $(function () {
 //         $(".left_sub_menu").hide();
@@ -23,6 +36,14 @@
         $(".sub_menu ul.small_menu").hide();
         $(".sub_menu ul.big_menu").click(function () {
             $("ul", this).slideToggle(50);
+        });
+        
+        $(document).ready(function(){
+        	var currentPosition = parseInt($('.topbar').css('top'));
+        	$(window).scroll(function() {
+        		var position = $(window).scrollTop();
+        		$('.topbar').stop().animate({"top":position+currentPosition+"px"},0);
+        	});
         });
     });
 </script>
@@ -82,9 +103,9 @@
 		                    	<li style="list-style: none; font-size: 14px;"><a th:href="@{/faq/list}">FAQ</a></li>
 		                	</ul>
 		                </ul>
-		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;">
 		                <hr style="border-style: dotted; width:170px; margin: auto;">
 		                <br>
+		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;">
 		                    <li>고객센터 <i class="arrow fas fa-angle-right"></i></li>
 		                    <ul class="css_mypage_sub_menu">
 		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/notice/list}">공지사항</a></li>
@@ -92,7 +113,13 @@
 		                    	<li style="list-style: none; font-size: 14px;"><a th:href="@{/faq/list}">FAQ</a></li>
 		                	</ul>
 		                </ul>
-		                <br>
+		                 <hr style="border-style: dotted; width:170px; margin: auto;">
+		                 <br>
+		                 <th:block th:if="${session.loginUser.id == 'admin'}">
+		                 	<ul class="big_menu">
+		                		<li style="list-style: none; font-size: 18px;"><a th:href="@{/admin}" class="alink" style="color: black;">관리자 전용 <i class="arrow fas fa-angle-right"></i></a></li>
+		            		</ul>
+		                 </th:block>
 		        	</div>
 		    	</div>
 			</div>
