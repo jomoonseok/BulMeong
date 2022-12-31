@@ -1,0 +1,23 @@
+@charset "EUC-KR";
+
+#wrapper2{ 
+min-height: 100%;
+}
+
+footer {
+transform: translatY(-100%);
+margin: 40px 0;
+}
+
+.div_footer {
+	text-align: center;
+ 	padding: 2% 0 0 0;
+	margin: auto;
+	font-size: 8px;
+}
+.div_footer_bottom {
+	text-align: center;
+	margin: auto;
+	font-size: 6px;
+	color: rgb(180, 185, 191);
+}
