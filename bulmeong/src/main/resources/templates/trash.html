@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<link th:href="@{/css/index.css}" rel="stylesheet" />
+
+<body>
+
+	<header th:replace="~{layout/header::header_layout}"></header>
+  	
+  	<div id="weatherArea">
+	 	<div class="xyLoaction">
+	 		<div class="location"></div>
+	 	</div>
+	 	<div class="xyWeather">
+	 		<div class="today" style="float:left"></div>
+	 		<div class="tomorrow" style="float:left"></div>
+	 		<div class="afterTomorrow" style="float:left"></div>
+	 	</div>
+  	</div>
+  	
+	<script>
+		
+		// 위치정보 받아오기
+		navigator.geolocation.getCurrentPosition(
+			
+			function(position) {
+				var latitude = position.coords.latitude;
+				var longitude = position.coords.longitude;
+				
+				fn_addr(latitude, longitude);     // 좌표->주소 api
+				fn_weather(latitude, longitude);  // 좌표->날씨 api
+				
+			}, 
+		);
+
+		// 주소 api 받아오기 https://www.vworld.kr/dev/v4dv_geocoderguide_s002.do
+		function fn_addr(x, y) {
+		    $.ajax({
+				type: 'get',
+				url: '/index/location',
+				data: 'latitude=' + x + '&longitude=' + y,
+				success: function(resData) {
+					var jsonObj = JSON.parse(resData.location);  // jsonObj - ADDR : "서울특별시 금천구 가산동 557-3"
+					$('.location').append('<div>현재 위치 : ' + jsonObj.ADDR + ' 부근</div>');
+				}
+			})
+	    }
+		
+		// 오늘 날짜 구하기(yyyyMMdd)
+		function getToday(){
+		    var date = new Date();
+		    var year = date.getFullYear();
+		    var month = ("0" + (1 + date.getMonth())).slice(-2);
+		    var day = ("0" + date.getDate()).slice(-2);
+
+		    return year + month + day;
+		}
+		
+		
+		// 기상청 api 받아오기
+	    function fn_weather(x, y) {
+		    $.ajax({
+				type: 'get',
+				url: '/index/weather',
+				data: 'latitude=' + x + '&longitude=' + y,
+				success: function(resData) {
+					var skyDiv = '<div>';
+					var todayDiv = '<div>오늘&nbsp;(' + resData.todayDate + ')</div>';
+					
+					$.each(resData.todayWeather, function(i, today) {
+						
+						switch(today.fcstValue) {
+						case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+						case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+						case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;	height: 59px;"></div>'; break;
+						
+						}
+						
+						todayDiv += '<div class="todayDiv" data-idx="' + i + '">' + today.category + ' : ' + today.fcstValue + '</div>'; 
+					})
+					$('.today').append(skyDiv);
+					$('.today').append(todayDiv);
+					
+					var tomorrowDiv = '<div>내일&nbsp;(' + resData.tomorrowDate + ')</div>';
+					$.each(resData.tomorrowWeather, function(i, tomorrow) {
+						
+						switch(tomorrow.fcstValue) {
+						case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+						case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+						case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;	height: 59px;"></div>'; break;
+						
+						}
+						
+						tomorrowDiv += '<div class="tomorrowDiv" data-idx="' + i + '">' + tomorrow.category + ' : ' + tomorrow.fcstValue + '</div>'; 
+					})
+					$('.tomorrow').append(skyDiv);
+					$('.tomorrow').append(tomorrowDiv);
+					
+					var afterTomorrowDiv = '<div>모레&nbsp;(' + resData.afterTomorrowDate + ')</div>';
+					$.each(resData.afterTomorrowWeather, function(i, afterTomorrow) {
+						
+						switch(afterTomorrow.fcstValue) {
+						case "맑음": skyDiv = '<div style="background:url(/images/index/weather_image.png) no-repeat -4px -37px; width: 65px; height: 64px;"></div>'; break;
+						case "구름많음": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -97px -36px; width: 88px; height: 66px;"></div>'; break;
+						case "흐림": skyDiv = '<div style="background:url(images/index/weather_image.png) no-repeat -106px -222px; width: 69px;	height: 59px;"></div>'; break;
+						
+						}
+						
+						afterTomorrowDiv += '<div class="afterTomorrowDiv" data-idx="' + i + '">' + afterTomorrow.category + ' : ' + afterTomorrow.fcstValue + '</div>'; 
+					})
+					$('.afterTomorrow').append(skyDiv);
+					$('.afterTomorrow').append(afterTomorrowDiv);
+				}
+			})
+	    }
+	</script>
+	
+
+</body>
+</html>

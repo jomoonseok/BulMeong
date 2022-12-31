@@ -1,6 +1,10 @@
 @charset "EUC-KR";
 
 body {
+	margin: 0 auto;
+}
+
+header {
 	width: 70%;
 	margin: 0 auto;
 }
@@ -11,7 +15,7 @@ body {
 /*    grid-template-rows: 50% 50% 50%; */
 /*    margin: 30px; */
 /* } */
- 	
+
 .jjimListArea {
 	text-align: center;
 	width: 98%;
@@ -49,17 +53,38 @@ body {
 
 
 /* 자유게시판 표 */
-.freebrd_title_box {
-	width: auto;
-	margin: 30px 0;
-	text-align: center;
-
-}
 
 .freebrd_title {
 	font-size: 13px;
 	color: gray;
-	border-bottom: 1px solid gray;
+}
+
+
+.freebrd_title:hover {
+	color: rgb(204, 75, 76, 0.8);
+
+}
+
+.top5_style {
+	font-size: 25px;
+	transition: all ease 1s;
+}
+.top5_style:hover {
+	font-size: 25px;
+	transform: rotate( 5deg );
+}
+
+
+
+
+
+.freebrd_title_box {
+	width: auto;
+	margin: 30px 0;
+	text-align: center;
+}
+.freebrd_title_box:hover {
+	
 }
 
 
@@ -69,30 +94,33 @@ body {
 .freeBoardList {
 	max-width: 100%;
 	overflow: hidden;
-	background: rgb(180, 185, 191, 0.2);
+	padding-bottom: 40px;
+	width: 70%;
+	margin: 0 auto;
 }
 
 .freebrd_box {
 	margin: auto;
 	width: auto;
-	padding: 20px 0px; 
+	padding:  0px; 
 }
 
 .freebrd_one_box {
 	display: inline-block;
 	margin: 0 2%;
 	padding: 10px;
-	border: 5px solid rgb(240, 241, 242);
+	border: 3px solid rgb(204, 75, 76, 0.1);
 	border-radius: 15px;
 	
-	background: rgb(204, 75, 76, 0.2);
-	outline: 0.5px dotted rgb(204, 75, 76);
+	outline: 0.5px dotted rgb(180, 185, 191);
 	
+	box-shadow: 5px 5px 5px rgb(125, 125, 125, 0.3);
+		
 	width: 16%;
-	height: 200px;
+	height: 300px;
 	
 	max-width: 16%;
-	max-height: 200px;
+	max-height: 300px;
 	overflow: hidden;
 	
 	word-wrap:break-word;
@@ -103,25 +131,48 @@ body {
 	padding: 10px 0;
 	border-bottom: 1px solid;
 }
+.free_title:hover > a {
+	color: rgb(204, 75, 76, 0.8);
+}
+
 
 .free_content > a {
+	width: 100%;
+	height: 80%;
+	margin: 0;
+	/* 넘치는 글자 */
 	text-overflow: ellipsis;
-	  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100px;
-  height: 20px;
+	overflow: hidden;
+	word-break: break-word;
+	display: -webkit-box;
+	/* 생략할 줄 */
+	-webkit-line-clamp: 7;
+	-webkit-box-orient: vertical;
+	font-size: 12px;
+	color: rgb(125, 125, 125);
+}
+
+.free_content > a:hover {
+	color: rgb(204, 75, 76, 0.8);
+	
 }
 
 .free_like_style {
-
+	position: absolute;
+	bottom: 35px;
+	font-size: 13px;
 }
 
 .free_nickname {
-
+	position: absolute;
+	bottom: 10px;
+	font-size: 13px;
 }
 
 .free_createDate {
-
-
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	font-size: 11px;
+	color: rgb(125, 125, 125);
 }
