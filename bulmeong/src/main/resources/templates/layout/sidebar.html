@@ -93,6 +93,13 @@
 		                	</ul>
 		                </ul>
 		                <br>
+		                <hr style="border-style: dotted; width:170px; margin: auto;">
+		             	<br>
+	                 	<th:block th:if="${session.loginUser.id == 'admin'}">
+	                 		<ul class="big_menu">
+	                			<li style="list-style: none; font-size: 18px;"><a th:href="@{/admin}" class="alink" style="color: black;">관리자 전용 <i class="arrow fas fa-angle-right"></i></a></li>
+	            			</ul>
+	                 	</th:block>
 		        	</div>
 		    	</div>
 			</div>
@@ -132,13 +139,6 @@
 		                	<li style="list-style: none; font-size: 14px;"><a th:href="@{/faq/list}">FAQ</a></li>
 		             	</ul>
 		             </ul>
-		             <hr style="border-style: dotted; width:170px; margin: auto;">
-		             <br>
-	                 <th:block th:if="${session.loginUser.id == 'admin'}">
-	                 	<ul class="big_menu">
-	                		<li style="list-style: none; font-size: 18px;"><a th:href="@{/admin}" class="alink" style="color: black;">관리자 전용 <i class="arrow fas fa-angle-right"></i></a></li>
-	            		</ul>
-	                 </th:block>
 		         </div>
 			</div>
     	</div>
