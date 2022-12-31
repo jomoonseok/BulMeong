@@ -2,7 +2,7 @@
 # web.xml
 # session(1800 seconds = 30 minutes)
 server:
-#  port: 9090
+  port: 9090
   servlet: 
     encoding: 
       charset: UTF-8
@@ -18,8 +18,8 @@ server:
 # mail
 spring:
 
-  main:
-    web-application-type: none  # not use embeded tomcat
+#  main:
+#    web-application-type: none  # not use embeded tomcat
 
   datasource:
     hikari: 
@@ -28,13 +28,13 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #      jdbc-url: jdbc:mysql://203.245.44.15:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       # jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-      username: bulmeong
-      password: asdf1235!
+      username: root
+      password: 1111
   mail: 
     host: smtp.gmail.com
     port: 587
-    username: moon97102002@gmail.com
-    password: whlhxpaugzvysjvl
+    username: 
+    password: 
     properties:
       mail: 
         smtp: 
