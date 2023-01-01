@@ -69,6 +69,19 @@ body {
     color: white;
 }
 
+#btn_submitAnswer {
+	border: 1px #CC4B4C solid;
+	border-radius:7px;
+	color: rgba(204, 75, 76);
+	background-color: white;
+}
+
+#btn_submitAnswer:hover {
+	background-color: rgba(204, 75, 76); 
+    transition-duration: 0.3s;
+    color: white;
+}
+
 tbody span {
 	/* 얘를 depth 1 일때(답변) 으로 수정하기 */
 	/* list.html도 blind빠져야함 */

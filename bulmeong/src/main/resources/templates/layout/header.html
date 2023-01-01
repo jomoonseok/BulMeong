@@ -7,7 +7,6 @@
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/summernote-lite.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
-<script defer src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="/js/printThis.js"></script>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -177,8 +176,7 @@
 	<!-- 로그인이 안 된 상태 -->
 	<div class="login-box" th:if="${session.loginUser == null}">
 		<a th:href="@{/users/agree}">회원가입</a> ｜
-		<a th:href="@{/users/login/form}" class="a_login">로그인</a> ｜
-		<a th:href="@{/admin}">관리자 전용</a>
+		<a th:href="@{/users/login/form}" class="a_login">로그인</a>
 	</div>
 	
 	<!-- 로그인이 된 상태 -->
@@ -219,6 +217,9 @@
 		</a>
 		<a th:text="|${session.loginUser.nickname}|" class="nickname" th:href="@{/users/mypage}"></a>님
 		<a th:href="@{/users/logout}"  class="a_logout">로그아웃</a>
+		<div th:if="${session.loginUser.id == 'admin'}">
+			<a th:href="@{/admin}">관리자 페이지로 이동</a>
+		</div>
 	</div>
 
 	

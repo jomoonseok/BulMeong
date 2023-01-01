@@ -82,7 +82,7 @@ table {
    box-shadow: 0 2px 5px rgba(0,0,0,.25);
    width: 100%;
    border-collapse: collapse;
-   border-radius: 5px;
+   border-radius: 15px;
    overflow: hidden;
    margin: auto;
 }

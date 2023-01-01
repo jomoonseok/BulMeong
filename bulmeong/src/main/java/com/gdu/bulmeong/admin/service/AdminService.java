@@ -1,5 +1,6 @@
 package com.gdu.bulmeong.admin.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public interface AdminService {
 	
 	public void adminCheck(HttpServletRequest request, Model model);
-	public Map<String, Object> getAllUser();
+	public Map<String, Object> getAllUser(HttpServletRequest request);
+	public Map<String, Object> removeUser(List<Integer> usersNo);
 	public Map<String, Object> getAllCamp(HttpServletRequest request);
 	public Map<String, Object> getAllTent(HttpServletRequest request);
 	public Map<String, Object> getCampcampNofacltNm();

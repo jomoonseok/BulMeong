@@ -3,20 +3,6 @@
 <head th:replace="~{layout/header::head('약관 동의')}"></head>
 <head>
 	<style>
-		/*
-		.blind {
-			display: none;
-		}
-		.lbl_all, .lbl_one {
-			padding-left: 20px;
-			background-image: url(/images/userimage/uncheck.png);
-			background-size: 18px 18px;
-			background-repeat: no-repeat;
-		}
-		.lbl_checked {
-			background-image: url(/images/userimage/check.png);
-		}
-		*/
 		.div_all {
 			width:450px;
 			margin: 0 auto;
@@ -38,7 +24,6 @@
 			border-radius: 7px;
 			border: none;
 			background-color: rgb(3, 199, 90);
-			/*background-color: rgb(113, 194, 133);*/
 			color: white;
 		}
 		
@@ -60,19 +45,38 @@
 		$(function(){
 			fn_checkAll();
 			fn_checkOne();
-			//fn_toggleCheck();
 			fn_submit();
+			fn_home();
+			fn_test();
 		});
+		
+		function fn_test(){
+			var arr1 = ['a', 'b', 'c'];
+			var arr2 = [1, 2, 3];
+			
+			var obj = {
+					'arr1' : arr1,
+					'arr2' : arr2
+			};
+			
+			$('#test').click(function(){
+				$.ajax({
+					url: '/users/test',
+					type: 'post',
+					contentType: 'application/json',
+					data: JSON.stringify(obj),
+					dataType: 'json',
+					success: function(resData){
+						console.log(resData);
+					}
+				});
+			});
+			
+		}
 		
 		function fn_checkAll(){
 			$('#check_all').click(function(){
 				$('.check_one').prop('checked', $(this).prop('checked'));
-				/*
-				if($(this).is(':checked')){  
-					$('.lbl_one').addClass('lbl_checked');
-				} else {
-					$('.lbl_one').removeClass('lbl_checked');
-				}*/
 			});
 		}
 		
@@ -83,21 +87,9 @@
 					checkCnt += $($('.check_one')[i]).prop('checked');
 				}
 				$('#check_all').prop('checked', $('.check_one').length == checkCnt);	
-				/*
-				if($('#check_all').is(':checked')){
-					$('.lbl_all').addClass('lbl_checked');
-				} else {
-					$('.lbl_all').removeClass('lbl_checked');
-				}*/
 			});
 		}
-		/*
-		function fn_toggleCheck(){
-			$('.lbl_all, .lbl_one').click(function(){
-				$(this).toggleClass('lbl_checked');
-			})
-		}
-		*/
+		
 		function fn_submit(){
 			$('#frm_agree').submit(function(event){
 				if($('#service').is(':checked') == false || $('#privacy').is(':checked') == false){
@@ -108,10 +100,15 @@
 			});
 		}
 		
+		function fn_home(){
+			$('#btn_home').click(function(){
+				location.href = '/';
+			})
+		}
 	</script>
 </head>
 <body>
-
+	<!-- <input type="button" id="test" value="test"> -->
 	<a th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="200px" style="margin: 10px"></a>
 
 	<!-- <header th:replace="~{layout/header::header_layout}"></header> -->
@@ -156,7 +153,7 @@
 				<textarea readonly style="width:450px; height:80px;">이건 나중에 생각하자</textarea>
 			</div>
 			<div class="div_btn">
-				<input type="button" class="btn_cancel" value="취소" onclick="history.back();">
+				<input type="button" id="btn_home" class="btn_cancel" value="취소">
 				<button class="btn_submit">다음</button>
 			</div>
 		</form>
