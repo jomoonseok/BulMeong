@@ -45,6 +45,11 @@ a:hover {
         		$('.topbar').stop().animate({"top":position+currentPosition+"px"},0);
         	});
         });
+        
+        $('#review').click(function(){
+        	alert('기능구현중입니다.');
+
+        })
     });
 </script>
 
@@ -99,7 +104,7 @@ a:hover {
 		                    <li>캠핑 커뮤니티 <i class="arrow fas fa-angle-right"></i></li>
 		                    <ul class="css_mypage_sub_menu" style="margin-left: 20px;">
 		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/freeboard/list}">자유게시판</a></li>
-		                    	<li style="list-style: none; font-size: 14px;"><a th:href="@{/reviewboard/list}">리뷰게시판</a></li>
+		                    	<li style="list-style: none; font-size: 14px;"><a th:href="@{#}" id="review">리뷰게시판</a></li>
 		                	</ul>
 		                </ul>
 		                <hr style="border-style: dotted; width:170px; margin: auto;">
