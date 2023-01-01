@@ -1,5 +1,6 @@
 package com.gdu.bulmeong.admin.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
@@ -28,7 +30,6 @@ public class AdminController {
 		adminService.adminCheck(request, model);
 		return "/admin/main";
 	}
-
 	
 	// 유저
 	@GetMapping("/admin/userManage")
@@ -38,10 +39,15 @@ public class AdminController {
 	
 	@ResponseBody
 	@PostMapping(value="/admin/getAllUser", produces="application/json")
-	public Map<String, Object> getAllUser() {
-		return adminService.getAllUser();
+	public Map<String, Object> getAllUser(HttpServletRequest request) {
+		return adminService.getAllUser(request);
 	}
 	
+	@ResponseBody
+	@PostMapping("/admin/userRemove")
+	public Map<String, Object> userRemove(@RequestParam(value="retireArr[]") List<Integer> usersNo) {
+		return adminService.removeUser(usersNo);
+	}
 	
 	
 	// 캠프

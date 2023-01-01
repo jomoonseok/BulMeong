@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head th:replace="~{layout/header::head('Bul meong 글쓰기')}"></head>
 <link th:href="@{/css/freeboard/write.css}" rel="stylesheet" />
 <script>
 
@@ -46,6 +46,7 @@
 	
 <body>
 	<header th:replace="~{layout/header::header_layout}"></header>
+	<div th:replace="~{layout/sidebar::sidebar_layout}"></div>
 	
 	<div class="top_image">
 		<img th:src="@{/images/freeboard/campfire.jpg}" class="image_style">

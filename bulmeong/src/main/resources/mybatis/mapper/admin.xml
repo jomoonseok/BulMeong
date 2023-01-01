@@ -9,6 +9,19 @@
 	<select id="selectAllUser" parameterType="Map" resultType="UsersDTO">
 		SELECT USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE
 		  FROM USERS
+		 ORDER BY USERS_NO
+	 	 LIMIT #{begin}, #{recordPerPage}
+	</select>
+	
+	<delete id="deleteUser" parameterType="int">
+		DELETE
+		  FROM USERS
+		 WHERE USERS_NO = #{userNo}
+	</delete>
+	
+	<select id="selectAllUserCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM USERS
 	</select>
 	
 	<select id="selectAllCampAdmin" parameterType="Map" resultType="CampDTO">
