@@ -31,7 +31,7 @@
 	<header th:replace="~{layout/header::header_layout}"></header>
 	
 	<br><br><br>
-	<div th:text="${boardList}"></div>
+	
 	<div class="container" >
 	
 		<table style="width:90%;">
@@ -49,13 +49,12 @@
 			<tbody>
 				<tr th:each="boardList : ${boardList}" class="tbl_border_right2">
 					<td th:text="${boardList.freeNo}"></td>
-					<td th:text="${boardList.freeTitle}"></td>
-					<!-- <td th:text="${boardList}"></td> -->
-					<td>좋아요</td>
+					<td th:text="|${boardList.freeTitle}(${cmtList[boardListStat.index]})|"></td>
+					<td th:text="${likeList[boardListStat.index]}"></td>
 					<td th:text="${boardList.nickname}"></td>
 					<td th:text="${boardList.freeCreateDate}"></td> 
-					<td th:text="${boardList.freeHit}"></td> <!-- /freeboard/increse/hit?freeNo=${free.freeNo} -->
-					<td><input type="button" class="btn_green" th:onclick="location.href='/detail?campNo=[[${boardList.freeNo}]]'" value="바로가기"></td>
+					<td th:text="${boardList.freeHit}"></td>
+					<td><input type="button" class="btn_green" th:onclick="location.href='/freeboard/increse/hit?freeNo=[[${boardList.freeNo}]]'" value="바로가기"></td>
 				</tr>
 			</tbody>
 		</table>
