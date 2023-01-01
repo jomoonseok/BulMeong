@@ -23,7 +23,21 @@ public class UsersController {
 
 	@Autowired 
 	private UsersService usersService;
-	
+	/*
+	@ResponseBody
+	@PostMapping(value="/users/test", produces="application/json")
+	public Map<String, Object> test(@RequestBody Map<String, Object> map) {
+		System.out.println(map);
+		System.out.println(map.get("arr1"));
+		System.out.println(map.get("arr1").getClass().getName());
+		
+		Map<String, Object> test = new HashMap<String, Object>();
+		test.put("test", "test");
+		System.out.println(test);
+		
+		return map;
+	}
+	*/
 	@GetMapping("/")
 	public String index() {
 		return "index";
@@ -81,7 +95,7 @@ public class UsersController {
 	public String loginForm(HttpServletRequest request, Model model) {
 		
 		// 요청 헤더 referer : 이전 페이지의 주소가 저장
-		model.addAttribute("url", request.getHeader("referer"));  // 로그인 후 되돌아 갈 주소 url
+		// model.addAttribute("url", request.getHeader("referer"));  // 로그인 후 되돌아 갈 주소 url
 		
 		// 네이버 로그인
 		model.addAttribute("apiURL", usersService.getNaverLoginApiURL(request));
@@ -119,7 +133,7 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response) {
+	public String requiredLogin_logout(HttpServletRequest request, HttpServletResponse response) {
 		usersService.logout(request, response);
 		return "redirect:/";
 	}
@@ -162,7 +176,8 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/board/list")
-	public String requiredLogin_boardList() {
+	public String requiredLogin_boardList(HttpServletRequest request, Model model) {
+		usersService.getFreeBoardList(request, model);
 		return "users/boardList";
 	}
 	
@@ -194,7 +209,7 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/findPw/form")
-	public String findPW() {
+	public String findPw() {
 		return "users/findPw";
 	}
 	
@@ -211,12 +226,9 @@ public class UsersController {
 	}
 	
 	@GetMapping("/users/popUp")
-	public String pw() {
+	public String requiredLogin_pw() {
 		return "users/pwPopUp";
 	}
-	
-	
-	
 	
 	@GetMapping("/users/profile")
 	public String requiredLogin_modifyProfileImage() {
