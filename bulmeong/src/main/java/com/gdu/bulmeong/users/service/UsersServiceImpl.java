@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -1238,7 +1239,18 @@ public class UsersServiceImpl implements UsersService {
 		UsersDTO loginUser = (UsersDTO)request.getSession().getAttribute("loginUser");
 		String id = loginUser.getId();
 		
-		model.addAttribute("boardList", usersMapper.selectBoardList(id));
+		List<FreeBoardDTO> boardList = usersMapper.selectBoardList(id);
+		List<Integer> likeList = new ArrayList<Integer>();
+		List<Integer> cmtList = new ArrayList<Integer>();
+		
+		for(int i=0; i<boardList.size(); i++) {
+			likeList.add(usersMapper.selectLikeCount(boardList.get(i).getFreeNo()));
+			cmtList.add(usersMapper.selectCmtCount(boardList.get(i).getFreeNo()));
+		}
+		
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("likeList", likeList);
+		model.addAttribute("cmtList", cmtList);
 	}
 	
 }
