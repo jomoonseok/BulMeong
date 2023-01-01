@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('BulMeong')}"></head>
-<link th:href="@{/css/freeboard.css}" rel="stylesheet" />
+<link th:href="@{/css/reviewboard.css}" rel="stylesheet" />
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
@@ -36,6 +36,24 @@
 				}
 				
 			});
+			
+			$('#btn_top').click(function(){
+				window.scrollTo({ top: 0, behavior: "smooth" });
+			});
+			
+			function linkCopy() {
+				
+				var url = '';
+				var textarea = document.createElement("textarea");
+				document.body.appendChild(textarea);
+				url = window.document.location.href;
+				textarea.value = url;
+				textarea.select();
+				document.execCommand("copy");
+				document.body.removeChild(textarea);
+				alert("URL이 복사되었습니다.");
+		
+			}
 			
 		});
 	</script>
@@ -76,66 +94,25 @@
 			
 			<div id="board_content" th:utext="${review.reviewContent}"></div>
 		
-			<!-- <div th:text="${freeCmt}"></div> -->
-		
 			<hr>
 			
-			<!-- 4. 댓글 카운트 -->
-		<!-- 	<div style="margin-bottom: 9px">
-				<div class="cmt_cnt_box">
-					<span id="btn_comment_list">
-						<i class="fa-regular fa-comment-dots"></i>&nbsp;댓글
-						<span id="comment_count"></span>개
+			<div class="footer_btn_group">
+				<form id="frm_btn" method="post">
+					<input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
+					<input type="hidden" name="id" th:value="${review.id}">
+					<input type="button" class="footer_btn1" value="목록" th:onclick="|location.href='@{/reviewboard/list}'|">
+					<input type="button" class="footer_btn2" value="글쓰기" id="btn_write" th:if="${session.loginUser} != null">
+					<span th:if="${session.loginUser} != null and ${review.id == session.loginUser.id}">
+						<input type="button" class="footer_btn3" value="수정" id="btn_edit">
+						<input type="button" class="footer_btn4" value="삭제" id="btn_remove">
 					</span>
-				</div>
-				3. 좋아요
-				<div class="like_box">
-					<a id="lnk_like">
-						<span id="heart"></span>&nbsp;<span id="like"></span><span id="like_count"></span>
-					</a>
-				</div>
-			</div> -->
-			
-			
-			<!-- 5. 댓글 추가 -->
-		<!-- 	<div>
-				<form id="frm_add_comment" th:if="${session.loginUser} != null">
-					<div class="add_comment">
-						<div class="add_comment_input">
-							<input type="text" name="freeCmtContent" id="content" placeholder="댓글을 입력해주세요.">
-							<input type="button" value="등록" id="btn_add_comment">
-	 						<input type="hidden" name="freeGroupNo" th:value="0">
-						</div>
-					</div>
-					<input type="hidden" name="freeNo" th:value="${free.freeNo}">
-				</form>
-			</div>	 -->
-			
-			
-			<hr>
-			<!-- 6. 댓글 내용 -->
-			<!-- <div id="comment_area">
-				<div id="comment_list"></div>
-				<div id="paging" class="paging"></div>
+					<input type="button" class="footer_btn5" value="▲" id="btn_top">
+				</form>	
 			</div>
-		</div> -->
+			
+		</div>	
 	</div>
 
-
-	<!-- 6. 게시판 하단 버튼 -->
-	<div class="footer_btn_group">
-		<form id="frm_btn" method="post">
-			<input type="hidden" name="reviewNo" th:value="${review.reviewNo}">
-			<input type="hidden" name="id" th:value="${review.id}">
-			<input type="button" class="footer_btn1" value="목록" th:onclick="|location.href='@{/reviewboard/list}'|">
-			<input type="button" class="footer_btn2" value="글쓰기" id="btn_write" th:if="${session.loginUser} != null">
-			<span th:if="${session.loginUser} != null and ${review.id == session.loginUser.id}">
-				<input type="button" class="footer_btn3" value="수정" id="btn_edit">
-				<input type="button" class="footer_btn4" value="삭제" id="btn_remove">
-			</span>
-			<input type="button" class="footer_btn5" value="▲" id="btn_top">
-		</form>	
-	</div>
 
 
 </body>

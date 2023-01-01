@@ -68,6 +68,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		
 		HttpSession session = request.getSession();
 		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
+		String id = loginUser.getId();
 		String nickname = loginUser.getNickname();
 		String reviewTitle = request.getParameter("reviewTitle");
 		int campNo = Integer.parseInt(request.getParameter("campNo"));
@@ -76,6 +77,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		String reviewIp = request.getRemoteAddr();
 		
 		ReviewBoardDTO reviewBoard = ReviewBoardDTO.builder()
+				.id(id)
 				.nickname(nickname)
 				.reviewTitle(reviewTitle)
 				.campNo(campNo)
@@ -117,9 +119,174 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 		return result;
 	}
 	
+	@Override
+	public ReviewBoardDTO getReviewBoardByNo(int reviewNo) {
+		return reviewBoardMapper.selectReviewBoardByNo(reviewNo);
+	}
 	
+	@Override
+	public void modifyReviewBoard(HttpServletRequest request, HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
+		
+		// 1. session에 loginUser가 없을때 권한 막기
+		if (loginUser == null) {
+			
+			try {	
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");			
+				out.println("alert('세션이 만료되었습니다.');");
+				out.println("location.href='/reviewboard/list';");
+				out.println("</script>");			
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		String id = loginUser.getId(); 		  // 로그인한사람
+		
+		String writer = request.getParameter("id"); // 작성자
+		
+		
+		// 2. session에 loginUser가 작성자랑 같을 때 권한 주기
+		if (id.equals(writer)) {
+			
+				String reviewTitle = request.getParameter("reviewTitle");
+				int campNo = Integer.parseInt(request.getParameter("campNo"));
+				int reviewStar = Integer.parseInt(request.getParameter("reviewStar"));
+				String reviewContent = request.getParameter("reviewContent");
+				int reviewNo = Integer.parseInt(request.getParameter("reviewNo"));
+				
+				ReviewBoardDTO reviewBoard = ReviewBoardDTO.builder()
+						.reviewTitle(reviewTitle)
+						.campNo(campNo)
+						.reviewStar(reviewStar)
+						.reviewContent(reviewContent)
+						.reviewNo(reviewNo)
+						.build();
+				
+				int result = reviewBoardMapper.updateReviewBoard(reviewBoard);
+				
+				try {
+					
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.println("<script>");
+					if(result > 0) {			
+						out.println("alert('게시글 수정에 성공하였습니다.');");
+						out.println("location.href='/reviewboard/detail?reviewNo=" + reviewBoard.getReviewNo() + "';");
+					} else {
+						out.println("alert('게시글 수정에 실패하였습니다.');");
+						out.println("history.back();");
+					}
+					out.println("</script>");			
+					out.close();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+		// 3. session에 loginUser가 작성자랑 다를 때 권한 막기 ( 1.이랑 3.은 다른것임)
+		} else {
+		
+			try {
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");			
+				out.println("alert('수정 권한이 없습니다.');");
+				out.println("location.href='/reviewboard/list';");
+				out.println("</script>");			
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
 	
-	
+	@Override
+	public void removeReviewBoard(HttpServletRequest request, HttpServletResponse response) {
+		
+		int reviewNo = Integer.parseInt(request.getParameter("reviewNo"));		
+		HttpSession session = request.getSession();
+		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser");
+		
+
+		
+		// 1. session에 loginUser가 없을때 권한 막기
+		if (loginUser == null) {
+			
+			try {	
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");			
+				out.println("alert('세션이 만료되었습니다.');");
+				out.println("location.href='/reviewboard/list';");
+				out.println("</script>");			
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		String id = loginUser.getId(); 		  // 로그인한사람
+		String writer = request.getParameter("id"); // 작성자
+		
+		// 2. session에 loginUser가 작성자랑 같을 때 권한 주기
+		if (id.equals(writer)) {
+			
+			int result = reviewBoardMapper.deleteReviewBoard(reviewNo);
+			
+			try {
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				if(result > 0) {
+					out.println("alert('게시글이 삭제되었습니다.');");
+					out.println("location.href='/reviewboard/list';");
+				} else {
+					out.println("alert('게시글이 삭제되지 않았습니다.");
+					out.println("history.back();");
+				}
+				out.println("</script>");
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		// 3. session에 loginUser가 작성자랑 다를 때 권한 막기
+		} else {
+			
+			try {	
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");			
+				out.println("alert('삭제 권한이 없습니다.');");
+				out.println("history.back();");
+				out.println("</script>");			
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
 	
 	
 	

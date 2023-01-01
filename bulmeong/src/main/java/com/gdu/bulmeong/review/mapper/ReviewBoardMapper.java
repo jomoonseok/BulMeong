@@ -16,6 +16,9 @@ public interface ReviewBoardMapper {
 	public int updateHit(int reviewNo);
 	public int insertReviewBoard(ReviewBoardDTO reviewBoard);
 	public List<Map<String, Object>> selectCampcampNofacltNm();
-	
+	public ReviewBoardDTO selectReviewBoardByNo(int reviewNo);
+	public int updateReviewBoard(ReviewBoardDTO reviewBoard);
+	public int updateReviewBrdProfile(ReviewBoardDTO reviewBoard);
+	public int deleteReviewBoard(int reviewNo);
 }
 

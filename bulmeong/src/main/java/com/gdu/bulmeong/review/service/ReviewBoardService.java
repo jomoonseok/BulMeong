@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.ui.Model;
 
+import com.gdu.bulmeong.review.domain.ReviewBoardDTO;
+
 public interface ReviewBoardService {
 
 	public void getReviewList(Model model);
@@ -14,4 +16,8 @@ public interface ReviewBoardService {
 	public int increseReviewBoardHit(int reviewNo);
 	public void addReviewBoard(HttpServletRequest request, HttpServletResponse response);
 	public Map<String, Object> getCampcampNofacltNm();
+	
+	public ReviewBoardDTO getReviewBoardByNo(int reviewNo);
+	public void modifyReviewBoard(HttpServletRequest request, HttpServletResponse response);
+	public void removeReviewBoard(HttpServletRequest request, HttpServletResponse response);
 }

@@ -14,7 +14,7 @@
 
 	<!-- 2. 게시글 리스트 -->
 	<select id="reviewList" parameterType="Map" resultType="ReviewBoardDTO">
-		SELECT REVIEW_NO, NICKNAME, REVIEW_TITLE, REVIEW_CREATE_DATE, REVIEW_HIT, REVIEW_STAR
+		SELECT REVIEW_NO, ID, NICKNAME, REVIEW_TITLE, REVIEW_CREATE_DATE, REVIEW_MODIFY_DATE, REVIEW_HIT, REVIEW_STAR, PROFILE_IMAGE
 		  FROM REVIEW_BRD 
 		 ORDER BY REVIEW_NO DESC
 		 LIMIT #{begin}, #{recordPerPage}
@@ -30,16 +30,47 @@
 	<!-- 4. 게시글 추가 -->
 	<insert id="insertReviewBoard" parameterType="ReviewBoardDTO"  useGeneratedKeys="true" keyProperty="reviewNo">
       INSERT INTO REVIEW_BRD
-         (CAMP_NO, NICKNAME, REVIEW_TITLE, REVIEW_STAR, REVIEW_CONTENT, REVIEW_CREATE_DATE, REVIEW_IP, REVIEW_HIT)
+         (CAMP_NO, ID, NICKNAME, REVIEW_TITLE, REVIEW_STAR, REVIEW_CONTENT, REVIEW_CREATE_DATE, REVIEW_MODIFY_DATE, REVIEW_IP, REVIEW_HIT, PROFILE_IMAGE)
       VALUES
-         (#{campNo}, #{nickname}, #{reviewTitle}, #{reviewStar}, #{reviewContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), #{reviewIp}, 0)
+         (#{campNo}, #{id}, #{nickname}, #{reviewTitle}, #{reviewStar}, #{reviewContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), #{reviewIp}, 0, #{profileImage})
 	</insert>
 	
+	<!-- 5. 리뷰게시판 캠핑장명 선택 -->
 	<select id="selectCampcampNofacltNm" resultType="CampDTO">
 		SELECT CAMP_NO, facltNm
 		  FROM CAMP
 	</select>
 	
+	<!-- 6. 특정 게시글 선택 -->
+	<select id="selectReviewBoardByNo" parameterType="int" resultType="ReviewBoardDTO">
+		SELECT REVIEW_NO, CAMP_NO, ID, NICKNAME, REVIEW_TITLE, REVIEW_STAR, REVIEW_CONTENT, REVIEW_CREATE_DATE, REVIEW_MODIFY_DATE, REVIEW_IP, REVIEW_HIT, PROFILE_IMAGE
+		  FROM REVIEW_BRD
+		 WHERE REVIEW_NO = #{reviewNo}
+	</select>
+	
+	<!-- 7. 게시글 수정 -->
+	<update id="updateReviewBoard" parameterType="ReviewBoardDTO">
+		UPDATE REVIEW_BRD
+		   SET REVIEW_TITLE = #{reviewTitle}, 
+		   REVIEW_CONTENT = #{reviewContent},
+		   REVIEW_MODIFY_DATE = DATE_FORMAT(NOW(), '%y-%m-%d')
+		 WHERE REVIEW_NO = #{reviewNo}
+	</update>
+
+	
+	<!-- 7. 게시글 프로필 수정 -->
+	<update id="updateReviewBrdProfile" parameterType="ReviewBoardDTO">
+		UPDATE REVIEW_BRD
+		   SET PROFILE_IMAGE = #{profileImage}, NICKNAME = #{nickname}
+		 WHERE ID = #{id}
+	</update>
+	
+	<!-- 8. 게시글 삭제 -->
+	<delete id="deleteReviewBoard" parameterType="int">
+		DELETE
+		  FROM REVIEW_BRD
+		 WHERE REVIEW_NO = #{reviewNo}
+	</delete>
 	
 	
 </mapper>

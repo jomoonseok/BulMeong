@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReviewBoardDTO {
 	private int reviewNo, campNo, reviewHit, reviewStar;
-	private String nickname, reviewTitle, reviewContent, reviewCreateDate, reviewModifiyDate, reviewIp;
+	private String id, nickname, reviewTitle, reviewContent, reviewCreateDate, reviewModifyDate, reviewIp, profileImage;
 }
 
