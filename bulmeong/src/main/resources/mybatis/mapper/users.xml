@@ -227,8 +227,19 @@
 		SELECT FREE_NO, ID, NICKNAME, FREE_TITLE, FREE_CREATE_DATE, FREE_HIT, PROFILE_IMAGE
 		  FROM FREE_BRD
 		 WHERE ID = #{id}
+		 ORDER BY FREE_NO DESC
 	</select>
 	
+	<select id="selectLikeCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_LIKE
+		 WHERE FREE_NO = #{freeNo}
+	</select>
 	
+	<select id="selectCmtCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_CMT
+		 WHERE FREE_NO = #{freeNo} AND FREE_CMT_STATE = 1
+	</select>
 	
 </mapper>

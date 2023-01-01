@@ -19,8 +19,6 @@ spring:
 #  main:
 #    web-application-type: none  # not use embeded tomcat
 
-
-
   datasource:
     hikari: 
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -31,6 +29,7 @@ spring:
       username: root
 #      password: asdf1235!
       password: 1111
+
 
   mail: 
     host: smtp.gmail.com
