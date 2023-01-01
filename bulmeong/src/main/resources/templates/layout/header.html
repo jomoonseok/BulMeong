@@ -11,6 +11,7 @@
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" th:href="@{/css/all.css}">
+<link rel="stylesheet" th:href="@{/css/header.css}">
 <link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
 <!-- footer.css -->
 <link th:href="@{/css/footer.css}" rel="stylesheet" />
@@ -24,144 +25,63 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
-	
-/* 	body { */
-/* 		width: 70%; */
-/* 		margin: auto; */
-/* 	} */
-	
-	
-	h1 {
-		text-align: center;
-	}
-	a {
-		color: #000;
-		text-decoration: none;
-	}
-    #navigation a {
-        color: #000;
-        text-decoration: none;
-        font-weight: bold;
-    }
-    #navigation {
-        width: 800px;
-        list-style: none; /* 글머리기호 없애기*/
-        display: flex;    /* 메뉴들의 수평 레이아웃 배치 */
-        padding: 0;
-        margin: 0 auto 45px;
-    }
-    #navigation > li {
-        width: 200px;            /* 너비 */
-        height: 50px;           /* 높이 */
-        text-align: center;     /* 가로 가운데 정렬 */
-        line-height: 50px;      /* 세로 가운데 정렬 */
-    }
-    #navigation > li > a {
-        display: block; /* 블록레벨의 요소만 너비/높이를 가질 수 없음 */
-        width: 100%;    /* 부모 요소 li와 같은 너비 */
-        height: 100%;   /* 부모 요소 li와 같은 높이 */
-    }
-    #navigation > li:hover {
-        height: 50px;   /* height와 border값을 합쳐서 원래 크기 50px을 만듬 */
-        border-bottom: 3px solid #71C285;
-    }
-    #navigation > li:hover > a {
-        color: #71C285;
-        visibility: visible;
-    }
-    
-    #navigation > li > div > ul {
-    	position: absolute;
-		font-size:14px;
-		opacity: 0.8;
-		list-style: none; 
-        line-height: 50px;		
-    }
 
-    
-    .login-box {
-    	display: inline;
-    	float: right;
-    	font-size: 12px;
-    	margin: 10px;
-    }
-    
-    .login-box > .a_logout {
-    	color: rgb(255, 255, 255);
-		background: rgb(204, 208, 212);
-		padding: 4px;
-		border: 1px solid rgb(204, 208, 212);
-		border-radius: 50px;
-    }
-    .login-box > .nickname {
-    	font-size: 14px;
-    	font-weight: 900;
-    }
-    
-    .login-box > .a_logout:hover {
-    	color: rgb(255, 255, 255);
-		background: rgb(180, 185, 191);
-		padding: 4px;
-		border: 1px solid rgb(180, 185, 191);
-		border-radius: 50px;	
-    }
 
-    /* swiper */
-    .swiper_html, .swiper_body {
-      position: relative;
-      height: 250px;
-    }
+   /* swiper */
+   .swiper_html, .swiper_body {
+     position: relative;
+     height: 250px;
+   }
 
-    .swiper_body {
-      background: #eee;
-      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      color: #000;
-      margin: 0;
-      padding: 0;
-    }
-    
-    .swiper-container {
-      width: 100%;
-      height: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
+   .swiper_body {
+     background: #eee;
+     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+     font-size: 14px;
+     color: #000;
+     margin: 0;
+     padding: 0;
+   }
+   
+   .swiper-container {
+     width: 100%;
+     height: 400px;
+     margin-left: auto;
+     margin-right: auto;
+   }
 
-    .swiper-slide {
-      text-align: center;
-      font-size: 18px;
-      background: #fff;
-      height: calc((100% - 30px) / 2);
-      width: 30%;
-      /* Center slide text vertically */
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-    }
-    
-	.swiper-overflow-container {
-    	overflow-x: hidden; /* prevent horizontal scroll */
-    	overflow-y: hidden; /* prevent horizontal scroll */
-	}
-	
-	.swiper-overflow-container .container {
-	    overflow: visible; /* if your container has overflow by default */
-	}
-	
-	.swiper-overflow-container .swiper-container {
-	    overflow: visible; /* remove swiper container overflow */
-	}
+   .swiper-slide {
+     text-align: center;
+     font-size: 18px;
+     background: #fff;
+     height: calc((100% - 30px) / 2);
+     width: 30%;
+     /* Center slide text vertically */
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: -webkit-flex;
+     display: flex;
+     -webkit-box-pack: center;
+     -ms-flex-pack: center;
+     -webkit-justify-content: center;
+     justify-content: center;
+     -webkit-box-align: center;
+     -ms-flex-align: center;
+     -webkit-align-items: center;
+     align-items: center;
+   }
+   
+.swiper-overflow-container {
+   	overflow-x: hidden; /* prevent horizontal scroll */
+   	overflow-y: hidden; /* prevent horizontal scroll */
+}
+
+.swiper-overflow-container .container {
+    overflow: visible; /* if your container has overflow by default */
+}
+
+.swiper-overflow-container .swiper-container {
+    overflow: visible; /* remove swiper container overflow */
+}
 
 
 </style>
@@ -222,88 +142,6 @@
 		</div>
 	</div>
 
-	
-<style>
-	nav {
-	   width:  100%;
-	   z-index: 999;
-	   height: 65px;
-	   line-height: 65px;
-	   
-	}
-	
-	nav .wrapper {
-	   padding: 0 30px;
-	   margin: auto;
-	   display: flex;
-	   align-items: center;
-	   justify-content: space-between;
-	}
-	
-	.wrapper .logo a {
-	   text-decoration: none;
-	   font-weight: 600;
-	}
-	.wrapper .nav-links {
-	   display: inline-flex;
-	}
-	
-	.nav-links > li {
-	   text-decoration: none;
-	   list-style: none;
-	}
-	.nav-links > li > a {
-	   font-size: 13px;
-	   font-weight: 500;
-	   padding:  9px 15px;
-	   border-radius: 5px;
-	   transition: all 0.3s ease;
-	
-	
-	}
-	.nav-links > li:hover > a {
-	   outline: 1px solid black;
-	}
-	
-	.nav-links:hover > li > .mega-box {
-	   opacity: 1;
-	   visibility: visible;
-	   background: rgba(113, 194, 133, 0.9);
-	   transition: all 0.5s ease;
-	}
-	
-	.mega-box {
-	   position: absolute;
-	   width: 100%;
-	   left: 0;
-	   visibility: hidden;
-	
-	}
-	.mega-box .content {
-	   
-	   padding: 25px 20px;
-	   display: flex;
-	   width: auto;
-	   justify-content: space-between;
-	}
-	.content .row {
-	   width: calc(25% - 30px);
-	   line-height: 45px;
-	}
-	
-	.mega-links > li {
-		list-style: none;
-	}
-	
-	
-	.row .mega-links > li > a {
-	   padding: 0 20px;
-	   
-	   font-size: 13px;
-	
-	} 
-</style>
-
 
    <nav>
       <div class="wrapper">
@@ -311,34 +149,30 @@
             <li><a th:href="@{/camp}">캠핑예약</a></li>
             <li><a th:href="@{/freeboard/list}">캠핑커뮤니티</a>
             <div class="mega-box">
-               <div class="content">
-                  <div class="row">
-                  <div>캠핑예약</div>
-                     <ul class="mega-links">
-                     </ul>
-                  </div>
-                  <div class="row">
-                  <div>캠핑커뮤니티</div>
-                     <ul class="mega-links">
-                        <li><a th:href="@{/freeboard/list}">자유게시판</a></li>
-                        <li><a th:href="@{/reviewboard/list}">리뷰게시판</a></li>
-                     </ul>
-                  </div>
-                  <div class="row">
-                  <div>고객센터</div>
-                     <ul class="mega-links">
+            	<div class="content">
+				<div class="row">
+					<ul class="mega-links">
+						<li><a th:href="@{/camp}">캠핑예약</a></li>
+					</ul>
+				</div>
+				<div class="row">
+					<ul class="mega-links">
+						<li><a th:href="@{/freeboard/list}">자유게시판</a></li>
+                        <li><a href="#" onclick="alert('기능 구현 중입니다.')">리뷰게시판</a></li>
+					</ul>
+				</div>
+				<div class="row">
+					<ul class="mega-links">
                         <li><a th:href="@{/notice/list}">공지사항</a></li>
                         <li><a th:href="@{/qna/list}">QnA</a></li>
                         <li><a th:href="@{/faq/list}">FAQ</a></li>
-                     </ul>
-                  </div>
-                  <div class="row">
-                  <div>마이페이지</div>
-                     <ul class="mega-links">
+					</ul>
+				</div>
+				<div class="row">
+					<ul class="mega-links">
                          <li><a th:href="@{/users/modify}">회원정보변경</a></li>
                          <li><a th:href="@{/users/jjim}">찜목록</a></li>
-                         <!-- <li><a th:href="@{/users/board/list}" >내가 쓴 글</a></li> -->
-                         <li><a href="#" onclick="alert('기능 구현 중입니다.')">내가 쓴 글</a></li>
+                         <li><a th:href="@{/users/board/list}">내가 쓴 글</a></li>
                          <li><a th:href="@{/users/reserve}">예약 내역</a></li>
                      </ul>
                   </div>               

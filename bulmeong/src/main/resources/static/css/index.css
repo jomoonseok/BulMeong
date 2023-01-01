@@ -4,16 +4,14 @@ body {
 	margin: 0 auto;
 }
 
-header {
-	width: 70%;
-	margin: 0 auto;
-}
+
   	
 /* 찜 리스트 */
 
 .rank_image {
 	width: 70%;
 	margin: 50px auto;
+	text-align: center;
 }
 
 
@@ -60,9 +58,6 @@ header {
 	font-size: 25px;
 	transform: rotate( 5deg );
 }
-
-
-
 
 
 .freebrd_title_box {
@@ -162,6 +157,12 @@ header {
 
 
 /* 테마 캠핑장 스와이프 */
+.thema {
+	font-size: 15px;
+	font-weight: 900;
+	color: rgb(120, 120, 120);
+}
+
 .swiper-overflow-container {
 	grid-column-start: 1;
 	grid-column-end: 4;
@@ -188,8 +189,7 @@ header {
 /* 관리자 게시판 메뉴들 */
 .main-quick {
 	width: 70%;
-	margin: auto;
-	margin-bottom: 50px;
+	margin: 50px auto;
 	display: inline block;
 	text-align: center;
 }

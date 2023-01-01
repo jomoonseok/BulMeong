@@ -147,44 +147,64 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		
 		HttpSession session = request.getSession();
 		UsersDTO loginUser = (UsersDTO)session.getAttribute("loginUser"); 
-		String id = loginUser.getId();
-		String nickname = loginUser.getNickname();
-		String freeTitle = request.getParameter("freeTitle");
-		String freeContent = request.getParameter("freeContent");
-		String freeIp = request.getRemoteAddr();
-		String profileImage = loginUser.getProfileImage();
 		
-		FreeBoardDTO freeBoard = FreeBoardDTO.builder()
-				.id(id)
-				.nickname(nickname)
-				.freeTitle(freeTitle)
-				.freeContent(freeContent)
-				.freeIp(freeIp)
-				.profileImage(profileImage)
-				.build();
-
-		int result = freeBoardMapper.insertFreeBoard(freeBoard);
+		if (loginUser == null) {
 			
-		try {
-			
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			
-			out.println("<script>");
-			if(result > 0) {
-				out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='/freeboard/detail?freeNo=" + freeBoard.getFreeNo() + "'}");
-				out.println("else { location.href='/freeboard/list'}");
-			} else {
-				out.println("alert('게시글 등록에 실패하였습니다.');");
-				out.println("history.back();");
+			try {	
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");			
+				out.println("alert('세션이 만료되었습니다.');");
+				out.println("location.href='/freeboard/list';");
+				out.println("</script>");			
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			out.println("</script>");
-			out.close();
+		} else {
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+			String id = loginUser.getId();
+			String nickname = loginUser.getNickname();
+			String freeTitle = request.getParameter("freeTitle");
+			String freeContent = request.getParameter("freeContent");
+			String freeIp = request.getRemoteAddr();
+			String profileImage = loginUser.getProfileImage();
+			
+			FreeBoardDTO freeBoard = FreeBoardDTO.builder()
+					.id(id)
+					.nickname(nickname)
+					.freeTitle(freeTitle)
+					.freeContent(freeContent)
+					.freeIp(freeIp)
+					.profileImage(profileImage)
+					.build();
+			
+			int result = freeBoardMapper.insertFreeBoard(freeBoard);
+			
+			try {
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				if(result > 0) {
+					out.println("if(confirm('게시글 등록이 완료되었습니다. 확인하러 가시겠습니까?')) { location.href='/freeboard/detail?freeNo=" + freeBoard.getFreeNo() + "'}");
+					out.println("else { location.href='/freeboard/list'}");
+				} else {
+					out.println("alert('게시글 등록에 실패하였습니다.');");
+					out.println("history.back();");
+				}
+				out.println("</script>");
+				out.close();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
-	
+		
 		
 	}
 	

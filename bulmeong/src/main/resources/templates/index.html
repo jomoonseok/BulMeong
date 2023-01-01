@@ -17,7 +17,7 @@
 	
 	<div class="rank_image">
 		<img th:src="@{/images/index/ranking.png}" width="30px">
-		<span>많이 찜한 캠핑장</span>
+		<span class="thema">많이 찜한 캠핑장</span>
 	</div>
 	<div class="jjimListArea">
 		<table class="jjimList table">
@@ -109,7 +109,10 @@
 		<div class="swiper_html">
     		<div class="swiper_body">
     			<div class="swiper-container mySwiper">
-    				<div>여행테마별 캠핑장</div>
+    				<div style="margin: 20px 0">
+    					<img th:src="@{/images/index/car.png}" width="30px">
+    					<span class="thema">여행테마별 캠핑장</span>
+    				</div>
        				<div class="swiper-wrapper"></div>
       				<div class="swiper-pagination"></div>
     			</div>
