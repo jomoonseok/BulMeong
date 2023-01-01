@@ -69,8 +69,6 @@ public class QnaServiceImpl implements QnaService {
 		String qnaIp = request.getRemoteAddr();
 		int qnaState = Integer.parseInt(request.getParameter("qnaState"));
 		
-		System.out.println(qnaState);
-		
 		QnaDTO qna = new QnaDTO();
 		qna.setId(id);
 		qna.setQnaTitle(qnaTitle);

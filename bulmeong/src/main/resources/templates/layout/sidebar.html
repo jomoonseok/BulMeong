@@ -79,6 +79,11 @@ a:hover {
 		                	<p th:text="|(${session.loginUser.id})|" style="font-size: 7px; color:gray;">
 		                </div>
 		                <br><hr style="border-style: dotted; width:170px; margin: auto;"><br>
+		                <ul class="big_menu">
+		                	<li style="list-style: none; font-size: 18px;"><a th:href="@{/camp}" style="color: black;">캠핑예약 <i class="arrow fas fa-angle-right"></i></a></li>
+		            	</ul>
+		                <hr style="border-style: dotted; width:170px; margin: auto;">
+		                <br>
 		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black; left:5px;">
 		                    <li>마이페이지 <i class="arrow fas fa-angle-right"></i></li>
 		                    <ul class="css_mypage_sub_menu">
@@ -88,11 +93,6 @@ a:hover {
 		                	    <li style="list-style: none; font-size: 14px;"><a th:href="@{/users/reserve}">예약내역</a></li>
 		                    </ul>
 		                </ul>
-		                <hr style="border-style: dotted; width:170px; margin: auto;">
-		                <br>
-		                <ul class="big_menu">
-		                	<li style="list-style: none; font-size: 18px;"><a th:href="@{/camp}" style="color: black;">캠핑예약 <i class="arrow fas fa-angle-right"></i></a></li>
-		            	</ul>
 		                <hr style="border-style: dotted; width:170px; margin: auto;">
 		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;">
 		                <br>
