@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{layout/header::head('[bulmeong] 캠핑장 조회')}"></head>
+<head th:insert="~{layout/header::head('Bul meong 캠핑장조회')}"></head>
 <style>
 
 	body {
@@ -288,11 +288,12 @@
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
+	<div th:replace="~{layout/sidebar::sidebar_layout}"></div>
 	<!-- <h1 th:text="${camp.campNo}"></h1> -->
     <div id="list_container">
     	<div class="upbar" style="background-color: #71C285; padding-top: 20px;">
 			<div class="search" style="background-color: rgb(255, 255, 255, 0.7); padding: 30px 30px; margin: 0 20px 0 20px; border-radius: 20px; box-shadow: 5px 5px 5px 5px rgb(180 185 191 / 30%); display: flex;">
-		   		<div class="condition" style="padding-right: 100px;">
+		   		<div class="condition" style="padding-right: 100px; width: 65%;">
 		   			<h4>※조건으로 검색하기</h4>
 		   			<span>
 			   			지역
@@ -347,10 +348,10 @@
 		   			<input type="reset" value="다시검색" id="btn_option" onclick="fn_btnOption()">
 		   		</div>
 			
-		   		<div>
+		   		<div style="width: 45%;">
 		   			<h4>※캠핑장명으로 검색하기</h4>
 			   		<span>
-				   		<input type="text" name="query" id="query" style="width: 455px;">
+				   		<input type="text" name="query" id="query" >
 			   		</span>
 			   		<input type="button" value="검색" id="btn_query">
 			   		<input type="reset" value="다시검색" id="btn_option" onclick="fn_btnOption2()">

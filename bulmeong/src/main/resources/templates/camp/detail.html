@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('[bulmeong] 상세보기')}"></head>
+<head th:replace="~{layout/header::head('Bul meong 상세보기')}"></head>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8c2788e552abdec1747d875ec7284f46&libraries=services,clusterer,drawing"></script>
+<script defer src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <style>
 		body {
 			width: 70%;
@@ -373,7 +375,7 @@
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>	
-	
+	<div th:replace="~{layout/sidebar::sidebar_layout}"></div>
 	<div class="all">
 	
 		<div class="layout">

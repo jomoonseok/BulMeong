@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{layout/header::head('[bulmeong] 예약하기')}"></head>
+<head th:insert="~{layout/header::head('Bul meong 예약하기')}"></head>
 
 	<link th:href='@{fullcalendar-5.11.3/lib/main.css}' rel='stylesheet' />
 	<link th:href='@{fakeLoader.js-master/dist/fakeLoader.min.css}' rel='stylesheet' />
@@ -355,7 +355,7 @@
 </head>
 <body>
 	<header th:replace="~{layout/header::header_layout}"></header>
-	
+	<div th:replace="~{layout/sidebar::sidebar_layout}"></div>
 	<div class="fakeLoader"></div>
 		
 		<div id="reserve_container">
