@@ -448,9 +448,9 @@ VALUES
 --     (3, 3, '텐트12', 4, NULL, 100, 0, '/images/tent/carcamping.webp');
 
 INSERT INTO QNA
-	(QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
+   (QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
 VALUES
-	(1, 'user98', '문의합니다', '문희는 포도가 먹고찌푼데', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 1),
+   (1, 'user98', '문의합니다', '문희는 포도가 먹고찌푼데', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 1),
     (2, 'user98', '질문있습니다!', '있었는데 없습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 1),
     (3, 'user98', '비밀글이라서 안보이쥬?', '비밀글은 작성자와 관리자만 볼수있쥬?', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 1, '0.0.0.0.1', QNA_NO, 1),
     (4, 'user98', '빠른답변부탁드림', '궁금티비', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 1),
@@ -465,7 +465,7 @@ VALUES
    (1, '웹사이트 이용방법이 궁금해요!', '[캠핑예약] 페이지에서 여러 캠핑장에서의 일정을 예약 하실 수 있고, [캠핑커뮤니티]에서 불멍 홈페이지를 이용하신 분들의 리뷰게시판과 자유롭게 소통하실 수 있는 자유게시판을 이용하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 0),
    (2, '상품찜은 어떻게 사용하나요?', '관심가는 캠핑장의 찜 버튼을 클릭하시면 마이페이지의 찜목록에서 확인하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 1),
     (3, '캠핑장 리뷰는 어떻게 확인하나요?', '관심가는 캠핑장의 상세화면에서 캠핑 후기 버튼을 클릭하시거나, 캠핑커뮤니티의 리뷰게시판에서 확인하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 1),
-    (4, '캠핑장 예약은 어떻게 하나요?', '캠핑', DATE_FORMAT(NOW(), '%y-%m-%d'), 1),
+    (4, '캠핑장 예약은 어떻게 하나요?', '[캠핑예약] 페이지에서 원하시는 캠핑장을 선택하시고 예약가능한 날짜를 확인 하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 1),
     (5, '회원가입은 어떻게 하나요?', '홈페이지 메인의 오른쪽 상단에 있는 회원가입 버튼을 클릭하시면 회원가입 하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 2),
     (6, '회원 탈퇴는 어떻게 하나요?', '로그인 후 마이페이지에서 [회원정보변경]을 클릭하시고 가장 하단에 있는 [회원탈퇴] 버튼을 통해 회원탈퇴 하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 2),
     (7, '개인정보(연락처, 이메일 주소 등)변경은 어떻게 하나요?', '로그인 후 마이페이지에서 [회원정보변경] 버튼을 클릭하시면 정보 변경이 가능합니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 2),
