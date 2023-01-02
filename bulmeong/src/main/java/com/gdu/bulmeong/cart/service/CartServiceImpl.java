@@ -46,7 +46,6 @@ public class CartServiceImpl implements CartService {
 		map.put("campNo", campNo);
 		map.put("id", id);
 		Map<String, Object> result = new HashMap<>();
-		System.out.println("map :" + map);
 		if (cartMapper.selectUserCartCount(map) == 0) {  // 해당 게시물의 "좋아요"를 처음 누른 상태
 			cartMapper.updateIncreaseCampJjim(campNo);
 			result.put("insertSuccess", cartMapper.insertCart(map) == 1);  // 신규 삽입			

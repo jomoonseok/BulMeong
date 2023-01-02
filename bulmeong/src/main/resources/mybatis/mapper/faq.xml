@@ -12,7 +12,7 @@
 	</select>
 	
 	<select id="selectFaqListByMap" parameterType="Map" resultType="FaqDTO">
-		SELECT FAQ_NO, FAQ_TITLE, FAQ_CONTENT, FAQ_CREATE_DATE, FAQ_CATEGORY
+		SELECT FAQ_NO, FAQ_TITLE, FAQ_CONTENT, FAQ_CREATE_DATE
 		  FROM FAQ
 		 ORDER BY FAQ_NO ASC
 		 LIMIT #{begin}, #{recordPerPage}
@@ -20,7 +20,7 @@
 	
 	<insert id="insertFaq" useGeneratedKeys="true" keyProperty="faqNo" parameterType="FaqDTO">
 		INSERT INTO FAQ
-			(FAQ_TITLE, FAQ_CONTENT, FAQ_CREATE_DATE, FAQ_CATEGORY)
+			(FAQ_TITLE, FAQ_CONTENT, FAQ_CREATE_DATE)
 		VALUES
 			(#{faqTitle}, #{faqContent}, DATE_FORMAT(NOW(), '%y-%m-%d'))
 	</insert>

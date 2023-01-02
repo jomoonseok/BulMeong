@@ -57,12 +57,10 @@ public class RequiredLoginAspect {
 		
 	}
 
-//
-//	/**
-//	 * 	freeBoardController 모든 메소드에 세션 체크 적용
-//	 * 	밑에 throw new Exception 적용하여 Ajax 에러 발생
-//	 */
-//	@Pointcut("execution(* com.gdu.bulmeong.freeboard.controller..*.*(..))") // 메소드명 아닌 모든 메소드
+
+//	@Pointcut("execution(* com.gdu.bulmeong.freeboard.controller.requiredLogin_*(..))")
+//			
+//	// @Pointcut("execution(* com.gdu.bulmeong.freeboard.controller..*.*(..))") // 메소드명 아닌 모든 메소드
 //	public void sessionCheck() { }
 //
 //	@Before("sessionCheck()")  // 포인트컷 실행 전에 requiredLogin() 메소드 수행
@@ -77,22 +75,13 @@ public class RequiredLoginAspect {
 //		// 세션
 //		HttpSession session = request.getSession();
 //		System.out.println("aop : " + session.getAttribute("loginUser"));
-////		try {
-////			if(session.getAttribute("loginUser") == null) {
-////				throw new RuntimeException("세션이 만료되었습니다.");
-////			}
-////		} catch(RuntimeException e) {
-////			throw new RuntimeException("세션이 만료되었습니다.");
-////		} catch(Exception e) {
-////			e.getMessage();
-////		}
 //
 //		if(session.getAttribute("loginUser") == null) {
-//			throw new Exception("세면만료");
+//			throw new Exception("세션 만료");
 //		}
 //
 //
 //	}
-//
-//	
+
+	
 }

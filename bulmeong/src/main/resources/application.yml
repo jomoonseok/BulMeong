@@ -16,7 +16,7 @@ server:
 spring:
 
 #  main:
-#    web-application-type: none  # not use embeded tomcat
+#   web-application-type: none  # not use embeded tomcat
 
   datasource:
     hikari: 
