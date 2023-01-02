@@ -46,6 +46,7 @@ public class ReviewBoardController {
 	@PostMapping("/reviewboard/add")
 	public void add(HttpServletRequest request, HttpServletResponse response) {
 		reviewBoardService.addReviewBoard(request, response);
+		
 	}
 	
 	@ResponseBody
@@ -54,6 +55,29 @@ public class ReviewBoardController {
 		return reviewBoardService.getCampcampNofacltNm();
 	}
 
+	@GetMapping("/reviewboard/detail")
+	public String detail(@RequestParam(value="reviewNo", required=false, defaultValue="0") int reviewNo, Model model) {
+		model.addAttribute("review", reviewBoardService.getReviewBoardByNo(reviewNo));
+		return "reviewboard/detail";
+	}
+	
+	
+	@PostMapping("/reviewboard/edit")
+	public String edit(int reviewNo, Model model) {
+		model.addAttribute("review", reviewBoardService.getReviewBoardByNo(reviewNo));
+		return "reviewboard/edit";
+	}
+	
+	@PostMapping("/reviewboard/modify")
+	public void modify(HttpServletRequest request, HttpServletResponse response) {
+		reviewBoardService.modifyReviewBoard(request, response);
+	}
+	
+	
+	@PostMapping("/reviewboard/remove")
+	public void remove(HttpServletRequest request, HttpServletResponse response) {
+		reviewBoardService.removeReviewBoard(request, response);
+	}
 	
 	
 	
