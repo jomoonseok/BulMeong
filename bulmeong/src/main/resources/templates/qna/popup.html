@@ -1,45 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-<head th:replace="~{layout/header::head('QNA목록')}"></head>
+<head th:replace="~{layout/header::head('Bul meong Q&A작성')}"></head>
 <link th:href="@{/css/qna/popup.css}" rel="stylesheet" />
 <script th:inline="javascript">
 	$(function(){
 		fn_AddQuestion();
 		fn_closePopup();
-		
+		fn_checkbox();
 	});
-		
-//         var parentIpt = document.getElementById('qnaTitle');
-//         var parentIpt = document.getElementById('qnaContent');
-
-
-
-//         function sendData() {
-//             childWindow.onload = function(event) {
-//                 childWindow.document.getElementById('qnaTitle').textContent = parentIpt.value;
-//                 childWindow.document.getElementById('qnaContent').textContent = parentIpt.value;
-//             }
-//         }
-//          document.getElementById('btn_done').onclick = function(event) {
-//             opener.document.getElementById('qnaTitle').textContent = document.getElementById('qnaTitle').textContent;
-//             opener.document.getElementById('qnaContent').textContent = document.getElementById('qnaContent').textContent;
-//             sendData();
-//         }
-        
-// 		function sendChildValue(qnaTitle, qnaContent) {
-// 			opener.setChildValue(qnaTitle, qnaContent);
-// 			window.close();
-// 		}
+	
 		function fn_AddQuestion(){
 			$('#frm_writePop').submit(function(event){
-				
 				if($('#qnaTitle').val() == ''){
 					alert('제목을 작성하세요.');
 					$('#qnaTitle').focus();
 					event.preventDefault();
 					return;
 				}
+				fn_checkbox();
 			});
 		}
 		
@@ -49,16 +28,13 @@
 			});
 		}
 		
-// 		function fn_submitPopup(){	
-// 			$('#btn_popupSubmit').submit(function(){
-// 				if($('#noticeTitle').val() == ''){
-// 					alert('제목을 입력하세요.');
-// 					event.preventDefault();
-// 					return;
-// 				}
-// 			})
-// 		}
-        
+		function fn_checkbox() {
+			if($('#flexSwitchCheckDefault').is(':checked')){
+				$('#qnaState').val(1);
+			} else {
+				$('#qnaState').val(0);
+			}
+		}
 </script>
 
 <body>
@@ -77,8 +53,9 @@
 	        <textarea id="qnaContent" name="qnaContent" placeholder="내용을 입력하세요."></textarea>
 	    </div>
 	    <div class="form-check form-switch">
-  			<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
- 			 <label class="form-check-label" for="flexSwitchCheckDefault">비밀글</label>
+  			<input type="checkbox" class="form-check-input" role="switch" id="flexSwitchCheckDefault">
+ 			<input type="hidden" name="qnaState" id="qnaState">
+ 			<label class="form-check-label" for="flexSwitchCheckDefault">비밀글</label>
 		</div>
 	    <div class="footer">
 	        <input type="submit" value="작성완료" id="btn_popupSubmit">
@@ -88,24 +65,5 @@
     </form>
     
 </body>
-<!-- <body> -->
-	
-<!-- 	<div> -->
-<!-- 		<label for="qnaTitle">제목</label> -->
-<!-- 		<input type="text" id="qnaTitle" placeholder="제목을 입력하세요."> -->
-<!-- 	</div> -->
-<!-- 	<div> -->
-<!-- 		<textarea rows="150" cols="150" id="qnaContent" placeholder="내용을 입력하세요."></textarea> -->
-<!-- 	</div> -->
 
-<!-- 	<hr> -->
-	
-<!-- 	<div class="footer"> -->
-<!-- 		<button>작성완료</button> -->
-<!-- 		<input type="reset" value="입력초기화"> -->
-<!-- 		<input type="button" value="목록" id="btn_list"> -->
-<!-- 		<input type="button">	 -->
-<!-- 	</div> -->
-
-<!-- </body> -->
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('FAQ')}"></head>
+<head th:replace="~{layout/header::head('Bul meong 자주묻는질문')}"></head>
 <link th:href="@{/css/faq/list.css}" rel="stylesheet" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,12 @@
 		});
 		
 		$('.btn_contentToggle').click(function(){
-			$(this).next().next().toggleClass('blind');			
+			$(this).next().next().toggleClass('blind')
+			if($('.fa-solid').hasClass('fa-caret-down')) {
+				$('.css_btn').children().removeClass('fa-caret-down').addClass('fa-caret-up');
+			} else {
+				$('.css_btn').children().removeClass('fa-caret-up').addClass('fa-caret-down');
+			}
 		});
 		
 		$('.btn_remove').click(function(){
@@ -22,13 +27,14 @@
 		})
 
 	});
+
 </script>
 <body>	
 	<header th:replace="~{layout/header::header_layout}"></header>
 
 	<div class="css_main_title_wrap">
 		<span class="css_main_title">FAQ</span><br>
-		<span class="css_sub_title">자주하는 질문</span>
+		<span class="css_sub_title">자주 묻는 질문</span>
 	</div>
 	
 	<div class="css_faq_box">
@@ -36,6 +42,14 @@
 	</div>
 	
 	<hr>
+	
+<!-- 	<div> -->
+<!-- 		<input type="button" name="faqCategory" value="전체보기"> -->
+<!-- 		<input type="button" name="faqCategory" value="홈페이지 이용방법"> -->
+<!-- 		<input type="button" name="faqCategory" value="계정관리"> -->
+<!-- 		<input type="button" name="faqCategory" value="예약 및 결제"> -->
+<!-- 		<input type="button" name="faqCategory" value="숙박"> -->
+<!-- 	</div> -->
 	
 	<div th:if="${session.loginUser} != null and ${session.loginUser.id} == 'admin'">
 		<input type="button" id="btn_faqWrite" value="새글작성">
@@ -63,15 +77,11 @@
 								<div class="css_font1">Q.</div>
 								<span th:text="${faq.faqTitle}" class="css_faq_title"></span>
 								<div class="css_btn"><i class="fa-solid fa-caret-down fa-2x"></i></div>
-<!-- 								<i class="fa-thin fa-circle-chevron-down"></i> -->
 							</div>
 							<hr>
 							<div id="toggle_area" class="blind css_answer">
 								<div class="css_font2">A .</div>
-									
 									<span th:text="${faq.faqContent}" class="css_faq_content"></span>
-									
-<!-- 								<i class="fa-thin fa-circle-chevron-up"></i> -->
 							</div>
 						</td>
 						<td class="css_btn_remove_wrap">

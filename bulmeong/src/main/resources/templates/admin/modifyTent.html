@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('텐트 수정')}"></head>
+<head th:replace="~{layout/header::head('Bul meong 텐트수정')}"></head>
 	<style>
 		* {
 			margin-left: 28px;
@@ -66,9 +66,9 @@
 					event.preventDefault();
 					return;
 				}
-				
 			})
 		}
+		
 		
 	</script>
 	
@@ -102,6 +102,7 @@
 		</div>
 		<div>
 			텐트 사진 <input type="file" name="TENT_IMAGE" id="TENT_IMAGE" multiple="multiple">
+			<input type="hidden" name="TENT_IMAGE_ORIGIN" id="TENT_IMAGE_ORIGIN" th:value="${tent.tentImage}">
 		</div>
 		<div id="img_div">
 			<div th:if="${tent.tentImage == '/images/tent/default_tent.png'}">

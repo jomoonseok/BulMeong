@@ -1,9 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="/css/admin_styles.css">
-<head th:insert="~{layout/header::head('bulmeong admin')}"></head>
+<head th:insert="~{layout/header::head('Bul meong 회원관리')}"></head>
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 <script src="/js/admin_scripts.js"></script>
+<style>
+	#paging .enable_link:hover {
+		cursor: pointer;
+	}
+	
+	#datatablesSimple {
+		border-collapse: collapse;
+		
+	}
+	#usersTblBody > tr{
+		height: 100px;
+		border-top: 1px dotted #bcbcbc;
+		border-bottom: 1px dotted #bcbcbc;
+	}
+	
+</style>
 <body>
 	
 	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -31,14 +47,14 @@
                 </li>
             </ul>
         </nav>
-        <div id="layoutSidenav">
+                <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <a class="nav-link" href="/admin">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                메인 화면
+                                현황
                             </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -64,9 +80,9 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">캠핑장 관리</a>
-                                            <a class="nav-link" href="register.html">텐트 관리</a>
-                                            <a class="nav-link" href="password.html">예약 관리</a>
+                                            <a class="nav-link" href="/admin/campManage">캠핑장 관리</a>
+                                            <a class="nav-link" href="/admin/tentManage">텐트 관리</a>
+                                            <a class="nav-link" href="/admin/reserveManage">예약 관리</a>
                                         </nav>
                                     </div>
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
@@ -104,7 +120,7 @@
                                 회원 현황
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple" style="width:1200px">
+                                <table id="datatablesSimple" style="width:90%">
                                     <thead>
                                         <tr style="font-size: 12px; text-align: center;">
                                             <th>번호</th>
@@ -127,11 +143,15 @@
                                             <th>sns타입</th>
                                             <th>비밀번호<br>수정일</th>
                                             <th>개인정보<br>수정일</th>
+                                            <th><input type="submit" value="삭제하기" id="btn_retire"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="usersTblBody">
                                     </tbody>
                                     <tfoot>
+                                    	<tr>
+                                    		<td colspan="21" id="paging" style="text-align: center;  letter-spacing: 20px; padding-top: 50px;"></td>
+                                    	</tr>
                                     </tfoot>
                                 </table>
                             </div>
@@ -154,46 +174,108 @@
         </div>
         
        	<script>
-       		$.ajax({
+       	
+       		$(function() {
+       			fn_list();
+       			fn_retire();
+       		})
+       		
+       		function fn_list() {
+       			$('#usersTblBody').empty();
+	       		$.ajax({
+	       			type: 'post',
+	       			url: '/admin/getAllUser',
+	       			success: function(resData) {
+	       				$('.breadcrumb-item.active').text('유저 현황 : ' + resData.userCount + '명');
+	       				$.each(resData.users, function(i, users) {
+	       					var usersDiv = '<tr style="font-size: 10px; text-align: center;" class="userDiv" onclick="fn_click(this)"}>';
+	       					usersDiv += '<td>' + users.usersNo + '</td>';
+	       					usersDiv += '<td><img src="' + users.profileImage + '"></img></td>';
+	       					usersDiv += '<td>' + users.id + '</td>';
+	       					usersDiv += '<td>' + users.name + '</td>';
+	       					usersDiv += '<td>' + users.nickname + '</td>';
+	       					usersDiv += '<td>' + users.email + '</td>';
+	       					usersDiv += '<td>' + users.mobile + '</td>';
+	       					usersDiv += '<td>' + users.gender + '</td>';
+	       					usersDiv += '<td>' + users.age + '</td>';
+	       					usersDiv += '<td>' + users.birthYear + users.birthDay + '</td>';
+	       					usersDiv += '<td>' + users.postCode + '</td>';
+	       					usersDiv += '<td>' + users.roadAddress + '</td>';
+	       					usersDiv += '<td>' + users.jibunAddress + '</td>';
+	       					usersDiv += '<td>' + users.detailAddress + '</td>';
+	       					usersDiv += '<td>' + users.extraAddress + '</td>';
+	       					usersDiv += '<td>' + users.joinDate + '</td>';
+	       					usersDiv += '<td>' + users.agreeCode + '</td>';
+	       					usersDiv += '<td>' + users.snsType + '</td>';
+	       					usersDiv += '<td>' + users.pwModifyDate + '</td>';
+	       					usersDiv += '<td>' + users.infoModifyDate + '</td>';
+	       					usersDiv += '<td><input type="checkbox" name="chk" class="chk_retire" data-usersno="' + users.usersNo + '"></td>';
+	       					$('#usersTblBody').append(usersDiv);
+	       					
+	       				});
+	       				
+	       				$('#paging').empty();
+	    				var pageUtil = resData.pageUtil;
+	    				var paging = '';
+	    				// 이전 블록
+	    				if(pageUtil.beginPage != 1) {
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+	    				}
+	    				// 페이지번호
+	    				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+	    					if(p == $('#page').val()){
+	    						paging += '<strong>' + p + '</strong>';
+	    					} else {
+	    						paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
+	    					}
+	    				}
+	    				// 다음 블록
+	    				if(pageUtil.endPage != pageUtil.totalPage) {
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+	    				}
+	    				$('#paging').append(paging);
+       				
+	       			},error(jqXHR) {
+	       				console.log(jqXHR);
+	       			}
+	       			
+	       		})
+       		}
+       		
+       		function fn_retire() {
        			
-       			type: 'post',
-       			url: '/admin/getAllUser',
-       			success: function(resData) {
-       				console.log(resData);
-       				$('.breadcrumb-item.active').text('유저 조회결과 : ' + resData.usersCount + '명');
-       				$.each(resData.users, function(i, users) {
-       					
-       					var usersDiv = '<tr style="font-size: 10px; text-align: center;">';
-       					usersDiv += '<td>' + users.usersNo + '</td>';
-       					usersDiv += '<td><img src="' + users.profileImage + '"></img></td>';
-       					usersDiv += '<td>' + users.id + '</td>';
-       					usersDiv += '<td>' + users.name + '</td>';
-       					usersDiv += '<td>' + users.nickname + '</td>';
-       					usersDiv += '<td>' + users.email + '</td>';
-       					usersDiv += '<td>' + users.mobile + '</td>';
-       					usersDiv += '<td>' + users.gender + '</td>';
-       					usersDiv += '<td>' + users.age + '</td>';
-       					usersDiv += '<td>' + users.birthYear + users.birthDay + '</td>';
-       					usersDiv += '<td>' + users.postCode + '</td>';
-       					usersDiv += '<td>' + users.roadAddress + '</td>';
-       					usersDiv += '<td>' + users.jibunAddress + '</td>';
-       					usersDiv += '<td>' + users.detailAddress + '</td>';
-       					usersDiv += '<td>' + users.extraAddress + '</td>';
-       					usersDiv += '<td>' + users.joinDate + '</td>';
-       					usersDiv += '<td>' + users.agreeCode + '</td>';
-       					usersDiv += '<td>' + users.snsType + '</td>';
-       					usersDiv += '<td>' + users.pwModifyDate + '</td>';
-       					usersDiv += '<td>' + users.infoModifyDate + '</td>';
-       					$('#usersTblBody').append(usersDiv);
-       					
+       			var retireArr = new Array();
+       			
+       			/* $('.chk_retire').prop('disabled', true); */
+       			$('#btn_retire').on('click', function() {
+       				/* if($('.chk_retire').is(':disabled')) {
+       					$('.chk_retire').prop('disabled', false);
+       				} else {
+       					$('.chk_retire').prop('disabled', true);
+       				} */
+       				$("input[name='chk']:checked").each(function(){
+       					retireArr.push($(this).data('usersno'));
        				});
        				
-       				
-       			},error(jqXHR) {
-       				console.log(jqXHR);
-       			}
+       				$.ajax({
+       					type: 'post',
+       					url: '/admin/userRemove',
+       					data: {"retireArr": retireArr},
+       					success: function(resData) {
+       						if(resData.isDelete == true) {
+       							alert(resData.resultCount + '건의 삭제가 완료되었습니다.');
+       							fn_list();
+       						} else {
+       							alert('삭제가 실패했습니다.');
+       							fn_list();
+       						}
+       						
+       					}
+       				});
+       				retireArr.length = 0;
+       			});
        			
-       		})
+       		}
        	</script>
         
         
@@ -218,12 +300,8 @@
         
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
 	
 </body>
 </html>

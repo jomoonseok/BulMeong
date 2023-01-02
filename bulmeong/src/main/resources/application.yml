@@ -2,7 +2,7 @@
 # web.xml
 # session(1800 seconds = 30 minutes)
 server:
-  #port: 9090
+  port: 9090  
   servlet: 
     encoding: 
       charset: UTF-8
@@ -10,9 +10,6 @@ server:
       force: true
     session: 
       timeout: 1800
-
-
-
 
 # database connection
 # mail
@@ -24,32 +21,35 @@ spring:
   datasource:
     hikari: 
       driver-class-name: com.mysql.cj.jdbc.Driver
-      # driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
       jdbc-url: jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #      jdbc-url: jdbc:mysql://203.245.44.15:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       # jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       username: root
       password: 1111
+#      username: bulmeong
+#      password: asdf1235!
+
   mail: 
     host: smtp.gmail.com
     port: 587
-    username: moon97102002@gmail.com
-    password: whlhxpaugzvysjvl
+    username:
+    password:
     properties:
       mail: 
         smtp: 
           auth: true
           starttls: 
             enable: true
-#  servlet:
-#    multipart:
-#     enabled: true
-#      max-file-size: 10MB
-#     max-request-size: 10MB
-
 
 # mybatis
 mybatis:
   config-location: mybatis/config/mybatis-config.xml
   mapper-locations: mybatis/mapper/*.xml
   
+# 서버 배포 시
+ # 로컬 작업 시 #처리된 것들 빼기
+ # #처리 - port: 9090, jdbc-url: jdbc:mysql://203.245.44.15:3306 ~, username: root, password: 1111 
+
+# 로컬 작업 시
+ # 서버 배포 시 #처리된 것들 빼기  
+ # #처리 - main:, web-application-type: none, username: bulmeong, password: asdf1235!

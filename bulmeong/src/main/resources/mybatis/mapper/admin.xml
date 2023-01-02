@@ -9,6 +9,19 @@
 	<select id="selectAllUser" parameterType="Map" resultType="UsersDTO">
 		SELECT USERS_NO, ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, AGE, PROFILE_IMAGE, PW_MODIFY_DATE, INFO_MODIFY_DATE
 		  FROM USERS
+		 ORDER BY USERS_NO
+	 	 LIMIT #{begin}, #{recordPerPage}
+	</select>
+	
+	<delete id="deleteUser" parameterType="int">
+		DELETE
+		  FROM USERS
+		 WHERE USERS_NO = #{userNo}
+	</delete>
+	
+	<select id="selectAllUserCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM USERS
 	</select>
 	
 	<select id="selectAllCampAdmin" parameterType="Map" resultType="CampDTO">
@@ -28,6 +41,20 @@
 		  FROM CAMP AS C JOIN CAMP_TENT CT
 			ON C.CAMP_NO = CT.CAMP_NO
 		 ORDER BY C.CAMP_NO, CT.TENT_NO
+         LIMIT #{begin}, #{recordPerPage}
+	</select>
+	
+	<select id="selectAllReserveCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM RESERVE
+	</select>
+	
+	<select id="selectReserveByMap" parameterType="Map" resultType="MyPageReservedDTO">
+		SELECT C.FACLTNM, C.ADDR1, R.RESERVE_NO, R.CAMP_NO, R.TENT_NO, R.RESERVE_NAME, R.RESERVE_COUNT, R.RESERVE_BEGIN_DATE, DATE_ADD(R.RESERVE_END_DATE, INTERVAL +1 DAY) AS END_DATE, R.RESERVE_SUM, T.TENT_IMAGE, T.TENT_CATEGORY, T.TENT_NAME, T.TENT_MAX_COUNT
+  		  FROM USERS U INNER JOIN RESERVE R
+    	    ON U.ID = R.ID INNER JOIN CAMP_TENT T
+						           ON R.TENT_NO = T.TENT_NO INNER JOIN CAMP C ON C.CAMP_NO = T.CAMP_NO
+	     ORDER BY R.CAMP_NO, R.TENT_NO
          LIMIT #{begin}, #{recordPerPage}
 	</select>
 	

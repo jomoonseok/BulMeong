@@ -3,8 +3,19 @@
 <title th:text="${title}"></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <div th:fragment="sidebar_layout">
-<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<style>
+li:hover {
+	color:#71C285;
+	cursor: pointer;
+}
+a:hover {
+	color:#71C285;
+}
 
+.alink:hover {
+	color:#71C285;
+}
+</style>
 <script>
     $(function () {
 //         $(".left_sub_menu").hide();
@@ -18,7 +29,7 @@
             	$(".left_sub_menu").fadeToggle(50);
                 $('.topbar').css('background-color', '#f8f8f9');
                 $('#icon').css('float', 'right');
-                $('.fa-solid').removeClass('fa-bars').addClass('fa-xmark');
+                $('#icon').removeClass('fa-bars').addClass('fa-xmark');
               }
         });
         // 왼쪽메뉴 드롭다운
@@ -26,11 +37,24 @@
         $(".sub_menu ul.big_menu").click(function () {
             $("ul", this).slideToggle(50);
         });
+        
+        $(document).ready(function(){
+        	var currentPosition = parseInt($('.topbar').css('top'));
+        	$(window).scroll(function() {
+        		var position = $(window).scrollTop();
+        		$('.topbar').stop().animate({"top":position+currentPosition+"px"},0);
+        	});
+        });
+        
+        $('#review').click(function(){
+        	alert('기능구현중입니다.');
+
+        })
     });
 </script>
+
 	<div id="wrapper">
         <div class="topbar" style="position: absolute; top: 0px; left: 0px; width:200px; height:100%; background-color: #f8f8f9; margin: auto;">
-<!--             왼쪽 메뉴 -->
             <div class="left side-menu">
                 <div class="sidebar-inner">
                     <div id="sidebar-menu">
@@ -42,37 +66,13 @@
                     </div>
                 </div>
             </div>
-<!-- 			<div th:if="${session.loginUser == 'null'} and ${session.loginUser.profileImage == 'null'}"> -->
-<!-- 				<div class="left_sub_menu" style="padding-top:50px;"> -->
-<!-- 		             <div class="sub_menu"> -->
-<!-- 		                 <div style="text-align: center;"> -->
-<!-- 					 </div> -->
-<!-- 		             <hr style="border-style: dotted; width:170px; margin: auto;"><br> -->
-<!-- 		             <hr style="border-style: dotted; width:170px; margin: auto;"> -->
-<!-- 		             <br> -->
-<!-- 		             <a th:href="@{/users/login/form}"></a> -->
-<!-- 		             <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;"> -->
-<!-- 		                 <li>고객센터 <i class="arrow fas fa-angle-right"></i></li> -->
-<!-- 		                 <ul class="css_mypage_sub_menu"> -->
-<!-- 		                     <li style="list-style: none; font-size: 14px;"><a th:href="@{/notice/list}">공지사항</a></li> -->
-<!-- 		                     <li style="list-style: none; font-size: 14px;"><a th:href="@{/qna/list}">Q&A</a></li> -->
-<!-- 		                     <li style="list-style: none; font-size: 14px;"><a th:href="@{/faq/list}">FAQ</a></li> -->
-<!-- 		                 </ul> -->
-<!-- 		             </ul> -->
-<!-- 		             <hr style="border-style: dotted; width:170px; margin: auto;"> -->
-<!-- 		             <ul class="big_menu"> -->
-<!-- 		                 <li style="list-style: none; font-size: 18px;"><a th:href="@{/camp}" style="color: black;">캠핑예약 <i class="arrow fas fa-angle-right"></i></a></li> -->
-<!-- 		             </ul> -->
-<!-- 		         </div> -->
-<!-- 			</div> -->
-<!-- 			<div th:unless="${session.loginUser != 'null'}"> -->
-		<!--             왼쪽 서브 메뉴 -->
+			<div th:if="${session.loginUser != null}">
 		    	<div class="left_sub_menu" style="padding-top:50px;">
 		            <div class="sub_menu">
 		                <div style="text-align: center;">
 		                <a th:href="@{/users/profile}">
 							<span th:if="${session.loginUser.profileImage == '/images/userimage/basic_profileImage.png'}">
-								<img th:src="${session.loginUser.profileImage}" width="90px" style="border:1px solid #f8f8f9; border-radius: 50px; align:center;">
+								<img th:src="${session.loginUser.profileImage}" width="90px" style="border:1px solid #f8f8f9; border-radius: 50px; text-align:center;">
 							</span>
 							<span th:if="${session.loginUser.profileImage != '/images/userimage/basic_profileImage.png'}">
 								<img th:src="|/load/profileImage/${session.loginUser.profileImage}|" width="80px" style="border:1px solid #f8f8f9; border-radius: 50px;">
@@ -84,35 +84,89 @@
 		                	<p th:text="|(${session.loginUser.id})|" style="font-size: 7px; color:gray;">
 		                </div>
 		                <br><hr style="border-style: dotted; width:170px; margin: auto;"><br>
-		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black; left:5px;">
+		                <ul class="big_menu">
+		                	<li style="list-style: none; font-size: 18px; margin-left: 40px;"><a th:href="@{/camp}" style="color: black;">캠핑예약 <i class="arrow fas fa-angle-right"></i></a></li>
+		            	</ul>
+		                <hr style="border-style: dotted; width:170px; margin: auto;">
+		                <br>
+		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black; left:5px; margin-left: 40px;">
 		                    <li>마이페이지 <i class="arrow fas fa-angle-right"></i></li>
-		                    <ul class="css_mypage_sub_menu">
-		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/users/modify}">회원정보변경</a></li>
+		                    <ul class="css_mypage_sub_menu" style="margin-left: 20px;">
+		                        <li style="list-style: none; font-size: 14px;" ><a th:href="@{/users/modify}">회원정보변경</a></li>
 		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/users/jjim}">찜목록</a></li>
 		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/users/board/list}">내가 쓴 글</a></li>
 		                	    <li style="list-style: none; font-size: 14px;"><a th:href="@{/users/reserve}">예약내역</a></li>
 		                    </ul>
 		                </ul>
 		                <hr style="border-style: dotted; width:170px; margin: auto;">
+		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;  margin-left: 40px;">
 		                <br>
-		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;">
+		                    <li>캠핑 커뮤니티 <i class="arrow fas fa-angle-right"></i></li>
+		                    <ul class="css_mypage_sub_menu" style="margin-left: 20px;">
+		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/freeboard/list}">자유게시판</a></li>
+		                    	<li style="list-style: none; font-size: 14px;"><a th:href="@{#}" id="review">리뷰게시판</a></li>
+		                	</ul>
+		                </ul>
+		                <hr style="border-style: dotted; width:170px; margin: auto;">
+		                <br>
+		                <ul class="big_menu" style="list-style: none; font-size: 18px; color: black;  margin-left: 40px;">
 		                    <li>고객센터 <i class="arrow fas fa-angle-right"></i></li>
-		                    <ul class="css_mypage_sub_menu">
+		                    <ul class="css_mypage_sub_menu" style="margin-left: 20px;">
 		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/notice/list}">공지사항</a></li>
 		                        <li style="list-style: none; font-size: 14px;"><a th:href="@{/qna/list}">Q&A</a></li>
 		                    	<li style="list-style: none; font-size: 14px;"><a th:href="@{/faq/list}">FAQ</a></li>
 		                	</ul>
 		                </ul>
-		                <hr style="border-style: dotted; width:170px; margin: auto;">
-		                <br>
-		                <ul class="big_menu">
-		                	<li style="list-style: none; font-size: 18px;"><a th:href="@{/camp}" style="color: black;">캠핑예약 <i class="arrow fas fa-angle-right"></i></a></li>
-		            	</ul>
+		                 <hr style="border-style: dotted; width:170px; margin: auto;">
+		                 <br>
+		                 <th:block th:if="${session.loginUser.id == 'admin'}">
+		                 	<ul class="big_menu" style="margin-left: 40px;">
+		                		<li style="list-style: none; font-size: 18px;"><a th:href="@{/admin}" class="alink" style="color: black;">관리자 전용 <i class="arrow fas fa-angle-right"></i></a></li>
+		            		</ul>
+		                 </th:block>
 		        	</div>
 		    	</div>
-<!-- 			</div> -->
+			</div>
+			
+			<div th:if="${session.loginUser == null}">
+				<div class="left_sub_menu" style="padding-top:50px;">
+		             <div class="sub_menu">
+		                 <div style="text-align: center;">
+					 </div>
+		             <hr style="border-style: dotted; width:170px; margin: auto;">
+		             <br>
+		             <div style="text-align: center;">
+		             <a th:href="@{/users/login/form}">로그인</a> ㅣ <a th:href="@{/users/agree}">회원가입</a>
+		             </div>
+		             <br>
+		             <hr style="border-style: dotted; width:170px; margin: auto;">
+		             <ul class="big_menu" style="list-style: none; font-size: 18px; color: black; margin-left: 40px;">
+		                <br>
+		                <li>캠핑커뮤니티 <i class="arrow fas fa-angle-right"></i></li>
+		                <ul class="css_mypage_sub_menu" style="margin-left: 20px;">
+		                	<li style="list-style: none; font-size: 14px;"><a th:href="@{/freeboard/list}">자유게시판</a></li>
+		                    <li style="list-style: none; font-size: 14px;"><a th:href="@{/reviewboard/list}">리뷰게시판</a></li>
+		                </ul>
+		             </ul>
+		             <hr style="border-style: dotted; width:170px; margin: auto;">
+		             <br>
+		             <ul class="big_menu" style="margin-left: 40px;">
+		                 <li style="list-style: none; font-size: 18px;"><a th:href="@{/camp}" style="color: black;">캠핑예약 <i class="arrow fas fa-angle-right"></i></a></li>
+		             </ul>
+		             <hr style="border-style: dotted; width:170px; margin: auto;">
+		             <br>
+		             <ul class="big_menu" style="list-style: none; font-size: 18px; color: black; margin-left: 40px;">
+		             	<li>고객센터 <i class="arrow fas fa-angle-right"></i></li>
+		             	<ul class="css_mypage_sub_menu" style="margin-left: 20px;">
+		             		<li style="list-style: none; font-size: 14px;"><a th:href="@{/notice/list}">공지사항</a></li>
+		             		<li style="list-style: none; font-size: 14px;"><a th:href="@{/qna/list}">Q&A</a></li>
+		                	<li style="list-style: none; font-size: 14px;"><a th:href="@{/faq/list}">FAQ</a></li>
+		             	</ul>
+		             </ul>
+		         </div>
+			</div>
     	</div>
 	</div>
 </div>
-</body>
+</div>
 </html>

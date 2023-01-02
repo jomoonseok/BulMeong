@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="/css/admin_styles.css">
-<head th:insert="~{layout/header::head('bulmeong admin')}"></head>
+<head th:insert="~{layout/header::head('Bul meong 텐트관리')}"></head>
 <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 <script src="/js/admin_scripts.js"></script>
+<style>
+	#paging .enable_link:hover {
+		cursor: pointer;
+	}
+	
+	#datatablesSimple {
+		border-collapse: collapse;
+	
+	}
+	#tentTblBody > tr{
+		height: 100px;
+		border-top: 1px dotted #bcbcbc;
+		border-bottom: 1px dotted #bcbcbc;
+	}
+</style>
 <body>
 	
 	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -38,7 +53,7 @@
                         <div class="nav">
                             <a class="nav-link" href="/admin">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                메인 화면
+                                현황
                             </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -64,9 +79,9 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">캠핑장 관리</a>
-                                            <a class="nav-link" href="register.html">텐트 관리</a>
-                                            <a class="nav-link" href="password.html">예약 관리</a>
+                                            <a class="nav-link" href="/admin/campManage">캠핑장 관리</a>
+                                            <a class="nav-link" href="/admin/tentManage">텐트 관리</a>
+                                            <a class="nav-link" href="/admin/reserveManage">예약 관리</a>
                                         </nav>
                                     </div>
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
@@ -116,7 +131,7 @@
                             
                             
                             <div class="card-body">
-                                <table id="datatablesSimple" style="width:1400px;">
+                                <table id="datatablesSimple" style="width:90%;">
                                     <thead>
                                         <tr style="text-align: center;">
                                             <th>캠핑장번호</th>
@@ -133,7 +148,7 @@
                                     </tbody>
                                     <tfoot>
                                     	<tr>
-                                    		<td colspan="9" id="paging" style="text-align: center;"></td>
+                                    		<td colspan="9" id="paging" style="text-align: center;  letter-spacing: 20px; padding-top: 50px;"></td>
                                     	</tr>
                                     </tfoot>
                                 </table>

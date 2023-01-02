@@ -2,6 +2,8 @@ package com.gdu.bulmeong.admin.service;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ import com.gdu.bulmeong.admin.domain.AdminTentDTO;
 import com.gdu.bulmeong.admin.mapper.AdminMapper;
 import com.gdu.bulmeong.camp.domain.CampDTO;
 import com.gdu.bulmeong.camp.mapper.CampMapper;
+import com.gdu.bulmeong.users.domain.MyPageReservedDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.MyFileUtil;
 import com.gdu.bulmeong.util.PageUtil;
@@ -40,10 +43,42 @@ public class AdminServiceImpl implements AdminService {
 		model.addAttribute("loginUser", loginUser);
 	}
 	
-	public Map<String, Object> getAllUser() {
+	public Map<String, Object> getAllUser(HttpServletRequest request) {
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt.orElse("1"));
+		int userCount = adminMapper.selectAllUserCount();
+		pageUtil.setPageUtil(page, userCount, 10);
 		
 		Map<String, Object> map = new HashMap<>();
-		map.put("users", adminMapper.selectAllUser());
+		map.put("begin", pageUtil.getBegin() - 1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
+		List<UsersDTO> users = adminMapper.selectAllUser(map);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("users", users);
+		result.put("pageUtil", pageUtil);
+		result.put("userCount", userCount);
+		
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> removeUser(List<Integer> usersNo) {
+		int userNoArr[] = new int[usersNo.size()];
+		int result = 0;
+		Map<String, Object> map = new HashMap<>();
+		for(int i = 0; i < usersNo.size(); i++) {
+			userNoArr[i] = usersNo.get(i);
+			result += adminMapper.deleteUser(userNoArr[i]);
+		}
+		
+		if(result == usersNo.size()) {
+			map.put("isDelete", true);
+			map.put("resultCount", result);
+		} else {
+			map.put("isDelete", false);
+		}
 		
 		return map;
 	}
@@ -93,6 +128,28 @@ public class AdminServiceImpl implements AdminService {
 		List<Map<String, Object>> camp = adminMapper.selectCampcampNofacltNm();
 		Map<String, Object> result = new HashMap<>();
 		result.put("camp", camp);
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> getAllReserve(HttpServletRequest request) {
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt.orElse("1"));
+		int reserveCount = adminMapper.selectAllReserveCount();
+		
+		pageUtil.setPageUtil(page, reserveCount, 10);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("begin", pageUtil.getBegin() - 1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
+		List<MyPageReservedDTO> reserve = adminMapper.selectReserveByMap(map);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("reserveList", reserve);
+		result.put("pageUtil", pageUtil);
+		result.put("reserveCount", reserveCount);
+		
 		return result;
 	}
 	
@@ -179,6 +236,7 @@ public class AdminServiceImpl implements AdminService {
 		int TENT_MAX_COUNT = Integer.parseInt(request.getParameter("TENT_MAX_COUNT"));
 		int TENT_SUM = Integer.parseInt(request.getParameter("TENT_SUM"));
 		MultipartFile TENT_IMAGE = request.getFile("TENT_IMAGE");
+		String TENT_IMAGE_ORIGIN = request.getParameter("TENT_IMAGE_ORIGIN");
 		
 		try {
 			if(TENT_IMAGE != null && TENT_IMAGE.isEmpty() == false || TENT_IMAGE.getSize() >= 0) {
@@ -190,7 +248,12 @@ public class AdminServiceImpl implements AdminService {
 
 				String path = "";
 				if(TENT_IMAGE.getSize() == 0) {
-					filesystem = "/images/tent/default_tent.png";
+					
+					if(TENT_IMAGE.getName() != null) {
+						filesystem = TENT_IMAGE_ORIGIN;
+					} else {
+						filesystem = "/images/tent/default_tent.png";
+					}
 					
 				} else {
 					path = myFileUtil.getTentPath();
@@ -260,12 +323,10 @@ public class AdminServiceImpl implements AdminService {
 	public Map<String, Object> changeImage(MultipartHttpServletRequest request) {
 		
 		MultipartFile tentImage = request.getFile("TENT_IMAGE");
-		System.out.println(request.getFile("TENT_IMAGE"));
 		Map<String, Object> map = new HashMap<>();
 		map.put("tentImage", tentImage);
 	
 		return map;
 	}
-	
 	
 }

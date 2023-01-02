@@ -215,16 +215,31 @@
 		 WHERE R.ID = #{id}
 	</select>
 	
-	<!--  -->
 	<select id="selectJjimList" parameterType="String" resultType="CampDTO">
 		SELECT CAMP_NO, FACLTNM, JJIM, FIRSTIMAGEURL, ADDR1, TEL
 		  FROM CAMP
-		 WHERE CAMP_NO IN (SELECT T.CAMP_NO
-						     FROM USERS U INNER JOIN CAMP_CART T		    
-							   ON U.ID = T.ID
-						    WHERE U.ID = #{id})
+		 WHERE CAMP_NO IN (SELECT CAMP_NO
+						     FROM CAMP_CART		    
+						    WHERE ID = #{id})
 	</select>
 	
+	<select id="selectBoardList" parameterType="String" resultType="FreeBoardDTO">
+		SELECT FREE_NO, ID, NICKNAME, FREE_TITLE, FREE_CREATE_DATE, FREE_HIT, PROFILE_IMAGE
+		  FROM FREE_BRD
+		 WHERE ID = #{id}
+		 ORDER BY FREE_NO DESC
+	</select>
 	
+	<select id="selectLikeCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_LIKE
+		 WHERE FREE_NO = #{freeNo}
+	</select>
+	
+	<select id="selectCmtCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM FREE_CMT
+		 WHERE FREE_NO = #{freeNo} AND FREE_CMT_STATE = 1
+	</select>
 	
 </mapper>

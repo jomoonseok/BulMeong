@@ -67,13 +67,14 @@ public class QnaServiceImpl implements QnaService {
 		String qnaTitle = request.getParameter("qnaTitle");
 		String qnaContent = request.getParameter("qnaContent");
 		String qnaIp = request.getRemoteAddr();
+		int qnaState = Integer.parseInt(request.getParameter("qnaState"));
 		
 		QnaDTO qna = new QnaDTO();
 		qna.setId(id);
 		qna.setQnaTitle(qnaTitle);
 		qna.setQnaContent(qnaContent);
 		qna.setQnaIp(qnaIp);
-		
+		qna.setQnaState(qnaState);
 		
 		int result = 0;
 		int insertResult = qnaMapper.insertQuestion(qna);
@@ -115,12 +116,6 @@ public class QnaServiceImpl implements QnaService {
 		int depth = Integer.parseInt(request.getParameter("depth"));
 		int qnaGroupNo = Integer.parseInt(request.getParameter("qnaGroupNo"));
 		
-		System.out.println(id);
-		System.out.println(writeAnswer);
-		System.out.println(qnaIp);
-		System.out.println(depth);
-		System.out.println(qnaGroupNo);
-		
 		QnaDTO answer = new QnaDTO();
 		answer.setId(id);
 		answer.setQnaContent(writeAnswer);
@@ -133,7 +128,6 @@ public class QnaServiceImpl implements QnaService {
 		
 		try {
 			if(result > 0) {
-				System.out.println("ahi");
 				depth = 1;
 				QnaDTO qna = new QnaDTO();
 				qna.setDepth(depth);

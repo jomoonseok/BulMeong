@@ -251,15 +251,10 @@ public class CampServiceImpl implements CampService {
 		map.put("doNm", doNm);
 		map.put("induty", induty);
 		map.put("themaEnvrnCl", themaEnvrnCl);
-		System.out.println(query);
-		System.out.println(doNm);
-		System.out.println(induty);
-		System.out.println(themaEnvrnCl);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("campList", campMapper.selectCampByOption(map));
 		result.put("campCount", campMapper.selectCampByOptionCount(map));
-		System.out.println(campMapper.selectCampByOption(map));
 		return result;
 	}
 	

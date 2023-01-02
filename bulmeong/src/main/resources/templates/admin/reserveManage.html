@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/css/admin_styles.css">
+<head th:insert="~{layout/header::head('Bul meong 회원관리')}"></head>
+<script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+<script src="/js/admin_scripts.js"></script>
+<style>
+	#paging .enable_link:hover {
+		cursor: pointer;
+	}
+	
+	#datatablesSimple {
+		border-collapse: collapse;
+		
+	}
+	#usersTblBody > tr{
+		height: 100px;
+		border-top: 1px dotted #bcbcbc;
+		border-bottom: 1px dotted #bcbcbc;
+	}
+	
+</style>
+<body>
+	
+	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="/">bulmeong Home</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+                <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <a class="nav-link" href="/admin">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                현황
+                            </a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                유저
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/admin/userManage">계정 관리</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">이용내역 관리</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                서비스
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                        캠핑장
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="/admin/campManage">캠핑장 관리</a>
+                                            <a class="nav-link" href="/admin/tentManage">텐트 관리</a>
+                                            <a class="nav-link" href="password.html">예약 관리</a>
+                                        </nav>
+                                    </div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                                        게시판
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="500.html">공지사항</a>
+                                            <a class="nav-link" href="500.html">QnA</a>
+                                            <a class="nav-link" href="500.html">FAQ</a>
+                                            <a class="nav-link" href="401.html">자유 게시판</a>
+                                            <a class="nav-link" href="404.html">리뷰 게시판</a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small"></div>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">bulmeong Admin</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">bulmeong Admin</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                예약 현황
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple" style="width:90%">
+                                    <thead>
+                                        <tr style="font-size: 12px; text-align: center;">
+                                            <th>예약번호</th>
+                                            <th>캠핑장명</th>
+                                            <th>주소</th>
+                                            <th>텐트명</th>
+                                            <th>텐트사진</th>
+                                            <th>텐트구분</th>
+                                            <th>예약자명</th>
+                                            <th>최대수용인원</th>
+                                            <th>예약인원</th>
+                                            <th>예약금액</th>
+                                            <th>예약시작일자</th>
+                                            <th>예약종료일자</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reserveTblBody">
+                                    </tbody>
+                                    <tfoot>
+                                    	<tr>
+                                    		<td colspan="21" id="paging" style="text-align: center;  letter-spacing: 20px; padding-top: 50px;"></td>
+                                    	</tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        
+       	<script>
+       	
+       		$(function() {
+       			fn_list();
+       		})
+       		
+       		function fn_list() {
+       			$('#usersTblBody').empty();
+	       		$.ajax({
+	       			type: 'post',
+	       			url: '/admin/getAllReserve',
+	       			success: function(resData) {
+	       				console.log(resData);
+	       				$('.breadcrumb-item.active').text('예약 현황 : ' + resData.reserveCount + '개');
+	       				$.each(resData.reserveList, function(i, reserve) {
+	       					var reserveDiv = '<tr style="font-size: 10px; text-align: center;" class="userDiv"}>';
+	       					reserveDiv += '<td>' + reserve.reserveNo + '</td>';
+	       					reserveDiv += '<td>' + reserve.facltNm + '</td>';
+	       					reserveDiv += '<td>' + reserve.addr1 + '</td>';
+	       					reserveDiv += '<td>' + reserve.tentName + '</td>';
+	       					if(reserve.tentImage == "/images/tent/default_tent.png") {
+	       						reserveDiv += '<td><img src="' + reserve.tentImage + '" style="width=70px; height:50px;"></img></td>';
+	       					} else {
+	       						reserveDiv += '<td><img src="/load/tent/' + reserve.tentImage + '" style="width=70px; height:50px;"></img></td>';
+	       					}
+	       					switch(reserve.tentCategory) {
+		      	    		case 0: reserve.tentCategory = '글램핑'; break;
+		      	    		case 1: reserve.tentCategory = '카라반'; break;
+		      	    		case 2: reserve.tentCategory = '일반야영장'; break;
+		      	    		case 3: reserve.tentCategory = '자동차야영장';
+	      	    			}
+	       					reserveDiv += '<td>' + reserve.tentCategory + '</td>';
+	       					reserveDiv += '<td>' + reserve.reserveName + '</td>';
+	       					reserveDiv += '<td>' + reserve.tentMaxCount + '</td>';
+	       					reserveDiv += '<td>' + reserve.reserveCount + '</td>';
+	       					reserveDiv += '<td>' + reserve.reserveSum + '</td>';
+	       					reserveDiv += '<td>' + reserve.reserveBeginDate + '</td>';
+	       					reserveDiv += '<td>' + reserve.endDate + '</td>';
+	       					$('#reserveTblBody').append(reserveDiv);
+	       					
+	       				});
+	       				
+	       				$('#paging').empty();
+	    				var pageUtil = resData.pageUtil;
+	    				var paging = '';
+	    				// 이전 블록
+	    				if(pageUtil.beginPage != 1) {
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+	    				}
+	    				// 페이지번호
+	    				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+	    					if(p == $('#page').val()){
+	    						paging += '<strong>' + p + '</strong>';
+	    					} else {
+	    						paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
+	    					}
+	    				}
+	    				// 다음 블록
+	    				if(pageUtil.endPage != pageUtil.totalPage) {
+	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+	    				}
+	    				$('#paging').append(paging);
+       				
+	       			},error(jqXHR) {
+	       				console.log(jqXHR);
+	       			}
+	       			
+	       		})
+       		}
+       		
+       	</script>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+	
+</body>
+</html>

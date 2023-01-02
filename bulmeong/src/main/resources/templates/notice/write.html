@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('공지사항 작성')}"></head>
+<head th:replace="~{layout/header::head('Bul meong 공지사항 작성')}"></head>
+<link th:href="@{/css/notice/write.css}" rel="stylesheet" />
 
 <script th:inline="javascript">
 	
 	$(document).ready(function(){
 		
 		$('#noticeContent').summernote({
-			width: 800,
 			height: 400,
 			lang: 'ko-KR',
 			toolbar: [
@@ -65,25 +65,25 @@
 	<div>
 		<header th:replace="~{layout/header::header_layout}"></header>
 		
-		<h3>공지작성</h3>
+		<div class="css_noticeWrite_title"><i class="fa-solid fa-quote-left"></i>공지작성<i class="fa-solid fa-quote-right"></i></div>
 		
 		<form id="frm_write" th:object="${notice}" th:action="@{/notice/add}" method="post">
 		
-			<div>
+			<div class="css_noticeTitle_wrap">
 				<label for="noticeTitle">제목</label>
 				<input type="text" name="noticeTitle" id="noticeTitle">
 			</div>
 			
-			<div>
+			<div class="css_noticeContent_wrap">
 				<label for="noticeContent">내용</label>
 				<textarea name="noticeContent" id="noticeContent" ></textarea>
 			</div>
 			
 			<div id="summernote_image_list"></div>
 			
-			<div>
-				<button>작성완료</button>
-				<input type="reset" value="입력초기화">
+			<div class="footer">
+				<button class="btn_noticeSubmit">작성완료</button>
+				<input type="reset" value="입력초기화" class="btn_noticeReset">
 				<input type="button" value="목록" id="btn_list">
 			</div>
 		</form>

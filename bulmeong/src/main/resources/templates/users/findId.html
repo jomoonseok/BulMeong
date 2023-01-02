@@ -93,16 +93,15 @@
     	display: block;
         text-align: center;
     }
-    
     .in_login_box {
+    	width: 500px;
+    	margin: auto;
     	margin-top: 100px;
 		background-color: rgb(255, 255, 255, 0.7);
-    	padding: 50px 35px 200px;
+    	padding: 90px 35px;
         border: none;
         border-radius: 20px;
-        position: absolute;
-  		left: 50%;
-  		transform: translateX(-50%);
+
   		/* 그림자 */
   		box-shadow: 5px 5px 5px 5px rgba(180, 185, 191, 0.3);
   		
@@ -142,6 +141,7 @@
 		background: rgb(204, 75, 76);
 		color: rgb(255, 255, 255);
 		font-size: 16px;
+		margin-top: 10px;
 	}
 	
 	.btn_red:hover {
@@ -167,9 +167,8 @@
 </head>
 <body>
 
-	<!-- <header th:replace="~{layout/header::header_layout}"></header> -->
 	<a class="logo" th:href="@{/}"><img th:src="@{/images/index/불멍로고.png}" width="300px" style="margin-bottom: 30px"></a>
-	<div>
+	
 	<div class="out_login_box">
 		<div class="in_login_box">
 		
@@ -203,7 +202,7 @@
 			<div id="msg_result"></div>
 		</div>
 	</div>
-	</div>
+	
 	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

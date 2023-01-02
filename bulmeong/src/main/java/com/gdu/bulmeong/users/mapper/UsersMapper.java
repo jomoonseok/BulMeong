@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.bulmeong.camp.domain.CampDTO;
+import com.gdu.bulmeong.freeboard.domain.FreeBoardDTO;
 import com.gdu.bulmeong.reserve.domain.ReservedDTO;
 import com.gdu.bulmeong.users.domain.MyPageReservedDTO;
 import com.gdu.bulmeong.users.domain.RetireUsersDTO;
@@ -39,5 +40,8 @@ public interface UsersMapper {
 	// myPage
 	public List<MyPageReservedDTO> selectReserveById(String id);
 	public List<CampDTO> selectJjimList(String id);
+	public List<FreeBoardDTO> selectBoardList(String id);
+	public int selectLikeCount(int freeNo);
+	public int selectCmtCount(int freeNo);
 	
 }
