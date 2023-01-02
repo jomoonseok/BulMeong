@@ -9,15 +9,12 @@
 			
 			fn_login();
 			fn_displayRememberId();
-			console.log("[[${apiURL}]]");
 			
 		});
 		
 		function fn_login(){
 			
 			$('#frm_login').submit(function(event){
-				console.log($('#id').val());
-				console.log($('#pw').val());
 				// 아이디, 비밀번호 공백 검사
 				if($('#id').val() == '' || $('#pw').val() == ''){
 					alert('아이디와 비밀번호를 모두 입력하세요.');

@@ -82,7 +82,6 @@
 				type: 'get',
 				url: '/index/freeBrdList',
 				success: function(resData) {
-					console.log(resData);
 					$.each(resData.freeBrdLike, function(i, free) {
 						var freeDiv = '<div class="freebrd_one_box">';
 						freeDiv += '<div>';

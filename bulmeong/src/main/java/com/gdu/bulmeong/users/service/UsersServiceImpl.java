@@ -118,7 +118,6 @@ public class UsersServiceImpl implements UsersService {
 		
 		// 인증코드 만들기
 		String authCode = securityUtil.getAuthCode(6);  // String authCode = securityUtil.generateRandomString(6);
-		System.out.println("발송된 인증코드 : " + authCode);
 		
 		// 메일 전송
 		javaMailUtil.sendJavaMail(email, "[Application] 인증요청", "인증번호는 <strong>" + authCode + "</strong>입니다.");
@@ -1036,7 +1035,6 @@ public class UsersServiceImpl implements UsersService {
 
 		// 9자리 임시 비밀번호
 		String temporaryPassword = securityUtil.generateRandomString(9);
-		System.out.println("임시비번 : " + temporaryPassword);
 		
 		// 메일 내용
 		String text = "";

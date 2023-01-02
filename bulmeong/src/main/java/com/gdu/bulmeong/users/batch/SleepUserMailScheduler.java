@@ -14,7 +14,7 @@ public class SleepUserMailScheduler {
 	@Autowired
 	private UsersService usersService;
 	
-	@Scheduled(cron = "0 0 1 * * *")  
+	@Scheduled(cron = "0 0 14 * * *")  
 	public void execute() {
 		usersService.sleepUserMail();
 	}

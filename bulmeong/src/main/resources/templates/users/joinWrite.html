@@ -276,7 +276,6 @@
 			let regDate = /^[0-9]{1,2}$/;
 			let monthDate = '';
 			let month = $('#birthdate').prev().val();
-			console.log(month);
 			switch(month){
 			case "02" : $('#birthyear').val() % 4 == 0 ? monthDate = 29 : monthDate = 28; break;
 			case "04" :
@@ -285,7 +284,6 @@
 			case "11" :monthDate = 30; break;
 			default : monthDate = 31;
 			}
-			console.log(monthDate);
 			if(dateValue != '' && dateValue <= monthDate && regDate.test(dateValue) == true){
 				$('#msg_birth').text('');
 				datePass = true;
