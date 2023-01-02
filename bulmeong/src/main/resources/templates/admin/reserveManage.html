@@ -82,7 +82,7 @@
                                         <nav class="sb-sidenav-menu-nested nav">
                                             <a class="nav-link" href="/admin/campManage">캠핑장 관리</a>
                                             <a class="nav-link" href="/admin/tentManage">텐트 관리</a>
-                                            <a class="nav-link" href="/admin/reserveManage">예약 관리</a>
+                                            <a class="nav-link" href="password.html">예약 관리</a>
                                         </nav>
                                     </div>
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
@@ -117,36 +117,27 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                회원 현황
+                                예약 현황
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple" style="width:90%">
                                     <thead>
                                         <tr style="font-size: 12px; text-align: center;">
-                                            <th>번호</th>
-                                            <th>사진</th>
-                                            <th>아이디</th>
-                                            <th>이름</th>
-                                            <th>닉네임</th>
-                                            <th>이메일</th>
-                                            <th>전화번호</th>
-                                            <th>성별</th>
-                                            <th>나이</th>
-                                            <th>생년월일</th>
-                                            <th>우편번호</th>
+                                            <th>예약번호</th>
+                                            <th>캠핑장명</th>
                                             <th>주소</th>
-                                            <th>지번주소</th>
-                                            <th>상세주소</th>
-                                            <th>기타주소</th>
-                                            <th>가입일자</th>
-                                            <th>동의코드</th>
-                                            <th>sns타입</th>
-                                            <th>비밀번호<br>수정일</th>
-                                            <th>개인정보<br>수정일</th>
-                                            <th><input type="submit" value="삭제하기" id="btn_retire"></th>
+                                            <th>텐트명</th>
+                                            <th>텐트사진</th>
+                                            <th>텐트구분</th>
+                                            <th>예약자명</th>
+                                            <th>최대수용인원</th>
+                                            <th>예약인원</th>
+                                            <th>예약금액</th>
+                                            <th>예약시작일자</th>
+                                            <th>예약종료일자</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="usersTblBody">
+                                    <tbody id="reserveTblBody">
                                     </tbody>
                                     <tfoot>
                                     	<tr>
@@ -177,40 +168,41 @@
        	
        		$(function() {
        			fn_list();
-       			fn_retire();
        		})
        		
        		function fn_list() {
        			$('#usersTblBody').empty();
 	       		$.ajax({
 	       			type: 'post',
-	       			url: '/admin/getAllUser',
+	       			url: '/admin/getAllReserve',
 	       			success: function(resData) {
-	       				$('.breadcrumb-item.active').text('유저 현황 : ' + resData.userCount + '명');
-	       				$.each(resData.users, function(i, users) {
-	       					var usersDiv = '<tr style="font-size: 10px; text-align: center;" class="userDiv" onclick="fn_click(this)"}>';
-	       					usersDiv += '<td>' + users.usersNo + '</td>';
-	       					usersDiv += '<td><img src="' + users.profileImage + '"></img></td>';
-	       					usersDiv += '<td>' + users.id + '</td>';
-	       					usersDiv += '<td>' + users.name + '</td>';
-	       					usersDiv += '<td>' + users.nickname + '</td>';
-	       					usersDiv += '<td>' + users.email + '</td>';
-	       					usersDiv += '<td>' + users.mobile + '</td>';
-	       					usersDiv += '<td>' + users.gender + '</td>';
-	       					usersDiv += '<td>' + users.age + '</td>';
-	       					usersDiv += '<td>' + users.birthYear + users.birthDay + '</td>';
-	       					usersDiv += '<td>' + users.postCode + '</td>';
-	       					usersDiv += '<td>' + users.roadAddress + '</td>';
-	       					usersDiv += '<td>' + users.jibunAddress + '</td>';
-	       					usersDiv += '<td>' + users.detailAddress + '</td>';
-	       					usersDiv += '<td>' + users.extraAddress + '</td>';
-	       					usersDiv += '<td>' + users.joinDate + '</td>';
-	       					usersDiv += '<td>' + users.agreeCode + '</td>';
-	       					usersDiv += '<td>' + users.snsType + '</td>';
-	       					usersDiv += '<td>' + users.pwModifyDate + '</td>';
-	       					usersDiv += '<td>' + users.infoModifyDate + '</td>';
-	       					usersDiv += '<td><input type="checkbox" name="chk" class="chk_retire" data-usersno="' + users.usersNo + '"></td>';
-	       					$('#usersTblBody').append(usersDiv);
+	       				console.log(resData);
+	       				$('.breadcrumb-item.active').text('예약 현황 : ' + resData.reserveCount + '개');
+	       				$.each(resData.reserveList, function(i, reserve) {
+	       					var reserveDiv = '<tr style="font-size: 10px; text-align: center;" class="userDiv"}>';
+	       					reserveDiv += '<td>' + reserve.reserveNo + '</td>';
+	       					reserveDiv += '<td>' + reserve.facltNm + '</td>';
+	       					reserveDiv += '<td>' + reserve.addr1 + '</td>';
+	       					reserveDiv += '<td>' + reserve.tentName + '</td>';
+	       					if(reserve.tentImage == "/images/tent/default_tent.png") {
+	       						reserveDiv += '<td><img src="' + reserve.tentImage + '" style="width=70px; height:50px;"></img></td>';
+	       					} else {
+	       						reserveDiv += '<td><img src="/load/tent/' + reserve.tentImage + '" style="width=70px; height:50px;"></img></td>';
+	       					}
+	       					switch(reserve.tentCategory) {
+		      	    		case 0: reserve.tentCategory = '글램핑'; break;
+		      	    		case 1: reserve.tentCategory = '카라반'; break;
+		      	    		case 2: reserve.tentCategory = '일반야영장'; break;
+		      	    		case 3: reserve.tentCategory = '자동차야영장';
+	      	    			}
+	       					reserveDiv += '<td>' + reserve.tentCategory + '</td>';
+	       					reserveDiv += '<td>' + reserve.reserveName + '</td>';
+	       					reserveDiv += '<td>' + reserve.tentMaxCount + '</td>';
+	       					reserveDiv += '<td>' + reserve.reserveCount + '</td>';
+	       					reserveDiv += '<td>' + reserve.reserveSum + '</td>';
+	       					reserveDiv += '<td>' + reserve.reserveBeginDate + '</td>';
+	       					reserveDiv += '<td>' + reserve.endDate + '</td>';
+	       					$('#reserveTblBody').append(reserveDiv);
 	       					
 	       				});
 	       				
@@ -242,40 +234,6 @@
 	       		})
        		}
        		
-       		function fn_retire() {
-       			
-       			var retireArr = new Array();
-       			
-       			/* $('.chk_retire').prop('disabled', true); */
-       			$('#btn_retire').on('click', function() {
-       				/* if($('.chk_retire').is(':disabled')) {
-       					$('.chk_retire').prop('disabled', false);
-       				} else {
-       					$('.chk_retire').prop('disabled', true);
-       				} */
-       				$("input[name='chk']:checked").each(function(){
-       					retireArr.push($(this).data('usersno'));
-       				});
-       				
-       				$.ajax({
-       					type: 'post',
-       					url: '/admin/userRemove',
-       					data: {"retireArr": retireArr},
-       					success: function(resData) {
-       						if(resData.isDelete == true) {
-       							alert(resData.resultCount + '건의 삭제가 완료되었습니다.');
-       							fn_list();
-       						} else {
-       							alert('삭제가 실패했습니다.');
-       							fn_list();
-       						}
-       						
-       					}
-       				});
-       				retireArr.length = 0;
-       			});
-       			
-       		}
        	</script>
         
         

@@ -22,7 +22,7 @@ spring:
     hikari: 
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-#      jdbc-url: jdbc:mysql://203.245.44.15:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8  #db공유됨;
+#      jdbc-url: jdbc:mysql://203.245.44.15:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #      jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/bulmeong?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #      username: bulmeong
 #      password: asdf1235!

@@ -155,9 +155,9 @@ CREATE TABLE FREE_BRD (
 );
 CREATE TABLE FREE_LIKE (
    FREE_NO  INT         NOT NULL,
-   NICKNAME VARCHAR(50) NOT NULL,
+   ID VARCHAR(50) NOT NULL,
    CONSTRAINT FK_FREELIKE_FREEBRD FOREIGN KEY(FREE_NO) REFERENCES FREE_BRD (FREE_NO) ON DELETE CASCADE,
-   CONSTRAINT FK_FREELIKE_USERS FOREIGN KEY(NICKNAME) REFERENCES USERS (NICKNAME) ON DELETE CASCADE
+   CONSTRAINT FK_FREELIKE_USERS FOREIGN KEY(ID) REFERENCES USERS (ID) ON DELETE CASCADE
 );
 CREATE TABLE FREE_CMT (
    FREE_CMT_NO         INT          NOT NULL AUTO_INCREMENT,
@@ -388,7 +388,7 @@ INSERT INTO USERS
    (ID, NICKNAME, PW, NAME, MOBILE, GENDER, BIRTH_YEAR, BIRTH_DAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, JOIN_DATE, AGREE_CODE, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, EMAIL, AGE, PW_MODIFY_DATE, INFO_MODIFY_DATE)
 VALUES
    ('user01', '닉네임(5조)', '6B86B273FF34FCE19D6B804EFF5A3F5747ADA4EAA22F1D49C01E52DDB7875B4B', '이름(5조)', '01011111111', 'NO', '1934', '0806', NULL, NULL, NULL, NULL, NULL, DATE_FORMAT(NOW(), '%y/%m/%d'), 0, NULL, NULL, NULL, 'hong@web.com', NULL, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d')),
-	('user02', '테스트용', '6B86B273FF34FCE19D6B804EFF5A3F5747ADA4EAA22F1D49C01E52DDB7875B4B', '닉네임', '01011111111', 'NO', 1934, 0806, NULL, NULL, NULL, NULL, NULL, DATE_FORMAT(NOW(), '%y/%m/%d'), 0, NULL, NULL, NULL, 'asdf@web.com', NULL, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'));
+   ('user02', '테스트용', '6B86B273FF34FCE19D6B804EFF5A3F5747ADA4EAA22F1D49C01E52DDB7875B4B', '닉네임', '01011111111', 'NO', 1934, 0806, NULL, NULL, NULL, NULL, NULL, DATE_FORMAT(NOW(), '%y/%m/%d'), 0, NULL, NULL, NULL, 'asdf@web.com', NULL, DATE_FORMAT(NOW(), '%y/%m/%d'), DATE_FORMAT(NOW(), '%y/%m/%d'));
 -- 탈퇴
 INSERT INTO USERS_RETIRE
    (ID, NICKNAME, RETIRE_DATE, JOIN_DATE)
@@ -447,27 +447,38 @@ VALUES
 -- VALUES
 --     (3, 3, '텐트12', 4, NULL, 100, 0, '/images/tent/carcamping.webp');
 
-INSERT INTO FAQ
-	(FAQ_NO, FAQ_TITLE, FAQ_CONTENT, FAQ_CREATE_DATE, FAQ_CATEGORY)
+INSERT INTO QNA
+   (QNA_NO, ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
 VALUES
-	(1, '웹사이트 이용방법이 궁금해요!', '[캠핑예약] 페이지에서 여러 캠핑장에서의 일정을 예약 하실 수 있고, [캠핑커뮤니티]에서 불멍 홈페이지를 이용하신 분들의 리뷰게시판과 자유롭게 소통하실 수 있는 자유게시판을 이용하실 수 있습니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 1),
-	(2, '상품찜은 어떻게 사용하나요?', '관심가는 캠핑장의 찜 버튼을 클릭하시면 마이페이지의 찜목록에서 확인하실 수 있습니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 1),
-    (3, '캠핑장 리뷰는 어떻게 확인하나요?', '관심가는 캠핑장의 상세화면에서 캠핑 후기 버튼을 클릭하시거나, 캠핑커뮤니티의 리뷰게시판에서 확인하실 수 있습니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 1),
-    (4, '?', '', DATE_FORMAT(NOW(), '%y/%m/%d'), 1),
-    
-    (5, '회원가입은 어떻게 하나요?', '홈페이지 메인의 오른쪽 상단에 있는 회원가입 버튼을 클릭하시면 회원가입 하실 수 있습니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 2),
-    (6, '회원 탈퇴는 어떻게 하나요?', '로그인 후 마이페이지에서 [회원정보변경]을 클릭하시고 가장 하단에 있는 [회원탈퇴] 버튼을 통해 회원탈퇴 하실 수 있습니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 2),
-    (7, '개인정보(연락처, 이메일 주소 등)변경은 어떻게 하나요?', '로그인 후 마이페이지에서 [회원정보변경] 버튼을 클릭하시면 정보 변경이 가능합니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 2),
-    (8, '로그인이 안돼요!', 'SNS연동 가입을 하셨는데, 아이디로 로그인을 하시거나, 아이디로 가입을 하셨는데 SNS연동 로그인을 시도하시는 경우 로그인이 되지 않아요! 가입하신 방법으로 올바르게 로그인 해보시고, 그래도 로그인이 안되신다면 Q&A게시판에 문의를 남겨주세요.', DATE_FORMAT(NOW(), '%y/%m/%d'), 2),
-    (9, '아이디와 비밀번호를 분실했습니다!', '불멍 사이트 오른쪽 상단에 있는 로그인을 클릭 후 로그인 페이지에서 아이디찾기, 비밀번호찾기 서비스를 이용하여 아이디 확인 및 비밀번호 변경이 가능합니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 2),
-    (10, '결제 수단은 어떤게 가능한가요?', '체크카드, 신용카드 외에도 카카오페이, 네이버페이, PAYCO, L.pay 등 각종 결제수단으로 결제 가능합니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 3),
-    (11, '결제수단을 변경하고 싶어요!', '결제 수단을 변경하기 위해서는 해당 건의 결제를 취소하고, 변경을 원하는 결제 수단으로 재결제가 필요해요. 이 과정에서 취소 수수료가 발생될 수 있습니다!', DATE_FORMAT(NOW(), '%y/%m/%d'), 3),
-    (12, '예약을 취소 하고 싶어요!', '홈페이지[마이페이지 > 예약내역]에서 예약조회 후 직접 취소 처리 가능합니다. 다만, 한번 취소된 예약은 복원이 불가능하오니 신중히 확인 후 취소진행 부탁드립니다. 예약 취소 후 카드 환불은 영업일 기준 약 5~7일 소요 되며(카드사 영업일 기준), 자세한 환불 문의는 카드사로 문의해 주세요.', DATE_FORMAT(NOW(), '%y/%m/%d'), 3),
-    (13, '예약 내역을 확인하고 싶어요!', '로그인 후 마이페이지의 예약내역에서 전체 예약내역을 확인할수있습니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 3),
-    (14, '카카오페이 무이자 할부는 가능 한가요?', '카카오페이 무이자 할부는 카카오페이의 정책을 따르며, 불멍 무이자 할부 기준과는 다릅니다. 결제 시 카카오페이 결제 팝업창에서 할부기간 및 무이자할부 가능 여부를 확인하시기 바랍니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 3),
-    (15, '카카오페이 영수증은 어떻게 신청하나요?', '카카오페이 영수증은 카카오톡 카카오페이 앱(APP)에서 확인 가능합니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 3),
-    (16, '도착시간이 늦어질 것 같은데요.어떡하면 될까요?', '입실시간은 보통 15:00 이후부터 입실 가능하며, 예약한 숙소에 따라 다를 수 있습니다. 22시 이후 도착 시에는 해당 숙소로 사전 연락 부탁 드립니다. 또한 체크인을 늦게 하시더라도 체크아웃 시간은 동일한 점 이용에 참고 부탁 드립니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 4),
-    (17, '미성년자인테 숙소 이용이 가능한가요?', '만 18세 이하는 보호자 동의서를  제출해야 이용 가능하며, 혼숙이 불가능합니다. 예약 후 이용일에 보호자와 동반하여 작성 후 체크인 해주시기 바랍니다.', DATE_FORMAT(NOW(), '%y/%m/%d'), 4);
+   (1, 'user98', '문의합니다', '문희는 포도가 먹고찌푼데', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 1),
+    (2, 'user98', '질문있습니다!', '있었는데 없습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 1),
+    (3, 'user98', '비밀글이라서 안보이쥬?', '비밀글은 작성자와 관리자만 볼수있쥬?', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 1, '0.0.0.0.1', QNA_NO, 1),
+    (4, 'user98', '빠른답변부탁드림', '궁금티비', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 1),
+    (5, 'user01', '전체공개글', '내용보이나요?', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 0),
+    (6, 'user01', '보이시나요?', '내용보이나요?', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 0, '0.0.0.0.1', QNA_NO, 0),
+    (7, 'user01', '비밀글', '내용이안보이나요?', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 1, '0.0.0.0.1', QNA_NO, 0),
+    (8, 'user01', '안보이시나요?', '궁금하신가요?', DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 1, '0.0.0.0.1', QNA_NO, 0);
+
+INSERT INTO FAQ
+   (FAQ_NO, FAQ_TITLE, FAQ_CONTENT, FAQ_CREATE_DATE, FAQ_CATEGORY)
+VALUES
+   (1, '웹사이트 이용방법이 궁금해요!', '[캠핑예약] 페이지에서 여러 캠핑장에서의 일정을 예약 하실 수 있고, [캠핑커뮤니티]에서 불멍 홈페이지를 이용하신 분들의 리뷰게시판과 자유롭게 소통하실 수 있는 자유게시판을 이용하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 0),
+   (2, '상품찜은 어떻게 사용하나요?', '관심가는 캠핑장의 찜 버튼을 클릭하시면 마이페이지의 찜목록에서 확인하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 1),
+    (3, '캠핑장 리뷰는 어떻게 확인하나요?', '관심가는 캠핑장의 상세화면에서 캠핑 후기 버튼을 클릭하시거나, 캠핑커뮤니티의 리뷰게시판에서 확인하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 1),
+    (4, '캠핑장 예약은 어떻게 하나요?', '[캠핑예약] 페이지에서 원하시는 캠핑장을 선택하시고 예약가능한 날짜를 확인 하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 1),
+    (5, '회원가입은 어떻게 하나요?', '홈페이지 메인의 오른쪽 상단에 있는 회원가입 버튼을 클릭하시면 회원가입 하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 2),
+    (6, '회원 탈퇴는 어떻게 하나요?', '로그인 후 마이페이지에서 [회원정보변경]을 클릭하시고 가장 하단에 있는 [회원탈퇴] 버튼을 통해 회원탈퇴 하실 수 있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 2),
+    (7, '개인정보(연락처, 이메일 주소 등)변경은 어떻게 하나요?', '로그인 후 마이페이지에서 [회원정보변경] 버튼을 클릭하시면 정보 변경이 가능합니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 2),
+    (8, '로그인이 안돼요!', 'SNS연동 가입을 하셨는데, 아이디로 로그인을 하시거나, 아이디로 가입을 하셨는데 SNS연동 로그인을 시도하시는 경우 로그인이 되지 않아요! 가입하신 방법으로 올바르게 로그인 해보시고, 그래도 로그인이 안되신다면 Q&A게시판에 문의를 남겨주세요.', DATE_FORMAT(NOW(), '%y-%m-%d'), 2),
+    (9, '아이디와 비밀번호를 분실했습니다!', '불멍 사이트 오른쪽 상단에 있는 로그인을 클릭 후 로그인 페이지에서 아이디찾기, 비밀번호찾기 서비스를 이용하여 아이디 확인 및 비밀번호 변경이 가능합니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 2),
+    (10, '결제 수단은 어떤게 가능한가요?', '체크카드, 신용카드 외에도 카카오페이, 네이버페이, PAYCO, L.pay 등 각종 결제수단으로 결제 가능합니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 3),
+    (11, '결제수단을 변경하고 싶어요!', '결제 수단을 변경하기 위해서는 해당 건의 결제를 취소하고, 변경을 원하는 결제 수단으로 재결제가 필요해요. 이 과정에서 취소 수수료가 발생될 수 있습니다!', DATE_FORMAT(NOW(), '%y-%m-%d'), 3),
+    (12, '예약을 취소 하고 싶어요!', '홈페이지[마이페이지 > 예약내역]에서 예약조회 후 직접 취소 처리 가능합니다. 다만, 한번 취소된 예약은 복원이 불가능하오니 신중히 확인 후 취소진행 부탁드립니다. 예약 취소 후 카드 환불은 영업일 기준 약 5~7일 소요 되며(카드사 영업일 기준), 자세한 환불 문의는 카드사로 문의해 주세요.', DATE_FORMAT(NOW(), '%y-%m-%d'), 3),
+    (13, '예약 내역을 확인하고 싶어요!', '로그인 후 마이페이지의 예약내역에서 전체 예약내역을 확인할수있습니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 3),
+    (14, '카카오페이 무이자 할부는 가능 한가요?', '카카오페이 무이자 할부는 카카오페이의 정책을 따르며, 불멍 무이자 할부 기준과는 다릅니다. 결제 시 카카오페이 결제 팝업창에서 할부기간 및 무이자할부 가능 여부를 확인하시기 바랍니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 3),
+    (15, '카카오페이 영수증은 어떻게 신청하나요?', '카카오페이 영수증은 카카오톡 카카오페이 앱(APP)에서 확인 가능합니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 3),
+    (16, '도착시간이 늦어질 것 같은데요.어떡하면 될까요?', '입실시간은 보통 15:00 이후부터 입실 가능하며, 예약한 숙소에 따라 다를 수 있습니다. 22시 이후 도착 시에는 해당 숙소로 사전 연락 부탁 드립니다. 또한 체크인을 늦게 하시더라도 체크아웃 시간은 동일한 점 이용에 참고 부탁 드립니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 4),
+    (17, '미성년자인테 숙소 이용이 가능한가요?', '만 18세 이하는 보호자 동의서를  제출해야 이용 가능하며, 혼숙이 불가능합니다. 예약 후 이용일에 보호자와 동반하여 작성 후 체크인 해주시기 바랍니다.', DATE_FORMAT(NOW(), '%y-%m-%d'), 4);
 
 COMMIT;
 

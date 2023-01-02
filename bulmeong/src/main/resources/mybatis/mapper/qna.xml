@@ -25,7 +25,7 @@
 		INSERT INTO QNA
 			(ID, QNA_TITLE, QNA_CONTENT, QNA_CREATE_DATE, QNA_MODIFY_DATE, QNA_STATE, QNA_IP, QNA_GROUP_NO, DEPTH)
 		VALUES
-			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), 1, #{qnaIp}, #{qnaGroupNo}, 0)
+			(#{id}, #{qnaTitle}, #{qnaContent}, DATE_FORMAT(NOW(), '%y-%m-%d'), DATE_FORMAT(NOW(), '%y-%m-%d'), #{qnaState}, #{qnaIp}, #{qnaGroupNo}, 0)
 	</insert>
 	
 	<!-- QNA_GROUP_NO 증가 -->

@@ -113,5 +113,18 @@ public class AdminController {
 		return adminService.changeImage(request);
 	}
 	
+	// 예약
+	@GetMapping("/admin/reserveManage")
+	public String requiredLogin_admin_reserveManage() {
+		return "/admin/reserveManage";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/admin/getAllReserve", produces="application/json")
+	public Map<String, Object> getReserve(HttpServletRequest request) {
+		return adminService.getAllReserve(request);
+	}
+	
+	
 	
 }
