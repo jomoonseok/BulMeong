@@ -15,8 +15,8 @@ server:
 # mail
 spring:
 
-  main:
-    web-application-type: none  # not use embeded tomcat
+#  main:
+#    web-application-type: none  # not use embeded tomcat
 
   datasource:
     hikari: 
