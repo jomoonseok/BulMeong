@@ -1062,8 +1062,8 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public Map<String, Object> saveImage(MultipartHttpServletRequest multipartRequest) {
 		
-		UsersDTO user = (UsersDTO)multipartRequest.getSession().getAttribute("loginUser");
-		String id = user.getId();
+		//UsersDTO user = (UsersDTO)multipartRequest.getSession().getAttribute("loginUser");
+		//String id = user.getId();
 		
 		MultipartFile image = multipartRequest.getFile("image");
 		
