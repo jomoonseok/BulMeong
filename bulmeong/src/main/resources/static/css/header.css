@@ -99,7 +99,7 @@ nav {
 .mega-box .content {
    padding: 25px 20px;
    display: flex;
-   width: 100%;
+   width: 70%;
    margin: auto;
    justify-content: space-between;
 }
