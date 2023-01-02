@@ -13,7 +13,6 @@
     		margin: 0 auto;
     	}
     	
-    	
     	#fc-dom-1 {
     		font-size: 23px;
     	}
@@ -62,6 +61,16 @@
     	
     	.DATE {
     		margin-top: 5px;
+    	}
+    	.btn_reserve {
+    		margin-top: 5px;
+    		width: 150px;
+    		height: 33px;
+    		border: none;
+    	}
+    	.tent_img {
+    		border-radius:5px; 
+    		margin-right:10px;
     	}
     	
     	
@@ -227,9 +236,9 @@
     	    			tentMaxCount[i] = tent.tentMaxCount;
     	    			tent_div += '<div style="float:left;">';
     	    			if(tent.tentImage == "/images/tent/default_tent.png") {
-		      	    		tent_div += '<div><img src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
+		      	    		tent_div += '<div><img class="tent_img" src="' + tent.tentImage + '" width="200px" height="133px"></img></div>';
     	    			} else {
-    	    				tent_div += '<div><img src="/load/tent/' + tent.tentImage + '" width="200px" height="133px"></img></div>';
+    	    				tent_div += '<div><img class="tent_img" src="/load/tent/' + tent.tentImage + '" width="200px" height="133px"></img></div>';
     	    			}
 	      	    		tent_div += '</div>';
 	      	    		tent_div += '<div style="float:left;">';
@@ -241,11 +250,11 @@
 		      	    		case 3: tent.tentCategory = '자동차야영장';
 	      	    		}
 	      	    		tent_div += '<div id="category" data-category = "' + tent.tentCategory + '">텐트 구분 : ' + tent.tentCategory + '</div>'; 
-	      	    		tent_div += '<div>최대 인원 : ' + tent.tentMaxCount + '</div>'; 
+	      	    		tent_div += '<div>최대 인원 : ' + tent.tentMaxCount + '명</div>'; 
 	      	    		tent_div += '<div>이용 금액 : ' + tent.tentSum.toLocaleString() + '</div>';
 	      	    		
 	      	    		if(tent.tentState == 0) {
-		      	    		tent_div += '<div id="div_reserve"><input type="submit" class="btn_reserve" value="예약하기" data-tentname="' + tent.tentName+ '"  data-tentno="' + tent.tentNo + '" data-count="' + tent.tentMaxCount + '" onclick="fn_reserve(this)"  ></div></div>'; 
+		      	    		tent_div += '<div id="div_reserve"><input type="submit" class="btn_reserve" value="예약하기" data-tentname="' + tent.tentName+ '"  data-tentno="' + tent.tentNo + '" data-count="' + tent.tentMaxCount + '" onclick="fn_reserve(this) "></div></div>'; 
 	      	    		} else {
 	      	    			tent_div += '<div id="div_reserve"><span style="color:red">* 해당 일정에는 예약이 완료되어 이용이 불가한 텐트입니다.</span></div></div>'; 
 	      	    		}
@@ -254,6 +263,7 @@
 	      	    		tent_div += '</div>';
 	      	    		tent_div += '<div style="clear:both;"></div>';
 	      	    		$('#tent_info').append(tent_div);
+	      	    		$('#tent_info').append('<hr>');
       	    			
       	    			
       	    			

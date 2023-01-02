@@ -41,5 +41,7 @@ public interface UsersMapper {
 	public List<MyPageReservedDTO> selectReserveById(String id);
 	public List<CampDTO> selectJjimList(String id);
 	public List<FreeBoardDTO> selectBoardList(String id);
+	public int selectLikeCount(int freeNo);
+	public int selectCmtCount(int freeNo);
 	
 }

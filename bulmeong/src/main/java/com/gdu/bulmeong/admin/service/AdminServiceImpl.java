@@ -21,6 +21,7 @@ import com.gdu.bulmeong.admin.domain.AdminTentDTO;
 import com.gdu.bulmeong.admin.mapper.AdminMapper;
 import com.gdu.bulmeong.camp.domain.CampDTO;
 import com.gdu.bulmeong.camp.mapper.CampMapper;
+import com.gdu.bulmeong.users.domain.MyPageReservedDTO;
 import com.gdu.bulmeong.users.domain.UsersDTO;
 import com.gdu.bulmeong.util.MyFileUtil;
 import com.gdu.bulmeong.util.PageUtil;
@@ -127,6 +128,28 @@ public class AdminServiceImpl implements AdminService {
 		List<Map<String, Object>> camp = adminMapper.selectCampcampNofacltNm();
 		Map<String, Object> result = new HashMap<>();
 		result.put("camp", camp);
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> getAllReserve(HttpServletRequest request) {
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt.orElse("1"));
+		int reserveCount = adminMapper.selectAllReserveCount();
+		
+		pageUtil.setPageUtil(page, reserveCount, 10);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("begin", pageUtil.getBegin() - 1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
+		List<MyPageReservedDTO> reserve = adminMapper.selectReserveByMap(map);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("reserveList", reserve);
+		result.put("pageUtil", pageUtil);
+		result.put("reserveCount", reserveCount);
+		
 		return result;
 	}
 	
@@ -305,6 +328,5 @@ public class AdminServiceImpl implements AdminService {
 	
 		return map;
 	}
-	
 	
 }

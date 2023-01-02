@@ -19,28 +19,24 @@
 		    font-size: 20px;
 		    border-radius: 7px;
 		    text-align: center;
-		    margin: 20px 0;
+		    margin: 50px 26px 0 0;
 		    display: inline-block;
-		    width: 50%;
+		    width: 30%;
 		    height: 50px;
 		    line-height: 50px; 
 		}
 		
 		.div_all {
-			/* text-align:center; */
 			width: 70%;
-			margin: 0 auto; 
-			 border:1px solid black;
-			 /*
-			background-color:rgb(250, 252, 252);
-			padding: 0 10px;  */
+			height: 665px;
+			margin: 70px auto 0; 
+			/* background-image: url("/images/userimage/mypage.jpg"); */
 		}
 		
 		.main_box {
 			width: 60%;
 			margin: 0 auto; 
-			border:1px solid black;
-			background-color:rgb(250, 252, 252);
+			/* background-color:rgb(250, 252, 252); */
 			padding: 0 10px; 
 		}
 		
@@ -62,11 +58,17 @@
 		.info_box {
 			display: flex;
 			height: 90px;
-			padding-top: 30px;
+			padding: 20px 0 0 10px;
+		}
+		
+		.text_box {
+			padding-top: 10px;
+			margin-left:10px;
+			
 		}
 		
 		.outline {
-			border:1px solid rgb(3, 199, 90);
+			border:3px solid rgb(3, 199, 90, 0.5);
 			border-radius: 8px;
 		}
 	</style>
@@ -88,60 +90,36 @@
 							<img id="profileImage" th:src="|/load/profileImage/${session.loginUser.profileImage}|" class="profile_img">
 						</span>
 					</div>
-					<div class="text_box" style="margin-left:10px;">
+					<div class="text_box">
 						<div th:text="${session.loginUser.name}" style="color:rgb(3, 199, 90); font-size:20px; font-weight:600;"></div>
 						<div th:text="${session.loginUser.email}" ></div>
 					</div>
 				</div>
 				<hr>
-				<img src="/images/userimage/call.png" style="width:18px; padding-bottom:4px; margin: 0 8px;"><span th:text="${session.loginUser.mobile}"></span>
+				<div style="margin-left:20px;">
+					<div>
+						<img src="/images/userimage/call3.png" style="width:18px; padding-bottom:4px; margin-right:8px;"><span th:text="${session.loginUser.mobile}"></span>
+					</div>
+					<div>
+						<img src="/images/userimage/mail.png" style="width:18px; padding-bottom:4px; margin-right:8px;"><span th:text="${session.loginUser.email}"></span>
+					</div>
+				</div>
 				<hr>
 			</div>
 			<div class="link_box">
 				<div>
 					<a class="link" th:href="@{/users/modify}">회원정보변경</a>
-				</div>
-				<div>
 					<a class="link" th:href="@{/users/profile}">프로필 이미지 설정</a>
 				</div>
 				<div>
 					<a class="link" th:href="@{/users/jjim}">찜목록</a>
-				</div>
-				<div>
 					<a class="link" th:href="@{/users/board/list}">내가 쓴 글</a>
-					<!-- <a class="link" href="#" onclick="alert('기능 구현 중입니다.')">내가 쓴 글</a> -->
+					<a class="link" th:href="@{/users/reserve}" style="margin-right:0">예약 내역</a>
 				</div>
-				<div>
-					<a class="link" th:href="@{/users/reserve}">예약 내역</a>
-				</div> 
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	<!--  
-	<div class="side">
-		
-		<h1>마이페이지</h1>
-		
-		<div>
-			<a class="link" th:href="@{/users/modify}">회원정보변경</a>
-		</div>
-		<div>
-			<a class="link" th:href="@{/users/profile}">프로필 이미지 설정</a>
-		</div>
-		<div>
-			<a class="link" th:href="@{/users/jjim}">찜목록</a>
-		</div>
-		<div>
-			<a class="link" th:href="@{/users/board/list}">내가 쓴 글</a>
-		</div>
-		<div>
-			<a class="link" th:href="@{/users/reserve}">예약 내역</a>
-		</div> 
-	</div>
-	-->
-	<!-- <footer th:replace="~{layout/footer::footer_layout}"></footer> -->
+
+	<footer th:replace="~{layout/footer::footer_layout}"></footer>
 </body>
 </html>

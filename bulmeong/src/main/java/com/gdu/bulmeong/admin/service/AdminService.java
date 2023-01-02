@@ -16,6 +16,7 @@ public interface AdminService {
 	public Map<String, Object> removeUser(List<Integer> usersNo);
 	public Map<String, Object> getAllCamp(HttpServletRequest request);
 	public Map<String, Object> getAllTent(HttpServletRequest request);
+	public Map<String, Object> getAllReserve(HttpServletRequest request);
 	public Map<String, Object> getCampcampNofacltNm();
 	public void uploadTent(MultipartHttpServletRequest request, HttpServletResponse response);
 	public void modifyTent(HttpServletRequest request, Model model);
