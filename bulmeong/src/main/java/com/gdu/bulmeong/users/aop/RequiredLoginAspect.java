@@ -56,9 +56,7 @@ public class RequiredLoginAspect {
 
 		
 	}
-
-
-
+// 
 //	@Pointcut("execution(* com.gdu.bulmeong.freeboard.controller.requiredLogin_*(..))")
 //			
 //	// @Pointcut("execution(* com.gdu.bulmeong.freeboard.controller..*.*(..))") // 메소드명 아닌 모든 메소드
