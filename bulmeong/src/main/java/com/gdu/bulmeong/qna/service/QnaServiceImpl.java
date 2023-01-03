@@ -111,7 +111,7 @@ public class QnaServiceImpl implements QnaService {
 		String id = request.getParameter("id");
 		String writeAnswer = securityUtil.preventXSS(request.getParameter("writeAnswer"));
 		String qnaIp = request.getRemoteAddr();
-		String qnaTitle = "a";
+		String qnaTitle = "답변입니다.";
 		
 		int depth = Integer.parseInt(request.getParameter("depth"));
 		int qnaGroupNo = Integer.parseInt(request.getParameter("qnaGroupNo"));

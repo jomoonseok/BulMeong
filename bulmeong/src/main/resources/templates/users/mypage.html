@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head th:replace="~{layout/header::head('Bul meong 마이페이지')}"></head>
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<style>
+	
+		body{
+			width:70%;
+			margin:auto;
+		}
+		
 		nav {
 			display : none;
 		}
@@ -19,7 +25,7 @@
 		    font-size: 20px;
 		    border-radius: 7px;
 		    text-align: center;
-		    margin: 50px 26px 0 0;
+		    margin: 50px 22px 0 0;
 		    display: inline-block;
 		    width: 30%;
 		    height: 50px;
@@ -76,6 +82,7 @@
 <body>
 
 	<header th:replace="~{layout/header::header_layout}"></header>
+	<div th:replace="~{layout/sidebar::sidebar_layout}"></div>
 	
 	<div class="div_all">
 		<div class="main_box">

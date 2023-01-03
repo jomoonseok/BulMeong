@@ -176,7 +176,6 @@
 	       			type: 'post',
 	       			url: '/admin/getAllReserve',
 	       			success: function(resData) {
-	       				console.log(resData);
 	       				$('.breadcrumb-item.active').text('예약 현황 : ' + resData.reserveCount + '개');
 	       				$.each(resData.reserveList, function(i, reserve) {
 	       					var reserveDiv = '<tr style="font-size: 10px; text-align: center;" class="userDiv"}>';
@@ -226,11 +225,7 @@
 	    					paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
 	    				}
 	    				$('#paging').append(paging);
-       				
-	       			},error(jqXHR) {
-	       				console.log(jqXHR);
 	       			}
-	       			
 	       		})
        		}
        		

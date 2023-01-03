@@ -91,7 +91,6 @@
 			type: 'post',
 			url: '/reviewboard/getFacltNm',
 			success: function(resData) {
-				console.log(resData);
 				var selectFacltNm = '<option value="">선택</option>';
 				$.each(resData.camp, function(i, camp) {
 					selectFacltNm += '<option value="'+ camp.campNo +'">' + camp.campNo + '_' + camp.facltNm + '</option>';

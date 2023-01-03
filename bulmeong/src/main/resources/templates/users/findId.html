@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('BulMeong')}"></head>
+<head th:replace="~{layout/header::head('Bul meong 아이디 찾기')}"></head>
 <head>
 	<script>
 		$(document).ready(function(){
@@ -61,7 +61,6 @@
 						if (resData.findUser != null) {
 							let id = resData.findUser.id;
 							//id = id.substring(0, 3) + '*****';
-							console.log(resData.findUser.joinDate);
 							moment.locale('ko-KR');
 							$('#msg_result').css('color', 'rgba(113, 194, 133)');
 							$('#msg_result').html('회원님의 아이디는 ' + id + '입니다.<br>(가입일 : ' + resData.findUser.joinDate + ')');
