@@ -57,42 +57,42 @@ public class RequiredLoginAspect {
 		
 	}
 
-//
-//	/**
-//	 * 	freeBoardController 모든 메소드에 세션 체크 적용
-//	 * 	밑에 throw new Exception 적용하여 Ajax 에러 발생
-//	 */
-//	@Pointcut("execution(* com.gdu.bulmeong.freeboard.controller..*.*(..))") // 메소드명 아닌 모든 메소드
-//	public void sessionCheck() { }
-//
-//	@Before("sessionCheck()")  // 포인트컷 실행 전에 requiredLogin() 메소드 수행
-//	public void sessionCheckHandler(JoinPoint joinPoint) throws Throwable {
-//
-//		// 로그인이 되어 있는지 확인하기 위해서 session이 필요하므로 request가 필요하다.
-//		// 응답을 만들기 위해서 response도 필요하다.
-//		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-//		HttpServletRequest request = servletRequestAttributes.getRequest();
-//		HttpServletResponse response = servletRequestAttributes.getResponse();
-//
-//		// 세션
-//		HttpSession session = request.getSession();
-//		System.out.println("aop : " + session.getAttribute("loginUser"));
-////		try {
-////			if(session.getAttribute("loginUser") == null) {
-////				throw new RuntimeException("세션이 만료되었습니다.");
-////			}
-////		} catch(RuntimeException e) {
-////			throw new RuntimeException("세션이 만료되었습니다.");
-////		} catch(Exception e) {
-////			e.getMessage();
-////		}
-//
-//		if(session.getAttribute("loginUser") == null) {
-//			throw new Exception("세면만료");
+
+	/**
+	 * 	freeBoardController 모든 메소드에 세션 체크 적용
+	 * 	밑에 throw new Exception 적용하여 Ajax 에러 발생
+	 */
+	@Pointcut("execution(* com.gdu.bulmeong.freeboard.controller..*.*(..))") // 메소드명 아닌 모든 메소드
+	public void sessionCheck() { }
+
+	@Before("sessionCheck()")  // 포인트컷 실행 전에 requiredLogin() 메소드 수행
+	public void sessionCheckHandler(JoinPoint joinPoint) throws Throwable {
+
+		// 로그인이 되어 있는지 확인하기 위해서 session이 필요하므로 request가 필요하다.
+		// 응답을 만들기 위해서 response도 필요하다.
+		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = servletRequestAttributes.getRequest();
+		HttpServletResponse response = servletRequestAttributes.getResponse();
+
+		// 세션
+		HttpSession session = request.getSession();
+		System.out.println("aop : " + session.getAttribute("loginUser"));
+//		try {
+//			if(session.getAttribute("loginUser") == null) {
+//				throw new RuntimeException("세션이 만료되었습니다.");
+//			}
+//		} catch(RuntimeException e) {
+//			throw new RuntimeException("세션이 만료되었습니다.");
+//		} catch(Exception e) {
+//			e.getMessage();
 //		}
-//
-//
-//	}
-//
-//	
+
+		if(session.getAttribute("loginUser") == null) {
+			throw new Exception("세면만료");
+		}
+
+
+	}
+
+	
 }
